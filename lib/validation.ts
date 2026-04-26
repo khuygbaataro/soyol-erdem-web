@@ -1,0 +1,97 @@
+import { z } from 'zod';
+
+const slugRegex = /^[a-z0-9-]+$/;
+
+export const newsSchema = z.object({
+  title: z.string().min(5).max(200),
+  slug: z.string().regex(slugRegex, 'Зөвхөн жижиг үсэг, тоо, зураас (-)').min(3),
+  excerpt: z.string().min(10).max(500),
+  body: z.string().min(20),
+  coverImage: z.string().url().optional().or(z.literal('')),
+  category: z.enum(['NEWS', 'EVENT', 'ANNOUNCEMENT', 'RESEARCH', 'ACHIEVEMENT', 'PROGRAM']),
+  status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
+  publishedAt: z.string().optional().or(z.literal('')),
+});
+export type NewsInput = z.infer<typeof newsSchema>;
+
+export const librarySchema = z.object({
+  title: z.string().min(2).max(300),
+  author: z.string().min(2).max(200),
+  isbn: z.string().optional().or(z.literal('')),
+  language: z.enum(['MN', 'JP', 'EN', 'OTHER']),
+  category: z.string().min(2).max(100),
+  publisher: z.string().optional().or(z.literal('')),
+  publishYear: z.coerce.number().int().min(1500).max(2100).optional(),
+  totalCopies: z.coerce.number().int().min(1).max(9999),
+  availableCopies: z.coerce.number().int().min(0).max(9999),
+  coverImage: z.string().url().optional().or(z.literal('')),
+  description: z.string().max(2000).optional().or(z.literal('')),
+  shelfLocation: z.string().max(50).optional().or(z.literal('')),
+});
+export type LibraryInput = z.infer<typeof librarySchema>;
+
+export const researchSchema = z.object({
+  title: z.string().min(5).max(300),
+  slug: z.string().regex(slugRegex).min(3),
+  abstract: z.string().min(20),
+  authors: z.string().min(2),
+  type: z.enum(['ARTICLE', 'CONFERENCE', 'BOOK', 'THESIS', 'PROJECT']),
+  area: z.string().min(2),
+  fileUrl: z.string().url().optional().or(z.literal('')),
+  publishedAt: z.string().optional().or(z.literal('')),
+  status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
+});
+export type ResearchInput = z.infer<typeof researchSchema>;
+
+export const programSchema = z.object({
+  name: z.string().min(2).max(200),
+  slug: z.string().regex(slugRegex).min(3),
+  code: z.string().optional().or(z.literal('')),
+  degree: z.string().min(2),
+  duration: z.string().min(2),
+  shortDescription: z.string().min(10).max(500),
+  fullDescription: z.string().min(20),
+  skills: z.string().min(0), // newline-separated
+  curriculum: z.string().optional().or(z.literal('')),
+  language: z.string().min(2),
+  admissionScore: z.coerce.number().int().min(0).max(900).optional(),
+  active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
+  icon: z.string().min(2),
+  order: z.coerce.number().int().min(0).max(999),
+});
+export type ProgramInput = z.infer<typeof programSchema>;
+
+export const userSchema = z.object({
+  name: z.string().min(2).max(100),
+  email: z.string().email(),
+  password: z.string().min(6).max(100),
+  role: z.enum(['ADMIN', 'EDITOR', 'LIBRARIAN', 'RESEARCHER']),
+  active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
+});
+export type UserInput = z.infer<typeof userSchema>;
+
+export const settingsSchema = z.object({
+  schoolName: z.string().min(2),
+  email: z.string().email(),
+  phonePrimary: z.string().min(4),
+  phoneSecondary: z.string().optional().or(z.literal('')),
+  address: z.string().min(5),
+  facebookUrl: z.string().url().optional().or(z.literal('')),
+  workingHours: z.string().min(2),
+});
+export type SettingsInput = z.infer<typeof settingsSchema>;
+
+export const contactSchema = z.object({
+  name: z.string().min(2).max(100),
+  email: z.string().email(),
+  phone: z.string().optional().or(z.literal('')),
+  subject: z.string().min(2),
+  message: z.string().min(5).max(2000),
+});
+export type ContactInput = z.infer<typeof contactSchema>;
+
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});
+export type LoginInput = z.infer<typeof loginSchema>;

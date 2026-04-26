@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(EDITOR)
+  avatar    String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  news     News[]
+  research Research[]
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  LIBRARIAN
+  RESEARCHER
+}
+
+model News {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  excerpt     String
+  body        String
+  coverImage  String?
+  category    NewsCategory
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?
+  views       Int           @default(0)
+  authorId    String
+  author      User          @relation(fields: [authorId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, publishedAt])
+}
+
+enum NewsCategory {
+  NEWS
+  EVENT
+  ANNOUNCEMENT
+  RESEARCH
+  ACHIEVEMENT
+  PROGRAM
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model LibraryBook {
+  id              String       @id @default(cuid())
+  title           String
+  author          String
+  isbn            String?
+  language        BookLanguage
+  category        String
+  publisher       String?
+  publishYear     Int?
+  totalCopies     Int          @default(1)
+  availableCopies Int          @default(1)
+  coverImage      String?
+  description     String?
+  shelfLocation   String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+enum BookLanguage {
+  MN
+  JP
+  EN
+  OTHER
+}
+
+model Research {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  abstract     String
+  authors      String
+  type         ResearchType
+  area         String
+  fileUrl      String?
+  publishedAt  DateTime?
+  status       ContentStatus @default(DRAFT)
+  uploadedById String
+  uploadedBy   User          @relation(fields: [uploadedById], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+enum ResearchType {
+  ARTICLE
+  CONFERENCE
+  BOOK
+  THESIS
+  PROJECT
+}
+
+model Program {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  name             String
+  code             String?
+  degree           String
+  duration         String
+  shortDescription String
+  fullDescription  String
+  skills           String
+  curriculum       String?
+  language         String
+  admissionScore   Int?
+  active           Boolean  @default(true)
+  icon             String
+  order            Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model SiteSettings {
+  id             String   @id @default("main")
+  schoolName     String
+  email          String
+  phonePrimary   String
+  phoneSecondary String?
+  address        String
+  facebookUrl    String?
+  workingHours   String
+  updatedAt      DateTime @updatedAt
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

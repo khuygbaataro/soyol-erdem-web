@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Fonts injected by next/font in layout.tsx — these are fallbacks */
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-mn: 'Noto Sans Mongolian', sans-serif;
+
+  /* Primary — Navy */
+  --navy-900: #1e3a5f;
+  --navy-800: #2c4a6e;
+  --navy-700: #3d5a7e;
+
+  /* Accent — Gold */
+  --gold-500: #d4a24c;
+  --gold-400: #e8c275;
+  --gold-300: #f5dca0;
+
+  /* Background */
+  --bg-white: #ffffff;
+  --bg-cream: #f5efe4;
+  --bg-soft: #faf7f1;
+
+  /* Text */
+  --text-heading: #1f2937;
+  --text-body: #4b5563;
+  --text-muted: #9ca3af;
+  --text-on-dark: #ffffff;
+
+  /* Border */
+  --border-light: #e5e7eb;
+  --border-medium: #d1d5dB;
+
+  /* Spacing & layout */
+  --container-max: 1280px;
+  --transition: 300ms ease;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans bg-white antialiased;
+    color: var(--text-body);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--text-heading);
+    @apply font-semibold;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-container mx-auto px-4 md:px-8;
+  }
+  .section-padding {
+    @apply py-12 md:py-20;
+  }
+  .gold-underline {
+    @apply mt-4 h-1 w-16 rounded-full bg-gold-500;
+  }
+}
