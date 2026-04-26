@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 import { slugify } from '@/lib/admin-helpers';
 
 interface NewsFormProps {
@@ -133,13 +134,11 @@ export function NewsForm({ initial = {}, mode }: NewsFormProps) {
               placeholder="Мэдээний бүтэн агуулга..."
             />
           </FormField>
-          <FormField label="Cover image URL" className="mt-4" hint="Зургийн URL (https://...).">
-            <input
-              type="url"
+          <FormField label="Cover image" className="mt-4" hint="Зураг сонгож upload хийнэ үү.">
+            <ImageUpload
               value={coverImage}
-              onChange={(e) => setCoverImage(e.target.value)}
-              className={inputClasses}
-              placeholder="https://images.unsplash.com/..."
+              onChange={setCoverImage}
+              folder="news"
             />
           </FormField>
         </Card>

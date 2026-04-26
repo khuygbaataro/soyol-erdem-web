@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
+import { FileUpload } from '@/components/admin/ImageUpload';
 import { slugify } from '@/lib/admin-helpers';
 
 interface Props {
@@ -70,8 +71,8 @@ export function ResearchForm({ initial = {}, mode }: Props) {
         <FormField label="Хураангуй (Abstract)" required>
           <textarea required value={abstract} onChange={(e) => setAbstract(e.target.value)} rows={6} className={textareaClasses} />
         </FormField>
-        <FormField label="Файл URL (PDF)">
-          <input type="url" value={fileUrl} onChange={(e) => setFileUrl(e.target.value)} className={inputClasses} placeholder="https://example.com/article.pdf" />
+        <FormField label="PDF файл" hint="Эрдэм шинжилгээний PDF-г upload хийнэ үү.">
+          <FileUpload value={fileUrl} onChange={setFileUrl} folder="research" />
         </FormField>
       </Card>
 

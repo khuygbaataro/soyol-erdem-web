@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 
 interface LibraryFormProps {
   initial?: any;
@@ -106,8 +107,8 @@ export function LibraryForm({ initial = {}, mode }: LibraryFormProps) {
         <FormField label="Тайлбар">
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} className={textareaClasses} />
         </FormField>
-        <FormField label="Cover image URL" hint="Зургийн URL.">
-          <input type="url" value={coverImage} onChange={(e) => setCoverImage(e.target.value)} className={inputClasses} />
+        <FormField label="Номын зураг" hint="Хавтасны зургийг upload хийнэ үү.">
+          <ImageUpload value={coverImage} onChange={setCoverImage} folder="library" />
         </FormField>
       </Card>
 

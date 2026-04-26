@@ -90,9 +90,30 @@ npx prisma db seed
 | `AUTH_SECRET` | `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`-ээр үүсгэсэн утга |
 | `NEXTAUTH_SECRET` | `AUTH_SECRET`-тэй ИЖИЛ утга |
 | `AUTH_TRUST_HOST` | `true` |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob үүсгэхэд автоматаар нэмэгдэнэ (доор үзнэ үү) |
 
 > 💡 `NEXTAUTH_URL` шаардлагагүй — Vercel дээр автоматаар деплоймэнтийн URL-аар
 > ажиллана (`AUTH_TRUST_HOST=true` тул).
+
+### 4.3. Vercel Blob storage (admin зургийн upload)
+
+Admin panel-аас зураг upload хийх бол:
+
+1. Vercel project → **Storage** tab
+2. **Create Database** → **Blob** → нэр өг (`soyol-erdem-blob` гэх мэт)
+3. **Connect Project** товч → одоогийн project сонго
+4. `BLOB_READ_WRITE_TOKEN` env var автоматаар бүх environment-д нэмэгдэнэ
+5. Vercel автоматаар redeploy хийнэ
+
+Үнэгүй tier: **1 GB storage + 100 GB bandwidth/сар**.
+
+### 4.4. Local-д upload туршихын тулд
+
+```bash
+npm i -g vercel
+vercel link             # repo-г Vercel project-тэй холбоно
+vercel env pull .env    # BLOB_READ_WRITE_TOKEN local-д татаж авна
+```
 
 ### 4.3. Deploy дарах
 
