@@ -14,30 +14,44 @@ const ALLOWED_FILE = [...ALLOWED_IMAGE, 'application/pdf'];
  * Vercel Blob client-direct upload endpoint.
  *
  * The browser hits this endpoint to negotiate a one-shot upload token, then
- * uploads the file directly to Vercel Blob storage. This bypasses the 4.5 MB
- * Vercel function body limit and reduces server CPU.
- *
- * `pathname` is namespaced (e.g. `news/cover-xxx.jpg`) so we only authorise
- * uploads from logged-in admin users to known prefixes.
+ * uploads the file directly to Vercel Blob storage.
  */
 export async function POST(request: Request) {
-  const body = (await request.json()) as HandleUploadBody;
+  // Fail fast with a clear message when the Blob token is missing.
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    console.error('[upload] BLOB_READ_WRITE_TOKEN is missing from env');
+    return NextResponse.json(
+      {
+        error:
+          'Vercel Blob storage тохируулагдаагүй байна. Vercel → Storage → Blob үүсгээд project-тэй холбоно уу.',
+      },
+      { status: 500 },
+    );
+  }
+
+  let body: HandleUploadBody;
+  try {
+    body = (await request.json()) as HandleUploadBody;
+  } catch (err) {
+    console.error('[upload] failed to parse body', err);
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+  }
 
   try {
     const json = await handleUpload({
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
-        // Authenticate first.
         const session = await auth();
         if (!session?.user) {
-          throw new Error('Unauthorized');
+          console.warn('[upload] unauthenticated request');
+          throw new Error('Та эхлээд нэвтэрсэн байх ёстой');
         }
         if (!['ADMIN', 'EDITOR', 'LIBRARIAN', 'RESEARCHER'].includes(session.user.role)) {
-          throw new Error('Forbidden');
+          console.warn('[upload] forbidden role', session.user.role);
+          throw new Error('Танд upload хийх эрх байхгүй');
         }
 
-        // Restrict allowed file types based on path prefix.
         const isFile = pathname.startsWith('research/');
         const allowed = isFile ? ALLOWED_FILE : ALLOWED_IMAGE;
         const maxSize = isFile ? MAX_PDF_BYTES : MAX_IMAGE_BYTES;
@@ -49,17 +63,14 @@ export async function POST(request: Request) {
         };
       },
       onUploadCompleted: async ({ blob }) => {
-        // Could persist the upload to DB here for auditing.
-        // eslint-disable-next-line no-console
         console.log('[upload] completed', blob.url);
       },
     });
 
     return NextResponse.json(json);
   } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : 'Upload failed' },
-      { status: 400 },
-    );
+    const message = err instanceof Error ? err.message : 'Upload failed';
+    console.error('[upload] handleUpload error:', message, err);
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }
