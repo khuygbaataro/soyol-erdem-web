@@ -23,21 +23,26 @@ export default function AboutPage() {
 
   const dotPatternStyle = {
     backgroundImage:
-      'radial-gradient(circle, rgba(212,162,76,0.45) 1.2px, transparent 1.2px)',
-    backgroundSize: '14px 14px',
+      'radial-gradient(circle, rgba(30,58,95,0.18) 1.2px, transparent 1.2px)',
+    backgroundSize: '16px 16px',
   } as const;
 
   return (
     <>
       {/* 1. Hero — split layout */}
-      <section className="relative overflow-hidden bg-cream-soft">
+      <section className="relative overflow-hidden bg-white">
         <span
           aria-hidden
-          className="pointer-events-none absolute right-6 top-6 hidden h-32 w-32 opacity-70 md:block"
+          className="pointer-events-none absolute -left-10 top-16 hidden h-40 w-40 opacity-60 md:block"
+          style={dotPatternStyle}
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute right-6 top-6 hidden h-28 w-28 opacity-50 md:block"
           style={dotPatternStyle}
         />
         <div className="container-custom relative grid items-center gap-10 py-16 md:py-24 lg:grid-cols-[2fr_3fr] lg:gap-14">
-          <div className="order-2 lg:order-1">
+          <div className="relative z-10 order-2 lg:order-1">
             <nav
               aria-label="Breadcrumb"
               className="flex items-center gap-1.5 text-sm text-text-muted"
@@ -74,46 +79,41 @@ export default function AboutPage() {
 
           <div className="relative order-1 lg:order-2">
             <div
-              className="absolute inset-y-0 left-0 z-10 hidden w-1/3 lg:block"
+              className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-1/4 lg:block"
               style={{
                 background:
-                  'linear-gradient(to right, #FAF7F1 0%, rgba(250,247,241,0.6) 55%, rgba(250,247,241,0) 100%)',
+                  'linear-gradient(to right, #FFFFFF 0%, rgba(255,255,255,0.65) 55%, rgba(255,255,255,0) 100%)',
               }}
               aria-hidden
             />
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-image bg-gradient-to-br from-navy-700 via-navy-800 to-navy-900 shadow-card-hover">
-              <span
-                aria-hidden
-                className="absolute inset-0 opacity-30"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(circle, rgba(245,220,160,0.5) 1.4px, transparent 1.4px)',
-                  backgroundSize: '22px 22px',
-                }}
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-image shadow-card-hover lg:aspect-[5/4]">
+              <Image
+                src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80"
+                alt="Соёл-Эрдэм Их Сургуулийн барилга"
+                fill
+                sizes="(min-width: 1024px) 60vw, 100vw"
+                className="object-cover"
+                loading="lazy"
               />
-              <span
+              <div
                 aria-hidden
-                className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-gold-500/15 blur-3xl"
-              />
-              <span
-                aria-hidden
-                className="absolute -bottom-20 -left-10 h-72 w-72 rounded-full bg-navy-700/40 blur-3xl"
-              />
-              <div className="relative flex h-full flex-col items-center justify-center px-8 text-center text-white">
+                className="absolute inset-x-6 bottom-6 flex items-center gap-3 rounded-card bg-navy-900/90 px-5 py-3 backdrop-blur"
+              >
                 <Image
                   src="/logo.png"
-                  alt="Соёл-Эрдэм Их Сургуулийн лого"
-                  width={140}
-                  height={140}
-                  className="h-28 w-28 rounded-full bg-white/95 p-3 shadow-card-hover sm:h-32 sm:w-32"
-                  loading="lazy"
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 shrink-0 rounded-full bg-white p-1"
                 />
-                <p className="mt-6 font-serif text-xl italic text-gold-300">
-                  {HERO.italicAccent}
-                </p>
-                <p className="mt-3 text-sm uppercase tracking-[0.3em] text-white/70">
-                  est. {SCHOOL_INFO.founded}
-                </p>
+                <div className="leading-tight">
+                  <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-white">
+                    Соёл-Эрдэм
+                  </div>
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-gold-400">
+                    Их Сургууль · est. {SCHOOL_INFO.founded}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -200,9 +200,9 @@ export default function AboutPage() {
       </section>
 
       {/* 4. Mission / Vision / Values */}
-      <section className="bg-cream-soft py-16 md:py-20">
+      <section className="bg-white py-16 md:py-20">
         <div className="container-custom">
-          <div className="mx-auto mb-14 max-w-2xl text-center">
+          <div className="mx-auto mb-12 max-w-2xl text-center">
             <div className="flex items-center justify-center gap-3">
               <span className="h-px w-10 bg-gold-500" aria-hidden />
               <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">
@@ -215,27 +215,22 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="grid gap-12 md:grid-cols-3 md:gap-8">
+          <div className="grid gap-10 md:grid-cols-3 md:gap-8">
             {mvv.map((item) => {
               const Icon = item.icon;
               return (
-                <div
-                  key={item.title}
-                  className="flex flex-col items-center px-2 text-center"
-                >
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
-                    <Icon className="h-8 w-8" />
+                <div key={item.title} className="flex items-start gap-5 px-2">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center text-gold-500">
+                    <Icon className="h-10 w-10" strokeWidth={1.6} />
                   </span>
-                  <h3 className="mt-6 text-lg font-bold tracking-wide text-navy-900">
-                    {item.title}
-                  </h3>
-                  <span
-                    className="mt-3 h-px w-10 bg-gold-500"
-                    aria-hidden
-                  />
-                  <p className="mt-4 max-w-sm text-sm leading-relaxed text-text-body">
-                    {item.text}
-                  </p>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-lg font-bold uppercase tracking-wide text-navy-900">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-text-body">
+                      {item.text}
+                    </p>
+                  </div>
                 </div>
               );
             })}
