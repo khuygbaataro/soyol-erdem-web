@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Edit3, Plus } from 'lucide-react';
+import { AlertTriangle, Edit3, Plus } from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { Button } from '@/components/ui/Button';
 import { DataTable, type Column } from '@/components/admin/DataTable';
@@ -10,15 +10,52 @@ import { requireRole } from '@/lib/auth-helpers';
 
 export const dynamic = 'force-dynamic';
 
-type Row = Awaited<ReturnType<typeof load>>[number];
+type Row = {
+  id: string;
+  key: string;
+  icon: string;
+  number: string;
+  label: string;
+  order: number;
+  active: boolean;
+};
 
-async function load() {
-  return prisma.stat.findMany({ orderBy: { order: 'asc' } });
+async function safeLoad(): Promise<{ ok: boolean; items: Row[] }> {
+  try {
+    const items = await prisma.stat.findMany({ orderBy: { order: 'asc' } });
+    return { ok: true, items: items as Row[] };
+  } catch {
+    return { ok: false, items: [] };
+  }
+}
+
+function MigrationNotice() {
+  return (
+    <div className="rounded-card border border-amber-200 bg-amber-50 p-6">
+      <div className="flex items-start gap-3">
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+        <div className="space-y-3 text-sm">
+          <h3 className="font-bold text-amber-900">
+            Өгөгдлийн санд хүснэгт үүсгэгдээгүй байна
+          </h3>
+          <p className="text-amber-900/90">
+            Доорх 4 командыг нэг удаа локалаас ажиллуулна:
+          </p>
+          <pre className="overflow-x-auto rounded-button bg-navy-900 px-4 py-3 text-xs leading-relaxed text-cream">
+{`cd D:\\soyol-erdem-web
+npx vercel env pull .env.local
+npx prisma db push
+npm run db:seed`}
+          </pre>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default async function AdminStatsListPage() {
   await requireRole(['ADMIN']);
-  const items = await load();
+  const { ok, items } = await safeLoad();
 
   const columns: Column<Row>[] = [
     {
@@ -88,7 +125,11 @@ export default async function AdminStatsListPage() {
           </Button>
         }
       />
-      <DataTable data={items} columns={columns} empty="Статистик алга." />
+      {ok ? (
+        <DataTable data={items} columns={columns} empty="Статистик алга." />
+      ) : (
+        <MigrationNotice />
+      )}
     </>
   );
 }
