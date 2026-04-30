@@ -25,14 +25,14 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-border-light bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-navy-900/95 backdrop-blur supports-[backdrop-filter]:bg-navy-900/85">
         <Container className="flex h-20 flex-nowrap items-center justify-between gap-4">
           <Link
             href="/"
             className="flex shrink-0 items-center"
             aria-label="Нүүр хуудас"
           >
-            <Logo withLabel size={44} />
+            <Logo withLabel size={44} invert />
           </Link>
 
           <nav className="hidden min-w-0 flex-1 flex-nowrap items-center justify-center gap-0.5 xl:flex">
@@ -45,10 +45,10 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'relative whitespace-nowrap px-2.5 py-2 text-[13px] font-semibold text-navy-900 transition-colors',
+                    'relative whitespace-nowrap px-2.5 py-2 text-[13px] font-semibold text-white/90 transition-colors hover:text-white',
                     'after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-0 after:-translate-x-1/2 after:bg-gold-500 after:transition-all after:duration-300',
                     'hover:after:w-3/4',
-                    isActive && 'after:w-3/4',
+                    isActive && 'text-white after:w-3/4',
                   )}
                 >
                   {item.label}
@@ -58,7 +58,7 @@ export function Header() {
           </nav>
 
           <div className="hidden shrink-0 items-center gap-4 xl:flex">
-            <LanguageSwitch currentLang={lang} onChange={setLang} />
+            <LanguageSwitch currentLang={lang} onChange={setLang} invert />
             <Button
               href="/admission"
               variant="accent"
@@ -73,7 +73,7 @@ export function Header() {
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Цэс нээх"
-            className="flex h-11 w-11 items-center justify-center rounded-full text-navy-900 transition-colors hover:bg-cream-soft xl:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 xl:hidden"
           >
             <Menu className="h-6 w-6" />
           </button>

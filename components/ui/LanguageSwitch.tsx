@@ -7,6 +7,8 @@ interface LanguageSwitchProps {
   currentLang: Language;
   onChange?: (lang: Language) => void;
   className?: string;
+  /** Render with white text — for use on dark backgrounds (Header). */
+  invert?: boolean;
 }
 
 /**
@@ -16,6 +18,7 @@ export function LanguageSwitch({
   currentLang,
   onChange,
   className,
+  invert = false,
 }: LanguageSwitchProps) {
   return (
     <div className={cn('flex items-center gap-2 text-sm font-semibold', className)}>
@@ -29,14 +32,21 @@ export function LanguageSwitch({
               className={cn(
                 'relative pb-1 transition-colors',
                 isActive
-                  ? 'text-navy-900 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-gold-500'
-                  : 'text-text-muted hover:text-navy-900',
+                  ? cn(
+                      'after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-gold-500',
+                      invert ? 'text-white' : 'text-navy-900',
+                    )
+                  : invert
+                    ? 'text-white/60 hover:text-white'
+                    : 'text-text-muted hover:text-navy-900',
               )}
             >
               {lang}
             </button>
             {idx < LANGUAGES.length - 1 && (
-              <span className="text-border-medium">|</span>
+              <span className={invert ? 'text-white/30' : 'text-border-medium'}>
+                |
+              </span>
             )}
           </div>
         );
