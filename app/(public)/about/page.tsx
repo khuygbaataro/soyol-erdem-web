@@ -78,14 +78,6 @@ export default function AboutPage() {
           </div>
 
           <div className="relative order-1 lg:order-2">
-            <div
-              className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-1/4 lg:block"
-              style={{
-                background:
-                  'linear-gradient(to right, #FFFFFF 0%, rgba(255,255,255,0.65) 55%, rgba(255,255,255,0) 100%)',
-              }}
-              aria-hidden
-            />
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-image shadow-card-hover lg:aspect-[5/4]">
               <Image
                 src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80"
