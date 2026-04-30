@@ -8,13 +8,38 @@ import {
   SCHOOL_INFO,
   STATS,
 } from '@/lib/content';
+import { prisma } from '@/lib/prisma';
+import { content, getSiteContentMap } from '@/lib/site-content';
+import { resolveIcon } from '@/lib/icon-map';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Сургуулийн тухай',
   description: SCHOOL_INFO.nameFull,
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const [siteContent, dbStats] = await Promise.all([
+    getSiteContentMap('about'),
+    prisma.stat.findMany({ where: { active: true }, orderBy: { order: 'asc' } }),
+  ]);
+
+  const heroTitle1 = content(siteContent, 'about.hero.title.line1', 'СОЁЛ-ЭРДЭМ');
+  const heroTitle2 = content(siteContent, 'about.hero.title.line2', 'ИХ СУРГУУЛЬ');
+  const heroBody = content(siteContent, 'about.hero.body', HERO.body);
+  const heroCtaLabel = content(siteContent, 'about.hero.cta_label', 'Бидний тухай дэлгэрэнгүй');
+  const heroImage = content(
+    siteContent,
+    'about.hero.image',
+    'https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80',
+  );
+
+  const stats =
+    dbStats.length > 0
+      ? dbStats.map((s) => ({ icon: resolveIcon(s.icon), number: s.number, label: s.label }))
+      : STATS;
+
   const mvv = [
     MISSION_VISION_VALUES.mission,
     MISSION_VISION_VALUES.vision,
@@ -59,20 +84,20 @@ export default function AboutPage() {
             </nav>
 
             <h1 className="mt-5 text-[2.75rem] font-bold leading-[1.05] tracking-tight text-navy-900 sm:text-5xl lg:text-[4.25rem]">
-              СОЁЛ-ЭРДЭМ
+              {heroTitle1}
               <br />
-              ИХ СУРГУУЛЬ
+              {heroTitle2}
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-relaxed text-text-body">
-              {HERO.body}
+              {heroBody}
             </p>
 
             <Link
               href="#about-sections"
               className="mt-8 inline-flex items-center gap-2 rounded-button bg-navy-900 px-6 py-3 text-sm font-semibold text-white shadow-card transition-all duration-300 hover:bg-gold-500 hover:text-navy-900"
             >
-              Бидний тухай дэлгэрэнгүй
+              {heroCtaLabel}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
@@ -80,7 +105,7 @@ export default function AboutPage() {
           <div className="relative order-1 lg:order-2">
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-image shadow-card-hover lg:aspect-[5/4]">
               <Image
-                src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80"
+                src={heroImage}
                 alt="Соёл-Эрдэм Их Сургуулийн барилга"
                 fill
                 sizes="(min-width: 1024px) 60vw, 100vw"
@@ -168,7 +193,7 @@ export default function AboutPage() {
       <section className="bg-navy-900 py-12 md:py-14">
         <div className="container-custom">
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
-            {STATS.map((s) => {
+            {stats.map((s) => {
               const Icon = s.icon;
               return (
                 <div

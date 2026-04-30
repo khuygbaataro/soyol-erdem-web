@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { Section } from '@/components/layout/Section';
@@ -20,6 +21,7 @@ import {
 import { prisma } from '@/lib/prisma';
 import { resolveIcon } from '@/lib/icon-map';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
+import { content, getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,7 +35,7 @@ const PARTNER_PLACEHOLDERS = [
 ];
 
 export default async function HomePage() {
-  const [programs, latestNews] = await Promise.all([
+  const [programs, latestNews, siteContent, dbStats] = await Promise.all([
     prisma.program.findMany({
       where: { active: true },
       orderBy: [{ order: 'asc' }, { name: 'asc' }],
@@ -43,7 +45,27 @@ export default async function HomePage() {
       orderBy: { publishedAt: 'desc' },
       take: 3,
     }),
+    getSiteContentMap('home'),
+    prisma.stat.findMany({
+      where: { active: true },
+      orderBy: { order: 'asc' },
+    }),
   ]);
+
+  // Fall back to static content.ts when DB row missing/empty.
+  const heroTitle1 = content(siteContent, 'home.hero.title.line1', HERO.titleLine1);
+  const heroTitle2 = content(siteContent, 'home.hero.title.line2', HERO.titleLine2);
+  const heroItalic = content(siteContent, 'home.hero.italic', HERO.italicAccent);
+  const heroBody = content(siteContent, 'home.hero.body', HERO.body);
+  const heroCtaPrimary = content(siteContent, 'home.hero.cta_primary', HERO.ctaPrimary);
+  const heroCtaSecondary = content(siteContent, 'home.hero.cta_secondary', HERO.ctaSecondary);
+  const heroImage = siteContent.get('home.hero.image') ?? '';
+
+  // If admin hasn't uploaded a hero image yet, use the static STATS array.
+  const stats =
+    dbStats.length > 0
+      ? dbStats.map((s) => ({ icon: resolveIcon(s.icon), number: s.number, label: s.label }))
+      : STATS;
 
   return (
     <>
@@ -55,15 +77,15 @@ export default async function HomePage() {
               2025-2026 элсэлт нээлттэй
             </Badge>
             <h1 className="text-h1 font-bold leading-[1.05] text-navy-900">
-              {HERO.titleLine1}
+              {heroTitle1}
               <br />
-              {HERO.titleLine2}
+              {heroTitle2}
             </h1>
             <p className="mt-5 font-serif text-2xl italic text-gold-500 md:text-3xl">
-              {HERO.italicAccent}
+              {heroItalic}
             </p>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-text-body">
-              {HERO.body}
+              {heroBody}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button
@@ -72,18 +94,31 @@ export default async function HomePage() {
                 size="lg"
                 icon={<ChevronRight className="h-5 w-5" />}
               >
-                {HERO.ctaPrimary}
+                {heroCtaPrimary}
               </Button>
               <Button href="/about" variant="outline" size="lg">
-                {HERO.ctaSecondary}
+                {heroCtaSecondary}
               </Button>
             </div>
           </div>
-          <ImagePlaceholder
-            label="Барилгын зураг"
-            aspect="aspect-[4/5]"
-            className="hidden lg:block"
-          />
+          {heroImage ? (
+            <div className="relative hidden aspect-[4/5] w-full overflow-hidden rounded-image shadow-card-hover lg:block">
+              <Image
+                src={heroImage}
+                alt="Соёл-Эрдэм Их Сургуулийн зураг"
+                fill
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover"
+                priority
+              />
+            </div>
+          ) : (
+            <ImagePlaceholder
+              label="Барилгын зураг"
+              aspect="aspect-[4/5]"
+              className="hidden lg:block"
+            />
+          )}
         </div>
       </section>
 
@@ -156,7 +191,7 @@ export default async function HomePage() {
         </div>
 
         <div className="mt-14 grid grid-cols-2 gap-6 border-t border-white/10 pt-12 md:grid-cols-4">
-          {STATS.map((s) => (
+          {stats.map((s) => (
             <StatBlock
               key={s.label}
               icon={s.icon}

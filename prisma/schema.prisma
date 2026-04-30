@@ -155,3 +155,38 @@ model ContactSubmission {
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
+
+/// Editable single text/image fields keyed by stable identifier (e.g. "home.hero.title.line1").
+model SiteContent {
+  id        String      @id @default(cuid())
+  key       String      @unique
+  type      ContentType @default(TEXT)
+  value     String
+  group     String
+  label     String
+  hint      String?
+  multiline Boolean     @default(false)
+  order     Int         @default(0)
+  updatedAt DateTime    @updatedAt
+
+  @@index([group, order])
+}
+
+enum ContentType {
+  TEXT
+  IMAGE
+}
+
+/// Numeric stats shown on the navy band (Hero/About) — editable list.
+model Stat {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  icon      String
+  number    String
+  label     String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}

@@ -95,3 +95,25 @@ export const loginSchema = z.object({
   password: z.string().min(1),
 });
 export type LoginInput = z.infer<typeof loginSchema>;
+
+/* SiteContent — bulk update by key (admin form submits all fields at once) */
+export const siteContentItemSchema = z.object({
+  key: z.string().min(2).max(120),
+  value: z.string().max(5000), // empty allowed (clears optional images)
+});
+export const siteContentBulkSchema = z.object({
+  items: z.array(siteContentItemSchema).min(1).max(100),
+});
+export type SiteContentItemInput = z.infer<typeof siteContentItemSchema>;
+export type SiteContentBulkInput = z.infer<typeof siteContentBulkSchema>;
+
+/* Stat */
+export const statSchema = z.object({
+  key: z.string().regex(slugRegex, 'Зөвхөн жижиг үсэг, тоо, зураас (-)').min(2).max(40),
+  icon: z.string().min(2),
+  number: z.string().min(1).max(20),
+  label: z.string().min(2).max(80),
+  order: z.coerce.number().int().min(0).max(999),
+  active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
+});
+export type StatInput = z.infer<typeof statSchema>;

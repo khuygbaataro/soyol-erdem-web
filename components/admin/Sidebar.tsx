@@ -4,11 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  BarChart3,
   BookOpen,
   ChevronsLeft,
   FileText,
   GraduationCap,
   LayoutDashboard,
+  LayoutTemplate,
   LogOut,
   Microscope,
   Settings as SettingsIcon,
@@ -28,6 +30,8 @@ const NAV = [
   { label: 'Номын сан', href: '/admin/library', icon: BookOpen, roles: ['ADMIN', 'LIBRARIAN'] },
   { label: 'Эрдэм шинжилгээ', href: '/admin/research', icon: Microscope, roles: ['ADMIN', 'RESEARCHER'] },
   { label: 'Мэргэжил', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
+  { label: 'Хуудасны агуулга', href: '/admin/site-content', icon: LayoutTemplate, roles: ['ADMIN'] },
+  { label: 'Статистикууд', href: '/admin/stats', icon: BarChart3, roles: ['ADMIN'] },
   { label: 'Хэрэглэгч', href: '/admin/users', icon: Users, roles: ['ADMIN'] },
   { label: 'Тохиргоо', href: '/admin/settings', icon: SettingsIcon, roles: ['ADMIN'] },
 ] as const;

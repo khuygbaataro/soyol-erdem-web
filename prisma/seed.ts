@@ -273,6 +273,67 @@ async function main() {
   }
   console.log(`✓ Research (${research.length})`);
 
+  /* Site content (Phase 1 — Hero + body texts) */
+  const siteContent = [
+    // Home
+    { key: 'home.hero.title.line1', group: 'home', type: 'TEXT' as const, label: 'Hero — гарчиг 1-р мөр', value: 'ИРЭЭДҮЙГЭЭ', order: 1 },
+    { key: 'home.hero.title.line2', group: 'home', type: 'TEXT' as const, label: 'Hero — гарчиг 2-р мөр', value: 'ЭНДЭЭС ЭХЭЛ', order: 2 },
+    { key: 'home.hero.italic', group: 'home', type: 'TEXT' as const, label: 'Hero — italic accent', value: 'Япон хэлний боловсролын манлайлагч', order: 3 },
+    { key: 'home.hero.body', group: 'home', type: 'TEXT' as const, label: 'Hero — танилцуулга текст', hint: '3-4 өгүүлбэр', value: 'Япон улсын 100% хөрөнгө оруулалттай Соёл-Эрдэм Дээд Сургууль 1993 онд байгуулагдсан. Манай сургууль нь япон хэлний боловсролын чиглэлээр Монгол улсдаа тэргүүлэгч сургууль бөгөөд япон улсын 30 гаруй их, дээд сургуультай хамтран ажиллаж, оюутан солилцооны хөтөлбөр амжилттай хэрэгжүүлсээр байна. Бид одоогийн байдлаар 1500 гаруй оюутныг төгсгөж, нийт төгсөгчдийн 40 орчим хувь нь Япон улсад суралцаж, ажиллаж байна.', multiline: true, order: 4 },
+    { key: 'home.hero.cta_primary', group: 'home', type: 'TEXT' as const, label: 'Hero — үндсэн товчны нэр', value: 'Элсэлт мэдээлэл авах', order: 5 },
+    { key: 'home.hero.cta_secondary', group: 'home', type: 'TEXT' as const, label: 'Hero — нэмэлт товчны нэр', value: 'Бидний тухай дэлгэрэнгүй', order: 6 },
+    { key: 'home.hero.image', group: 'home', type: 'IMAGE' as const, label: 'Hero — баруун талын зураг', hint: 'Барилгын зураг (4:5 эсвэл 5:4 хэмжээтэй сайн)', value: '', order: 7 },
+
+    // About
+    { key: 'about.hero.title.line1', group: 'about', type: 'TEXT' as const, label: 'Hero — гарчиг 1-р мөр', value: 'СОЁЛ-ЭРДЭМ', order: 1 },
+    { key: 'about.hero.title.line2', group: 'about', type: 'TEXT' as const, label: 'Hero — гарчиг 2-р мөр', value: 'ИХ СУРГУУЛЬ', order: 2 },
+    { key: 'about.hero.body', group: 'about', type: 'TEXT' as const, label: 'Hero — танилцуулга текст', hint: '3-4 өгүүлбэр', value: 'Япон улсын 100% хөрөнгө оруулалттай Соёл-Эрдэм Дээд Сургууль 1993 онд байгуулагдсан. Манай сургууль нь япон хэлний боловсролын чиглэлээр Монгол улсдаа тэргүүлэгч сургууль бөгөөд япон улсын 30 гаруй их, дээд сургуультай хамтран ажиллаж, оюутан солилцооны хөтөлбөр амжилттай хэрэгжүүлсээр байна. Бид одоогийн байдлаар 1500 гаруй оюутныг төгсгөж, нийт төгсөгчдийн 40 орчим хувь нь Япон улсад суралцаж, ажиллаж байна.', multiline: true, order: 3 },
+    { key: 'about.hero.cta_label', group: 'about', type: 'TEXT' as const, label: 'Hero — товчны нэр', value: 'Бидний тухай дэлгэрэнгүй', order: 4 },
+    { key: 'about.hero.image', group: 'about', type: 'IMAGE' as const, label: 'Hero — баруун талын зураг', hint: 'Барилгын зураг (4:3 эсвэл 5:4 хэмжээтэй сайн)', value: 'https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80', order: 5 },
+  ];
+  for (const c of siteContent) {
+    await prisma.siteContent.upsert({
+      where: { key: c.key },
+      update: {
+        type: c.type,
+        label: c.label,
+        hint: c.hint ?? null,
+        group: c.group,
+        multiline: c.multiline ?? false,
+        order: c.order,
+        // Don't overwrite the editable `value` on re-seed
+      },
+      create: {
+        key: c.key,
+        type: c.type,
+        value: c.value,
+        label: c.label,
+        hint: c.hint ?? null,
+        group: c.group,
+        multiline: c.multiline ?? false,
+        order: c.order,
+      },
+    });
+  }
+  console.log(`✓ Site content (${siteContent.length})`);
+
+  /* Stats — shared between Home & About */
+  const stats = [
+    { key: 'history', icon: 'GraduationCap', number: '32+', label: 'Жилийн түүхтэй', order: 1 },
+    { key: 'graduates', icon: 'Users', number: '1500+', label: 'Төгсөгчид', order: 2 },
+    { key: 'partners', icon: 'BookOpen', number: '30+', label: 'Япон хамтрагч их сургууль', order: 3 },
+    { key: 'in-japan', icon: 'Globe', number: '40%', label: 'Япон улсад ажиллаж байна', order: 4 },
+  ];
+  for (const s of stats) {
+    await prisma.stat.upsert({
+      where: { key: s.key },
+      update: { icon: s.icon, label: s.label, order: s.order },
+      // Don't overwrite `number` on re-seed (admin-edited)
+      create: s,
+    });
+  }
+  console.log(`✓ Stats (${stats.length})`);
+
   console.log('\n✅ Seed дуусав!\n');
   console.log('Login мэдээлэл:');
   console.log('  Admin: admin@soyolerdem.edu.mn / admin123');
