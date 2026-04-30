@@ -8,8 +8,7 @@ import {
   SCHOOL_INFO,
   STATS,
 } from '@/lib/content';
-import { prisma } from '@/lib/prisma';
-import { content, getSiteContentMap } from '@/lib/site-content';
+import { content, getActiveStats, getSiteContentMap } from '@/lib/site-content';
 import { resolveIcon } from '@/lib/icon-map';
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +21,7 @@ export const metadata = {
 export default async function AboutPage() {
   const [siteContent, dbStats] = await Promise.all([
     getSiteContentMap('about'),
-    prisma.stat.findMany({ where: { active: true }, orderBy: { order: 'asc' } }),
+    getActiveStats(),
   ]);
 
   const heroTitle1 = content(siteContent, 'about.hero.title.line1', 'СОЁЛ-ЭРДЭМ');

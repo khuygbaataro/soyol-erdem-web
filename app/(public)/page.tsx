@@ -21,7 +21,7 @@ import {
 import { prisma } from '@/lib/prisma';
 import { resolveIcon } from '@/lib/icon-map';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
-import { content, getSiteContentMap } from '@/lib/site-content';
+import { content, getActiveStats, getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,20 +36,21 @@ const PARTNER_PLACEHOLDERS = [
 
 export default async function HomePage() {
   const [programs, latestNews, siteContent, dbStats] = await Promise.all([
-    prisma.program.findMany({
-      where: { active: true },
-      orderBy: [{ order: 'asc' }, { name: 'asc' }],
-    }),
-    prisma.news.findMany({
-      where: { status: 'PUBLISHED' },
-      orderBy: { publishedAt: 'desc' },
-      take: 3,
-    }),
+    prisma.program
+      .findMany({
+        where: { active: true },
+        orderBy: [{ order: 'asc' }, { name: 'asc' }],
+      })
+      .catch(() => []),
+    prisma.news
+      .findMany({
+        where: { status: 'PUBLISHED' },
+        orderBy: { publishedAt: 'desc' },
+        take: 3,
+      })
+      .catch(() => []),
     getSiteContentMap('home'),
-    prisma.stat.findMany({
-      where: { active: true },
-      orderBy: { order: 'asc' },
-    }),
+    getActiveStats(),
   ]);
 
   // Fall back to static content.ts when DB row missing/empty.
