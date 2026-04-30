@@ -33,7 +33,7 @@ export function PageHero({
         // 1440 / 460 ≈ 3.13 → use Tailwind aspect-ratio + min-height fallback
         className,
       )}
-      style={{ aspectRatio: '1440 / 460', minHeight: '280px' }}
+      style={{ aspectRatio: '1440 / 600', minHeight: '380px' }}
     >
       {backgroundImage ? (
         <>
