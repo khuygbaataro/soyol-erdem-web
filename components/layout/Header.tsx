@@ -23,8 +23,12 @@ const UTILITY_LINKS = [
 
 /**
  * Sticky two-row site header.
- *  • Top utility bar — phone/address (left, md+), external service links (right).
- *  • Main row — logo, primary nav (xl+), language switch + admission CTA.
+ *
+ *   • Top utility bar — phone/address (md+ left), language switch +
+ *     external service links (right). Painted a hair darker than the
+ *     main row so the two read as a layered set.
+ *   • Main row — logo, primary nav (xl+) and the admission CTA.
+ *
  * Below xl the primary nav collapses into a hamburger drawer.
  */
 export function Header() {
@@ -35,9 +39,9 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full">
-        {/* Utility bar */}
-        <div className="bg-[#1d2942] text-[12.5px] text-white/85">
-          <Container className="flex h-[40px] items-center justify-between gap-4">
+        {/* Utility bar — darker shade for visual layering */}
+        <div className="border-b border-white/5 bg-[#0d1530] text-[12.5px] text-white/85">
+          <Container className="flex h-[40px] flex-nowrap items-center justify-between gap-4">
             <div className="hidden items-center gap-6 md:flex">
               <a
                 href={`tel:${SITE.contact.phone.replace('-', '')}`}
@@ -46,50 +50,62 @@ export function Header() {
                 <Phone className="h-3.5 w-3.5" aria-hidden />
                 <span>{SITE.contact.phone}</span>
               </a>
-              <span className="flex items-center gap-1.5">
+              <span className="hidden items-center gap-1.5 lg:flex">
                 <MapPin className="h-3.5 w-3.5" aria-hidden />
                 <span>Сүхбаатар дүүрэг, Улаанбаатар</span>
               </span>
             </div>
 
-            <ul className="ml-auto flex items-center divide-x divide-white/15">
-              {UTILITY_LINKS.map((link) => (
-                <li key={link.label}>
-                  {link.external ? (
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="block px-3 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="block px-3 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
-                    >
-                      {link.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <div className="ml-auto flex items-center gap-3">
+              {/* Language switcher — moved up from the main row to avoid crowding the nav */}
+              <LanguageSwitch
+                currentLang={lang}
+                onChange={setLang}
+                invert
+                className="text-[12.5px]"
+              />
+
+              <span className="hidden h-4 w-px bg-white/15 md:block" aria-hidden />
+
+              <ul className="hidden items-center divide-x divide-white/15 sm:flex">
+                {UTILITY_LINKS.map((link) => (
+                  <li key={link.label}>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="block px-3 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="block px-3 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </Container>
         </div>
 
-        {/* Main row */}
-        <div className="border-t border-gold-500/25 bg-[#2d3e5e]/95 shadow-[0_2px_24px_rgba(13,21,48,0.35)] backdrop-blur supports-[backdrop-filter]:bg-[#2d3e5e]/85">
-          <Container className="flex h-[96px] flex-nowrap items-center justify-between gap-6">
+        {/* Main row — heavy navy, matches user's request */}
+        <div className="bg-[#1d2942]/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#1d2942]/85">
+          <Container className="flex h-[88px] flex-nowrap items-center justify-between gap-6">
             <Link
               href="/"
-              className="group flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
+              className="flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
               aria-label="Нүүр хуудас"
             >
-              <Logo withLabel size={52} invert />
+              <Logo withLabel size={50} invert />
             </Link>
 
-            <nav className="hidden min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-1 xl:flex">
+            <nav className="hidden min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-0.5 xl:flex">
               {NAV_ITEMS.map((item) => {
                 const isActive =
                   pathname === item.href ||
@@ -99,9 +115,9 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'group/nav relative flex items-center whitespace-nowrap rounded-md px-4 text-[14px] font-semibold tracking-wide text-white/85 transition-all duration-200',
-                      'hover:text-white hover:bg-white/[0.06]',
-                      'after:pointer-events-none after:absolute after:bottom-3 after:left-4 after:right-4 after:h-[2px] after:rounded-full after:bg-gold-500 after:origin-center after:scale-x-0 after:transition-transform after:duration-300 after:ease-out',
+                      'relative flex items-center whitespace-nowrap rounded-md px-3.5 text-[14px] font-semibold tracking-wide text-white/85 transition-all duration-200',
+                      'hover:bg-white/[0.06] hover:text-white',
+                      'after:pointer-events-none after:absolute after:bottom-3 after:left-3.5 after:right-3.5 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-gold-500 after:transition-transform after:duration-300 after:ease-out',
                       'hover:after:scale-x-75',
                       isActive && 'text-white after:scale-x-100',
                     )}
@@ -112,8 +128,7 @@ export function Header() {
               })}
             </nav>
 
-            <div className="hidden shrink-0 items-center gap-5 xl:flex">
-              <LanguageSwitch currentLang={lang} onChange={setLang} invert />
+            <div className="hidden shrink-0 items-center gap-3 xl:flex">
               <Button
                 href="/admission"
                 variant="accent"

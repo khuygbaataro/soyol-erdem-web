@@ -35,7 +35,7 @@ export function PageHero({
         'relative isolate w-full overflow-hidden bg-[#1d2942] text-white',
         className,
       )}
-      style={{ aspectRatio: '12 / 6', minHeight: '420px' }}
+      style={{ aspectRatio: '12 / 3', minHeight: '220px' }}
     >
       {backgroundImage ? (
         <>
@@ -55,7 +55,7 @@ export function PageHero({
         <DawnSvg />
       )}
 
-      <Container className="relative z-10 flex h-full flex-col justify-between py-10 md:px-16 md:py-12">
+      <Container className="relative z-10 flex h-full flex-col justify-between py-6 md:px-12 md:py-8">
         {breadcrumb && breadcrumb.length > 0 ? (
           <div className="[&_a]:text-white/65 [&_a:hover]:text-white [&_span]:text-white/85 [&_li:last-child_span]:text-[#f0a04a] [&_svg]:text-white/40">
             <Breadcrumb items={breadcrumb} />
@@ -64,18 +64,18 @@ export function PageHero({
           <div />
         )}
 
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
+        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between md:gap-10">
           <div className="min-w-0 flex-1">
             <h1
-              className="font-serif text-3xl font-semibold uppercase leading-tight tracking-[0.18em] text-white md:text-6xl md:tracking-[0.22em]"
-              style={{ textShadow: '0 2px 18px rgba(0,0,0,0.4)' }}
+              className="font-serif text-2xl font-semibold uppercase leading-tight tracking-[0.18em] text-white md:text-4xl md:tracking-[0.20em]"
+              style={{ textShadow: '0 2px 14px rgba(0,0,0,0.4)' }}
             >
               {title}
             </h1>
-            <div className="mt-5 h-[3px] w-16 rounded-full bg-[#f0a04a]" />
+            <div className="mt-3 h-[3px] w-12 rounded-full bg-[#f0a04a]" />
           </div>
           {subtitle && (
-            <p className="max-w-sm text-sm leading-relaxed text-white/80 md:text-right md:text-base">
+            <p className="max-w-sm text-[13px] leading-relaxed text-white/80 md:text-right md:text-sm">
               {subtitle}
             </p>
           )}
@@ -111,7 +111,7 @@ function DawnSvg() {
   return (
     <svg
       aria-hidden
-      viewBox="0 0 1440 720"
+      viewBox="0 360 1440 360"
       preserveAspectRatio="xMidYMid slice"
       className="absolute inset-0 h-full w-full"
     >
