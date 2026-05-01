@@ -115,7 +115,7 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'group/nav flex items-center whitespace-nowrap rounded-md px-3.5 text-[14px] font-semibold tracking-wide transition-colors duration-200',
+                      'group/nav flex items-center whitespace-nowrap rounded-md px-2.5 text-[13.5px] font-semibold tracking-wide transition-colors duration-200 2xl:px-3.5 2xl:text-[14px]',
                       'hover:bg-white/[0.06]',
                       isActive ? 'text-white' : 'text-white/85 hover:text-white',
                     )}

@@ -19,6 +19,7 @@ export const SITE = {
 
 export const NAV_ITEMS = [
   { label: 'Сургуулийн тухай', href: '/about' },
+  { label: 'Ахлах сургууль', href: '/high-school' },
   { label: 'Сургалт', href: '/programs' },
   { label: 'Эрдэм шинжилгээ', href: '/research' },
   { label: 'Оюутан', href: '/student-life' },
