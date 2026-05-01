@@ -15,7 +15,7 @@ interface PageHeroProps {
   className?: string;
 }
 
-const DEFAULT_HERO_IMAGE = '/hero_down.png';
+const DEFAULT_HERO_IMAGE = '/BARILGIINZURAG.png';
 
 /**
  * Page hero band for inner pages. By default shows an AI-generated dawn photo
@@ -43,7 +43,9 @@ export function PageHero({
             src={backgroundImage}
             alt=""
             aria-hidden
-            className="absolute inset-0 h-full w-full object-cover object-center"
+            // Lower the visible crop window so the building's mid-section
+            // (rather than the sky) anchors the band.
+            className="absolute inset-0 h-full w-full object-cover object-[center_75%]"
           />
           {/* Soft navy gradient — darker at the bottom where text sits, near-clear on top so the photo stays vibrant. */}
           <div
