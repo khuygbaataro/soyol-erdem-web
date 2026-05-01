@@ -40,7 +40,7 @@ export function Header() {
     <>
       <header className="sticky top-0 z-40 w-full">
         {/* Utility bar — darker shade for visual layering */}
-        <div className="border-b border-white/5 bg-[#0d1530] text-[12.5px] text-white/85">
+        <div className="border-b border-white/5 bg-[#142a47] text-[12.5px] text-white/85">
           <Container className="flex h-[40px] flex-nowrap items-center justify-between gap-4">
             <div className="hidden items-center gap-6 md:flex">
               <a
@@ -94,8 +94,8 @@ export function Header() {
           </Container>
         </div>
 
-        {/* Main row — heavy navy, matches user's request */}
-        <div className="bg-[#1d2942]/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#1d2942]/85">
+        {/* Main row — navy-900 (#1E3A5F) to match the journals.mn-style university navy */}
+        <div className="bg-navy-900/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-navy-900/90">
           <Container className="flex h-[88px] flex-nowrap items-center justify-between gap-6">
             <Link
               href="/"
@@ -115,14 +115,29 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'relative flex items-center whitespace-nowrap rounded-md px-3.5 text-[14px] font-semibold tracking-wide text-white/85 transition-all duration-200',
-                      'hover:bg-white/[0.06] hover:text-white',
-                      'after:pointer-events-none after:absolute after:bottom-3 after:left-3.5 after:right-3.5 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-gold-500 after:transition-transform after:duration-300 after:ease-out',
-                      'hover:after:scale-x-75',
-                      isActive && 'text-white after:scale-x-100',
+                      'group/nav flex items-center whitespace-nowrap rounded-md px-3.5 text-[14px] font-semibold tracking-wide transition-colors duration-200',
+                      'hover:bg-white/[0.06]',
+                      isActive ? 'text-white' : 'text-white/85 hover:text-white',
                     )}
                   >
-                    {item.label}
+                    {/*
+                      Underline sits directly beneath the label text (not the
+                      stretched link box) so it visually anchors to "Сургалт",
+                      "Эрдэм шинжилгээ", … rather than floating in the lower
+                      half of the navbar.
+                    */}
+                    <span className="relative inline-block py-1">
+                      {item.label}
+                      <span
+                        aria-hidden
+                        className={cn(
+                          'pointer-events-none absolute inset-x-0 -bottom-0.5 h-[2px] origin-center rounded-full bg-gold-500 transition-transform duration-300 ease-out',
+                          isActive
+                            ? 'scale-x-100'
+                            : 'scale-x-0 group-hover/nav:scale-x-75',
+                        )}
+                      />
+                    </span>
                   </Link>
                 );
               })}
