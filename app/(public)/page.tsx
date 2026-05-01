@@ -60,7 +60,9 @@ export default async function HomePage() {
   const heroBody = content(siteContent, 'home.hero.body', HERO.body);
   const heroCtaPrimary = content(siteContent, 'home.hero.cta_primary', HERO.ctaPrimary);
   const heroCtaSecondary = content(siteContent, 'home.hero.cta_secondary', HERO.ctaSecondary);
-  const heroImage = siteContent.get('home.hero.image') ?? '';
+  // If admin hasn't uploaded a hero image yet, fall back to the bundled
+  // campus building photo in /public.
+  const heroImage = siteContent.get('home.hero.image') || '/BARILGIINZURAG.png';
 
   // If admin hasn't uploaded a hero image yet, use the static STATS array.
   const stats =

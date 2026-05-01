@@ -15,7 +15,7 @@ interface PageHeroProps {
   className?: string;
 }
 
-const DEFAULT_HERO_IMAGE = '/BARILGIINZURAG.png';
+const DEFAULT_HERO_IMAGE = '/hero_down.png';
 
 /**
  * Page hero band for inner pages. By default shows an AI-generated dawn photo
