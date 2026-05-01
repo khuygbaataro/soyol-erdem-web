@@ -38,6 +38,8 @@ model News {
   coverImage  String?
   category    NewsCategory
   status      ContentStatus @default(DRAFT)
+  /// Which sub-site this article belongs to. UNIVERSITY = main site, HIGH_SCHOOL = /high-school sub-site.
+  site        Site          @default(UNIVERSITY)
   publishedAt DateTime?
   views       Int           @default(0)
   authorId    String
@@ -46,6 +48,12 @@ model News {
   updatedAt   DateTime      @updatedAt
 
   @@index([status, publishedAt])
+  @@index([site, status, publishedAt])
+}
+
+enum Site {
+  UNIVERSITY
+  HIGH_SCHOOL
 }
 
 enum NewsCategory {

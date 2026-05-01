@@ -1,10 +1,19 @@
 import { NextResponse } from 'next/server';
+import type { Site } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { newsSchema } from '@/lib/validation';
 import { requireApiUser } from '@/lib/auth-helpers';
 
-export async function GET() {
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const siteParam = url.searchParams.get('site');
+  const site =
+    siteParam === 'HIGH_SCHOOL' || siteParam === 'UNIVERSITY'
+      ? (siteParam as Site)
+      : undefined;
+
   const news = await prisma.news.findMany({
+    where: site ? { site } : undefined,
     orderBy: { createdAt: 'desc' },
     include: { author: { select: { id: true, name: true } } },
   });
@@ -35,7 +44,12 @@ export async function POST(req: Request) {
       coverImage: parsed.data.coverImage || null,
       category: parsed.data.category,
       status: parsed.data.status,
-      publishedAt: parsed.data.publishedAt ? new Date(parsed.data.publishedAt) : (parsed.data.status === 'PUBLISHED' ? new Date() : null),
+      site: parsed.data.site ?? 'UNIVERSITY',
+      publishedAt: parsed.data.publishedAt
+        ? new Date(parsed.data.publishedAt)
+        : parsed.data.status === 'PUBLISHED'
+          ? new Date()
+          : null,
       authorId: user.id,
     },
   });

@@ -10,6 +10,8 @@ export const newsSchema = z.object({
   coverImage: z.string().url().optional().or(z.literal('')),
   category: z.enum(['NEWS', 'EVENT', 'ANNOUNCEMENT', 'RESEARCH', 'ACHIEVEMENT', 'PROGRAM']),
   status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
+  /** Which sub-site the article belongs to. Defaults to UNIVERSITY. */
+  site: z.enum(['UNIVERSITY', 'HIGH_SCHOOL']).optional(),
   publishedAt: z.string().optional().or(z.literal('')),
 });
 export type NewsInput = z.infer<typeof newsSchema>;

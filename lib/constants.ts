@@ -46,3 +46,30 @@ export const FOOTER_LINKS = {
 
 export const LANGUAGES = ['MN', 'JP', 'EN'] as const;
 export type Language = (typeof LANGUAGES)[number];
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * High-school sub-site
+ * Lives at /high-school behind its own route group + header so it reads as
+ * a self-contained mini-site with its own navigation, news feed and admin.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+export const HIGH_SCHOOL = {
+  name: 'Соёл Эрдэм Ахлах Сургууль',
+  shortName: 'Ахлах сургууль',
+  fullName: 'Нийслэлийн Ерөнхий боловсролын Соёл Эрдэм Сургууль',
+  tagline: 'Хичээнгүй суралцагч · Чадварлаг багш · Япон хэл, соёл',
+  founded: 2023,
+  contact: {
+    phonePrimary: '7011-8589',
+    phoneSecondary: '9953-3738',
+    email: 'info@soyolerdem.edu.mn',
+  },
+};
+
+export const HIGH_SCHOOL_NAV_ITEMS = [
+  { label: 'Нүүр', href: '/high-school' },
+  { label: 'Танилцуулга', href: '/high-school#about' },
+  { label: 'Хөтөлбөр', href: '/high-school#programs' },
+  { label: 'Мэдээ', href: '/high-school/news' },
+  { label: 'Холбоо барих', href: '/high-school#contact' },
+];

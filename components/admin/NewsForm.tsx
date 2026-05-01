@@ -21,9 +21,16 @@ interface NewsFormProps {
     coverImage?: string | null;
     category?: string;
     status?: string;
+    site?: 'UNIVERSITY' | 'HIGH_SCHOOL';
     publishedAt?: string | null;
   };
   mode: 'create' | 'edit';
+  /**
+   * Which sub-site this article belongs to. Pre-selected on the form and
+   * sent in the POST/PUT body. Also drives the post-save redirect target
+   * (university list vs high-school list).
+   */
+  site?: 'UNIVERSITY' | 'HIGH_SCHOOL';
 }
 
 const CATEGORY_OPTIONS: Array<[string, string]> = [
@@ -35,9 +42,15 @@ const CATEGORY_OPTIONS: Array<[string, string]> = [
   ['PROGRAM', 'Хөтөлбөр'],
 ];
 
-export function NewsForm({ initial = {}, mode }: NewsFormProps) {
+export function NewsForm({ initial = {}, mode, site }: NewsFormProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+
+  // Resolve which sub-site we're operating on (initial > prop > UNIVERSITY).
+  const resolvedSite: 'UNIVERSITY' | 'HIGH_SCHOOL' =
+    initial.site ?? site ?? 'UNIVERSITY';
+  const isHighSchool = resolvedSite === 'HIGH_SCHOOL';
+  const listPath = isHighSchool ? '/admin/high-school/news' : '/admin/news';
 
   const [title, setTitle] = useState(initial.title ?? '');
   const [slug, setSlug] = useState(initial.slug ?? '');
@@ -68,6 +81,7 @@ export function NewsForm({ initial = {}, mode }: NewsFormProps) {
         coverImage: coverImage || undefined,
         category,
         status,
+        site: resolvedSite,
         publishedAt: publishedAt || undefined,
       };
       const url = mode === 'create' ? '/api/news' : `/api/news/${initial.id}`;
@@ -83,7 +97,7 @@ export function NewsForm({ initial = {}, mode }: NewsFormProps) {
         return;
       }
       toast.success(mode === 'create' ? 'Мэдээ үүсгэгдлээ' : 'Хадгалагдлаа');
-      router.push('/admin/news');
+      router.push(listPath);
       router.refresh();
     });
   }
@@ -150,6 +164,16 @@ export function NewsForm({ initial = {}, mode }: NewsFormProps) {
           <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-navy-900">
             Тохиргоо
           </h3>
+
+          <div
+            className={
+              isHighSchool
+                ? 'mb-4 rounded-button border border-gold-500/30 bg-gold-500/10 px-3 py-2 text-xs font-semibold text-navy-900'
+                : 'mb-4 rounded-button border border-border-light bg-cream-soft px-3 py-2 text-xs font-semibold text-text-body'
+            }
+          >
+            {isHighSchool ? 'Ахлах сургуулийн мэдээ' : 'Их сургуулийн мэдээ'}
+          </div>
           <FormField label="Статус">
             <div className="flex flex-col gap-2">
               {[
@@ -210,7 +234,7 @@ export function NewsForm({ initial = {}, mode }: NewsFormProps) {
               Хадгалах
             </Button>
             <Link
-              href="/admin/news"
+              href={listPath}
               className="block text-center text-sm font-semibold text-text-muted hover:text-navy-900"
             >
               Цуцлах

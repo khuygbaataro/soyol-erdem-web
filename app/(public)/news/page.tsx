@@ -8,7 +8,7 @@ export const metadata = { title: 'Мэдээ' };
 
 export default async function NewsPage() {
   const news = await prisma.news.findMany({
-    where: { status: 'PUBLISHED' },
+    where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
     orderBy: { publishedAt: 'desc' },
   });
 

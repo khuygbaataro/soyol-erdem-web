@@ -13,6 +13,7 @@ import {
   LayoutTemplate,
   LogOut,
   Microscope,
+  School,
   Settings as SettingsIcon,
   Users,
 } from 'lucide-react';
@@ -24,17 +25,51 @@ interface SidebarProps {
   userName: string;
 }
 
-const NAV = [
-  { label: 'Хянах самбар', href: '/admin/dashboard', icon: LayoutDashboard, roles: null },
-  { label: 'Мэдээ', href: '/admin/news', icon: FileText, roles: ['ADMIN', 'EDITOR'] },
-  { label: 'Номын сан', href: '/admin/library', icon: BookOpen, roles: ['ADMIN', 'LIBRARIAN'] },
-  { label: 'Эрдэм шинжилгээ', href: '/admin/research', icon: Microscope, roles: ['ADMIN', 'RESEARCHER'] },
-  { label: 'Мэргэжил', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
-  { label: 'Хуудасны агуулга', href: '/admin/site-content', icon: LayoutTemplate, roles: ['ADMIN'] },
-  { label: 'Статистикууд', href: '/admin/stats', icon: BarChart3, roles: ['ADMIN'] },
-  { label: 'Хэрэглэгч', href: '/admin/users', icon: Users, roles: ['ADMIN'] },
-  { label: 'Тохиргоо', href: '/admin/settings', icon: SettingsIcon, roles: ['ADMIN'] },
-] as const;
+type NavItem = {
+  label: string;
+  href: string;
+  icon: typeof LayoutDashboard;
+  roles: readonly string[] | null;
+};
+
+type NavGroup = {
+  label: string | null;
+  items: readonly NavItem[];
+};
+
+const NAV: readonly NavGroup[] = [
+  {
+    label: null,
+    items: [
+      { label: 'Хянах самбар', href: '/admin/dashboard', icon: LayoutDashboard, roles: null },
+    ],
+  },
+  {
+    label: 'Их сургууль',
+    items: [
+      { label: 'Мэдээ', href: '/admin/news', icon: FileText, roles: ['ADMIN', 'EDITOR'] },
+      { label: 'Номын сан', href: '/admin/library', icon: BookOpen, roles: ['ADMIN', 'LIBRARIAN'] },
+      { label: 'Эрдэм шинжилгээ', href: '/admin/research', icon: Microscope, roles: ['ADMIN', 'RESEARCHER'] },
+      { label: 'Мэргэжил', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
+    ],
+  },
+  {
+    label: 'Ахлах сургууль',
+    items: [
+      { label: 'Самбар', href: '/admin/high-school', icon: School, roles: ['ADMIN', 'EDITOR'] },
+      { label: 'Мэдээ', href: '/admin/high-school/news', icon: FileText, roles: ['ADMIN', 'EDITOR'] },
+    ],
+  },
+  {
+    label: 'Тохиргоо',
+    items: [
+      { label: 'Хуудасны агуулга', href: '/admin/site-content', icon: LayoutTemplate, roles: ['ADMIN'] },
+      { label: 'Статистикууд', href: '/admin/stats', icon: BarChart3, roles: ['ADMIN'] },
+      { label: 'Хэрэглэгч', href: '/admin/users', icon: Users, roles: ['ADMIN'] },
+      { label: 'Тохиргоо', href: '/admin/settings', icon: SettingsIcon, roles: ['ADMIN'] },
+    ],
+  },
+];
 
 export function Sidebar({ role, userName }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
@@ -67,29 +102,46 @@ export function Sidebar({ role, userName }: SidebarProps) {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-2 py-4">
-        <ul className="space-y-1">
-          {NAV.filter((item) => !item.roles || (item.roles as readonly string[]).includes(role)).map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={cn(
-                    'group flex items-center gap-3 rounded-button px-3 py-2.5 text-sm font-medium transition-colors',
-                    isActive
-                      ? 'bg-gold-500 text-navy-900'
-                      : 'text-white/80 hover:bg-white/10 hover:text-white',
-                  )}
-                  title={collapsed ? item.label : undefined}
-                >
-                  <Icon className="h-5 w-5 shrink-0" />
-                  {!collapsed && <span className="truncate">{item.label}</span>}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {NAV.map((group, groupIdx) => {
+          const visible = group.items.filter(
+            (item) => !item.roles || item.roles.includes(role),
+          );
+          if (visible.length === 0) return null;
+
+          return (
+            <div key={group.label ?? `group-${groupIdx}`} className={cn(groupIdx > 0 && 'mt-5')}>
+              {!collapsed && group.label && (
+                <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-white/40">
+                  {group.label}
+                </p>
+              )}
+              <ul className="space-y-1">
+                {visible.map((item) => {
+                  const Icon = item.icon;
+                  const isActive =
+                    pathname === item.href || pathname.startsWith(item.href + '/');
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          'group flex items-center gap-3 rounded-button px-3 py-2.5 text-sm font-medium transition-colors',
+                          isActive
+                            ? 'bg-gold-500 text-navy-900'
+                            : 'text-white/80 hover:bg-white/10 hover:text-white',
+                        )}
+                        title={collapsed ? item.label : undefined}
+                      >
+                        <Icon className="h-5 w-5 shrink-0" />
+                        {!collapsed && <span className="truncate">{item.label}</span>}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
       </nav>
 
       <div className="border-t border-white/10 p-3">

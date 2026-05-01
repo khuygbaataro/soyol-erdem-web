@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import {
+  ArrowRight,
   Award,
   Building2,
   Calendar,
@@ -20,6 +22,11 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { CtaBanner } from '@/components/sections/CtaBanner';
+import { NewsCard } from '@/components/ui/NewsCard';
+import { prisma } from '@/lib/prisma';
+import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Ахлах сургууль',
@@ -105,40 +112,26 @@ const HIGHLIGHTS: { icon: LucideIcon; title: string; body: string }[] = [
   },
 ];
 
-const SUBPAGES: { label: string; href: string; description: string }[] = [
-  {
-    label: 'Танилцуулга',
-    href: 'https://soyolerdem.edu.mn/high-school/taniltsuulga/',
-    description: 'Сургуулийн ерөнхий мэдээлэл, түүх, бүтэц зохион байгуулалт.',
-  },
-  {
-    label: 'Захирлын мэндчилгээ',
-    href: 'https://soyolerdem.edu.mn/high-school/ceo/',
-    description: 'Сургуулийн захирлаас сурагч, эцэг эхчүүдэд илгээх захидал.',
-  },
-  {
-    label: 'Элсэлт',
-    href: 'https://soyolerdem.edu.mn/high-school/elselt/',
-    description: '10-р ангид элсэгчдэд зориулсан шаардлага, журам, хугацаа.',
-  },
-  {
-    label: 'Мэргэжлийн багш нар',
-    href: 'https://soyolerdem.edu.mn/surgaltiinmedeelel/bagsh/',
-    description: '100% мэргэжлийн багш нарын танилцуулга, туршлага.',
-  },
-];
+export default async function HighSchoolHomePage() {
+  // Latest 3 published high-school news
+  const latestNews = await prisma.news
+    .findMany({
+      where: { status: 'PUBLISHED', site: 'HIGH_SCHOOL' },
+      orderBy: { publishedAt: 'desc' },
+      take: 3,
+    })
+    .catch(() => []);
 
-export default function HighSchoolPage() {
   return (
     <>
       <PageHero
         title="АХЛАХ СУРГУУЛЬ"
         subtitle="Япон хэл, соёл, IT-ийн чиглэлээр төрөлжсөн Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Ахлах сургууль' }]}
+        breadcrumb={[{ label: 'Их сургууль', href: '/' }, { label: 'Ахлах сургууль' }]}
       />
 
-      {/* Intro band */}
-      <Section background="white" spacing="md">
+      {/* About / Intro */}
+      <Section background="white" spacing="md" id="about">
         <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
           <div>
             <Badge variant="gold" className="mb-5">
@@ -222,7 +215,7 @@ export default function HighSchoolPage() {
       </Section>
 
       {/* Programs */}
-      <Section background="white" spacing="md">
+      <Section background="white" spacing="md" id="programs">
         <SectionTitle
           title="ХӨТӨЛБӨРҮҮД"
           subtitle="Япон хэл, төрөлжсөн IT, бүрэн дунд боловсролын зэрэгцээ Япон руу солилцооны 2+2 хөтөлбөрөөр сурагчдыг бэлдэнэ."
@@ -271,37 +264,43 @@ export default function HighSchoolPage() {
         </div>
       </Section>
 
-      {/* Sub-pages / detailed info */}
-      <Section background="white" spacing="md">
-        <SectionTitle
-          title="ДЭЛГЭРЭНГҮЙ МЭДЭЭЛЭЛ"
-          subtitle="Сургуулийн танилцуулга, элсэлт, багш нарын мэдээллийг доорх холбоосуудаас үзнэ үү."
-        />
-        <div className="grid gap-4 md:grid-cols-2">
-          {SUBPAGES.map((s) => (
-            <a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="group flex items-start justify-between gap-5 rounded-card border border-border-light bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-gold-500 hover:shadow-card-hover"
+      {/* Latest news preview */}
+      {latestNews.length > 0 && (
+        <Section background="white" spacing="md">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="text-h2 font-bold text-text-heading">СҮҮЛИЙН МЭДЭЭ</h2>
+              <div className="mt-4 h-1 w-16 rounded-full bg-gold-500" />
+            </div>
+            <Link
+              href="/high-school/news"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-navy-900 hover:text-gold-500"
             >
-              <div className="min-w-0 flex-1">
-                <h3 className="text-base font-bold text-navy-900 transition-colors group-hover:text-gold-500">
-                  {s.label}
-                </h3>
-                <p className="mt-1.5 text-sm text-text-body">{s.description}</p>
-              </div>
-              <span className="mt-1 shrink-0 text-gold-500 transition-transform group-hover:translate-x-0.5">
-                →
-              </span>
-            </a>
-          ))}
-        </div>
-      </Section>
+              Бүх мэдээг үзэх
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {latestNews.map((n) => (
+              <NewsCard
+                key={n.id}
+                image={
+                  n.coverImage ??
+                  'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=60'
+                }
+                date={(n.publishedAt ?? n.createdAt).toISOString().slice(0, 10)}
+                category={NEWS_CATEGORY_LABEL[n.category] ?? n.category}
+                title={n.title}
+                excerpt={n.excerpt}
+                href={`/high-school/news/${n.slug}`}
+              />
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* Contact */}
-      <Section background="cream-soft" spacing="md">
+      <Section background="cream-soft" spacing="md" id="contact">
         <div className="grid gap-8 md:grid-cols-3">
           <div className="md:col-span-1">
             <p className="text-xs font-semibold uppercase tracking-widest text-gold-500">

@@ -36,6 +36,7 @@ export async function PUT(req: Request, { params }: Ctx) {
       coverImage: parsed.data.coverImage || null,
       category: parsed.data.category,
       status: parsed.data.status,
+      ...(parsed.data.site && { site: parsed.data.site }),
       publishedAt: parsed.data.publishedAt ? new Date(parsed.data.publishedAt) : null,
     },
   });

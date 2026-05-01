@@ -44,7 +44,7 @@ export default async function HomePage() {
       .catch(() => []),
     prisma.news
       .findMany({
-        where: { status: 'PUBLISHED' },
+        where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
         orderBy: { publishedAt: 'desc' },
         take: 3,
       })

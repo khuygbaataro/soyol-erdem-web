@@ -19,22 +19,20 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: PageProps) {
   const n = await prisma.news.findUnique({ where: { slug: params.id } });
-  return n
-    ? { title: n.title, description: n.excerpt }
+  return n && n.site === 'HIGH_SCHOOL'
+    ? { title: `${n.title} · Ахлах сургууль`, description: n.excerpt }
     : { title: 'Мэдээ' };
 }
 
-export default async function NewsDetailPage({ params }: PageProps) {
+export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
   const article = await prisma.news.findUnique({
     where: { slug: params.id },
     include: { author: { select: { name: true } } },
   });
-  // University-side detail page only serves UNIVERSITY-scoped articles. The
-  // high-school sub-site has its own /high-school/news/[id] route.
   if (
     !article ||
     article.status !== 'PUBLISHED' ||
-    article.site !== 'UNIVERSITY'
+    article.site !== 'HIGH_SCHOOL'
   ) {
     notFound();
   }
@@ -47,7 +45,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
   const related = await prisma.news.findMany({
     where: {
       status: 'PUBLISHED',
-      site: 'UNIVERSITY',
+      site: 'HIGH_SCHOOL',
       NOT: { id: article.id },
     },
     orderBy: { publishedAt: 'desc' },
@@ -61,8 +59,9 @@ export default async function NewsDetailPage({ params }: PageProps) {
       <PageHero
         title={article.title}
         breadcrumb={[
-          { label: 'Нүүр', href: '/' },
-          { label: 'Мэдээ', href: '/news' },
+          { label: 'Их сургууль', href: '/' },
+          { label: 'Ахлах сургууль', href: '/high-school' },
+          { label: 'Мэдээ', href: '/high-school/news' },
           {
             label:
               article.title.slice(0, 40) + (article.title.length > 40 ? '…' : ''),
@@ -107,8 +106,11 @@ export default async function NewsDetailPage({ params }: PageProps) {
           </article>
 
           <div className="mt-8 border-t border-border-light pt-6 text-sm text-text-muted">
-            <Link href="/news" className="font-semibold text-navy-900 hover:text-gold-500">
-              ← Бүх мэдээ рүү буцах
+            <Link
+              href="/high-school/news"
+              className="font-semibold text-navy-900 hover:text-gold-500"
+            >
+              ← Ахлах сургуулийн мэдээ рүү буцах
             </Link>
           </div>
         </Container>
@@ -129,7 +131,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
                 category={NEWS_CATEGORY_LABEL[r.category] ?? r.category}
                 title={r.title}
                 excerpt={r.excerpt}
-                href={`/news/${r.slug}`}
+                href={`/high-school/news/${r.slug}`}
               />
             ))}
           </div>
@@ -137,9 +139,10 @@ export default async function NewsDetailPage({ params }: PageProps) {
       )}
 
       <CtaBanner
-        title="Манай сургуулийг сонгож, ирээдүйгээ эндээс эхэл"
-        ctaLabel="Элсэх"
-        ctaHref="/admission"
+        title="Соёл Эрдэм Ахлах Сургууль"
+        ctaLabel="Элсэлтийн мэдээлэл"
+        ctaHref="https://soyolerdem.edu.mn/high-school/elselt/"
+        secondary={{ label: 'Ахлах сургуулийн нүүр', href: '/high-school' }}
       />
     </>
   );

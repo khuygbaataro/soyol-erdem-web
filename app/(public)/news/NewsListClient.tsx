@@ -17,7 +17,13 @@ interface Item {
   category: string;
 }
 
-export function NewsListClient({ items }: { items: Item[] }) {
+interface NewsListClientProps {
+  items: Item[];
+  /** Detail link prefix. Defaults to '/news'. Pass '/high-school/news' for the sub-site. */
+  hrefBase?: string;
+}
+
+export function NewsListClient({ items, hrefBase = '/news' }: NewsListClientProps) {
   const [active, setActive] = useState<(typeof CATEGORY_FILTERS)[number]>('ALL');
 
   const filtered = useMemo(() => {
@@ -65,7 +71,7 @@ export function NewsListClient({ items }: { items: Item[] }) {
                 category={NEWS_CATEGORY_LABEL[n.category] ?? n.category}
                 title={n.title}
                 excerpt={n.excerpt}
-                href={`/news/${n.id}`}
+                href={`${hrefBase}/${n.id}`}
               />
             ))}
           </div>
