@@ -39,8 +39,8 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full">
-        {/* Utility bar — darker shade for visual layering */}
-        <div className="border-b border-white/5 bg-[#142a47] text-[12.5px] text-white/85">
+        {/* Utility bar — lighter navy on top */}
+        <div className="border-b border-white/5 bg-navy-900 text-[12.5px] text-white/85">
           <Container className="flex h-[40px] flex-nowrap items-center justify-between gap-4">
             <div className="hidden items-center gap-6 md:flex">
               <a
@@ -94,8 +94,8 @@ export function Header() {
           </Container>
         </div>
 
-        {/* Main row — navy-900 (#1E3A5F) to match the journals.mn-style university navy */}
-        <div className="bg-navy-900/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-navy-900/90">
+        {/* Main row — darker navy now sits below the lighter utility bar */}
+        <div className="bg-[#142a47]/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#142a47]/92">
           <Container className="flex h-[88px] flex-nowrap items-center justify-between gap-6">
             <Link
               href="/"
