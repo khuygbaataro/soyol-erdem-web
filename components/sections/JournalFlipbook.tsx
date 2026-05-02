@@ -62,8 +62,11 @@ export function JournalFlipbook({ pdfUrl, title }: JournalFlipbookProps) {
     const compute = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      // Reserved chrome: header (88) + toolbar (64) + page counter & padding.
-      const reservedV = 220;
+      // Reserved chrome on the standalone reader page: outer padding
+      // (~32) + page counter (~44) + the flex-gap above it (~16). The
+      // floating title and action strip are absolute-positioned so they
+      // don't eat vertical space.
+      const reservedV = 100;
       const reservedH = 32;
       const maxH = Math.max(vh - reservedV, 380);
       const maxW = Math.max(vw - reservedH, 320);
@@ -85,7 +88,7 @@ export function JournalFlipbook({ pdfUrl, title }: JournalFlipbookProps) {
       } else {
         // Two-page spread: fit by height first (bigger type), then make
         // sure the spread also fits the viewport horizontally.
-        h = Math.min(maxH, 1080);
+        h = Math.min(maxH, 1280);
         w = h * ratio;
         const spread = 2 * w + 24;
         if (spread > maxW) {
