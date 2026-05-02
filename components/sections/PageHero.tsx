@@ -9,13 +9,13 @@ interface PageHeroProps {
   breadcrumb?: BreadcrumbItem[];
   /**
    * Background photo path. Defaults to the school banner at
-   * `/new-banner.png`. Pass `null` to fall back to the decorative SVG.
+   * `/nice_banner.png`. Pass `null` to fall back to the decorative SVG.
    */
   backgroundImage?: string | null;
   className?: string;
 }
 
-const DEFAULT_HERO_IMAGE = '/new-banner.png';
+const DEFAULT_HERO_IMAGE = '/nice_banner.png';
 
 /**
  * Page hero band for inner pages. By default shows an AI-generated dawn photo
