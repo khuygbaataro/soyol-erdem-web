@@ -33,6 +33,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Legacy newspaper / journal source PDFs — uploaded once to Vercel Blob via
+# scripts/import-newspapers.ts; not committed to keep the repo small.
+/public/Sonin hewlel/
+/public/Original SP*.pdf
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

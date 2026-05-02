@@ -185,6 +185,28 @@ enum ContentType {
   IMAGE
 }
 
+/// School newspaper "Сонин хэвлэл" — admin uploads each issue (PDF) and the
+/// public site lists them as a flipbook reader.
+model Newspaper {
+  id          String        @id @default(cuid())
+  /// Дугаар (62, 63, 64, …)
+  issueNumber Int           @unique
+  /// Optional нэмэлт гарчиг (хэрэв дугаараас гадна нэр өгмөөр бол)
+  title       String?
+  /// Гарсан огноо
+  publishedAt DateTime?
+  /// PDF-ийн URL — Vercel Blob эсвэл /public руу зам.
+  fileUrl     String
+  /// Optional нүүр зураг (cover thumbnail)
+  coverImage  String?
+  status      ContentStatus @default(PUBLISHED)
+  views       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, issueNumber])
+}
+
 /// Numeric stats shown on the navy band (Hero/About) — editable list.
 model Stat {
   id        String   @id @default(cuid())

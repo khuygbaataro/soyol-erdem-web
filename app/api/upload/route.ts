@@ -5,10 +5,12 @@ import { auth } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
-const MAX_PDF_BYTES = 15 * 1024 * 1024; // 15 MB
+const MAX_PDF_BYTES = 50 * 1024 * 1024; // 50 MB — newspapers can be large
 
 const ALLOWED_IMAGE = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
 const ALLOWED_FILE = [...ALLOWED_IMAGE, 'application/pdf'];
+/** Folder prefixes that may upload PDFs (everything else is image-only). */
+const PDF_FOLDERS = ['research/', 'newspapers/', 'journals/'];
 
 /**
  * Vercel Blob client-direct upload endpoint.
@@ -52,7 +54,7 @@ export async function POST(request: Request) {
           throw new Error('Танд upload хийх эрх байхгүй');
         }
 
-        const isFile = pathname.startsWith('research/');
+        const isFile = PDF_FOLDERS.some((p) => pathname.startsWith(p));
         const allowed = isFile ? ALLOWED_FILE : ALLOWED_IMAGE;
         const maxSize = isFile ? MAX_PDF_BYTES : MAX_IMAGE_BYTES;
 

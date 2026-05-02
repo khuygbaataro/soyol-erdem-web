@@ -109,6 +109,17 @@ export const siteContentBulkSchema = z.object({
 export type SiteContentItemInput = z.infer<typeof siteContentItemSchema>;
 export type SiteContentBulkInput = z.infer<typeof siteContentBulkSchema>;
 
+/* Newspaper — school newspaper PDF issues */
+export const newspaperSchema = z.object({
+  issueNumber: z.coerce.number().int().min(1).max(99999),
+  title: z.string().max(200).optional().or(z.literal('')),
+  publishedAt: z.string().optional().or(z.literal('')),
+  fileUrl: z.string().url(),
+  coverImage: z.string().url().optional().or(z.literal('')),
+  status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
+});
+export type NewspaperInput = z.infer<typeof newspaperSchema>;
+
 /* Stat */
 export const statSchema = z.object({
   key: z.string().regex(slugRegex, 'Зөвхөн жижиг үсэг, тоо, зураас (-)').min(2).max(40),

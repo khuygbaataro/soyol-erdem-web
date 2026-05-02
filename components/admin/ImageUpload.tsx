@@ -146,7 +146,11 @@ export function FileUpload({
   folder = 'research',
   accept = 'application/pdf',
   className,
-}: Omit<ImageUploadProps, 'folder'> & { folder?: 'research' | 'misc' }) {
+  hint = 'PDF файл сонгох (max 50 MB)',
+}: Omit<ImageUploadProps, 'folder'> & {
+  folder?: 'research' | 'newspapers' | 'misc';
+  hint?: string;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -226,7 +230,7 @@ export function FileUpload({
           ) : (
             <>
               <Upload className="h-4 w-4" />
-              PDF файл сонгох (max 15 MB)
+              {hint}
             </>
           )}
         </button>

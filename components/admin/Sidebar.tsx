@@ -13,6 +13,7 @@ import {
   LayoutTemplate,
   LogOut,
   Microscope,
+  Newspaper,
   School,
   Settings as SettingsIcon,
   Users,
@@ -48,6 +49,7 @@ const NAV: readonly NavGroup[] = [
     label: 'Их сургууль',
     items: [
       { label: 'Мэдээ', href: '/admin/news', icon: FileText, roles: ['ADMIN', 'EDITOR'] },
+      { label: 'Сонин хэвлэл', href: '/admin/newspapers', icon: Newspaper, roles: ['ADMIN', 'EDITOR'] },
       { label: 'Номын сан', href: '/admin/library', icon: BookOpen, roles: ['ADMIN', 'LIBRARIAN'] },
       { label: 'Эрдэм шинжилгээ', href: '/admin/research', icon: Microscope, roles: ['ADMIN', 'RESEARCHER'] },
       { label: 'Мэргэжил', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },

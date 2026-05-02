@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 // TODO: replace external URLs with real ones when available
 const UTILITY_LINKS = [
   { label: 'Номын сан', href: '/library', external: false },
-  { label: 'Сонин хэвлэл', href: '/news', external: false },
+  { label: 'Сонин хэвлэл', href: '/sonin-hewlel', external: false },
   { label: 'xCloud', href: 'https://xcloud.example.com', external: true },
   { label: 'Cisco', href: 'https://cisco.example.com', external: true },
   { label: 'Moodle', href: 'https://moodle.example.com', external: true },
