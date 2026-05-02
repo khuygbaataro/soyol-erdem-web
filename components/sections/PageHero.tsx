@@ -8,14 +8,14 @@ interface PageHeroProps {
   subtitle?: string;
   breadcrumb?: BreadcrumbItem[];
   /**
-   * Background photo path. Defaults to the AI-generated dawn scene at
-   * `/hero_down.png`. Pass `null` to fall back to the decorative SVG.
+   * Background photo path. Defaults to the school banner at
+   * `/new-banner.png`. Pass `null` to fall back to the decorative SVG.
    */
   backgroundImage?: string | null;
   className?: string;
 }
 
-const DEFAULT_HERO_IMAGE = '/hero_down.png';
+const DEFAULT_HERO_IMAGE = '/new-banner.png';
 
 /**
  * Page hero band for inner pages. By default shows an AI-generated dawn photo
