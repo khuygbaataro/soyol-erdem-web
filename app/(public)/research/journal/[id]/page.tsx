@@ -96,12 +96,10 @@ export default function JournalReadingPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Flipbook stage */}
-      <div className="flex flex-1 items-center justify-center px-2 py-6 sm:px-4 sm:py-8">
-        <JournalFlipbook
-          pdfUrl={journal.file}
-          title={`${journal.title} · ${journal.subtitle}`}
-        />
+      {/* Flipbook stage — title sits in the toolbar above so the book has
+          maximum vertical room here. */}
+      <div className="flex flex-1 items-center justify-center px-2 py-4 sm:px-4 sm:py-6">
+        <JournalFlipbook pdfUrl={journal.file} />
       </div>
     </div>
   );

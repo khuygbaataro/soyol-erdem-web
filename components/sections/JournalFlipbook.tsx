@@ -41,31 +41,60 @@ const PageWrapper = forwardRef<
  * Page-flipping PDF reader. Renders every page of a PDF with PDF.js (via
  * react-pdf) and stacks them inside react-pageflip's HTMLFlipBook so the
  * reader feels like leafing through a printed journal.
+ *
+ *  • Desktop (≥1024 px): two-page spread (the kind of view you get when you
+ *    open a printed book on a desk).
+ *  • Mobile / tablet (<1024 px): single-page portrait — the spread would
+ *    shrink the type below readability on narrow screens.
+ *
+ * Sizing is recomputed on resize so the book uses as much of the viewport
+ * as possible while keeping the printed page proportions intact (≈A4).
  */
 export function JournalFlipbook({ pdfUrl, title }: JournalFlipbookProps) {
   const [numPages, setNumPages] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState({ w: 480, h: 680 });
+  const [isPortrait, setIsPortrait] = useState(false);
   const flipRef = useRef<unknown>(null);
 
-  // Resize the book to the available viewport. Aim for two-page spread when
-  // wide enough, single page when narrow.
   useEffect(() => {
     const compute = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      // Reserve room for top toolbar (56) + bottom controls (72) + padding.
-      const maxH = vh - 180;
-      const maxW = vw - 32;
-      const ratio = 0.71; // ~A4 portrait
-      let h = Math.min(maxH, 880);
-      let w = h * ratio;
-      // Two-page spread fits if 2*w + gap < maxW
-      if (2 * w + 32 > maxW) {
-        w = Math.min(w, (maxW - 16) / 2);
+      // Reserved chrome: header (88) + toolbar (64) + page counter & padding.
+      const reservedV = 220;
+      const reservedH = 32;
+      const maxH = Math.max(vh - reservedV, 380);
+      const maxW = Math.max(vw - reservedH, 320);
+      const ratio = 0.71; // pageWidth / pageHeight ≈ A4
+
+      const portrait = vw < 1024;
+
+      let h: number;
+      let w: number;
+      if (portrait) {
+        // Single page: take as much width as we can, cap at 560 so the
+        // line lengths stay comfortable on tablets.
+        w = Math.min(maxW, 560);
         h = w / ratio;
+        if (h > maxH) {
+          h = maxH;
+          w = h * ratio;
+        }
+      } else {
+        // Two-page spread: fit by height first (bigger type), then make
+        // sure the spread also fits the viewport horizontally.
+        h = Math.min(maxH, 1080);
+        w = h * ratio;
+        const spread = 2 * w + 24;
+        if (spread > maxW) {
+          w = (maxW - 24) / 2;
+          h = w / ratio;
+        }
       }
+
+      setIsPortrait(portrait);
       setPageSize({ w: Math.floor(w), h: Math.floor(h) });
     };
     compute();
@@ -115,10 +144,13 @@ export function JournalFlipbook({ pdfUrl, title }: JournalFlipbookProps) {
         >
           {loaded && numPages > 0 && (
             // The library's typings are loose; cast through `any` to keep
-            // the call site readable.
+            // the call site readable. The `key` forces a remount when we
+            // toggle between portrait (mobile) and spread (desktop) so
+            // react-pageflip rebuilds its internal layout.
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             <HTMLFlipBook
               {...({
+                key: `${isPortrait ? 'p' : 'l'}-${pageSize.w}`,
                 ref: flipRef,
                 width: pageSize.w,
                 height: pageSize.h,
@@ -126,11 +158,11 @@ export function JournalFlipbook({ pdfUrl, title }: JournalFlipbookProps) {
                 minWidth: 280,
                 maxWidth: 1200,
                 minHeight: 380,
-                maxHeight: 1400,
+                maxHeight: 1600,
                 showCover: true,
                 drawShadow: true,
                 flippingTime: 700,
-                usePortrait: true,
+                usePortrait: isPortrait,
                 startZIndex: 0,
                 autoSize: false,
                 maxShadowOpacity: 0.5,
@@ -176,7 +208,11 @@ export function JournalFlipbook({ pdfUrl, title }: JournalFlipbookProps) {
             <ChevronLeft className="h-5 w-5" />
           </button>
           <span className="min-w-[6rem] text-center text-sm font-semibold tabular-nums">
-            {currentPage + 1} / {numPages}
+            {isPortrait
+              ? `${currentPage + 1} / ${numPages}`
+              : currentPage === 0
+                ? `1 / ${numPages}`
+                : `${currentPage + 1}–${Math.min(currentPage + 2, numPages)} / ${numPages}`}
           </span>
           <button
             type="button"
