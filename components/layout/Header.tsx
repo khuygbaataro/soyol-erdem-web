@@ -96,16 +96,16 @@ export function Header() {
 
         {/* Main row — darker navy now sits below the lighter utility bar */}
         <div className="bg-[#142a47]/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#142a47]/92">
-          <Container className="flex h-[88px] flex-nowrap items-center justify-between gap-6">
+          <Container className="flex h-[92px] flex-nowrap items-center justify-between gap-4">
             <Link
               href="/"
-              className="flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
+              className="group flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
               aria-label="Нүүр хуудас"
             >
-              <Logo withLabel size={50} invert />
+              <Logo withLabel size={56} invert variant="single" />
             </Link>
 
-            <nav className="hidden min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-0.5 xl:flex">
+            <nav className="hidden min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-1 xl:flex">
               {NAV_ITEMS.map((item) => {
                 const isActive =
                   pathname === item.href ||
@@ -115,7 +115,7 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'group/nav flex items-center whitespace-nowrap rounded-md px-2.5 text-[13.5px] font-semibold tracking-wide transition-colors duration-200 2xl:px-3.5 2xl:text-[14px]',
+                      'group/nav flex items-center whitespace-nowrap rounded-md px-3 text-[13.5px] font-semibold tracking-wide transition-colors duration-200 2xl:px-4 2xl:text-[14px]',
                       'hover:bg-white/[0.06]',
                       isActive ? 'text-white' : 'text-white/85 hover:text-white',
                     )}
@@ -126,12 +126,12 @@ export function Header() {
                       "Эрдэм шинжилгээ", … rather than floating in the lower
                       half of the navbar.
                     */}
-                    <span className="relative inline-block py-1">
+                    <span className="relative inline-block py-1.5">
                       {item.label}
                       <span
                         aria-hidden
                         className={cn(
-                          'pointer-events-none absolute inset-x-0 -bottom-0.5 h-[2px] origin-center rounded-full bg-gold-500 transition-transform duration-300 ease-out',
+                          'pointer-events-none absolute inset-x-0 -bottom-1 h-[2.5px] origin-center rounded-full bg-gold-500 transition-transform duration-300 ease-out',
                           isActive
                             ? 'scale-x-100'
                             : 'scale-x-0 group-hover/nav:scale-x-75',

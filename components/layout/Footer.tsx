@@ -32,7 +32,7 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="mb-5">
-              <Logo withLabel size={56} invert />
+              <Logo withLabel size={56} invert variant="stacked" />
             </div>
             <p className="text-sm leading-relaxed text-cream/80">
               Япон улсын хөрөнгө оруулалттай дээд сургууль. {SITE.founded} оноос хойш

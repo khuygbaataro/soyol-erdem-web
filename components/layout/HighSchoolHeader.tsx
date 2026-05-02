@@ -69,26 +69,27 @@ export function HighSchoolHeader() {
 
         {/* Main row — high-school identity + sub-nav */}
         <div className="bg-[#142a47]/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#142a47]/92">
-          <Container className="flex h-[88px] flex-nowrap items-center justify-between gap-6">
+          <Container className="flex h-[92px] flex-nowrap items-center justify-between gap-4">
             <Link
               href="/high-school"
-              className="flex shrink-0 items-center gap-3 transition-transform duration-300 hover:scale-[1.02]"
+              className="group flex shrink-0 items-center gap-3 transition-transform duration-300 hover:scale-[1.02]"
               aria-label="Ахлах сургуулийн нүүр хуудас"
             >
-              <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white/5 ring-1 ring-gold-500/40">
+              <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/5 ring-1 ring-gold-500/40 transition-shadow group-hover:ring-gold-500/70">
                 <Image
                   src="/logo.png"
                   alt=""
-                  width={36}
-                  height={36}
+                  width={56}
+                  height={56}
                   className="object-contain"
+                  style={{ width: 46, height: 46 }}
                 />
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-400">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
                   Соёл-Эрдэм
                 </span>
-                <span className="font-serif text-base font-bold text-white md:text-lg">
+                <span className="font-serif text-lg font-bold leading-tight tracking-tight text-white md:text-xl">
                   Ахлах Сургууль
                 </span>
               </span>
@@ -102,17 +103,17 @@ export function HighSchoolHeader() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'group/nav flex items-center whitespace-nowrap rounded-md px-3.5 text-[14px] font-semibold tracking-wide transition-colors duration-200',
+                      'group/nav flex items-center whitespace-nowrap rounded-md px-4 text-[14px] font-semibold tracking-wide transition-colors duration-200',
                       'hover:bg-white/[0.06]',
                       active ? 'text-white' : 'text-white/85 hover:text-white',
                     )}
                   >
-                    <span className="relative inline-block py-1">
+                    <span className="relative inline-block py-1.5">
                       {item.label}
                       <span
                         aria-hidden
                         className={cn(
-                          'pointer-events-none absolute inset-x-0 -bottom-0.5 h-[2px] origin-center rounded-full bg-gold-500 transition-transform duration-300 ease-out',
+                          'pointer-events-none absolute inset-x-0 -bottom-1 h-[2.5px] origin-center rounded-full bg-gold-500 transition-transform duration-300 ease-out',
                           active
                             ? 'scale-x-100'
                             : 'scale-x-0 group-hover/nav:scale-x-75',
