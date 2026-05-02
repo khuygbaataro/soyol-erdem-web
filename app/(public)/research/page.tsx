@@ -4,11 +4,13 @@ import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { CtaBanner } from '@/components/sections/CtaBanner';
+import { ResearchJournalsList } from '@/components/sections/ResearchJournalsList';
 import {
   ANNUAL_EVENTS,
   RESEARCH_AREAS,
   RESEARCH_INTRO,
 } from '@/lib/content';
+import { RESEARCH_JOURNALS } from '@/lib/research-journals';
 
 export const metadata = {
   title: 'Эрдэм шинжилгээ',
@@ -65,17 +67,11 @@ export default function ResearchPage() {
       </Section>
 
       <Section background="cream-soft">
-        <SectionTitle title="НИЙТЛЭЛҮҮД" />
-        <div className="mx-auto max-w-2xl rounded-card border border-dashed border-border-medium bg-white p-10 text-center">
-          <Sparkles className="mx-auto h-10 w-10 text-gold-500" />
-          <p className="mt-4 text-base font-semibold text-navy-900">
-            Удахгүй...
-          </p>
-          <p className="mt-2 text-sm text-text-muted">
-            Эрдэм шинжилгээний нийтлэлүүдийг энд танилцуулах болно. Admin
-            panel-ээс шинэ нийтлэл нэмэх боломжтой (Prompt 3).
-          </p>
-        </div>
+        <SectionTitle
+          title="ЭРДЭМ ШИНЖИЛГЭЭНИЙ СЭТГҮҮЛ"
+          subtitle="Соёл-Эрдэм Дээд Сургуулиас гаргадаг бот тус бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
+        />
+        <ResearchJournalsList journals={RESEARCH_JOURNALS} />
       </Section>
 
       <CtaBanner
