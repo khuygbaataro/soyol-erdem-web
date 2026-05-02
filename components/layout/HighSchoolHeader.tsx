@@ -75,16 +75,15 @@ export function HighSchoolHeader() {
               className="group flex shrink-0 items-center gap-3 transition-transform duration-300 hover:scale-[1.02]"
               aria-label="Ахлах сургуулийн нүүр хуудас"
             >
-              <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/5 ring-1 ring-gold-500/40 transition-shadow group-hover:ring-gold-500/70">
-                <Image
-                  src="/logo.png"
-                  alt=""
-                  width={56}
-                  height={56}
-                  className="object-contain"
-                  style={{ width: 46, height: 46 }}
-                />
-              </span>
+              <Image
+                src="/logo.png"
+                alt=""
+                width={64}
+                height={64}
+                priority
+                className="shrink-0 object-contain"
+                style={{ width: 64, height: 64 }}
+              />
               <span className="flex flex-col leading-tight">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
                   Соёл-Эрдэм

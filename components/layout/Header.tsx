@@ -100,9 +100,9 @@ export function Header() {
             <Link
               href="/"
               className="group flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
-              aria-label="Нүүр хуудас"
+              aria-label="Соёл-Эрдэм · Нүүр хуудас"
             >
-              <Logo withLabel size={56} invert variant="single" />
+              <Logo size={64} />
             </Link>
 
             <nav className="hidden min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-1 xl:flex">

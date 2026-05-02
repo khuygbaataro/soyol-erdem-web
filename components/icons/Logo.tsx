@@ -5,15 +5,15 @@ interface LogoProps {
   className?: string;
   /** Render the school name alongside the badge. Default: false. */
   withLabel?: boolean;
-  /** Logo image size in px. Default: 56. */
+  /** Logo image size in px. Default: 64. */
   size?: number;
   /** Render with white text — for use on dark backgrounds (Header/Footer). */
   invert?: boolean;
   /**
-   * Wordmark style. `single` (default) prints "Соёл-Эрдэм" as one tight
-   * serif line — used in the navbar to keep horizontal room for nav links.
+   * Wordmark style. `single` prints "Соёл-Эрдэм" as one tight serif line.
    * `stacked` keeps the older two-line "Соёл-Эрдэм / Дээд сургууль" layout
    * for places that have vertical room (Footer, Mobile drawer).
+   * Only used when `withLabel` is true. Default: 'single'.
    */
   variant?: 'single' | 'stacked';
   /** Label text override. Defaults to "Соёл-Эрдэм". */
@@ -23,14 +23,14 @@ interface LogoProps {
 }
 
 /**
- * Brand mark — official Соёл-Эрдэм logo (public/logo.png) optionally paired
- * with a serif wordmark. The image lives inside a soft ring so it reads as a
- * proper brand crest rather than a floating bitmap.
+ * Brand mark — official Соёл-Эрдэм logo (public/logo.png), optionally paired
+ * with a serif wordmark. The image renders bare (no ring/border) so the crest
+ * sits flat against any background, leaving headroom for the navbar layout.
  */
 export function Logo({
   className,
   withLabel = false,
-  size = 56,
+  size = 64,
   invert = false,
   variant = 'single',
   label = 'Соёл-Эрдэм',
@@ -38,25 +38,15 @@ export function Logo({
 }: LogoProps) {
   return (
     <span className={cn('inline-flex items-center gap-3', className)}>
-      <span
-        className={cn(
-          'inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 transition-shadow',
-          invert
-            ? 'bg-white/5 ring-gold-500/40 group-hover:ring-gold-500/70'
-            : 'bg-white ring-border-light',
-        )}
+      <Image
+        src="/logo.png"
+        alt="Соёл-Эрдэм Дээд Сургуулийн лого"
+        width={size}
+        height={size}
+        priority
+        className="shrink-0 object-contain"
         style={{ width: size, height: size }}
-      >
-        <Image
-          src="/logo.png"
-          alt="Соёл-Эрдэм Дээд Сургуулийн лого"
-          width={size}
-          height={size}
-          priority
-          className="object-contain"
-          style={{ width: size * 0.82, height: size * 0.82 }}
-        />
-      </span>
+      />
 
       {withLabel &&
         (variant === 'single' ? (
