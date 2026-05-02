@@ -13,8 +13,9 @@ import { NAV_ITEMS, SITE } from '@/lib/constants';
 import type { Language } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
-// TODO: replace with real URLs when available
+// TODO: replace external URLs with real ones when available
 const UTILITY_LINKS = [
+  { label: 'Номын сан', href: '/library', external: false },
   { label: 'Сонин хэвлэл', href: '/news', external: false },
   { label: 'xCloud', href: 'https://xcloud.example.com', external: true },
   { label: 'Cisco', href: 'https://cisco.example.com', external: true },
@@ -96,13 +97,13 @@ export function Header() {
 
         {/* Main row — darker navy now sits below the lighter utility bar */}
         <div className="bg-[#142a47]/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#142a47]/92">
-          <Container className="flex h-[92px] flex-nowrap items-center justify-between gap-4">
+          <Container className="flex h-[80px] flex-nowrap items-center justify-between gap-8">
             <Link
               href="/"
               className="group flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
               aria-label="Соёл-Эрдэм · Нүүр хуудас"
             >
-              <Logo size={64} />
+              <Logo size={56} />
             </Link>
 
             <nav className="hidden min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-1 xl:flex">

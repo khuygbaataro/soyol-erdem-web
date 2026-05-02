@@ -24,7 +24,6 @@ export const NAV_ITEMS = [
   { label: 'Эрдэм шинжилгээ', href: '/research' },
   { label: 'Оюутан', href: '/student-life' },
   { label: 'Хамтын ажиллагаа', href: '/international' },
-  { label: 'Номын сан', href: '/library' },
   { label: 'Мэдээ', href: '/news' },
 ];
 

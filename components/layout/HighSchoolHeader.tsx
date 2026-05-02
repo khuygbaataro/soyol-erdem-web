@@ -69,7 +69,7 @@ export function HighSchoolHeader() {
 
         {/* Main row — high-school identity + sub-nav */}
         <div className="bg-[#142a47]/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#142a47]/92">
-          <Container className="flex h-[92px] flex-nowrap items-center justify-between gap-4">
+          <Container className="flex h-[80px] flex-nowrap items-center justify-between gap-8">
             <Link
               href="/high-school"
               className="group flex shrink-0 items-center gap-3 transition-transform duration-300 hover:scale-[1.02]"
@@ -78,11 +78,11 @@ export function HighSchoolHeader() {
               <Image
                 src="/logo.png"
                 alt=""
-                width={64}
-                height={64}
+                width={56}
+                height={56}
                 priority
                 className="shrink-0 object-contain"
-                style={{ width: 64, height: 64 }}
+                style={{ width: 56, height: 56 }}
               />
               <span className="flex flex-col leading-tight">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
