@@ -58,17 +58,10 @@ export function Header() {
             </div>
 
             <div className="ml-auto flex items-center gap-3">
-              {/* Language switcher — moved up from the main row to avoid crowding the nav */}
-              <LanguageSwitch
-                currentLang={lang}
-                onChange={setLang}
-                invert
-                className="text-[12.5px]"
-              />
-
-              <span className="hidden h-4 w-px bg-white/15 md:block" aria-hidden />
-
-              <ul className="hidden items-center divide-x divide-white/15 sm:flex">
+              {/* Quick-access service links sit before the language switcher
+                  so the language preference lives in the far-right corner —
+                  the convention international visitors expect. */}
+              <ul className="hidden items-center divide-x divide-white/15 lg:flex">
                 {UTILITY_LINKS.map((link) => (
                   <li key={link.label}>
                     {link.external ? (
@@ -76,14 +69,14 @@ export function Header() {
                         href={link.href}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="block px-3 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
+                        className="block px-2.5 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
                       >
                         {link.label}
                       </a>
                     ) : (
                       <Link
                         href={link.href}
-                        className="block px-3 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
+                        className="block px-2.5 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
                       >
                         {link.label}
                       </Link>
@@ -91,6 +84,15 @@ export function Header() {
                   </li>
                 ))}
               </ul>
+
+              <span className="hidden h-4 w-px bg-white/15 lg:block" aria-hidden />
+
+              <LanguageSwitch
+                currentLang={lang}
+                onChange={setLang}
+                invert
+                className="text-[12.5px]"
+              />
             </div>
           </Container>
         </div>
