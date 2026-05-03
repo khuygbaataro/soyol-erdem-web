@@ -292,6 +292,7 @@ export default async function HighSchoolHomePage() {
                 category={NEWS_CATEGORY_LABEL[n.category] ?? n.category}
                 title={n.title}
                 excerpt={n.excerpt}
+                body={n.body}
                 href={`/high-school/news/${n.slug}`}
               />
             ))}

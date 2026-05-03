@@ -129,6 +129,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
                 category={NEWS_CATEGORY_LABEL[r.category] ?? r.category}
                 title={r.title}
                 excerpt={r.excerpt}
+                body={r.body}
                 href={`/news/${r.slug}`}
               />
             ))}

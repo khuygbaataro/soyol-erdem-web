@@ -16,6 +16,7 @@ export default async function NewsPage() {
     id: n.slug,
     title: n.title,
     excerpt: n.excerpt,
+    body: n.body,
     image:
       n.coverImage ??
       'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=60',

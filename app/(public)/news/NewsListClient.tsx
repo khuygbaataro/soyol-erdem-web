@@ -12,6 +12,7 @@ interface Item {
   id: string;
   title: string;
   excerpt: string;
+  body?: string | null;
   image: string;
   date: string;
   category: string;
@@ -71,6 +72,7 @@ export function NewsListClient({ items, hrefBase = '/news' }: NewsListClientProp
                 category={NEWS_CATEGORY_LABEL[n.category] ?? n.category}
                 title={n.title}
                 excerpt={n.excerpt}
+                body={n.body}
                 href={`${hrefBase}/${n.id}`}
               />
             ))}

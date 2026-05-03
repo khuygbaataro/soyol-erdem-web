@@ -131,6 +131,7 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
                 category={NEWS_CATEGORY_LABEL[r.category] ?? r.category}
                 title={r.title}
                 excerpt={r.excerpt}
+                body={r.body}
                 href={`/high-school/news/${r.slug}`}
               />
             ))}

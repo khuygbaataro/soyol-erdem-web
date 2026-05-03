@@ -277,6 +277,7 @@ export default async function HomePage() {
               category={NEWS_CATEGORY_LABEL[n.category] ?? n.category}
               title={n.title}
               excerpt={n.excerpt}
+              body={n.body}
               href={`/news/${n.slug}`}
             />
           ))}
