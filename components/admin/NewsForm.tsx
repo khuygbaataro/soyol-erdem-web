@@ -31,6 +31,12 @@ interface NewsFormProps {
    * (university list vs high-school list).
    */
   site?: 'UNIVERSITY' | 'HIGH_SCHOOL';
+  /**
+   * Override the redirect target after save / cancel. Used by the
+   * standalone /high-school/admin shell to keep editors inside their
+   * own product instead of bouncing them to the main /admin tree.
+   */
+  listPath?: string;
 }
 
 const CATEGORY_OPTIONS: Array<[string, string]> = [
@@ -42,7 +48,12 @@ const CATEGORY_OPTIONS: Array<[string, string]> = [
   ['PROGRAM', 'Хөтөлбөр'],
 ];
 
-export function NewsForm({ initial = {}, mode, site }: NewsFormProps) {
+export function NewsForm({
+  initial = {},
+  mode,
+  site,
+  listPath: listPathOverride,
+}: NewsFormProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
@@ -50,7 +61,9 @@ export function NewsForm({ initial = {}, mode, site }: NewsFormProps) {
   const resolvedSite: 'UNIVERSITY' | 'HIGH_SCHOOL' =
     initial.site ?? site ?? 'UNIVERSITY';
   const isHighSchool = resolvedSite === 'HIGH_SCHOOL';
-  const listPath = isHighSchool ? '/admin/high-school/news' : '/admin/news';
+  const listPath =
+    listPathOverride ??
+    (isHighSchool ? '/admin/high-school/news' : '/admin/news');
 
   const [title, setTitle] = useState(initial.title ?? '');
   const [slug, setSlug] = useState(initial.slug ?? '');

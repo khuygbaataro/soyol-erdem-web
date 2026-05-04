@@ -1,20 +1,32 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const ADMIN_PREFIX = '/admin';
+const MAIN_ADMIN_PREFIX = '/admin';
+const HS_ADMIN_PREFIX = '/high-school/admin';
 
+/**
+ * Auth gate for admin shells. Two parallel admin trees share the same
+ * session cookie but bounce unauthenticated requests to their own login:
+ *   /admin/*               → /login
+ *   /high-school/admin/*   → /high-school/login
+ */
 export function middleware(req: NextRequest) {
-  const isAdminRoute = req.nextUrl.pathname.startsWith(ADMIN_PREFIX);
-  if (!isAdminRoute) return NextResponse.next();
+  const { pathname } = req.nextUrl;
 
-  // Auth.js v5 default cookie names
+  const isHighSchoolAdmin = pathname.startsWith(HS_ADMIN_PREFIX);
+  const isMainAdmin =
+    pathname.startsWith(MAIN_ADMIN_PREFIX) && !isHighSchoolAdmin;
+
+  if (!isHighSchoolAdmin && !isMainAdmin) return NextResponse.next();
+
   const sessionCookie =
     req.cookies.get('authjs.session-token')?.value ??
     req.cookies.get('__Secure-authjs.session-token')?.value;
 
   if (!sessionCookie) {
-    const url = new URL('/login', req.url);
-    url.searchParams.set('callbackUrl', req.nextUrl.pathname);
+    const loginPath = isHighSchoolAdmin ? '/high-school/login' : '/login';
+    const url = new URL(loginPath, req.url);
+    url.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(url);
   }
 
@@ -22,5 +34,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/high-school/admin/:path*'],
 };
