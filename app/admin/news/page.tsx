@@ -14,7 +14,10 @@ export const dynamic = 'force-dynamic';
 type Row = Awaited<ReturnType<typeof loadNews>>[number];
 
 async function loadNews() {
+  // Main admin manages university news only. High-school content lives
+  // in the standalone /high-school/admin shell.
   return prisma.news.findMany({
+    where: { site: 'UNIVERSITY' },
     orderBy: { createdAt: 'desc' },
     include: { author: { select: { name: true } } },
   });

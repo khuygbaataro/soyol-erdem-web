@@ -53,14 +53,17 @@ export default async function DashboardPage() {
   const session = await auth();
   const user = session!.user;
 
+  // Main admin only counts university-side content. High-school metrics
+  // live in the standalone /high-school/admin dashboard.
   const [newsCount, publishedNewsCount, libraryCount, researchCount, contactCount, recentNews, recentContacts] =
     await Promise.all([
-      prisma.news.count(),
-      prisma.news.count({ where: { status: 'PUBLISHED' } }),
+      prisma.news.count({ where: { site: 'UNIVERSITY' } }),
+      prisma.news.count({ where: { site: 'UNIVERSITY', status: 'PUBLISHED' } }),
       prisma.libraryBook.count(),
       prisma.research.count(),
       prisma.contactSubmission.count({ where: { read: false } }),
       prisma.news.findMany({
+        where: { site: 'UNIVERSITY' },
         orderBy: { createdAt: 'desc' },
         take: 5,
         include: { author: { select: { name: true } } },
@@ -72,7 +75,10 @@ export default async function DashboardPage() {
     ]);
 
   const totalViews = (
-    await prisma.news.aggregate({ _sum: { views: true } })
+    await prisma.news.aggregate({
+      where: { site: 'UNIVERSITY' },
+      _sum: { views: true },
+    })
   )._sum.views ?? 0;
 
   return (

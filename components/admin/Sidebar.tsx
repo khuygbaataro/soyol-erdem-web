@@ -14,7 +14,6 @@ import {
   LogOut,
   Microscope,
   Newspaper,
-  School,
   Settings as SettingsIcon,
   Users,
 } from 'lucide-react';
@@ -53,13 +52,6 @@ const NAV: readonly NavGroup[] = [
       { label: 'Номын сан', href: '/admin/library', icon: BookOpen, roles: ['ADMIN', 'LIBRARIAN'] },
       { label: 'Эрдэм шинжилгээ', href: '/admin/research', icon: Microscope, roles: ['ADMIN', 'RESEARCHER'] },
       { label: 'Мэргэжил', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
-    ],
-  },
-  {
-    label: 'Ахлах сургууль',
-    items: [
-      { label: 'Самбар', href: '/admin/high-school', icon: School, roles: ['ADMIN', 'EDITOR'] },
-      { label: 'Мэдээ', href: '/admin/high-school/news', icon: FileText, roles: ['ADMIN', 'EDITOR'] },
     ],
   },
   {

@@ -63,7 +63,7 @@ export function NewsForm({
   const isHighSchool = resolvedSite === 'HIGH_SCHOOL';
   const listPath =
     listPathOverride ??
-    (isHighSchool ? '/admin/high-school/news' : '/admin/news');
+    (isHighSchool ? '/high-school/admin/news' : '/admin/news');
 
   const [title, setTitle] = useState(initial.title ?? '');
   const [slug, setSlug] = useState(initial.slug ?? '');

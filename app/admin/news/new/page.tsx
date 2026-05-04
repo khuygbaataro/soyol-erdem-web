@@ -14,7 +14,7 @@ export default function NewNewsPage() {
           { label: 'Шинэ' },
         ]}
       />
-      <NewsForm mode="create" />
+      <NewsForm mode="create" site="UNIVERSITY" />
     </>
   );
 }
