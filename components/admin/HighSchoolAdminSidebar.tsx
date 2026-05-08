@@ -47,7 +47,7 @@ export function HighSchoolAdminSidebar({ userName, role }: HighSchoolAdminSideba
               <School className="h-4 w-4" />
             </span>
             <span className="leading-tight">
-              Соёл-Эрдэм
+              Соёл Эрдэм
               <span className="block text-[10px] font-medium text-gold-400/80">
                 Ахлах сургууль
               </span>

@@ -69,7 +69,7 @@ export default function ResearchPage() {
       <Section background="cream-soft">
         <SectionTitle
           title="ЭРДЭМ ШИНЖИЛГЭЭНИЙ СЭТГҮҮЛ"
-          subtitle="Соёл-Эрдэм Дээд Сургуулиас гаргадаг бот тус бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
+          subtitle="Соёл Эрдэм Дээд Сургуулиас гаргадаг бот тус бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
         />
         <ResearchJournalsList journals={RESEARCH_JOURNALS} />
       </Section>

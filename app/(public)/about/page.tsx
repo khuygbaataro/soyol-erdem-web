@@ -24,7 +24,7 @@ export default async function AboutPage() {
     getActiveStats(),
   ]);
 
-  const heroTitle1 = content(siteContent, 'about.hero.title.line1', 'СОЁЛ-ЭРДЭМ');
+  const heroTitle1 = content(siteContent, 'about.hero.title.line1', 'Соёл Эрдэм');
   const heroTitle2 = content(siteContent, 'about.hero.title.line2', 'ИХ СУРГУУЛЬ');
   const heroBody = content(siteContent, 'about.hero.body', HERO.body);
   const heroCtaLabel = content(siteContent, 'about.hero.cta_label', 'Бидний тухай дэлгэрэнгүй');
@@ -39,10 +39,28 @@ export default async function AboutPage() {
       ? dbStats.map((s) => ({ icon: resolveIcon(s.icon), number: s.number, label: s.label }))
       : STATS;
 
+  // Slogan (УРИА) is admin-editable via the site-content panel; the static
+  // entry in `lib/content.ts` is the fallback.
+  const sloganTitle = content(
+    siteContent,
+    'about.slogan.title',
+    MISSION_VISION_VALUES.slogan.title,
+  );
+  const sloganText = content(
+    siteContent,
+    'about.slogan.text',
+    MISSION_VISION_VALUES.slogan.text,
+  );
+
   const mvv = [
     MISSION_VISION_VALUES.mission,
     MISSION_VISION_VALUES.vision,
     MISSION_VISION_VALUES.values,
+    {
+      ...MISSION_VISION_VALUES.slogan,
+      title: sloganTitle,
+      text: sloganText,
+    },
   ];
 
   const dotPatternStyle = {
@@ -105,7 +123,7 @@ export default async function AboutPage() {
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-image shadow-card-hover lg:aspect-[5/4]">
               <Image
                 src={heroImage}
-                alt="Соёл-Эрдэм Их Сургуулийн барилга"
+                alt="Соёл Эрдэм Их Сургуулийн барилга"
                 fill
                 sizes="(min-width: 1024px) 60vw, 100vw"
                 className="object-cover"
@@ -124,7 +142,7 @@ export default async function AboutPage() {
                 />
                 <div className="leading-tight">
                   <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-white">
-                    Соёл-Эрдэм
+                    Соёл Эрдэм
                   </div>
                   <div className="text-[10px] uppercase tracking-[0.18em] text-gold-400">
                     Их Сургууль · est. {SCHOOL_INFO.founded}
@@ -215,23 +233,12 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* 4. Mission / Vision / Values */}
+      {/* 4. Mission / Vision / Values / Slogan — four blocks, no section
+          heading per the editor's request (the four sub-headings carry the
+          context themselves). */}
       <section className="bg-white py-16 md:py-20">
         <div className="container-custom">
-          <div className="mx-auto mb-12 max-w-2xl text-center">
-            <div className="flex items-center justify-center gap-3">
-              <span className="h-px w-10 bg-gold-500" aria-hidden />
-              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">
-                Бидний үнэ цэнэ
-              </span>
-              <span className="h-px w-10 bg-gold-500" aria-hidden />
-            </div>
-            <h2 className="mt-4 text-h2 font-bold text-text-heading">
-              ЭРХЭМ ЗОРИЛГО, АЛСЫН ХАРАА, ҮНЭТ ЗҮЙЛС
-            </h2>
-          </div>
-
-          <div className="grid gap-10 md:grid-cols-3 md:gap-8">
+          <div className="grid gap-10 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
             {mvv.map((item) => {
               const Icon = item.icon;
               return (

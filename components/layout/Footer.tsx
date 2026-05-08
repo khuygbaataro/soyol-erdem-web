@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {
   Clock,
+  ExternalLink,
   Facebook,
   Instagram,
   Linkedin,
@@ -21,7 +22,11 @@ const SOCIAL = [
 ];
 
 /**
- * Site footer with brand block, link columns, contact info and legal row.
+ * Site footer. Three columns:
+ *   • Brand block — logo, founding tagline, social.
+ *   • Чухал холбоос — partner portals (teacher web, student web, moodle)
+ *     and admission entry, per Munkhchimeg's spec.
+ *   • Холбоо барих — phone / email / address / hours.
  */
 export function Footer() {
   const year = new Date().getFullYear();
@@ -29,14 +34,14 @@ export function Footer() {
   return (
     <footer className="bg-navy-900 text-white">
       <Container className="py-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 md:grid-cols-3">
           <div>
             <div className="mb-5">
               <Logo withLabel size={56} invert variant="stacked" />
             </div>
             <p className="text-sm leading-relaxed text-cream/80">
-              Япон улсын хөрөнгө оруулалттай дээд сургууль. {SITE.founded} оноос хойш
-              Монголд тэргүүлэгч япон судлалын төв.
+              {SITE.founded} онд байгуулагдсан, Япон улсын 100% хөрөнгө
+              оруулалттай дээд боловсролын сургалтын байгууллага.
             </p>
             <div className="mt-5 flex items-center gap-3">
               {SOCIAL.map(({ icon: Icon, href, label }) => (
@@ -56,37 +61,33 @@ export function Footer() {
 
           <div>
             <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-gold-400">
-              Холбоо
+              Чухал холбоос
             </h3>
             <ul className="space-y-3 text-sm">
-              {FOOTER_LINKS.about.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-cream/80 transition-colors hover:text-gold-400"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-gold-400">
-              Тусламж
-            </h3>
-            <ul className="space-y-3 text-sm">
-              {FOOTER_LINKS.help.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-cream/80 transition-colors hover:text-gold-400"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {FOOTER_LINKS.important.map((link) =>
+                link.external ? (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-flex items-center gap-1.5 text-cream/80 transition-colors hover:text-gold-400"
+                    >
+                      {link.label}
+                      <ExternalLink className="h-3 w-3" aria-hidden />
+                    </a>
+                  </li>
+                ) : (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-cream/80 transition-colors hover:text-gold-400"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ),
+              )}
             </ul>
           </div>
 

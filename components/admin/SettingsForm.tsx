@@ -15,7 +15,7 @@ interface Props {
 export function SettingsForm({ initial = {} }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [schoolName, setSchoolName] = useState(initial.schoolName ?? 'Соёл-Эрдэм Дээд Сургууль');
+  const [schoolName, setSchoolName] = useState(initial.schoolName ?? 'Соёл Эрдэм Дээд Сургууль');
   const [email, setEmail] = useState(initial.email ?? '');
   const [phonePrimary, setPhonePrimary] = useState(initial.phonePrimary ?? '');
   const [phoneSecondary, setPhoneSecondary] = useState(initial.phoneSecondary ?? '');

@@ -53,7 +53,7 @@ export default function ShowcasePage() {
         />
         <h1 className="text-h1 font-bold text-navy-900">Component Showcase</h1>
         <p className="mt-3 max-w-2xl text-text-body">
-          Соёл-Эрдэм-ийн дизайн системийн бүх reusable component энд жагссан.
+          Соёл Эрдэм-ийн дизайн системийн бүх reusable component энд жагссан.
           Prompt 2 болон Prompt 3-д хэрэглэгдэх бэлэн bricks.
         </p>
       </Section>
@@ -157,7 +157,7 @@ export default function ShowcasePage() {
             date="2025.04.20"
             category="Мэдээ"
             title="Шинэ хичээлийн жилийн нээлтийн ёслол боллоо"
-            excerpt="Соёл-Эрдэм Дээд Сургуулийн 32 дахь хичээлийн жилийн нээлтийн ёслол өчигдөр амжилттай зохион байгуулагдлаа."
+            excerpt="Соёл Эрдэм Дээд Сургуулийн 32 дахь хичээлийн жилийн нээлтийн ёслол өчигдөр амжилттай зохион байгуулагдлаа."
             href="/news/1"
           />
           <NewsCard

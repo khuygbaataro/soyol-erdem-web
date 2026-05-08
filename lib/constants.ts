@@ -1,6 +1,6 @@
 export const SITE = {
-  name: 'Соёл-Эрдэм',
-  fullName: 'Соёл-Эрдэм Дээд Сургууль',
+  name: 'Соёл Эрдэм',
+  fullName: 'Соёл Эрдэм Дээд Сургууль',
   jpName: 'モンゴル文化教育大学',
   founded: 1993,
   description:
@@ -17,29 +17,50 @@ export const SITE = {
   workingHours: 'Даваа-Баасан: 08:00-17:00',
 };
 
+/**
+ * Primary nav. "Нүүр" leads, "Ахлах сургууль" trails — per Munkhchimeg's
+ * spec: high-school sub-site is presented under its formal name (НЕБ-ийн
+ * Соёл Эрдэм Сургууль) so visitors see it as a sibling institution, not
+ * just a section.
+ */
 export const NAV_ITEMS = [
+  { label: 'Нүүр', href: '/' },
   { label: 'Сургуулийн тухай', href: '/about' },
-  { label: 'Ахлах сургууль', href: '/high-school' },
   { label: 'Сургалт', href: '/programs' },
   { label: 'Эрдэм шинжилгээ', href: '/research' },
   { label: 'Оюутан', href: '/student-life' },
   { label: 'Хамтын ажиллагаа', href: '/international' },
   { label: 'Мэдээ', href: '/news' },
+  { label: 'НЕБ-ийн Соёл Эрдэм Сургууль', href: '/high-school' },
 ];
 
+/**
+ * Footer "Чухал холбоос" column. External links go to the partner
+ * services / portals; internal links to "Элсэлтийн мэдээлэл" land on
+ * the admission page.
+ */
 export const FOOTER_LINKS = {
-  about: [
-    { label: 'Сургуулийн тухай', href: '/about' },
-    { label: 'Сургалт', href: '/programs' },
-    { label: 'Оюутан', href: '/student-life' },
-    { label: 'Тэтгэлэг', href: '/admission#scholarship' },
-    { label: 'Мэдээ', href: '/news' },
-  ],
-  help: [
-    { label: 'Элсэн заавар', href: '/admission' },
-    { label: 'Тэтгэлэг', href: '/admission#scholarship' },
-    { label: 'Тогтмол асуулт', href: '/contact#faq' },
-    { label: 'Холбоо барих', href: '/contact' },
+  important: [
+    {
+      label: 'Багшийн веб',
+      href: 'https://teacher.soyolerdem.edu.mn',
+      external: true,
+    },
+    {
+      label: 'Оюутны веб',
+      href: 'https://student.soyolerdem.edu.mn',
+      external: true,
+    },
+    {
+      label: 'Цахим сургалт',
+      href: 'https://moodle.soyolerdem.edu.mn',
+      external: true,
+    },
+    {
+      label: 'Элсэлтийн мэдээлэл',
+      href: '/admission',
+      external: false,
+    },
   ],
 };
 

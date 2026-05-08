@@ -1,4 +1,4 @@
-# 🚀 Соёл-Эрдэм вэб — Vercel + Neon Postgres deploy
+# 🚀 Соёл Эрдэм вэб — Vercel + Neon Postgres deploy
 
 Энэ заавар нь project-ийг **Vercel** дээр deploy хийж, **Neon Postgres**
 database ашиглах алхамуудыг тайлбарлана.

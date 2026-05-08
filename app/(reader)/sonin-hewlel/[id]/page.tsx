@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps) {
         title: `Сонин хэвлэл №${item.issueNumber}`,
         description:
           item.title ??
-          `Соёл-Эрдэм Дээд Сургуулийн сонин хэвлэлийн №${item.issueNumber} дугаар.`,
+          `Соёл Эрдэм Дээд Сургуулийн сонин хэвлэлийн №${item.issueNumber} дугаар.`,
       }
     : { title: 'Сонин хэвлэл' };
 }

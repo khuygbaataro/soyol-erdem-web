@@ -43,7 +43,7 @@ export function ResearchJournalsList({ journals }: ResearchJournalsListProps) {
 
           <div className="relative z-10 p-5">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-400">
-              Соёл-Эрдэм
+              Соёл Эрдэм
             </p>
             <p className="mt-1 text-[10px] uppercase tracking-widest text-white/55">
               Эрдэм шинжилгээний сэтгүүл

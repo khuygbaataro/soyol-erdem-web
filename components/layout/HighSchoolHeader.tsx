@@ -86,7 +86,7 @@ export function HighSchoolHeader() {
               />
               <span className="flex flex-col leading-tight">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
-                  Соёл-Эрдэм
+                  Соёл Эрдэм
                 </span>
                 <span className="font-serif text-lg font-bold leading-tight tracking-tight text-white md:text-xl">
                   Ахлах Сургууль

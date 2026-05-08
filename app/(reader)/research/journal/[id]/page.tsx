@@ -33,7 +33,7 @@ export function generateMetadata({ params }: PageProps) {
   return journal
     ? {
         title: `${journal.title} · ${journal.subtitle}`,
-        description: `Соёл-Эрдэм Дээд Сургуулийн эрдэм шинжилгээний сэтгүүл — ${journal.title}, ${journal.subtitle}.`,
+        description: `Соёл Эрдэм Дээд Сургуулийн эрдэм шинжилгээний сэтгүүл — ${journal.title}, ${journal.subtitle}.`,
       }
     : { title: 'Сэтгүүл' };
 }
@@ -77,7 +77,7 @@ export default function JournalReadingPage({ params }: PageProps) {
       {/* Subtle title at bottom-left, doesn't compete with the book */}
       <div className="absolute bottom-3 left-3 z-20 max-w-xs text-white/45 sm:bottom-5 sm:left-5">
         <p className="text-[9px] font-semibold uppercase tracking-[0.22em]">
-          Соёл-Эрдэм · Эрдэм шинжилгээний сэтгүүл
+          Соёл Эрдэм · Эрдэм шинжилгээний сэтгүүл
         </p>
         <p className="mt-0.5 truncate font-serif text-sm font-bold">
           {journal.title} · {journal.subtitle}

@@ -82,7 +82,7 @@ export function Sidebar({ role, userName }: SidebarProps) {
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/40">
               СЭ
             </span>
-            <span>Соёл-Эрдэм</span>
+            <span>Соёл Эрдэм</span>
           </Link>
         )}
         <button

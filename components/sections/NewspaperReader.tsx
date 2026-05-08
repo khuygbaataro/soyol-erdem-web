@@ -218,7 +218,7 @@ export function NewspaperReader({
               </div>
               <div className="min-w-0">
                 <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold-500 sm:text-[10px]">
-                  Соёл-Эрдэм · Сонин хэвлэл
+                  Соёл Эрдэм · Сонин хэвлэл
                 </p>
                 <p className="truncate font-serif text-base font-bold leading-tight sm:text-lg">
                   №{issueNumber}

@@ -31,7 +31,7 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Ахлах сургууль',
   description:
-    'Соёл-Эрдэм Дээд Сургуулийн харьяа Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль — Япон хэл, соёл, IT-ийн чиглэлээр төрөлжсөн.',
+    'Соёл Эрдэм Дээд Сургуулийн харьяа Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль — Япон хэл, соёл, IT-ийн чиглэлээр төрөлжсөн.',
 };
 
 const PHILOSOPHY: { icon: LucideIcon; label: string; title: string; body: string }[] = [

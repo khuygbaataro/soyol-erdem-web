@@ -10,20 +10,20 @@ interface LogoProps {
   /** Render with white text — for use on dark backgrounds (Header/Footer). */
   invert?: boolean;
   /**
-   * Wordmark style. `single` prints "Соёл-Эрдэм" as one tight serif line.
-   * `stacked` keeps the older two-line "Соёл-Эрдэм / Дээд сургууль" layout
+   * Wordmark style. `single` prints "Соёл Эрдэм" as one tight serif line.
+   * `stacked` keeps the older two-line "Соёл Эрдэм / Дээд сургууль" layout
    * for places that have vertical room (Footer, Mobile drawer).
    * Only used when `withLabel` is true. Default: 'single'.
    */
   variant?: 'single' | 'stacked';
-  /** Label text override. Defaults to "Соёл-Эрдэм". */
+  /** Label text override. Defaults to "Соёл Эрдэм". */
   label?: string;
   /** Sublabel for stacked variant. Defaults to "Дээд сургууль". */
   sublabel?: string;
 }
 
 /**
- * Brand mark — official Соёл-Эрдэм logo (public/logo.png), optionally paired
+ * Brand mark — official Соёл Эрдэм logo (public/logo.png), optionally paired
  * with a serif wordmark. The image renders bare (no ring/border) so the crest
  * sits flat against any background, leaving headroom for the navbar layout.
  */
@@ -33,14 +33,14 @@ export function Logo({
   size = 64,
   invert = false,
   variant = 'single',
-  label = 'Соёл-Эрдэм',
+  label = 'Соёл Эрдэм',
   sublabel = 'Дээд сургууль',
 }: LogoProps) {
   return (
     <span className={cn('inline-flex items-center gap-3', className)}>
       <Image
         src="/logo.png"
-        alt="Соёл-Эрдэм Дээд Сургуулийн лого"
+        alt="Соёл Эрдэм Дээд Сургуулийн лого"
         width={size}
         height={size}
         priority

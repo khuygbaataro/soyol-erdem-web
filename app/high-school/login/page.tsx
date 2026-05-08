@@ -58,7 +58,7 @@ function LoginInner() {
           </span>
           <div className="text-left">
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-400">
-              Соёл-Эрдэм
+              Соёл Эрдэм
             </p>
             <p className="font-serif text-lg font-bold leading-tight">
               Ахлах сургууль · Хянах самбар

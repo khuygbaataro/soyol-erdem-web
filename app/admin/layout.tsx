@@ -6,7 +6,7 @@ import { auth } from '@/lib/auth';
 
 export const metadata = {
   title: {
-    default: 'Хянах самбар | Соёл-Эрдэм',
+    default: 'Хянах самбар | Соёл Эрдэм',
     template: '%s — Хянах самбар',
   },
 };

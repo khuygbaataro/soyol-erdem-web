@@ -2,26 +2,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { Section } from '@/components/layout/Section';
-import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { ProgramCard } from '@/components/ui/ProgramCard';
 import { NewsCard } from '@/components/ui/NewsCard';
 import { FeatureCard } from '@/components/ui/FeatureCard';
-import { StatBlock } from '@/components/ui/StatBlock';
 import { Badge } from '@/components/ui/Badge';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import {
   HERO,
   QUICK_FEATURES,
-  STATS,
-  WHY_US,
 } from '@/lib/content';
 import { prisma } from '@/lib/prisma';
-import { resolveIcon } from '@/lib/icon-map';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
-import { content, getActiveStats, getSiteContentMap } from '@/lib/site-content';
+import { content, getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,13 +28,7 @@ const PARTNER_PLACEHOLDERS = [
 ];
 
 export default async function HomePage() {
-  const [programs, latestNews, siteContent, dbStats] = await Promise.all([
-    prisma.program
-      .findMany({
-        where: { active: true },
-        orderBy: [{ order: 'asc' }, { name: 'asc' }],
-      })
-      .catch(() => []),
+  const [latestNews, siteContent] = await Promise.all([
     prisma.news
       .findMany({
         where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
@@ -50,7 +37,6 @@ export default async function HomePage() {
       })
       .catch(() => []),
     getSiteContentMap('home'),
-    getActiveStats(),
   ]);
 
   // Fall back to static content.ts when DB row missing/empty.
@@ -64,21 +50,12 @@ export default async function HomePage() {
   // campus building photo in /public.
   const heroImage = siteContent.get('home.hero.image') || '/nice_banner.png';
 
-  // If admin hasn't uploaded a hero image yet, use the static STATS array.
-  const stats =
-    dbStats.length > 0
-      ? dbStats.map((s) => ({ icon: resolveIcon(s.icon), number: s.number, label: s.label }))
-      : STATS;
-
   return (
     <>
       {/* 1. Hero */}
       <section className="bg-cream-soft py-16 md:py-24">
         <div className="container-custom grid items-center gap-12 lg:grid-cols-[3fr_2fr]">
           <div>
-            <Badge variant="gold" className="mb-5">
-              2025-2026 элсэлт нээлттэй
-            </Badge>
             <h1 className="text-h1 font-bold leading-[1.05] text-navy-900">
               {heroTitle1}
               <br />
@@ -108,7 +85,7 @@ export default async function HomePage() {
             <div className="relative hidden aspect-[4/5] w-full overflow-hidden rounded-image shadow-card-hover lg:block">
               <Image
                 src={heroImage}
-                alt="Соёл-Эрдэм Их Сургуулийн зураг"
+                alt="Соёл Эрдэм Их Сургуулийн зураг"
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 className="object-cover"
@@ -139,73 +116,7 @@ export default async function HomePage() {
         </div>
       </Section>
 
-      {/* 3. Featured programs */}
-      <Section background="cream-soft">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h2 className="text-h2 font-bold text-text-heading">
-              ОНЦЛОХ МЭРГЭЖЛҮҮД
-            </h2>
-            <div className="mt-4 h-1 w-16 rounded-full bg-gold-500" />
-          </div>
-          <Link
-            href="/programs"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-navy-900 hover:text-gold-500"
-          >
-            Бүх мэргэжлийг үзэх
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {programs.map((p) => (
-            <ProgramCard
-              key={p.id}
-              icon={resolveIcon(p.icon)}
-              name={p.name}
-              degree={p.degree}
-              description={p.shortDescription}
-              href={`/programs/${p.slug}`}
-            />
-          ))}
-        </div>
-      </Section>
-
-      {/* 4. Why us — Navy band */}
-      <Section background="navy" spacing="lg">
-        <SectionTitle title="ЯАГААД СОЁЛ-ЭРДЭМ?" invert />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {WHY_US.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={item.title}
-                className="rounded-card border border-white/10 bg-white/5 p-6 transition-colors hover:bg-white/10"
-              >
-                <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-gold-500/15 text-gold-400">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <h3 className="text-base font-semibold text-white">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-sm text-white/75">{item.description}</p>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="mt-14 grid grid-cols-2 gap-6 border-t border-white/10 pt-12 md:grid-cols-4">
-          {stats.map((s) => (
-            <StatBlock
-              key={s.label}
-              icon={s.icon}
-              number={s.number}
-              label={s.label}
-            />
-          ))}
-        </div>
-      </Section>
-
-      {/* 5. Internship highlight */}
+      {/* 3. Internship highlight */}
       <Section background="white">
         <Card className="overflow-hidden p-0" hover={false}>
           <div className="grid gap-0 lg:grid-cols-2">
@@ -250,7 +161,7 @@ export default async function HomePage() {
         </Card>
       </Section>
 
-      {/* 6. Latest news */}
+      {/* 4. Latest news */}
       <Section background="cream-soft">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -284,7 +195,7 @@ export default async function HomePage() {
         </div>
       </Section>
 
-      {/* 7. Partner logos */}
+      {/* 5. Partner logos */}
       <Section background="white" spacing="sm">
         <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-text-muted">
           Манай хамтрагч их сургуулиуд
@@ -300,15 +211,6 @@ export default async function HomePage() {
           ))}
         </div>
       </Section>
-
-      {/* 8. CTA */}
-      <CtaBanner
-        title="2025-2026 оны элсэлт эхэллээ"
-        subtitle="Манай сургуульд элсэж ирээдүйгээ эндээс эхэл."
-        ctaLabel="Элсэлт мэдээлэл авах"
-        ctaHref="/admission"
-        secondary={{ label: 'Холбоо барих', href: '/contact' }}
-      />
     </>
   );
 }

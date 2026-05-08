@@ -13,13 +13,12 @@ import { NAV_ITEMS, SITE } from '@/lib/constants';
 import type { Language } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
-// TODO: replace external URLs with real ones when available
+// External-service shortcuts trimmed per Munkhchimeg's spec — xCloud /
+// Cisco / Moodle were vestigial and confused visitors. The Цахим сургалт
+// portal is now reachable from the footer "Чухал холбоос" column.
 const UTILITY_LINKS = [
   { label: 'Номын сан', href: '/library', external: false },
   { label: 'Сонин хэвлэл', href: '/sonin-hewlel', external: false },
-  { label: 'xCloud', href: 'https://xcloud.example.com', external: true },
-  { label: 'Cisco', href: 'https://cisco.example.com', external: true },
-  { label: 'Moodle', href: 'https://moodle.example.com', external: true },
 ];
 
 /**
@@ -103,7 +102,7 @@ export function Header() {
             <Link
               href="/"
               className="group flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
-              aria-label="Соёл-Эрдэм · Нүүр хуудас"
+              aria-label="Соёл Эрдэм · Нүүр хуудас"
             >
               <Logo size={56} />
             </Link>

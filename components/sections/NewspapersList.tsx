@@ -45,7 +45,7 @@ export function NewspapersList({ items }: NewspapersListProps) {
           {/* Top masthead — printed-paper feel */}
           <div className="relative bg-navy-900 px-5 py-4 text-white">
             <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
-              Соёл-Эрдэм
+              Соёл Эрдэм
             </p>
             <p className="mt-0.5 font-serif text-base font-bold tracking-tight">
               Сонин хэвлэл
