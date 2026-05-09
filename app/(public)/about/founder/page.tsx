@@ -4,22 +4,22 @@ import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
 import { CtaBanner } from '@/components/sections/CtaBanner';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
-import { DIRECTOR_MESSAGE, SCHOOL_INFO } from '@/lib/content';
+import { FOUNDER_MESSAGE, SCHOOL_INFO } from '@/lib/content';
 
 export const metadata = {
-  title: 'Захирлын мэндчилгээ',
+  title: 'Үүсгэн байгуулагч',
 };
 
-export default function DirectorMessagePage() {
+export default function FounderPage() {
   return (
     <>
       <PageHero
-        title="Захирлын мэндчилгээ"
-        subtitle={`${SCHOOL_INFO.directorTitle}-аас та бүхэнд илгээх захидал.`}
+        title="Үүсгэн байгуулагч"
+        subtitle={`${SCHOOL_INFO.founder} — ${SCHOOL_INFO.founderTitle}.`}
         breadcrumb={[
           { label: 'Нүүр', href: '/' },
           { label: 'Сургуулийн тухай', href: '/about' },
-          { label: 'Захирлын мэндчилгээ' },
+          { label: 'Үүсгэн байгуулагч' },
         ]}
       />
 
@@ -28,25 +28,25 @@ export default function DirectorMessagePage() {
           <Card className="h-fit text-center" hover={false}>
             <ImagePlaceholder
               aspect="aspect-square"
-              label="Захирлын зураг"
+              label="Макихара Соичийн зураг"
               className="mb-5"
             />
             <p className="text-lg font-semibold text-navy-900">
-              {SCHOOL_INFO.director}
+              {SCHOOL_INFO.founder}
             </p>
             <p className="mt-1 text-sm text-text-muted">
-              {SCHOOL_INFO.directorTitle}
+              {SCHOOL_INFO.founderTitle}
             </p>
           </Card>
 
           <article className="relative">
             <Quote className="absolute -top-2 left-0 h-12 w-12 text-gold-500/30" />
             <div className="space-y-5 pt-10 text-base leading-relaxed text-text-body">
-              {DIRECTOR_MESSAGE.map((p, idx) => (
+              {FOUNDER_MESSAGE.map((p, idx) => (
                 <p key={idx}>{p}</p>
               ))}
               <p className="pt-3 text-sm font-semibold text-navy-900">
-                — {SCHOOL_INFO.director}, {SCHOOL_INFO.directorTitle}
+                — {SCHOOL_INFO.founder}, {SCHOOL_INFO.founderTitle}
               </p>
             </div>
           </article>
@@ -54,10 +54,10 @@ export default function DirectorMessagePage() {
       </Section>
 
       <CtaBanner
-        title="Бидэнд нэгдээрэй"
-        ctaLabel="Элсэлт"
-        ctaHref="/admission"
-        secondary={{ label: 'Бидэнтэй холбогдох', href: '/contact' }}
+        title="Сургуулийн түүхтэй танилц"
+        ctaLabel="Бүтэц зохион байгуулалт"
+        ctaHref="/about/structure"
+        secondary={{ label: 'Захирлын мэндчилгээ', href: '/about/director-message' }}
       />
     </>
   );
