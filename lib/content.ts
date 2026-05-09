@@ -493,6 +493,129 @@ export const SCHOLARSHIPS: Scholarship[] = [
   },
 ];
 
+/* ───────────────────── Admission programs (8 boxes) ───────────────────── */
+
+export interface AdmissionProgram {
+  id: string;
+  title: string;
+  intro: string;
+  /** Optional sub-heading shown above the bullets, e.g. "Шаардлага:" */
+  bulletsLabel?: string;
+  bullets: string[];
+  /** Optional second bullet group with its own label, e.g. "Бүрдүүлэх материал:" */
+  bullets2Label?: string;
+  bullets2?: string[];
+  cta: string;
+  ctaHref: string;
+  /** Visually feature this card (gold border, slightly larger). */
+  featured?: boolean;
+}
+
+export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
+  {
+    id: 'bachelor',
+    title: 'БАКАЛАВРЫН ЭЛСЭЛТ (2026–2027)',
+    intro:
+      '2026–2027 оны хичээлийн жилд дараах мэргэжлүүдээр элсэлт авч байна.',
+    bullets: ['Программ хангамж', 'Бусад бакалаврын хөтөлбөрүүд'],
+    bullets2Label: 'Тайлбар',
+    bullets2: ['Элсэгчид ЭЕШ-ийн онооны шаардлагыг хангасан байна.'],
+    cta: 'Бүртгүүлэх',
+    ctaHref: '/contact',
+    featured: true,
+  },
+  {
+    id: 'software',
+    title: 'ПРОГРАММ ХАНГАМЖИЙН МЭРГЭЖИЛ',
+    intro: 'Ирээдүйн эрэлттэй салбарт суралцах боломж.',
+    bullets: [
+      'Орчин үеийн IT хөтөлбөр',
+      'Практикт суурилсан сургалт',
+      'Дотоод, гадаадын ажлын боломж',
+    ],
+    cta: 'Дэлгэрэнгүй харах',
+    ctaHref: '/programs',
+  },
+  {
+    id: 'master',
+    title: 'МАГИСТРЫН ЭЛСЭЛТ',
+    intro: 'Магистрын шатны элсэлт дараах чиглэлээр явагдана.',
+    bullets: ['Гадаад хэл шинжлэл'],
+    bullets2Label: 'Давуу тал',
+    bullets2: [
+      'Судалгаанд суурилсан сургалт',
+      'Ажлын хажуугаар суралцах боломж',
+    ],
+    cta: 'Бүртгүүлэх',
+    ctaHref: '/contact',
+  },
+  {
+    id: 'thirty-plus',
+    title: '30+ ХӨТӨЛБӨР',
+    intro: '30-аас дээш насны, ЭЕШ өгөөгүй иргэдэд зориулсан тусгай элсэлт.',
+    bulletsLabel: 'Шаардлага',
+    bullets: [
+      'Мэргэжлээрээ 3+ жил ажилласан байх',
+      'Ажлын газрын тодорхойлолт',
+      'Бүрэн дунд боловсролын гэрчилгээ',
+    ],
+    cta: 'Хүсэлт илгээх',
+    ctaHref: '/contact',
+  },
+  {
+    id: 'transfer-major',
+    title: 'МЭРГЭЖИЛ ХӨРВӨХ ХӨТӨЛБӨР',
+    intro:
+      'Өмнө нь өөр мэргэжлээр төгссөн бол шинэ чиглэлээр суралцах боломж.',
+    bulletsLabel: 'Хэнд тохиромжтой вэ?',
+    bullets: [
+      'Коллеж, МСҮТ, их дээд сургууль төгсөгчид',
+      'Шинэ мэргэжил эзэмших хүсэлтэй хүмүүс',
+      'Япон хэл сураад Япон улсад үргэлжлүүлэн суралцах сонирхолтой',
+    ],
+    bullets2Label: 'Бүрдүүлэх материал',
+    bullets2: ['Диплом, үнэмлэх', 'Холбогдох бичиг баримтууд'],
+    cta: 'Дэлгэрэнгүй',
+    ctaHref: '/contact',
+  },
+  {
+    id: 'transfer-abroad',
+    title: 'ГАДААДААС ШИЛЖИН СУРАЛЦАХ',
+    intro: 'Гадаадад суралцаж байгаад шилжин ирэх боломжтой.',
+    bulletsLabel: 'Нэмэлт шаардлага',
+    bullets: [
+      'Суралцаж байсан сургуулийн дүнгийн хуулга',
+      'Баталгаат орчуулга',
+    ],
+    cta: 'Шилжилт хүсэх',
+    ctaHref: '/contact',
+  },
+  {
+    id: 'online',
+    title: 'ОНЛАЙН СУРГАЛТ',
+    intro: 'Гадаадад ажиллаж, амьдарч буй иргэдэд зориулсан уян хатан хэлбэр.',
+    bullets: [
+      '100% онлайн сургалт',
+      'Бакалавр, магистрын зэрэг олгоно',
+      'Хаанаас ч суралцах боломж',
+    ],
+    cta: 'Онлайнаар бүртгүүлэх',
+    ctaHref: '/contact',
+  },
+  {
+    id: 'preparation',
+    title: 'БЭЛТГЭЛ АНГИ',
+    intro: 'ЭЕШ-ийн оноо хүрээгүй элсэгчдэд зориулсан хөтөлбөр.',
+    bullets: [
+      '1 жилийн бэлтгэл сургалт',
+      'ЭЕШ-д бэлтгэнэ',
+      'Оноо авсны дараа үндсэн ангид шилжинэ',
+    ],
+    cta: 'Бүртгүүлэх',
+    ctaHref: '/contact',
+  },
+];
+
 export interface FaqItem {
   question: string;
   answer: string;
