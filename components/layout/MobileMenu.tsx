@@ -90,7 +90,7 @@ export function MobileMenu({
               icon={<ChevronRight className="h-5 w-5" />}
               className="w-full"
             >
-              Элсэх
+              Элсэлт
             </Button>
           </div>
         </motion.div>

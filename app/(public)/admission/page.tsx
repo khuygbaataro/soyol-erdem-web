@@ -23,7 +23,7 @@ export const metadata = {
 };
 
 const SUB_NAV = [
-  { id: 'info', label: 'Элсэлтийн мэдээлэл', icon: FileText },
+  { id: 'info', label: 'Мэргэжлээ сонгох', icon: FileText },
   { id: 'foreign', label: 'Гадаад оюутан элсэх', icon: Globe },
   { id: 'payment', label: 'Төлбөр, хөнгөлөлт', icon: Wallet },
 ] as const;
@@ -56,10 +56,10 @@ export default function AdmissionPage() {
         </div>
       </div>
 
-      {/* Section 1 — Элсэлтийн мэдээлэл (8 program boxes) */}
+      {/* Section 1 — Мэргэжлээ сонгох (8 program boxes) */}
       <Section background="cream-soft" id="info">
         <SectionTitle
-          title="ЭЛСЭЛТИЙН МЭДЭЭЛЭЛ"
+          title="МЭРГЭЖЛЭЭ СОНГОХ"
           subtitle="2026-2027 оны хичээлийн жилийн элсэлтийн журам, тэтгэлэг ба элсэлтийн төрлүүд."
         />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

@@ -152,7 +152,7 @@ export function Header() {
                 size="md"
                 icon={<ChevronRight className="h-4 w-4" />}
               >
-                Элсэх
+                Элсэлт
               </Button>
             </div>
 

@@ -131,7 +131,7 @@ export function HighSchoolHeader() {
                 size="md"
                 icon={<ChevronRight className="h-4 w-4" />}
               >
-                Элсэх
+                Элсэлт
               </Button>
             </div>
 
@@ -202,7 +202,7 @@ export function HighSchoolHeader() {
                 icon={<ChevronRight className="h-5 w-5" />}
                 className="w-full"
               >
-                Элсэх
+                Элсэлт
               </Button>
             </div>
           </motion.div>

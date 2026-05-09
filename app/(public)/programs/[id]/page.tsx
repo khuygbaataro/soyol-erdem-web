@@ -144,7 +144,7 @@ export default async function ProgramDetailPage({ params }: PageProps) {
 
       <CtaBanner
         title="Энэ мэргэжлээр элсэхийг хүсэж байна уу?"
-        ctaLabel="Элсэлтийн мэдээлэл"
+        ctaLabel="Мэргэжлээ сонгох"
         ctaHref="/admission"
       />
     </>

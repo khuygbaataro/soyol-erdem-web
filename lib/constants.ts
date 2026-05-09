@@ -57,7 +57,7 @@ export const FOOTER_LINKS = {
       external: true,
     },
     {
-      label: 'Элсэлтийн мэдээлэл',
+      label: 'Мэргэжлээ сонгох',
       href: '/admission',
       external: false,
     },
