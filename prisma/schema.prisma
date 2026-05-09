@@ -220,3 +220,44 @@ model Stat {
 
   @@index([order])
 }
+
+/// Open position the school is currently hiring for. Listed on /careers
+/// and selectable on the application form. Admin manages the list from
+/// /admin/careers.
+model JobOpening {
+  id          String   @id @default(cuid())
+  /// URL-safe slug, e.g. "japanese-teacher".
+  slug        String   @unique
+  /// Public title shown in the listing, e.g. "Япон хэлний багш".
+  title       String
+  /// Optional short blurb for the position-detail line.
+  description String?
+  active      Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([active, order])
+}
+
+/// Submission from the public job-application form (7-section). Kept
+/// separate from `ContactSubmission` so the admin can triage hiring
+/// applications independently from general inquiries.
+model JobApplication {
+  id          String   @id @default(cuid())
+  position    String
+  fullName    String
+  birthDate   String?
+  phone       String
+  email       String
+  address     String?
+  /// JSON-encoded blob of the rest of the structured fields
+  /// (education, experience, teaching, skills, motivation, …).
+  payload     String
+  cvUrl       String?
+  diplomaUrl  String?
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([read, createdAt])
+}

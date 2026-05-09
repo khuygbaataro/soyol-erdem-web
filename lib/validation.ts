@@ -155,6 +155,65 @@ export const newspaperSchema = z.object({
 });
 export type NewspaperInput = z.infer<typeof newspaperSchema>;
 
+/* JobOpening — admin CRUD */
+export const jobOpeningSchema = z.object({
+  slug: z
+    .string()
+    .regex(slugRegex, 'Зөвхөн жижиг үсэг, тоо, зураас (-)')
+    .min(2)
+    .max(80),
+  title: z.string().min(2).max(160),
+  description: z.string().max(500).optional().or(z.literal('')),
+  active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
+  order: z.coerce.number().int().min(0).max(999),
+});
+export type JobOpeningInput = z.infer<typeof jobOpeningSchema>;
+
+/* Job application — public 7-section form. The bulky free-text fields
+ * live inside `payload` so this schema doesn't grow into a beast; the
+ * top-level columns mirror what the admin needs to skim a list. */
+export const jobApplicationSchema = z.object({
+  position: z.string().min(2).max(120),
+  fullName: z.string().min(2).max(120),
+  birthDate: z.string().max(40).optional().or(z.literal('')),
+  phone: z.string().min(6, 'Утасны дугаар хүчин төгөлдөр биш').max(40),
+  email: z.string().email('И-мэйл хаяг хүчин төгөлдөр биш'),
+  address: z.string().max(300).optional().or(z.literal('')),
+  payload: z.object({
+    education: z.object({
+      school: z.string().max(200).optional().or(z.literal('')),
+      major: z.string().max(200).optional().or(z.literal('')),
+      degree: z.string().max(120).optional().or(z.literal('')),
+      year: z.string().max(20).optional().or(z.literal('')),
+    }),
+    experience: z.object({
+      org: z.string().max(200).optional().or(z.literal('')),
+      role: z.string().max(160).optional().or(z.literal('')),
+      duration: z.string().max(120).optional().or(z.literal('')),
+      duties: z.string().max(1000).optional().or(z.literal('')),
+    }),
+    teaching: z.object({
+      university: z.string().max(200).optional().or(z.literal('')),
+      subjects: z.string().max(500).optional().or(z.literal('')),
+      research: z.string().max(500).optional().or(z.literal('')),
+      publications: z.string().max(1000).optional().or(z.literal('')),
+    }),
+    skills: z.object({
+      digital: z.string().max(500).optional().or(z.literal('')),
+      languages: z.string().max(500).optional().or(z.literal('')),
+      tools: z.string().max(500).optional().or(z.literal('')),
+    }),
+    motivation: z.object({
+      reason: z.string().max(1500).optional().or(z.literal('')),
+      strengths: z.string().max(1000).optional().or(z.literal('')),
+      availableFrom: z.string().max(80).optional().or(z.literal('')),
+    }),
+  }),
+  cvUrl: z.string().url().optional().or(z.literal('')),
+  diplomaUrl: z.string().url().optional().or(z.literal('')),
+});
+export type JobApplicationInput = z.infer<typeof jobApplicationSchema>;
+
 /* Stat */
 export const statSchema = z.object({
   key: z.string().regex(slugRegex, 'Зөвхөн жижиг үсэг, тоо, зураас (-)').min(2).max(40),

@@ -6,9 +6,11 @@ import { usePathname } from 'next/navigation';
 import {
   BarChart3,
   BookOpen,
+  Briefcase,
   ChevronsLeft,
   FileText,
   GraduationCap,
+  Inbox,
   LayoutDashboard,
   LayoutTemplate,
   LogOut,
@@ -52,6 +54,13 @@ const NAV: readonly NavGroup[] = [
       { label: 'Номын сан', href: '/admin/library', icon: BookOpen, roles: ['ADMIN', 'LIBRARIAN'] },
       { label: 'Эрдэм шинжилгээ', href: '/admin/research', icon: Microscope, roles: ['ADMIN', 'RESEARCHER'] },
       { label: 'Мэргэжил', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
+    ],
+  },
+  {
+    label: 'Нээлттэй ажлын байр',
+    items: [
+      { label: 'Ажлын байр', href: '/admin/careers', icon: Briefcase, roles: ['ADMIN'] },
+      { label: 'Илгээгдсэн анкет', href: '/admin/careers/applications', icon: Inbox, roles: ['ADMIN'] },
     ],
   },
   {

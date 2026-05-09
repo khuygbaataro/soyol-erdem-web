@@ -501,6 +501,39 @@ export const SCHOLARSHIPS: Scholarship[] = [
   },
 ];
 
+/* ───────────────────── Careers ───────────────────── */
+
+export const CAREERS_INTRO =
+  'Соёл Эрдэм Дээд Сургууль нь сургалт, судалгаа, инновацад суурилсан чанартай боловсрол олгох зорилгоор мэргэжлийн багш, чадварлаг хүний нөөцийг бүрдүүлэн ажиллаж байна. Бид дараах чиглэлээр багш ажилд урьж байна.';
+
+export const CAREERS_REQUIREMENTS: string[] = [
+  'Тухайн мэргэжлээр бакалавр болон түүнээс дээш зэрэгтэй',
+  'Багшлах, судалгаа хийх сонирхолтой',
+  'Харилцааны соёлтой, багаар ажиллах чадвартай',
+  'Их, дээд сургуульд багшилж байсан туршлагатай бол давуу тал болно',
+  'Сургалтын шинэ арга зүй, дижитал хэрэглэгдэхүүн ашиглах чадвартай',
+];
+
+export const CAREERS_OFFERS: string[] = [
+  'Тогтвортой ажлын байр',
+  'Мэргэжлийн өсөлт, хөгжлийн боломж',
+  'Найрсаг хамт олон',
+  'Судалгаа, сургалтын орчин',
+  'Уян хатан, бүтээлч ажиллах боломж',
+];
+
+/**
+ * Default openings used as fallback when the JobOpening table is empty
+ * (e.g. fresh deploy before admin has populated the list, or before
+ * `prisma db push` has been run).
+ */
+export const CAREERS_DEFAULT_OPENINGS = [
+  { slug: 'japanese-teacher', title: 'Япон хэлний багш' },
+  { slug: 'software-teacher', title: 'Программ хангамжийн багш' },
+  { slug: 'tourism-teacher', title: 'Аялал жуулчлалын багш' },
+  { slug: 'area-studies-teacher', title: 'Орон судлалын багш' },
+] as const;
+
 /* ───────────────────── Admission programs (8 boxes) ───────────────────── */
 
 export interface AdmissionProgram {
