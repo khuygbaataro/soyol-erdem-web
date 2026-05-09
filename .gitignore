@@ -41,3 +41,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Claude Code local state — per-machine settings, worktree metadata, scratch.
+.claude/
+COMMIT_MSG_TMP.txt
