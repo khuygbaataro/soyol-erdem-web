@@ -6,10 +6,8 @@ import {
   HERO,
   MISSION_VISION_VALUES,
   SCHOOL_INFO,
-  STATS,
 } from '@/lib/content';
-import { content, getActiveStats, getSiteContentMap } from '@/lib/site-content';
-import { resolveIcon } from '@/lib/icon-map';
+import { content, getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,10 +17,7 @@ export const metadata = {
 };
 
 export default async function AboutPage() {
-  const [siteContent, dbStats] = await Promise.all([
-    getSiteContentMap('about'),
-    getActiveStats(),
-  ]);
+  const siteContent = await getSiteContentMap('about');
 
   const heroTitle1 = content(siteContent, 'about.hero.title.line1', 'Соёл Эрдэм');
   const heroTitle2 = content(siteContent, 'about.hero.title.line2', 'ИХ СУРГУУЛЬ');
@@ -33,11 +28,6 @@ export default async function AboutPage() {
     'about.hero.image',
     'https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80',
   );
-
-  const stats =
-    dbStats.length > 0
-      ? dbStats.map((s) => ({ icon: resolveIcon(s.icon), number: s.number, label: s.label }))
-      : STATS;
 
   // Slogan (УРИА) is admin-editable via the site-content panel; the static
   // entry in `lib/content.ts` is the fallback.
@@ -206,55 +196,50 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* 3. Stats band */}
-      <section className="bg-navy-900 py-12 md:py-14">
-        <div className="container-custom">
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
-            {stats.map((s) => {
-              const Icon = s.icon;
-              return (
-                <div
-                  key={s.label}
-                  className="flex items-center gap-4 md:justify-center"
-                >
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/5 text-gold-400">
-                    <Icon className="h-6 w-6" />
-                  </span>
-                  <div className="leading-tight">
-                    <div className="text-3xl font-bold text-gold-400 md:text-4xl">
-                      {s.number}
-                    </div>
-                    <div className="mt-1 text-sm text-white/85">{s.label}</div>
-                  </div>
-                </div>
-              );
-            })}
+      {/* 3. Mission / Vision / Values / Slogan — four cards on a cream
+          band so they read as a distinct chapter from the numbered cards
+          above. Each card is a self-contained tile with the gold-accented
+          icon as the anchor. */}
+      <section className="relative overflow-hidden bg-cream-soft py-16 md:py-24">
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-16 top-10 hidden h-48 w-48 opacity-50 lg:block"
+          style={dotPatternStyle}
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -left-12 bottom-10 hidden h-40 w-40 opacity-50 lg:block"
+          style={dotPatternStyle}
+        />
+        <div className="container-custom relative">
+          <div className="mx-auto mb-12 max-w-2xl text-center">
+            <div className="flex items-center justify-center gap-3">
+              <span className="h-px w-10 bg-gold-500" aria-hidden />
+              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">
+                Бидний үнэт зүйлс
+              </span>
+              <span className="h-px w-10 bg-gold-500" aria-hidden />
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* 4. Mission / Vision / Values / Slogan — four blocks, no section
-          heading per the editor's request (the four sub-headings carry the
-          context themselves). */}
-      <section className="bg-white py-16 md:py-20">
-        <div className="container-custom">
-          <div className="grid gap-10 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {mvv.map((item) => {
               const Icon = item.icon;
               return (
-                <div key={item.title} className="flex items-start gap-5 px-2">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center text-gold-500">
-                    <Icon className="h-10 w-10" strokeWidth={1.6} />
+                <article
+                  key={item.title}
+                  className="group flex h-full flex-col rounded-card border border-border-light bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500 hover:shadow-card-hover"
+                >
+                  <span className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-full bg-gold-500/10 text-gold-500 ring-1 ring-gold-500/20 transition-colors duration-300 group-hover:bg-gold-500 group-hover:text-white">
+                    <Icon className="h-7 w-7" strokeWidth={1.6} />
                   </span>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-lg font-bold uppercase tracking-wide text-navy-900">
-                      {item.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-text-body">
-                      {item.text}
-                    </p>
-                  </div>
-                </div>
+                  <h3 className="text-base font-bold uppercase tracking-wide text-navy-900">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-text-body">
+                    {item.text}
+                  </p>
+                </article>
               );
             })}
           </div>
