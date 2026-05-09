@@ -1,6 +1,5 @@
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import { TIMELINE } from '@/lib/content';
 
 export const metadata = {
@@ -37,12 +36,6 @@ export default function HistoryPage() {
           ))}
         </div>
       </Section>
-
-      <CtaBanner
-        title="32 жилийн өв уламжлалын нэг хэсэг бол"
-        ctaLabel="Элсэх"
-        ctaHref="/admission"
-      />
     </>
   );
 }
