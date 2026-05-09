@@ -1,7 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { Search } from 'lucide-react';
+import { useMemo } from 'react';
 import { Section } from '@/components/layout/Section';
 import { ProgramCard } from '@/components/ui/ProgramCard';
 import { resolveIcon } from '@/lib/icon-map';
@@ -16,92 +15,79 @@ interface Item {
   language: string;
 }
 
-const DEGREES = ['Бүгд', 'Бакалавр', 'Магистр'] as const;
-
+/**
+ * Programs grouped by degree. Editor's request was to drop the
+ * "Зэрэг бүгд / Хэл бүгд" filter row and present бакалавр / магистр
+ * хөтөлбөрүүдийг тус тусдаа жагсаалт болгох.
+ */
 export function ProgramsListClient({ items }: { items: Item[] }) {
-  const [degree, setDegree] = useState<string>('Бүгд');
-  const [language, setLanguage] = useState<string>('Бүгд');
-  const [query, setQuery] = useState('');
+  const groups = useMemo(() => {
+    const byDegree = new Map<string, Item[]>();
+    for (const item of items) {
+      const key = item.degree?.trim() || 'Бусад';
+      const arr = byDegree.get(key) ?? [];
+      arr.push(item);
+      byDegree.set(key, arr);
+    }
 
-  const languages = useMemo(() => {
-    const set = new Set(items.map((i) => i.language));
-    return ['Бүгд', ...Array.from(set)];
+    // Stable preferred order: Бакалавр, Магистр, then anything else
+    // alphabetically. Empty groups disappear naturally.
+    const preferred = ['Бакалавр', 'Магистр'];
+    const ordered: { degree: string; items: Item[] }[] = [];
+    for (const d of preferred) {
+      const list = byDegree.get(d);
+      if (list && list.length > 0) {
+        ordered.push({ degree: d, items: list });
+        byDegree.delete(d);
+      }
+    }
+    for (const [degree, list] of [...byDegree.entries()].sort((a, b) =>
+      a[0].localeCompare(b[0], 'mn'),
+    )) {
+      if (list.length > 0) ordered.push({ degree, items: list });
+    }
+    return ordered;
   }, [items]);
 
-  const filtered = useMemo(() => {
-    return items.filter((p) => {
-      if (degree !== 'Бүгд' && p.degree !== degree) return false;
-      if (language !== 'Бүгд' && p.language !== language) return false;
-      if (query.trim()) {
-        const q = query.toLowerCase();
-        if (
-          !p.name.toLowerCase().includes(q) &&
-          !p.shortDescription.toLowerCase().includes(q)
-        )
-          return false;
-      }
-      return true;
-    });
-  }, [degree, language, query, items]);
+  if (groups.length === 0) {
+    return (
+      <Section background="cream-soft">
+        <p className="py-20 text-center text-text-muted">
+          Хөтөлбөр одоохондоо нийтлэгдээгүй байна.
+        </p>
+      </Section>
+    );
+  }
 
   return (
-    <>
-      <div className="sticky top-20 z-30 border-b border-border-light bg-white/95 backdrop-blur">
-        <div className="container-custom flex flex-wrap items-center gap-3 py-4">
-          <select
-            value={degree}
-            onChange={(e) => setDegree(e.target.value)}
-            className="rounded-button border border-border-light bg-white px-4 py-2 text-sm font-semibold text-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-900/10"
-          >
-            {DEGREES.map((d) => (
-              <option key={d} value={d}>
-                Зэрэг: {d}
-              </option>
-            ))}
-          </select>
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="rounded-button border border-border-light bg-white px-4 py-2 text-sm font-semibold text-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-900/10"
-          >
-            {languages.map((l) => (
-              <option key={l} value={l}>
-                Хэл: {l}
-              </option>
-            ))}
-          </select>
-          <div className="ml-auto flex items-center gap-2 rounded-button border border-border-light bg-white px-3 py-2">
-            <Search className="h-4 w-4 text-text-muted" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Хайх..."
-              className="w-40 bg-transparent text-sm text-text-heading placeholder-text-muted focus:outline-none md:w-56"
-            />
+    <Section background="cream-soft">
+      <div className="space-y-14">
+        {groups.map((group) => (
+          <div key={group.degree}>
+            <div className="mb-6 flex items-end gap-4">
+              <h2 className="text-h3 font-bold text-navy-900">
+                {group.degree.toUpperCase()}
+              </h2>
+              <span className="mb-1 text-sm text-text-muted">
+                {group.items.length} хөтөлбөр
+              </span>
+              <span className="ml-auto h-1 w-16 rounded-full bg-gold-500" />
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {group.items.map((p) => (
+                <ProgramCard
+                  key={p.id}
+                  icon={resolveIcon(p.icon)}
+                  name={p.name}
+                  degree={p.degree}
+                  description={p.shortDescription}
+                  href={`/programs/${p.id}`}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
-
-      <Section background="cream-soft">
-        {filtered.length === 0 ? (
-          <p className="py-20 text-center text-text-muted">
-            Хайлтад тохирох мэргэжил олдсонгүй.
-          </p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((p) => (
-              <ProgramCard
-                key={p.id}
-                icon={resolveIcon(p.icon)}
-                name={p.name}
-                degree={p.degree}
-                description={p.shortDescription}
-                href={`/programs/${p.id}`}
-              />
-            ))}
-          </div>
-        )}
-      </Section>
-    </>
+    </Section>
   );
 }

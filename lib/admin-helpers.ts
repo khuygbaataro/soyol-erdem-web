@@ -10,10 +10,15 @@ export function slugify(input: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
+// Editor renamed two of the public-facing labels in May 2026:
+//   EVENT        was "Үйл явдал" → now "Нээлттэй ажлын байр"
+//   ANNOUNCEMENT was "Зарлал"   → now "Ярилцлага"
+// The enum values stay the same so existing rows don't need migration;
+// only the human label changed.
 export const NEWS_CATEGORY_LABEL: Record<string, string> = {
   NEWS: 'Мэдээ',
-  EVENT: 'Үйл явдал',
-  ANNOUNCEMENT: 'Зарлал',
+  EVENT: 'Нээлттэй ажлын байр',
+  ANNOUNCEMENT: 'Ярилцлага',
   RESEARCH: 'Эрдэм шинжилгээ',
   ACHIEVEMENT: 'Амжилт',
   PROGRAM: 'Хөтөлбөр',

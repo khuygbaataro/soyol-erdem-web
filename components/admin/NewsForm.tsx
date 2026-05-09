@@ -39,10 +39,13 @@ interface NewsFormProps {
   listPath?: string;
 }
 
+// Labels match NEWS_CATEGORY_LABEL — keep in sync. Editor renamed
+// EVENT → "Нээлттэй ажлын байр" and ANNOUNCEMENT → "Ярилцлага" in
+// May 2026; enum values stayed the same so existing rows still resolve.
 const CATEGORY_OPTIONS: Array<[string, string]> = [
   ['NEWS', 'Мэдээ'],
-  ['EVENT', 'Үйл явдал'],
-  ['ANNOUNCEMENT', 'Зарлал'],
+  ['EVENT', 'Нээлттэй ажлын байр'],
+  ['ANNOUNCEMENT', 'Ярилцлага'],
   ['RESEARCH', 'Эрдэм шинжилгээ'],
   ['ACHIEVEMENT', 'Амжилт'],
   ['PROGRAM', 'Хөтөлбөр'],

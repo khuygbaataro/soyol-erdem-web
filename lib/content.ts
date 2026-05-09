@@ -521,7 +521,7 @@ export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
     bullets2Label: 'Тайлбар',
     bullets2: ['Элсэгчид ЭЕШ-ийн онооны шаардлагыг хангасан байна.'],
     cta: 'Бүртгүүлэх',
-    ctaHref: '/contact',
+    ctaHref: '/admission/register',
     featured: true,
   },
   {
@@ -547,7 +547,7 @@ export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
       'Ажлын хажуугаар суралцах боломж',
     ],
     cta: 'Бүртгүүлэх',
-    ctaHref: '/contact',
+    ctaHref: '/admission/register',
   },
   {
     id: 'thirty-plus',
@@ -560,7 +560,7 @@ export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
       'Бүрэн дунд боловсролын гэрчилгээ',
     ],
     cta: 'Хүсэлт илгээх',
-    ctaHref: '/contact',
+    ctaHref: '/admission/register',
   },
   {
     id: 'transfer-major',
@@ -576,7 +576,7 @@ export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
     bullets2Label: 'Бүрдүүлэх материал',
     bullets2: ['Диплом, үнэмлэх', 'Холбогдох бичиг баримтууд'],
     cta: 'Дэлгэрэнгүй',
-    ctaHref: '/contact',
+    ctaHref: '/admission/register',
   },
   {
     id: 'transfer-abroad',
@@ -588,7 +588,7 @@ export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
       'Баталгаат орчуулга',
     ],
     cta: 'Шилжилт хүсэх',
-    ctaHref: '/contact',
+    ctaHref: '/admission/register',
   },
   {
     id: 'online',
@@ -600,7 +600,7 @@ export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
       'Хаанаас ч суралцах боломж',
     ],
     cta: 'Онлайнаар бүртгүүлэх',
-    ctaHref: '/contact',
+    ctaHref: '/admission/register',
   },
   {
     id: 'preparation',
@@ -612,7 +612,7 @@ export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
       'Оноо авсны дараа үндсэн ангид шилжинэ',
     ],
     cta: 'Бүртгүүлэх',
-    ctaHref: '/contact',
+    ctaHref: '/admission/register',
   },
 ];
 

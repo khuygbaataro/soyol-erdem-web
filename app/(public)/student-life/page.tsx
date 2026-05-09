@@ -6,7 +6,6 @@ import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { QuoteCard } from '@/components/ui/QuoteCard';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import {
   STUDENT_EVENTS,
   STUDENT_LIFE_CARDS,
@@ -106,12 +105,6 @@ export default function StudentLifePage() {
           ))}
         </div>
       </Section>
-
-      <CtaBanner
-        title="Манай гэр бүлд нэгдээрэй"
-        ctaLabel="Элсэх"
-        ctaHref="/admission"
-      />
     </>
   );
 }

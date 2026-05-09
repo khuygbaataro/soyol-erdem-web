@@ -92,6 +92,41 @@ export const contactSchema = z.object({
 });
 export type ContactInput = z.infer<typeof contactSchema>;
 
+/* Admission application — 8-step wizard at /admission/register.
+ *
+ * Stored in `ContactSubmission` (no separate DB table yet so we don't need
+ * to ship a migration); the structured fields are formatted into a
+ * Markdown message body the admin can read in the contact panel.
+ */
+export const admissionApplicationSchema = z.object({
+  citizenship: z.enum(['MN', 'FOREIGN']),
+  degree: z.enum(['BACHELOR', 'MASTER']),
+  programId: z.string().min(1, 'Хөтөлбөр сонгоно уу'),
+  programName: z.string().min(1),
+  lastName: z.string().min(1, 'Овог оруулна уу').max(80),
+  firstName: z.string().min(1, 'Нэр оруулна уу').max(80),
+  education: z.string().min(1, 'Боловсролын түвшин сонгоно уу'),
+  examScores: z
+    .array(
+      z.object({
+        subject: z.string().min(1, 'Хичээл оруулна уу').max(80),
+        score: z
+          .string()
+          .min(1, 'Оноо оруулна уу')
+          .regex(/^\d{1,4}(?:[.,]\d{1,2})?$/, 'Оноо тоогоор бичнэ үү')
+          .max(10),
+      }),
+    )
+    .min(1, 'Дор хаяж нэг хичээл оруулна уу')
+    .max(3),
+  phones: z
+    .array(z.string().min(6, 'Утасны дугаар хүчин төгөлдөр биш').max(20))
+    .min(1, 'Утасны дугаар оруулна уу')
+    .max(3),
+  email: z.string().email('И-мэйл хаяг хүчин төгөлдөр биш'),
+});
+export type AdmissionApplicationInput = z.infer<typeof admissionApplicationSchema>;
+
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),

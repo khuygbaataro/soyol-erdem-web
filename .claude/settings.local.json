@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($root = Get-Location; $files = git ls-files | Where-Object { $_ -match '\\\\.\\(tsx|ts|js|mjs|jsx|md\\)$' }; $changedCount = 0; foreach \\($f in $files\\) { $path = Join-Path $root $f; $content = Get-Content -LiteralPath $path -Raw -Encoding UTF8; $original = $content; $content = $content -replace 'Соёл-Эрдэм', 'Соёл Эрдэм'; $content = $content -replace 'СОЁЛ-ЭРДЭМ', 'СОЁЛ ЭРДЭМ'; if \\($content -ne $original\\) { [System.IO.File]::WriteAllText\\($path, $content, [System.Text.UTF8Encoding]::new\\($false\\)\\); $changedCount++ } }; Write-Host \"Changed $changedCount files\")"
+    ]
+  }
+}
