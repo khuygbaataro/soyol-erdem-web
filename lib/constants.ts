@@ -31,7 +31,7 @@ export const NAV_ITEMS = [
   { label: 'Оюутан', href: '/student-life' },
   { label: 'Хамтын ажиллагаа', href: '/international' },
   { label: 'Мэдээ', href: '/news' },
-  { label: 'НЕБ-ийн Соёл Эрдэм Сургууль', href: '/high-school' },
+  { label: 'НЕБ-ын сургууль', href: '/high-school' },
 ];
 
 /**

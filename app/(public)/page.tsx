@@ -8,6 +8,7 @@ import { NewsCard } from '@/components/ui/NewsCard';
 import { FeatureCard } from '@/components/ui/FeatureCard';
 import { Badge } from '@/components/ui/Badge';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
+import { QuickPortals } from '@/components/sections/QuickPortals';
 import {
   HERO,
   QUICK_FEATURES,
@@ -101,6 +102,10 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+
+      {/* 1.5 Portal launcher — citi-style 3-segment bar (Оюутны систем,
+          Багшийн систем, Цахим сургалт). */}
+      <QuickPortals />
 
       {/* 2. Quick features */}
       <Section background="white" spacing="md">
