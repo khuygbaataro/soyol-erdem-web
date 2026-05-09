@@ -1,7 +1,4 @@
 import { PageHero } from '@/components/sections/PageHero';
-import { Section } from '@/components/layout/Section';
-import { Button } from '@/components/ui/Button';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import { ProgramsListClient } from './ProgramsListClient';
 import { prisma } from '@/lib/prisma';
 
@@ -33,28 +30,6 @@ export default async function ProgramsPage() {
       />
 
       <ProgramsListClient items={items} />
-
-      <Section background="white" spacing="md">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-h2 font-bold text-navy-900">
-            Сонголтоо хийж чадахгүй байна уу?
-          </h2>
-          <p className="mt-4 text-text-body">
-            Манай элсэлтийн зөвлөхөөс зөвлөгөө аваарай.
-          </p>
-          <div className="mt-6">
-            <Button href="/contact" variant="primary" size="md">
-              Холбоо барих
-            </Button>
-          </div>
-        </div>
-      </Section>
-
-      <CtaBanner
-        title="Тохирох мэргэжлээ олсон уу?"
-        ctaLabel="Элсэх"
-        ctaHref="/admission"
-      />
     </>
   );
 }
