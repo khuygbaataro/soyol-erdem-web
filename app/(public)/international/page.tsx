@@ -12,7 +12,6 @@ import {
   INTERNATIONAL_INTRO,
   INTERNSHIP_TEXT,
   PARTNER_UNIVERSITIES,
-  PROGRAMS_WITH_PARTNERS,
 } from '@/lib/content';
 
 export const metadata = {
@@ -63,23 +62,8 @@ export default function InternationalPage() {
         </div>
       </Section>
 
-      {/* Programs */}
-      <Section background="white">
-        <SectionTitle title="ХӨТӨЛБӨРҮҮД" />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {PROGRAMS_WITH_PARTNERS.map((p, idx) => (
-            <Card key={p} className="flex h-full items-start gap-4">
-              <span className="text-2xl font-bold text-gold-500">
-                {String(idx + 1).padStart(2, '0')}
-              </span>
-              <p className="pt-1 text-sm font-semibold text-navy-900">{p}</p>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
       {/* Internship highlight */}
-      <Section background="cream-soft">
+      <Section background="white">
         <Card className="overflow-hidden p-0" hover={false}>
           <div className="grid gap-0 lg:grid-cols-2">
             <div className="bg-cream p-2">
