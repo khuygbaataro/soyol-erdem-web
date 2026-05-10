@@ -13,13 +13,21 @@ import { NAV_ITEMS, SITE } from '@/lib/constants';
 import type { Language } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
-// External-service shortcuts trimmed per Munkhchimeg's spec — xCloud /
-// Cisco / Moodle were vestigial and confused visitors. The Цахим сургалт
-// portal is now reachable from the footer "Чухал холбоос" column.
+// Utility-bar links. The high-school card sits first and renders larger
+// + gold-accented per Munkhchimeg's "ТОМООР БИЧЭЭД ӨГӨӨРЭЙ" note so it
+// pulls focus as a sibling institution; library / newspaper trail it as
+// quick-access portals. xCloud / Cisco / Moodle were trimmed earlier
+// (now reachable from the footer "Чухал холбоос" column).
 const UTILITY_LINKS = [
-  { label: 'Номын сан', href: '/library', external: false },
-  { label: 'Сонин хэвлэл', href: '/sonin-hewlel', external: false },
-];
+  {
+    label: 'НЕБ-ЫН СОЁЛ ЭРДЭМ СУРГУУЛЬ',
+    href: '/high-school',
+    external: false,
+    featured: true,
+  },
+  { label: 'Номын сан', href: '/library', external: false, featured: false },
+  { label: 'Сонин хэвлэл', href: '/sonin-hewlel', external: false, featured: false },
+] as const;
 
 /**
  * Sticky two-row site header.
@@ -39,9 +47,11 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full">
-        {/* Utility bar — lighter navy on top */}
+        {/* Utility bar — lighter navy on top. Slightly taller than before
+            so the featured "НЕБ-ЫН СОЁЛ ЭРДЭМ СУРГУУЛЬ" pill has room to
+            breathe without overlapping the row above it. */}
         <div className="border-b border-white/5 bg-navy-900 text-[12.5px] text-white/85">
-          <Container className="flex h-[40px] flex-nowrap items-center justify-between gap-4">
+          <Container className="flex min-h-[44px] flex-nowrap items-center justify-between gap-4 py-1">
             <div className="hidden items-center gap-6 md:flex">
               <a
                 href={`tel:${SITE.contact.phone.replace('-', '')}`}
@@ -57,10 +67,11 @@ export function Header() {
             </div>
 
             <div className="ml-auto flex items-center gap-3">
-              {/* Quick-access service links sit before the language switcher
-                  so the language preference lives in the far-right corner —
-                  the convention international visitors expect. */}
-              <ul className="hidden items-center divide-x divide-white/15 lg:flex">
+              {/* Featured high-school link sits first, rendered as a
+                  gold-tinted pill so it pulls focus as a sibling
+                  institution instead of blending into the utility row.
+                  Library / Newspaper trail it as quick-access portals. */}
+              <ul className="hidden items-center gap-2 lg:flex">
                 {UTILITY_LINKS.map((link) => (
                   <li key={link.label}>
                     {link.external ? (
@@ -68,14 +79,24 @@ export function Header() {
                         href={link.href}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="block px-2.5 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
+                        className={cn(
+                          'transition-colors',
+                          link.featured
+                            ? 'inline-flex items-center rounded-full bg-gold-500/15 px-3.5 py-1.5 text-[13px] font-bold uppercase tracking-[0.06em] text-gold-400 ring-1 ring-gold-500/40 hover:bg-gold-500 hover:text-navy-900 hover:ring-gold-500'
+                            : 'block px-2.5 py-1.5 hover:bg-white/10 hover:text-[#f5b06b]',
+                        )}
                       >
                         {link.label}
                       </a>
                     ) : (
                       <Link
                         href={link.href}
-                        className="block px-2.5 py-1.5 transition-colors hover:bg-white/10 hover:text-[#f5b06b]"
+                        className={cn(
+                          'transition-colors',
+                          link.featured
+                            ? 'inline-flex items-center rounded-full bg-gold-500/15 px-3.5 py-1.5 text-[13px] font-bold uppercase tracking-[0.06em] text-gold-400 ring-1 ring-gold-500/40 hover:bg-gold-500 hover:text-navy-900 hover:ring-gold-500'
+                            : 'block px-2.5 py-1.5 hover:bg-white/10 hover:text-[#f5b06b]',
+                        )}
                       >
                         {link.label}
                       </Link>

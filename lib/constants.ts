@@ -18,10 +18,10 @@ export const SITE = {
 };
 
 /**
- * Primary nav. "Нүүр" leads, "Ахлах сургууль" trails — per Munkhchimeg's
- * spec: high-school sub-site is presented under its formal name (НЕБ-ийн
- * Соёл Эрдэм Сургууль) so visitors see it as a sibling institution, not
- * just a section.
+ * Primary nav. "Нүүр" leads. The high-school sub-site is featured in
+ * the top utility bar (Header.UTILITY_LINKS) as
+ * "НЕБ-ЫН СОЁЛ ЭРДЭМ СУРГУУЛЬ" so it reads as a sibling institution
+ * rather than another tab in the main university menu.
  */
 export const NAV_ITEMS = [
   { label: 'Нүүр', href: '/' },
@@ -31,7 +31,6 @@ export const NAV_ITEMS = [
   { label: 'Оюутан', href: '/student-life' },
   { label: 'Хамтын ажиллагаа', href: '/international' },
   { label: 'Мэдээ', href: '/news' },
-  { label: 'НЕБ-ын сургууль', href: '/high-school' },
 ];
 
 /**
