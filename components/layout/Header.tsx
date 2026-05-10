@@ -122,10 +122,10 @@ export function Header() {
           <Container className="flex h-[80px] flex-nowrap items-center justify-between gap-8">
             <Link
               href="/"
-              className="group flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
+              className="group flex h-full shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
               aria-label="Соёл Эрдэм · Нүүр хуудас"
             >
-              <Logo size={56} />
+              <Logo size={76} />
             </Link>
 
             <nav className="hidden min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-1 xl:flex">
