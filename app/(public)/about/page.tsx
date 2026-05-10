@@ -19,8 +19,8 @@ export const metadata = {
 export default async function AboutPage() {
   const siteContent = await getSiteContentMap('about');
 
-  const heroTitle1 = content(siteContent, 'about.hero.title.line1', 'Соёл Эрдэм');
-  const heroTitle2 = content(siteContent, 'about.hero.title.line2', 'ИХ СУРГУУЛЬ');
+  const heroTitle1 = content(siteContent, 'about.hero.title.line1', 'СОЁЛ ЭРДЭМ');
+  const heroTitle2 = content(siteContent, 'about.hero.title.line2', 'ДЭЭД СУРГУУЛЬ');
   const heroBody = content(siteContent, 'about.hero.body', HERO.body);
   const heroCtaLabel = content(siteContent, 'about.hero.cta_label', 'Бидний тухай дэлгэрэнгүй');
   const heroImage = content(
