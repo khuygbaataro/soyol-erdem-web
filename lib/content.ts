@@ -843,11 +843,15 @@ export interface PartnerDetailed {
   partnerSince?: string;
   /** Narrative paragraph — programs available, scholarship %, etc. */
   detail: string;
+  /** Headline scholarship/discount string shown as a pill on the card,
+   *  e.g. "100% тэтгэлэг", "50% хөнгөлөлт", "10–20% хөнгөлөлт". */
+  headline?: string;
 }
 
 export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   {
     name: 'Сэйжо их сургууль',
+    headline: '50% хөнгөлөлт (их сургууль)',
     nameJp: '星城大学 / Seijoh University',
     location: 'Япон, Аичи муж',
     partnerSince: '2005 оны 9 сар',
@@ -856,6 +860,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Такүшёкү их сургууль',
+    headline: '10–20% хөнгөлөлт',
     nameJp: '拓殖大学 / Takushoku University',
     location: 'Япон, Токио (Бүнкёо, Хачико)',
     partnerSince: '2006 оны 1 сар',
@@ -864,6 +869,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Оберлин их сургууль',
+    headline: '100% тэтгэлэг — 1 жил',
     nameJp: '桜美林大学 / J.F. Oberlin University',
     location: 'Япон, Токио',
     partnerSince: '2009 он',
@@ -872,6 +878,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Гакко Хоүжин Охара Гакүэн',
+    headline: '10–20% хөнгөлөлт',
     nameJp: '学校法人大原学園 / Group of Ohara Academy',
     location: 'Япон (бүх мужид салбартай)',
     partnerSince: '2010 он',
@@ -880,6 +887,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Ёкохама Дезайн Гакүин',
+    headline: '10–20% хөнгөлөлт',
     nameJp: '横浜デザイン学院 / Yokohama Design Gakuin',
     location: 'Япон, Канагава муж (Ёкохама)',
     partnerSince: '2012 оны 11 сар',
@@ -888,6 +896,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Гакко Хоүжин Дэнпа Коүка их сургуулийн групп',
+    headline: '10–20% хөнгөлөлт',
     nameJp:
       '学校法人電波学園愛知工科大学グループ / Denpa Gakuen — the Aichi University of Technology Group',
     location: 'Япон, Айчи муж (Нагаоя)',
@@ -897,6 +906,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Нийгата Сангёо их сургууль',
+    headline: '10–20% хөнгөлөлт',
     nameJp: '新潟産業大学 / Niigata Sangyo University',
     location: 'Япон, Нийгата муж (Кашивазаки)',
     partnerSince: '2014 оны 4 сар',
@@ -905,6 +915,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Гакко Хоүжин Норт Азиа их сургууль',
+    headline: '10–20% хөнгөлөлт',
     nameJp: '学校法人ノースアジア大学 / North Asia University',
     location: 'Япон, Акита муж (Акита)',
     partnerSince: '2015 оны 6 сар',
@@ -913,6 +924,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Чюүоү Гакүин их сургууль',
+    headline: '10–20% хөнгөлөлт',
     nameJp: '中央学院大学 / Chuo Gakuin University',
     location: 'Япон, Чиба муж (Абико)',
     partnerSince: '2015 оны 9 сар',
@@ -921,6 +933,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Хоккай Гакүэн их сургууль',
+    headline: '10–20% хөнгөлөлт',
     nameJp: '学校法人北海学園大学 / Hokkai-Gakuen University',
     location: 'Япон, Хоккайдо муж (Саппоро)',
     partnerSince: '2015 оны 9 сар',
@@ -929,6 +942,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'ABK Гаккан Нихонго Гакко',
+    headline: '10–20% хөнгөлөлт',
     nameJp:
       '学校法人ABK学館 / ABK College — ABK Gakkan Japanese Language School',
     location: 'Япон, Токио (Бүнкёо)',
@@ -938,6 +952,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Нихон эм зүйн их сургууль',
+    headline: '10–20% хөнгөлөлт',
     nameJp: '日本薬科大学 / Nihon Pharmaceutical University',
     location: 'Япон, Сайтама муж + Токио',
     partnerSince: '2017 оны 12 сар',
@@ -946,6 +961,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Хокүто Бүнка Гакүэн',
+    headline: 'Хүртэл 50% хөнгөлөлт',
     nameJp: '学校法人北斗文化学園 / Hokuto Bunka Gakuen',
     location: 'Япон, Хоккайдо муж (Саппоро)',
     partnerSince: '2021 оны 5 сар',
@@ -954,6 +970,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Токива их сургууль',
+    headline: '100% тэтгэлэг — 6 сар–1 жил',
     nameJp: '常盤大学 / Tokiwa University',
     location: 'Япон, Ибараки муж (Мито)',
     partnerSince: '2023 оны 2 сар',
@@ -962,6 +979,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Нихон Вэлнэс Спорт их сургууль',
+    headline: '10–20% хөнгөлөлт',
     nameJp:
       '学校法人タイケン学園 日本ウェルネススポーツ大学 / Nihon Wellness Sports University',
     location: 'Япон, Токио',
@@ -971,6 +989,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Комазава охидын их сургууль',
+    headline: '10–20% хөнгөлөлт (зөвхөн эмэгтэй)',
     nameJp: "駒沢女子大学 / Komazawa Women's University",
     location: 'Япон, Токио',
     partnerSince: '2024 оны 5 сар',
@@ -979,6 +998,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Иватани Хигаши Хоккайдо коллеж',
+    headline: 'Хүртэл 50% хөнгөлөлт',
     nameJp:
       '岩谷学園 — 日本語学校・IT専門学校・美容専門学校 / Iwatani Higashi Hokkaido College',
     location: 'Япон, Канагава муж (Ёкохама)',
@@ -987,6 +1007,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   },
   {
     name: 'Нийгата эм зүйн их сургууль',
+    headline: '50% хөнгөлөлт (их сургууль)',
     nameJp:
       '新潟薬科大学 / Niigata University of Pharmacy and Medical Life Sciences',
     location: 'Япон, Нийгата муж (Нийгата)',
@@ -998,6 +1019,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
 export const JAPAN_HIGH_SCHOOLS: PartnerDetailed[] = [
   {
     name: 'Комазава ахлах сургууль',
+    headline: '50% хөнгөлөлт (эмэгтэй сурагч)',
     nameJp: "駒沢学園女子高等学校 / Komazawa Gakuen Girl's Senior High School",
     location: 'Япон, Токио (Инаги дүүрэг)',
     partnerSince: '2025 оны 5 сар',
@@ -1006,6 +1028,7 @@ export const JAPAN_HIGH_SCHOOLS: PartnerDetailed[] = [
   },
   {
     name: 'Нихон Вэлнэс ахлах сургууль',
+    headline: '50% хөнгөлөлт',
     nameJp: '日本ウエルネス高等学校 / Nihon Wellness High School',
     location: 'Япон, Мияги муж (Сэндай) + Нагано муж (Хигашичикума)',
     partnerSince: '2024 оны 5 сар',

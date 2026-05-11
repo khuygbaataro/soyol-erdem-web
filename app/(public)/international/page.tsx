@@ -2,6 +2,7 @@ import {
   Briefcase,
   Building2,
   CalendarCheck,
+  ChevronDown,
   ExternalLink,
   Globe2,
   GraduationCap,
@@ -32,15 +33,43 @@ export const metadata = {
 
 const BLOCK_ICONS = [Users, Briefcase, Globe2, Leaf] as const;
 
-function PartnerProfileCard({ p }: { p: PartnerDetailed }) {
+/**
+ * Disclosure card for a partner profile. Collapsed shows just the
+ * headline + scholarship pill; clicking reveals the full narrative
+ * inline (no page navigation). Built on the native <details> element
+ * so it works without any client-side JS.
+ */
+function PartnerProfileCard({
+  p,
+  icon: Icon = Building2,
+}: {
+  p: PartnerDetailed;
+  icon?: typeof Building2;
+}) {
   return (
-    <article className="flex h-full flex-col rounded-card border border-border-light bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-navy-900/40 hover:shadow-card-hover">
-      <header className="border-b border-border-light pb-4">
-        <h3 className="text-base font-bold leading-snug text-navy-900">{p.name}</h3>
-        {p.nameJp && (
-          <p className="mt-1 text-xs italic text-text-muted">{p.nameJp}</p>
-        )}
-        <div className="mt-3 flex flex-wrap items-center gap-3 text-[11px] text-text-muted">
+    <details className="group h-full overflow-hidden rounded-card border border-border-light bg-white shadow-card transition-all duration-300 open:border-navy-900/40 hover:border-navy-900/40 hover:shadow-card-hover">
+      <summary className="flex cursor-pointer list-none flex-col gap-3 p-5 [&::-webkit-details-marker]:hidden">
+        <div className="flex items-start justify-between gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-400 ring-1 ring-navy-900/20">
+            <Icon className="h-4 w-4" />
+          </span>
+          {p.headline && (
+            <span className="shrink-0 rounded-full bg-gold-500 px-3 py-1 text-[11px] font-bold leading-tight text-navy-900 shadow-sm">
+              {p.headline}
+            </span>
+          )}
+        </div>
+        <div className="min-w-0">
+          <h3 className="text-sm font-bold leading-snug text-navy-900">
+            {p.name}
+          </h3>
+          {p.nameJp && (
+            <p className="mt-1 line-clamp-2 text-xs italic text-text-muted">
+              {p.nameJp}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-text-muted">
           <span className="inline-flex items-center gap-1">
             <MapPin className="h-3 w-3 text-gold-500" />
             {p.location}
@@ -52,11 +81,16 @@ function PartnerProfileCard({ p }: { p: PartnerDetailed }) {
             </span>
           )}
         </div>
-      </header>
-      <p className="mt-4 flex-1 text-sm leading-relaxed text-text-body">
+        <span className="mt-1 inline-flex items-center gap-1 self-start text-[11px] font-bold uppercase tracking-wider text-navy-900 transition-colors group-open:text-gold-500">
+          <span className="group-open:hidden">Дэлгэрэнгүй</span>
+          <span className="hidden group-open:inline">Хаах</span>
+          <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-open:rotate-180" />
+        </span>
+      </summary>
+      <div className="border-t border-border-light bg-cream-soft/40 p-5 text-sm leading-relaxed text-text-body">
         {p.detail}
-      </p>
-    </article>
+      </div>
+    </details>
   );
 }
 
@@ -111,11 +145,11 @@ export default function InternationalPage() {
       <Section background="white">
         <SectionTitle
           title="ХАМТРАГЧ ЯПОН СУРГУУЛИУДЫН ТАНИЛЦУУЛГА"
-          subtitle={`${JAPAN_PARTNERS_DETAILED.length} их, дээд сургууль — гэрээ байгуулсан огноо, элсэх боломжтой мэргэжил, тэтгэлгийн хэмжээ.`}
+          subtitle={`${JAPAN_PARTNERS_DETAILED.length} их, дээд сургууль. Карт дээр дарж дэлгэрэнгүй танилцуулга, мэргэжил, тэтгэлгийн нөхцөлийг харна уу.`}
         />
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {JAPAN_PARTNERS_DETAILED.map((p) => (
-            <PartnerProfileCard key={p.name} p={p} />
+            <PartnerProfileCard key={p.name} p={p} icon={Building2} />
           ))}
         </div>
       </Section>
@@ -126,41 +160,9 @@ export default function InternationalPage() {
           title="ХАМТРАГЧ ЯПОН АХЛАХ СУРГУУЛИУД"
           subtitle="НЕБ-ын Соёл Эрдэм сургуулийн сурагчдад нээлттэй хамтрагч сургуулиуд."
         />
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           {JAPAN_HIGH_SCHOOLS.map((p) => (
-            <article
-              key={p.name}
-              className="flex h-full flex-col rounded-card border border-border-light bg-white p-6 shadow-card md:p-7"
-            >
-              <header className="flex items-start gap-4 border-b border-border-light pb-4">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500 ring-1 ring-gold-500/30">
-                  <School className="h-5 w-5" />
-                </span>
-                <div className="min-w-0">
-                  <h3 className="text-base font-bold leading-snug text-navy-900">
-                    {p.name}
-                  </h3>
-                  {p.nameJp && (
-                    <p className="mt-1 text-xs italic text-text-muted">{p.nameJp}</p>
-                  )}
-                  <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px] text-text-muted">
-                    <span className="inline-flex items-center gap-1">
-                      <MapPin className="h-3 w-3 text-gold-500" />
-                      {p.location}
-                    </span>
-                    {p.partnerSince && (
-                      <span className="inline-flex items-center gap-1">
-                        <CalendarCheck className="h-3 w-3 text-gold-500" />
-                        {p.partnerSince}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </header>
-              <p className="mt-4 text-sm leading-relaxed text-text-body">
-                {p.detail}
-              </p>
-            </article>
+            <PartnerProfileCard key={p.name} p={p} icon={School} />
           ))}
         </div>
       </Section>
@@ -187,10 +189,10 @@ export default function InternationalPage() {
                 href={d.url}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-navy-900 hover:text-gold-500"
+                className="mt-2 inline-flex items-center gap-1 break-all text-xs font-semibold text-navy-900 hover:text-gold-500"
               >
                 {d.url.replace(/^https?:\/\//, '')}
-                <ExternalLink className="h-3 w-3" />
+                <ExternalLink className="h-3 w-3 shrink-0" />
               </a>
               <p className="mt-4 text-sm leading-relaxed text-text-body">
                 {d.detail}
