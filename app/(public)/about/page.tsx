@@ -83,7 +83,6 @@ export default async function AboutPage() {
                 href="/"
                 className="inline-flex items-center gap-1 transition-colors hover:text-navy-900"
               >
-                <span aria-hidden>🏠</span>
                 <span>Нүүр</span>
               </Link>
               <ChevronRight className="h-4 w-4" aria-hidden />
