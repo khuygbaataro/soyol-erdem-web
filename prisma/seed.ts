@@ -334,6 +334,60 @@ async function main() {
   }
   console.log(`✓ Stats (${stats.length})`);
 
+  /* Regulations — sample documents so the public /regulations page +
+   * Дүрэм журам utility link have something to point at out of the box.
+   * Admin can replace / extend these via /admin/regulations. */
+  const regulations = [
+    {
+      slug: 'surah-juram',
+      title: 'Суралцах журам',
+      description:
+        'Бакалавр, магистрын оюутны суралцах, шалгалт өгөх, дүн гаргах ерөнхий журам.',
+      fileUrl: 'https://soyolerdem.edu.mn/journals/sp-2023-n1.pdf',
+      coverImage: null as string | null,
+      order: 1,
+    },
+    {
+      slug: 'shiljih-juram',
+      title: 'Шилжих журам',
+      description:
+        'Дотоодын болон гадаадын их дээд сургуулиас Соёл Эрдэм Дээд Сургуульд шилжин суралцах журам.',
+      fileUrl: 'https://soyolerdem.edu.mn/journals/sp-2024-n1.pdf',
+      coverImage: null as string | null,
+      order: 2,
+    },
+    {
+      slug: 'chuluu-avah-juram',
+      title: 'Чөлөө авах журам',
+      description:
+        'Эрүүл мэндийн, хувийн болон гадаадад суралцах учраас чөлөө авах оюутны журам.',
+      fileUrl: 'https://soyolerdem.edu.mn/journals/sp-2025-n1.pdf',
+      coverImage: null as string | null,
+      order: 3,
+    },
+  ];
+  for (const r of regulations) {
+    await prisma.regulation.upsert({
+      where: { slug: r.slug },
+      update: {
+        title: r.title,
+        description: r.description,
+        order: r.order,
+      },
+      // Don't overwrite uploaded file/cover on re-seed.
+      create: {
+        slug: r.slug,
+        title: r.title,
+        description: r.description,
+        fileUrl: r.fileUrl,
+        coverImage: r.coverImage,
+        order: r.order,
+        status: 'PUBLISHED',
+      },
+    });
+  }
+  console.log(`✓ Regulations (${regulations.length})`);
+
   console.log('\n✅ Seed дуусав!\n');
   console.log('Login мэдээлэл:');
   console.log('  Admin: admin@soyolerdem.edu.mn / admin123');

@@ -240,6 +240,29 @@ model JobOpening {
   @@index([active, order])
 }
 
+/// School regulation / journal entry — admin uploads a PDF with a
+/// title, cover image and short description; the public site lists them
+/// at /regulations and opens each one in a flipbook PDF reader.
+model Regulation {
+  id          String        @id @default(cuid())
+  /// URL-safe slug, e.g. "surah-juram".
+  slug        String        @unique
+  title       String
+  /// Short blurb shown on the listing card.
+  description String?
+  /// PDF location — Vercel Blob URL or /public path.
+  fileUrl     String
+  /// Optional cover thumbnail for the listing card.
+  coverImage  String?
+  status      ContentStatus @default(PUBLISHED)
+  order       Int           @default(0)
+  views       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, order])
+}
+
 /// Submission from the public job-application form (7-section). Kept
 /// separate from `ContactSubmission` so the admin can triage hiring
 /// applications independently from general inquiries.

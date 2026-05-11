@@ -148,7 +148,7 @@ export function FileUpload({
   className,
   hint = 'PDF файл сонгох (max 50 MB)',
 }: Omit<ImageUploadProps, 'folder'> & {
-  folder?: 'research' | 'newspapers' | 'misc';
+  folder?: 'research' | 'newspapers' | 'regulations' | 'misc';
   hint?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);

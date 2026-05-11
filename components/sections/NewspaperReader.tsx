@@ -33,6 +33,16 @@ interface NewspaperReaderProps {
   issueNumber: number;
   issueTitle?: string | null;
   publishedAt?: Date | null;
+  /**
+   * Header eyebrow label, default "Соёл Эрдэм · Сонин хэвлэл". Passable
+   * so the same reader can power /regulations and other PDF surfaces.
+   */
+  eyebrow?: string;
+  /**
+   * Whether to render the "№<n>" prefix before the title. Newspapers use
+   * it, regulations don't. Defaults to true.
+   */
+  showIssueNumber?: boolean;
 }
 
 type FitMode = 'page' | 'width';
@@ -57,6 +67,8 @@ export function NewspaperReader({
   issueNumber,
   issueTitle,
   publishedAt,
+  eyebrow = 'Соёл Эрдэм · Сонин хэвлэл',
+  showIssueNumber = true,
 }: NewspaperReaderProps) {
   const [numPages, setNumPages] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -218,11 +230,12 @@ export function NewspaperReader({
               </div>
               <div className="min-w-0">
                 <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold-500 sm:text-[10px]">
-                  Соёл Эрдэм · Сонин хэвлэл
+                  {eyebrow}
                 </p>
                 <p className="truncate font-serif text-base font-bold leading-tight sm:text-lg">
-                  №{issueNumber}
-                  {issueTitle ? ` · ${issueTitle}` : ''}
+                  {showIssueNumber && <>№{issueNumber}</>}
+                  {showIssueNumber && issueTitle ? ' · ' : ''}
+                  {issueTitle}
                   {dateLabel ? (
                     <span className="ml-2 text-xs font-normal text-text-body sm:text-sm">
                       · {dateLabel}

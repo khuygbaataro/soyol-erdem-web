@@ -27,6 +27,7 @@ const UTILITY_LINKS = [
   },
   { label: 'Номын сан', href: '/library', external: false, featured: false },
   { label: 'Сонин хэвлэл', href: '/sonin-hewlel', external: false, featured: false },
+  { label: 'Дүрэм журам', href: '/regulations', external: false, featured: false },
 ] as const;
 
 /**

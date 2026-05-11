@@ -144,6 +144,22 @@ export const siteContentBulkSchema = z.object({
 export type SiteContentItemInput = z.infer<typeof siteContentItemSchema>;
 export type SiteContentBulkInput = z.infer<typeof siteContentBulkSchema>;
 
+/* Regulation — school regulations / rules PDFs */
+export const regulationSchema = z.object({
+  slug: z
+    .string()
+    .regex(slugRegex, 'Зөвхөн жижиг үсэг, тоо, зураас (-)')
+    .min(2)
+    .max(80),
+  title: z.string().min(2).max(200),
+  description: z.string().max(500).optional().or(z.literal('')),
+  fileUrl: z.string().url(),
+  coverImage: z.string().url().optional().or(z.literal('')),
+  status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
+  order: z.coerce.number().int().min(0).max(999),
+});
+export type RegulationInput = z.infer<typeof regulationSchema>;
+
 /* Newspaper — school newspaper PDF issues */
 export const newspaperSchema = z.object({
   issueNumber: z.coerce.number().int().min(1).max(99999),

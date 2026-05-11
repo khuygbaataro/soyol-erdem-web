@@ -16,6 +16,7 @@ import {
   LogOut,
   Microscope,
   Newspaper,
+  Scroll,
   Settings as SettingsIcon,
   Users,
 } from 'lucide-react';
@@ -51,6 +52,7 @@ const NAV: readonly NavGroup[] = [
     items: [
       { label: 'Мэдээ', href: '/admin/news', icon: FileText, roles: ['ADMIN', 'EDITOR'] },
       { label: 'Сонин хэвлэл', href: '/admin/newspapers', icon: Newspaper, roles: ['ADMIN', 'EDITOR'] },
+      { label: 'Дүрэм журам', href: '/admin/regulations', icon: Scroll, roles: ['ADMIN', 'EDITOR'] },
       { label: 'Номын сан', href: '/admin/library', icon: BookOpen, roles: ['ADMIN', 'LIBRARIAN'] },
       { label: 'Эрдэм шинжилгээ', href: '/admin/research', icon: Microscope, roles: ['ADMIN', 'RESEARCHER'] },
       { label: 'Мэргэжил', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
