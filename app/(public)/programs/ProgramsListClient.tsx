@@ -71,7 +71,6 @@ export function ProgramsListClient({ items }: { items: Item[] }) {
               <span className="mb-1 text-sm text-text-muted">
                 {group.items.length} хөтөлбөр
               </span>
-              <span className="ml-auto h-1 w-16 rounded-full bg-gold-500" />
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {group.items.map((p) => (
