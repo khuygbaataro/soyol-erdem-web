@@ -235,7 +235,7 @@ export default async function AboutPage() {
                   <h3 className="text-base font-bold uppercase tracking-wide text-navy-900">
                     {item.title}
                   </h3>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-text-body">
+                  <p className="mt-3 flex-1 whitespace-pre-line text-sm leading-relaxed text-text-body">
                     {item.text}
                   </p>
                 </article>

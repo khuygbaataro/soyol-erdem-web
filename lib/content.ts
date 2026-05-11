@@ -195,7 +195,10 @@ export const MISSION_VISION_VALUES = {
   values: {
     title: 'ҮНЭТ ЗҮЙЛС (С-Э-Д-С)',
     icon: Star,
-    text: 'С — Соёл уламжлалаа дээдэлж | Э — Эрдэм мэдлэгийг эрхэмлэн | Д — Даяаршсан хөгжлийг хүндэтгэж | С — Судалгааны төгөлдөршилд тэмүүлнэ.',
+    // Newline-separated so the about-page card stacks each acronym
+    // letter on its own line (rendered with `whitespace-pre-line`).
+    text:
+      'С — Соёл уламжлалаа дээдэлж\nЭ — Эрдэм мэдлэгийг эрхэмлэн\nД — Даяаршсан хөгжлийг хүндэтгэж\nС — Судалгааны төгөлдөршилд тэмүүлнэ.',
   },
   slogan: {
     title: 'УРИА',
