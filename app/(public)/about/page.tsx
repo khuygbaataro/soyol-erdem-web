@@ -118,26 +118,6 @@ export default async function AboutPage() {
                 className="object-cover"
                 loading="lazy"
               />
-              <div
-                aria-hidden
-                className="absolute inset-x-6 bottom-6 flex items-center gap-3 rounded-card bg-navy-900/90 px-5 py-3 backdrop-blur"
-              >
-                <Image
-                  src="/logo.png"
-                  alt=""
-                  width={36}
-                  height={36}
-                  className="h-9 w-9 shrink-0 rounded-full bg-white p-1"
-                />
-                <div className="leading-tight">
-                  <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-white">
-                    Соёл Эрдэм
-                  </div>
-                  <div className="text-[10px] uppercase tracking-[0.18em] text-gold-400">
-                    Их Сургууль · est. {SCHOOL_INFO.founded}
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
