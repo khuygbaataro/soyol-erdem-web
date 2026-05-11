@@ -280,8 +280,8 @@ async function main() {
     { key: 'home.hero.title.line2', group: 'home', type: 'TEXT' as const, label: 'Hero — гарчиг 2-р мөр', value: 'ЭНДЭЭС ЭХЭЛ', order: 2 },
     { key: 'home.hero.italic', group: 'home', type: 'TEXT' as const, label: 'Hero — italic accent', value: 'Япон хэлний боловсролын манлайлагч', order: 3 },
     { key: 'home.hero.body', group: 'home', type: 'TEXT' as const, label: 'Hero — танилцуулга текст', hint: '3-4 өгүүлбэр', value: 'Япон улсын 100% хөрөнгө оруулалттай Соёл Эрдэм Дээд Сургууль 1993 онд байгуулагдсан. Манай сургууль нь япон хэлний боловсролын чиглэлээр Монгол улсдаа тэргүүлэгч сургууль бөгөөд япон улсын 30 гаруй их, дээд сургуультай хамтран ажиллаж, оюутан солилцооны хөтөлбөр амжилттай хэрэгжүүлсээр байна. Бид одоогийн байдлаар 1500 гаруй оюутныг төгсгөж, нийт төгсөгчдийн 40 орчим хувь нь Япон улсад суралцаж, ажиллаж байна.', multiline: true, order: 4 },
-    { key: 'home.hero.cta_primary', group: 'home', type: 'TEXT' as const, label: 'Hero — үндсэн товчны нэр', value: 'Элсэлт мэдээлэл авах', order: 5 },
-    { key: 'home.hero.cta_secondary', group: 'home', type: 'TEXT' as const, label: 'Hero — нэмэлт товчны нэр', value: 'Бидний тухай дэлгэрэнгүй', order: 6 },
+    { key: 'home.hero.cta_primary', group: 'home', type: 'TEXT' as const, label: 'Hero — үндсэн товчны нэр', value: 'Мэргэжлээ сонгох', order: 5 },
+    { key: 'home.hero.cta_secondary', group: 'home', type: 'TEXT' as const, label: 'Hero — нэмэлт товчны нэр', value: 'Элсэлтийн мэдээлэл', order: 6 },
     { key: 'home.hero.image', group: 'home', type: 'IMAGE' as const, label: 'Hero — баруун талын зураг', hint: 'Барилгын зураг (4:5 эсвэл 5:4 хэмжээтэй сайн)', value: '', order: 7 },
 
     // About
