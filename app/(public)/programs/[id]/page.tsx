@@ -50,7 +50,7 @@ export default async function ProgramDetailPage({ params }: PageProps) {
               </span>
               <Badge variant="cream">{program.degree}</Badge>
               <Badge variant="outline">{program.duration}</Badge>
-              {program.code && <Badge variant="navy">Код: {program.code}</Badge>}
+              {program.code && <Badge variant="navy">Индекс: {program.code}</Badge>}
             </div>
 
             <h2 className="text-2xl font-bold text-navy-900">Хөтөлбөрийн зорилго</h2>
