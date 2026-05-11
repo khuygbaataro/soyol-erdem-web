@@ -71,15 +71,19 @@ export default async function HomePage() {
               {heroBody}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
+              {/* Primary jumps straight to the 8-program grid; secondary
+                  lands on the admission overview. Both labels switched
+                  per the editor's home-page note ("Мэргэжлээ сонгох" /
+                  "Элсэлтийн мэдээлэл"). */}
               <Button
-                href="/admission"
+                href="/admission#info"
                 variant="primary"
                 size="lg"
                 icon={<ChevronRight className="h-5 w-5" />}
               >
                 {heroCtaPrimary}
               </Button>
-              <Button href="/about" variant="outline" size="lg">
+              <Button href="/admission" variant="outline" size="lg">
                 {heroCtaSecondary}
               </Button>
             </div>
