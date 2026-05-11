@@ -30,6 +30,7 @@ export default async function NewsPage() {
         title="МЭДЭЭ"
         subtitle="Сургуулийн сүүлийн мэдээ, үйл явдал, амжилт."
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Мэдээ' }]}
+        backgroundImage="/medee_banner.png"
       />
 
       <NewsListClient items={items} />

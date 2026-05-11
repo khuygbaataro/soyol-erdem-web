@@ -24,6 +24,7 @@ export default function ResearchPage() {
         title="ЭРДЭМ ШИНЖИЛГЭЭ, СУДАЛГААНЫ АЖИЛ"
         subtitle="Тэнхимүүдийн судалгааны тэргүүлэх чиглэл, ахисан түвшний судалгаа, олон улсын хамтын ажиллагаа."
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Эрдэм шинжилгээ' }]}
+        backgroundImage="/erdem_shinjilgee_banner.png"
       />
 
       {/* Intro */}
