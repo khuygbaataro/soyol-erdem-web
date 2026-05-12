@@ -5,6 +5,7 @@ import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { CtaBanner } from '@/components/sections/CtaBanner';
 import { ResearchJournalsList } from '@/components/sections/ResearchJournalsList';
+import { getSiteContentMap } from '@/lib/site-content';
 import {
   RESEARCH_AREAS,
   RESEARCH_DEPARTMENTS,
@@ -13,18 +14,23 @@ import {
 } from '@/lib/content';
 import { RESEARCH_JOURNALS } from '@/lib/research-journals';
 
+export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Эрдэм шинжилгээ',
 };
 
-export default function ResearchPage() {
+export default async function ResearchPage() {
+  const banners = await getSiteContentMap('banners');
+  const banner =
+    banners.get('page.research.banner') || '/erdem_shinjilgee_banner.png';
+
   return (
     <>
       <PageHero
         title="ЭРДЭМ ШИНЖИЛГЭЭ, СУДАЛГААНЫ АЖИЛ"
         subtitle="Тэнхимүүдийн судалгааны тэргүүлэх чиглэл, ахисан түвшний судалгаа, олон улсын хамтын ажиллагаа."
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Эрдэм шинжилгээ' }]}
-        backgroundImage="/erdem_shinjilgee_banner.png"
+        backgroundImage={banner}
       />
 
       {/* Intro */}

@@ -290,6 +290,14 @@ async function main() {
     { key: 'about.hero.body', group: 'about', type: 'TEXT' as const, label: 'Hero — танилцуулга текст', hint: '3-4 өгүүлбэр', value: 'Япон улсын 100% хөрөнгө оруулалттай Соёл Эрдэм Дээд Сургууль 1993 онд байгуулагдсан. Манай сургууль нь япон хэлний боловсролын чиглэлээр Монгол улсдаа тэргүүлэгч сургууль бөгөөд япон улсын 30 гаруй их, дээд сургуультай хамтран ажиллаж, оюутан солилцооны хөтөлбөр амжилттай хэрэгжүүлсээр байна. Бид одоогийн байдлаар 1500 гаруй оюутныг төгсгөж, нийт төгсөгчдийн 40 орчим хувь нь Япон улсад суралцаж, ажиллаж байна.', multiline: true, order: 3 },
     { key: 'about.hero.cta_label', group: 'about', type: 'TEXT' as const, label: 'Hero — товчны нэр', value: 'Бидний тухай дэлгэрэнгүй', order: 4 },
     { key: 'about.hero.image', group: 'about', type: 'IMAGE' as const, label: 'Hero — баруун талын зураг', hint: 'Барилгын зураг (4:3 эсвэл 5:4 хэмжээтэй сайн)', value: 'https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80', order: 5 },
+
+    // Inner-page banner photos — each one drives the <PageHero> photo on
+    // its page. Empty value falls back to /nice_banner.png (the default).
+    { key: 'page.programs.banner', group: 'banners', type: 'IMAGE' as const, label: 'Сургалт хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 1 },
+    { key: 'page.research.banner', group: 'banners', type: 'IMAGE' as const, label: 'Эрдэм шинжилгээ хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 2 },
+    { key: 'page.student-life.banner', group: 'banners', type: 'IMAGE' as const, label: 'Оюутан хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 3 },
+    { key: 'page.international.banner', group: 'banners', type: 'IMAGE' as const, label: 'Хамтын ажиллагаа хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 4 },
+    { key: 'page.news.banner', group: 'banners', type: 'IMAGE' as const, label: 'Мэдээ хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 5 },
   ];
   for (const c of siteContent) {
     await prisma.siteContent.upsert({

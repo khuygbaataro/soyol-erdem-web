@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 const GROUP_LABELS: Record<string, string> = {
   home: 'Нүүр хуудас',
   about: 'Сургуулийн тухай',
+  banners: 'Banner зургууд',
 };
 
 interface LoadResult {

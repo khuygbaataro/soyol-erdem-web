@@ -20,6 +20,7 @@ import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { QuoteCard } from '@/components/ui/QuoteCard';
+import { getSiteContentMap } from '@/lib/site-content';
 import {
   BUNKYOSAI_GRADE_ACTS,
   STUDENT_LIFE_CHAPTERS,
@@ -28,6 +29,7 @@ import {
 } from '@/lib/content';
 import { cn } from '@/lib/utils';
 
+export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Оюутны амьдрал',
 };
@@ -134,15 +136,17 @@ function ChapterSection({ chapter }: { chapter: StudentChapter }) {
   );
 }
 
-export default function StudentLifePage() {
+export default async function StudentLifePage() {
   // Build a quick map for sub-nav-driven jumps; chapters are rendered in
   // their natural order from STUDENT_LIFE_CHAPTERS.
+  const banners = await getSiteContentMap('banners');
   return (
     <>
       <PageHero
         title="ОЮУТНЫ АМЬДРАЛ"
         subtitle="Бид бол гэр бүл — Соёл Эрдэмд хичээл бол зөвхөн зургаан жилийн нэг хэсэг."
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Оюутны амьдрал' }]}
+        backgroundImage={banners.get('page.student-life.banner') || undefined}
       />
 
       {/* Intro */}
