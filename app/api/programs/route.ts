@@ -31,6 +31,7 @@ export async function POST(req: Request) {
       fullDescription: parsed.data.fullDescription,
       skills: parsed.data.skills,
       curriculum: parsed.data.curriculum || null,
+      careerOutlook: parsed.data.careerOutlook || null,
       language: parsed.data.language,
       admissionScore: parsed.data.admissionScore,
       active: parsed.data.active ?? true,

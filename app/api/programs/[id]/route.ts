@@ -25,6 +25,7 @@ export async function PUT(req: Request, { params }: Ctx) {
       fullDescription: parsed.data.fullDescription,
       skills: parsed.data.skills,
       curriculum: parsed.data.curriculum || null,
+      careerOutlook: parsed.data.careerOutlook || null,
       language: parsed.data.language,
       admissionScore: parsed.data.admissionScore,
       active: parsed.data.active ?? true,

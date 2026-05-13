@@ -33,6 +33,7 @@ export function ProgramForm({ initial = {}, mode }: Props) {
   const [fullDescription, setFullDescription] = useState(initial.fullDescription ?? '');
   const [skills, setSkills] = useState(initial.skills ?? '');
   const [curriculum, setCurriculum] = useState(initial.curriculum ?? '');
+  const [careerOutlook, setCareerOutlook] = useState(initial.careerOutlook ?? '');
   const [language, setLanguage] = useState(initial.language ?? 'Япон, Монгол');
   const [admissionScore, setAdmissionScore] = useState<string>(initial.admissionScore?.toString() ?? '');
   const [active, setActive] = useState(initial.active ?? true);
@@ -50,6 +51,7 @@ export function ProgramForm({ initial = {}, mode }: Props) {
       const payload = {
         name, slug, code: code || undefined, degree, duration,
         shortDescription, fullDescription, skills, curriculum: curriculum || undefined,
+        careerOutlook: careerOutlook || undefined,
         language, admissionScore: admissionScore ? Number(admissionScore) : undefined,
         active, icon, order: Number(order),
       };
@@ -107,6 +109,18 @@ export function ProgramForm({ initial = {}, mode }: Props) {
         </FormField>
         <FormField label="Хичээлийн хөтөлбөр (нэмэлт)" hint="Курс, кредит, гэх мэт.">
           <textarea value={curriculum} onChange={(e) => setCurriculum(e.target.value)} rows={4} className={textareaClasses} />
+        </FormField>
+        <FormField
+          label="Ажлын боломж"
+          hint="Энэ мэргэжлээр төгсөгчид ямар ажил хийдэг, аль салбарт ажилладаг тухай товч тайлбар."
+        >
+          <textarea
+            value={careerOutlook}
+            onChange={(e) => setCareerOutlook(e.target.value)}
+            rows={5}
+            className={textareaClasses}
+            placeholder="Манай төгсөгчид Япон болон Монголын IT, бизнес, орчуулга..."
+          />
         </FormField>
       </Card>
 

@@ -132,6 +132,9 @@ model Program {
   fullDescription  String
   skills           String
   curriculum       String?
+  /// "Ажлын боломж" / careers — admin-editable narrative shown on the
+  /// program detail page. Optional; defaults to a generic blurb when empty.
+  careerOutlook    String?
   language         String
   admissionScore   Int?
   active           Boolean  @default(true)

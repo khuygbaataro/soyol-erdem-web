@@ -89,10 +89,9 @@ export default async function ProgramDetailPage({ params }: PageProps) {
             )}
 
             <h2 className="mt-10 text-2xl font-bold text-navy-900">Ажлын боломж</h2>
-            <p className="mt-3 text-sm text-text-body">
-              Манай төгсөгчид Япон болон Монголын IT, бизнес, орчуулга, боловсрол,
-              аялал жуулчлалын салбарт амжилттай ажиллаж байна. Төгсөгчдийн 40%
-              Япон улсад суралцаж, ажиллаж байна.
+            <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-text-body">
+              {program.careerOutlook ||
+                'Манай төгсөгчид Япон болон Монголын IT, бизнес, орчуулга, боловсрол, аялал жуулчлалын салбарт амжилттай ажиллаж байна. Төгсөгчдийн 40% Япон улсад суралцаж, ажиллаж байна.'}
             </p>
           </div>
 

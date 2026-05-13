@@ -55,6 +55,7 @@ export const programSchema = z.object({
   fullDescription: z.string().min(20),
   skills: z.string().min(0), // newline-separated
   curriculum: z.string().optional().or(z.literal('')),
+  careerOutlook: z.string().max(5000).optional().or(z.literal('')),
   language: z.string().min(2),
   admissionScore: z.coerce.number().int().min(0).max(900).optional(),
   active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
