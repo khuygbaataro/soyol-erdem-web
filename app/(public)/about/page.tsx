@@ -89,7 +89,7 @@ export default async function AboutPage() {
               <span className="font-medium text-navy-900">Сургуулийн тухай</span>
             </nav>
 
-            <h1 className="mt-5 text-[2.75rem] font-bold leading-[1.05] tracking-tight text-navy-900 sm:text-5xl lg:text-[4.25rem]">
+            <h1 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-navy-900 sm:text-4xl lg:text-5xl">
               {heroTitle1}
               <br />
               {heroTitle2}
@@ -135,7 +135,7 @@ export default async function AboutPage() {
               <span className="h-px w-10 bg-gold-500" aria-hidden />
             </div>
             <h2 className="mt-4 text-h2 font-bold text-text-heading">
-              МАНАЙ СУРГУУЛИЙН ТҮҮХТЭЙ ДЭЛГЭРЭНГҮЙ ТАНИЛЦАХ 4 ХЭСЭГ
+              МАНАЙ СУРГУУЛИЙН ТҮҮХТЭЙ ТАНИЛЦАХ ХЭСЭГ
             </h2>
           </div>
 
