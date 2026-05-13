@@ -303,6 +303,25 @@ async function main() {
     { key: 'about.hero.cta_label', group: 'about', type: 'TEXT' as const, label: 'Hero — товчны нэр', value: 'Бидний тухай дэлгэрэнгүй', order: 4 },
     { key: 'about.hero.image', group: 'about', type: 'IMAGE' as const, label: 'Hero — баруун талын зураг', hint: 'Барилгын зураг (4:3 эсвэл 5:4 хэмжээтэй сайн)', value: 'https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80', order: 5 },
 
+    // Research page editable blocks
+    { key: 'research.dept.1.title', group: 'research', type: 'TEXT' as const, label: '1-р тэнхим — Гарчиг', value: 'Япон судлалын тэнхим', order: 1 },
+    { key: 'research.dept.1.topics', group: 'research', type: 'TEXT' as const, label: '1-р тэнхим — Сэдвүүд', hint: 'Мөр бүрт нэг сэдэв бичнэ үү.', value: 'Япон хэл утга зохиол судлал\nЯпон-монгол, Монгол-япон хэлний орчуулга зүй\nЯпон хэл заах арга\nЯпон хэл соёл судлал\nМонгол-Япон, Япон-Монгол харилцаа судлал\nЯпон орон судлал', multiline: true, order: 2 },
+    { key: 'research.dept.2.title', group: 'research', type: 'TEXT' as const, label: '2-р тэнхим — Гарчиг', value: 'Мэдээллийн технологийн тэнхим', order: 3 },
+    { key: 'research.dept.2.topics', group: 'research', type: 'TEXT' as const, label: '2-р тэнхим — Сэдвүүд', hint: 'Мөр бүрт нэг сэдэв бичнэ үү.', value: 'Сүлжээний аюулгүй байдал\nПрограмм хангамжийн хэрэглээ\nАвтоматжуулалт', multiline: true, order: 4 },
+    { key: 'research.dept.3.title', group: 'research', type: 'TEXT' as const, label: '3-р тэнхим — Гарчиг', value: 'Ахисан түвшний судалгаа', order: 5 },
+    { key: 'research.dept.3.topics', group: 'research', type: 'TEXT' as const, label: '3-р тэнхим — Сэдвүүд', hint: 'Мөр бүрт нэг сэдэв бичнэ үү.', value: 'Япон хэл утга зохиол судлал\nЯпон-монгол, Монгол-япон хэлний орчуулга зүй\nЯпон хэл заах арга\nЯпон хэл соёл судлал\nМонгол судлал, Монгол утга зохиол судлал', multiline: true, order: 6 },
+    { key: 'research.highlight.1', group: 'research', type: 'TEXT' as const, label: 'Онцлох үйл ажиллагаа — 1', hint: 'Эхний кардан дээр харагдах текст.', value: 'Тус сургуулийн эрдэмтэн багш нар судалгааны чиглэлээр судалгааны профессорын баг байгуулан үйл ажиллагаагаа явуулдаг.', multiline: true, order: 7 },
+    { key: 'research.highlight.2', group: 'research', type: 'TEXT' as const, label: 'Онцлох үйл ажиллагаа — 2', value: 'Программ хангамжийн мэргэжлийн оюутнуудыг 2023 оноос эхлэн CISCO академийн албан ёсны гэрчилгээтэй төгсдөг болсноор олон улсад IT компаниудад ажиллах боломжийг олгодог. Мөн мэдээллийн аюулгүй байдлын мэргэшүүлэх сургалт, компьютерын сүлжээ, Internet of Things, Программ хангамж, OS & IT, Packet Tracer сургалтуудыг Дээд сургуулийн оюутанд үнэ төлбөргүй зааж сургалт явуулж байна.', multiline: true, order: 8 },
+    { key: 'research.highlight.3', group: 'research', type: 'TEXT' as const, label: 'Онцлох үйл ажиллагаа — 3', value: 'Тус хичээлийн жилээс эхлэн СЭДС нь онлайн болон цахим сургалтандаа MOODLE зайн сургалтын платформыг хэрэглэж эхэллээ. Ингэснээр гадаадаас элсэн суралцаж буй магиструуд болон интерншип хөтөлбөрт хамрагдсан бакалаврын хөтөлбөрийн оюутнууд хугацаа алдалгүй сургалтаа үргэлжлүүлэн суралцах боломж нээгдэж байна.', multiline: true, order: 9 },
+
+    // Research journal cover photos — by journal id. Empty value renders
+    // the default navy/gold spine card.
+    { key: 'research.journal.sp-2023-n1.cover', group: 'research', type: 'IMAGE' as const, label: '1-р боть (2023 №1) — Нүүр зураг', hint: 'Сэтгүүлийн нүүрний зураг (3:4 хэмжээтэй тохиромжтой).', value: '', order: 11 },
+    { key: 'research.journal.sp-2024-n1.cover', group: 'research', type: 'IMAGE' as const, label: '2-р боть (2024 №1) — Нүүр зураг', hint: 'Сэтгүүлийн нүүрний зураг (3:4 хэмжээтэй тохиромжтой).', value: '', order: 12 },
+    { key: 'research.journal.sp-2025-n1.cover', group: 'research', type: 'IMAGE' as const, label: '3-р боть (2025 №1) — Нүүр зураг', hint: 'Сэтгүүлийн нүүрний зураг (3:4 хэмжээтэй тохиромжтой).', value: '', order: 13 },
+    { key: 'research.journal.sp-2025-n2.cover', group: 'research', type: 'IMAGE' as const, label: '4-р боть (2025 №2) — Нүүр зураг', hint: 'Сэтгүүлийн нүүрний зураг (3:4 хэмжээтэй тохиромжтой).', value: '', order: 14 },
+    { key: 'research.journal.sp-2026-n1.cover', group: 'research', type: 'IMAGE' as const, label: '5-р боть (2026 №1) — Нүүр зураг', hint: 'Сэтгүүлийн нүүрний зураг (3:4 хэмжээтэй тохиромжтой).', value: '', order: 15 },
+
     // Inner-page banner photos — each one drives the <PageHero> photo on
     // its page. Empty value falls back to /nice_banner.png (the default).
     { key: 'page.programs.banner', group: 'banners', type: 'IMAGE' as const, label: 'Сургалт хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 1 },

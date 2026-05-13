@@ -10,6 +10,7 @@ const GROUP_LABELS: Record<string, string> = {
   home: 'Нүүр хуудас',
   about: 'Сургуулийн тухай',
   banners: 'Banner зургууд',
+  research: 'Эрдэм шинжилгээ',
 };
 
 interface LoadResult {
