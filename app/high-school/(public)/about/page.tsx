@@ -223,18 +223,24 @@ export default function HighSchoolAboutPage() {
       <Section background="white" spacing="md">
         <SectionTitle title="ЗАХИРЛЫН МЭНДЧИЛГЭЭ" />
         <div className="grid gap-8 lg:grid-cols-[1fr_2fr] lg:items-start">
-          <div className="rounded-card bg-gradient-to-br from-navy-900 via-[#243454] to-[#1c2745] p-8 text-white">
-            <Quote className="h-8 w-8 text-gold-400" />
-            <p className="mt-4 font-serif text-xl font-bold leading-tight">
-              Д. Эрдэнэцэцэг
-            </p>
-            <p className="mt-1 text-sm text-white/75">
-              Захирал · Соёл Эрдэм Ахлах сургууль
-            </p>
-            <div className="mt-6 h-px w-full bg-gold-500/40" />
-            <p className="mt-6 text-xs uppercase tracking-widest text-gold-400">
-              Мэндчилгээ
-            </p>
+          <div className="overflow-hidden rounded-card bg-navy-900 text-white shadow-card-hover">
+            <div className="relative aspect-[4/5] w-full overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/highschool-director.jpg"
+                alt="Д. Эрдэнэцэцэг — Соёл Эрдэм Ахлах сургуулийн захирал"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-900/95 via-navy-900/55 to-transparent px-6 pb-6 pt-12">
+                <Quote className="h-6 w-6 text-gold-400" />
+                <p className="mt-3 font-serif text-xl font-bold leading-tight text-white">
+                  Д. Эрдэнэцэцэг
+                </p>
+                <p className="mt-1 text-sm text-white/85">
+                  Захирал · Соёл Эрдэм Ахлах сургууль
+                </p>
+              </div>
+            </div>
           </div>
           <div className="space-y-4 text-base leading-relaxed text-text-body">
             <p>

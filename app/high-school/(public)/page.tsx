@@ -50,8 +50,8 @@ const PHILOSOPHY: { icon: LucideIcon; label: string; title: string; body: string
   {
     icon: Award,
     label: 'Үнэт зүйл',
-    title: 'C · S · A · C',
-    body: 'Соёлыг хүндэтгэх (Culture), мэдлэгийг үнэлэх (Studies), амьдралын мэргэн ухаан (Aware), мэдлэгийн зайг арилгах (Cover) дөрвөн зарчим.',
+    title: 'С · Э · А · С',
+    body: 'С – Соёл уламжлалаа дээдэлсэн · Э – Эрдэм мэдлэгийг эрхэмлэсэн · А – Амьдрах арга ухаанд суралцсан · С – Сурлагын хоцрогдолгүй суралцагч бэлтгэх.',
   },
 ];
 
@@ -157,18 +157,18 @@ export default async function HighSchoolHomePage() {
           </div>
 
           <div className="relative aspect-[4/5] overflow-hidden rounded-image bg-cream-soft shadow-card-hover">
-            <div className="absolute inset-0 bg-gradient-to-br from-navy-900/10 via-transparent to-gold-500/10" />
-            <div className="relative flex h-full flex-col justify-end p-8">
-              <span className="font-serif text-6xl font-semibold text-navy-900/15 md:text-8xl">
-                高
-              </span>
-              <p className="mt-2 text-sm font-semibold uppercase tracking-widest text-text-muted">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/highschool-photo.jpg"
+              alt="Соёл Эрдэм Ахлах Сургуулийн барилга"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-900/85 via-navy-900/50 to-transparent p-7 text-white">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
                 Senior High School
               </p>
-              <p className="mt-1 font-serif text-2xl font-bold text-navy-900">
-                Соёл Эрдэм
-              </p>
-              <p className="mt-1 text-sm text-text-body">
+              <p className="mt-1 font-serif text-2xl font-bold">Соёл Эрдэм</p>
+              <p className="mt-1 text-sm text-white/85">
                 Япон-Монголын боловсролын гүүр
               </p>
             </div>
