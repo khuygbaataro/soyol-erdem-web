@@ -165,8 +165,14 @@ export default async function ResearchPage() {
       {/* Journals */}
       <Section background="white">
         <SectionTitle
-          title="ЭРДЭМ ШИНЖИЛГЭЭНИЙ СЭТГҮҮЛ"
-          subtitle="Соёл Эрдэм Дээд Сургуулиас гаргадаг бот тус бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
+          title={
+            researchContent.get('research.journals.title') ||
+            'ЭРДЭМ ШИНЖИЛГЭЭНИЙ СЭТГҮҮЛ'
+          }
+          subtitle={
+            researchContent.get('research.journals.subtitle') ||
+            'Соёл Эрдэм Дээд Сургуулиас гаргадаг боть тус бүрийг номын хуудас эргүүлэн уншиж танилцана уу.'
+          }
         />
         <ResearchJournalsList journals={RESEARCH_JOURNALS} covers={journalCovers} />
       </Section>

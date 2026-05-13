@@ -314,6 +314,10 @@ async function main() {
     { key: 'research.highlight.2', group: 'research', type: 'TEXT' as const, label: 'Онцлох үйл ажиллагаа — 2', value: 'Программ хангамжийн мэргэжлийн оюутнуудыг 2023 оноос эхлэн CISCO академийн албан ёсны гэрчилгээтэй төгсдөг болсноор олон улсад IT компаниудад ажиллах боломжийг олгодог. Мөн мэдээллийн аюулгүй байдлын мэргэшүүлэх сургалт, компьютерын сүлжээ, Internet of Things, Программ хангамж, OS & IT, Packet Tracer сургалтуудыг Дээд сургуулийн оюутанд үнэ төлбөргүй зааж сургалт явуулж байна.', multiline: true, order: 8 },
     { key: 'research.highlight.3', group: 'research', type: 'TEXT' as const, label: 'Онцлох үйл ажиллагаа — 3', value: 'Тус хичээлийн жилээс эхлэн СЭДС нь онлайн болон цахим сургалтандаа MOODLE зайн сургалтын платформыг хэрэглэж эхэллээ. Ингэснээр гадаадаас элсэн суралцаж буй магиструуд болон интерншип хөтөлбөрт хамрагдсан бакалаврын хөтөлбөрийн оюутнууд хугацаа алдалгүй сургалтаа үргэлжлүүлэн суралцах боломж нээгдэж байна.', multiline: true, order: 9 },
 
+    // Research journals section heading + intro
+    { key: 'research.journals.title', group: 'research', type: 'TEXT' as const, label: 'Сэтгүүлийн хэсгийн гарчиг', value: 'ЭРДЭМ ШИНЖИЛГЭЭНИЙ СЭТГҮҮЛ', order: 10 },
+    { key: 'research.journals.subtitle', group: 'research', type: 'TEXT' as const, label: 'Сэтгүүлийн хэсгийн товч тайлбар', hint: 'Сэтгүүлийн карт жагсаалтын дээр харагдах нэг өгүүлбэр.', value: 'Соёл Эрдэм Дээд Сургуулиас гаргадаг боть тус бүрийг номын хуудас эргүүлэн уншиж танилцана уу.', multiline: true, order: 10 },
+
     // Research journal cover photos — by journal id. Empty value renders
     // the default navy/gold spine card.
     { key: 'research.journal.sp-2023-n1.cover', group: 'research', type: 'IMAGE' as const, label: '1-р боть (2023 №1) — Нүүр зураг', hint: 'Сэтгүүлийн нүүрний зураг (3:4 хэмжээтэй тохиромжтой).', value: '', order: 11 },
