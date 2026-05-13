@@ -98,21 +98,35 @@ export function ProgramForm({ initial = {}, mode }: Props) {
             <input required value={duration} onChange={(e) => setDuration(e.target.value)} className={inputClasses} placeholder="4 жил" />
           </FormField>
         </div>
-        <FormField label="Товч тайлбар" required>
+        <FormField
+          label="Товч тайлбар"
+          required
+          hint="Мэргэжлийн картан дээр (жагсаалт хуудсанд) болон banner-ын subtitle-д харагдана. 2–3 өгүүлбэр."
+        >
           <textarea required value={shortDescription} onChange={(e) => setShortDescription(e.target.value)} rows={3} className={textareaClasses} />
         </FormField>
-        <FormField label="Бүтэн тайлбар" required>
+        <FormField
+          label="Хөтөлбөрийн зорилго"
+          required
+          hint="Дэлгэрэнгүй хуудасны эхний хэсэг — энэ мэргэжлийн зорилго, бэлтгэх мэргэжилтний онцлог."
+        >
           <textarea required value={fullDescription} onChange={(e) => setFullDescription(e.target.value)} rows={6} className={textareaClasses} />
         </FormField>
-        <FormField label="Олгох чадвар" hint="Мөр бүрт нэг чадвар бичнэ үү.">
+        <FormField
+          label="Олгох чадвар"
+          hint="Дэлгэрэнгүй хуудсанд жагсаалт болж харагдана. Мөр бүрт НЭГ чадвар бичнэ үү."
+        >
           <textarea value={skills} onChange={(e) => setSkills(e.target.value)} rows={5} className={textareaClasses} placeholder="JLPT N1, N2 түвшний япон хэлний мэдлэг&#10;Аман ба бичгийн орчуулгын ур чадвар" />
         </FormField>
-        <FormField label="Хичээлийн хөтөлбөр (нэмэлт)" hint="Курс, кредит, гэх мэт.">
+        <FormField
+          label="Хичээлийн хөтөлбөр"
+          hint="Курс, кредит, жил тутмын модулиудын товч жагсаалт (нэмэлт)."
+        >
           <textarea value={curriculum} onChange={(e) => setCurriculum(e.target.value)} rows={4} className={textareaClasses} />
         </FormField>
         <FormField
           label="Ажлын боломж"
-          hint="Энэ мэргэжлээр төгсөгчид ямар ажил хийдэг, аль салбарт ажилладаг тухай товч тайлбар."
+          hint="Энэ мэргэжлээр төгсөгчид ямар ажил хийдэг, аль салбарт ажилладаг тухай тайлбар."
         >
           <textarea
             value={careerOutlook}
@@ -126,11 +140,14 @@ export function ProgramForm({ initial = {}, mode }: Props) {
 
       <div className="space-y-6">
         <Card hover={false}>
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-navy-900">Тохиргоо</h3>
+          <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-navy-900">Онцлох зүйл</h3>
+          <p className="mb-4 text-xs text-text-muted">
+            Дэлгэрэнгүй хуудасны баруун талын талбарт харагдана.
+          </p>
           <FormField label="Сургалтын хэл" required>
             <input required value={language} onChange={(e) => setLanguage(e.target.value)} className={inputClasses} />
           </FormField>
-          <FormField label="Элсэлтийн оноо" className="mt-4">
+          <FormField label="Элсэлтийн оноо" className="mt-4" hint="ЭЕШ-ийн доод оноо.">
             <input type="number" min={0} max={900} value={admissionScore} onChange={(e) => setAdmissionScore(e.target.value)} className={inputClasses} placeholder="600" />
           </FormField>
           <FormField label="Дүрс (Lucide icon)" className="mt-4">
