@@ -316,7 +316,7 @@ async function main() {
 
     // Research journals section heading + intro
     { key: 'research.journals.title', group: 'research', type: 'TEXT' as const, label: 'Сэтгүүлийн хэсгийн гарчиг', value: 'ЭРДЭМ ШИНЖИЛГЭЭНИЙ СЭТГҮҮЛ', order: 10 },
-    { key: 'research.journals.subtitle', group: 'research', type: 'TEXT' as const, label: 'Сэтгүүлийн хэсгийн товч тайлбар', hint: 'Сэтгүүлийн карт жагсаалтын дээр харагдах нэг өгүүлбэр.', value: 'Соёл Эрдэм Дээд Сургуулиас гаргадаг боть тус бүрийг номын хуудас эргүүлэн уншиж танилцана уу.', multiline: true, order: 10 },
+    { key: 'research.journals.subtitle', group: 'research', type: 'TEXT' as const, label: 'Сэтгүүлийн хэсгийн товч тайлбар', hint: 'Сэтгүүлийн карт жагсаалтын дээр харагдах нэг өгүүлбэр.', value: 'Соёл Эрдэм Дээд Сургуулийн эрдэм шинжилгээний сэтгүүлийн боть тус бүртэй танилцана уу.', multiline: true, order: 10 },
 
     // Research journal cover photos — by journal id. Empty value renders
     // the default navy/gold spine card.
