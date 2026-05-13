@@ -52,8 +52,8 @@ export const FOOTER_LINKS = {
     },
     {
       label: 'Цахим сургалт',
-      href: 'https://moodle.soyolerdem.edu.mn',
-      external: true,
+      href: '/elearning',
+      external: false,
     },
     {
       label: 'Мэргэжлээ сонгох',

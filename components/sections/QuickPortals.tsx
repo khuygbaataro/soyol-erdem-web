@@ -1,9 +1,11 @@
-import { ExternalLink, Laptop, Monitor, UserSquare } from 'lucide-react';
+import { ChevronRight, ExternalLink, Laptop, Monitor, UserSquare } from 'lucide-react';
 
 interface PortalLink {
   label: string;
   href: string;
   icon: typeof Laptop;
+  /** External links open in a new tab and show the ExternalLink corner glyph. */
+  external?: boolean;
 }
 
 const PORTALS: PortalLink[] = [
@@ -11,16 +13,19 @@ const PORTALS: PortalLink[] = [
     label: 'Оюутны систем',
     href: 'https://student.soyolerdem.edu.mn',
     icon: Laptop,
+    external: true,
   },
   {
     label: 'Багшийн систем',
     href: 'https://teacher.soyolerdem.edu.mn',
     icon: UserSquare,
+    external: true,
   },
   {
     label: 'Цахим сургалт',
-    href: 'https://moodle.soyolerdem.edu.mn',
+    href: '/elearning',
     icon: Monitor,
+    external: false,
   },
 ];
 
@@ -39,12 +44,14 @@ export function QuickPortals() {
           <div className="grid grid-cols-1 divide-y divide-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {PORTALS.map((p) => {
               const Icon = p.icon;
+              const CornerGlyph = p.external ? ExternalLink : ChevronRight;
               return (
                 <a
                   key={p.href}
                   href={p.href}
-                  target="_blank"
-                  rel="noreferrer noopener"
+                  {...(p.external
+                    ? { target: '_blank', rel: 'noreferrer noopener' }
+                    : {})}
                   className="group relative flex items-center justify-center gap-3 px-5 py-5 text-white transition-colors duration-200 hover:bg-gold-500 hover:text-navy-900 sm:py-6"
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded-md bg-white/10 text-white transition-colors duration-200 group-hover:bg-navy-900/15 group-hover:text-navy-900">
@@ -53,7 +60,7 @@ export function QuickPortals() {
                   <span className="text-[13px] font-bold uppercase tracking-[0.18em]">
                     {p.label}
                   </span>
-                  <ExternalLink
+                  <CornerGlyph
                     className="absolute right-3 top-3 h-3 w-3 text-white/40 transition-colors duration-200 group-hover:text-navy-900/60"
                     aria-hidden
                   />
