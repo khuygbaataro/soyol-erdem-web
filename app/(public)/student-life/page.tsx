@@ -136,15 +136,56 @@ function ChapterSection({ chapter }: { chapter: StudentChapter }) {
   );
 }
 
+/** Parses "Далантай · 21 · Япон хэлний орчуулагч анги" into QuoteCard props. */
+function parseTestimonialByline(line: string) {
+  const parts = line.split(/\s*·\s*/).filter(Boolean);
+  const name = parts[0] ?? '';
+  // Second segment is the age (number) if it parses; otherwise treat as program.
+  const ageNum = parts[1] ? Number(parts[1].replace(/[^\d]/g, '')) : NaN;
+  const age = Number.isFinite(ageNum) && ageNum > 0 ? ageNum : undefined;
+  const program = age !== undefined ? parts.slice(2).join(' · ') : parts.slice(1).join(' · ');
+  return { name, age, program: program || undefined };
+}
+
 export default async function StudentLifePage() {
   // Build a quick map for sub-nav-driven jumps; chapters are rendered in
   // their natural order from STUDENT_LIFE_CHAPTERS.
-  const banners = await getSiteContentMap('banners');
+  const [banners, sl] = await Promise.all([
+    getSiteContentMap('banners'),
+    getSiteContentMap('student-life'),
+  ]);
+
+  const annual = [1, 2, 3, 4]
+    .map((i) => sl.get(`student-life.annual.${i}.title`) || '')
+    .filter((t) => t.trim().length > 0);
+
+  const testimonials = [1, 2, 3]
+    .map((i) => {
+      const quote = sl.get(`student-life.testimonial.${i}.quote`) || '';
+      const byline = sl.get(`student-life.testimonial.${i}.byline`) || '';
+      return quote && byline
+        ? { quote, ...parseTestimonialByline(byline) }
+        : null;
+    })
+    .filter((t): t is { quote: string; name: string; age?: number; program?: string } => t !== null);
+
+  // Fall back to static defaults from lib/content.ts only when admin has not
+  // filled the SiteContent rows.
+  const fallbackTestimonials = TESTIMONIALS.map((t) => ({
+    quote: t.quote,
+    name: t.name,
+    age: t.age,
+    program: t.program,
+  }));
+
   return (
     <>
       <PageHero
-        title="ОЮУТНЫ АМЬДРАЛ"
-        subtitle="Бид бол гэр бүл — Соёл Эрдэмд хичээл бол зөвхөн зургаан жилийн нэг хэсэг."
+        title={sl.get('student-life.hero.title') || 'ОЮУТНЫ АМЬДРАЛ'}
+        subtitle={
+          sl.get('student-life.hero.subtitle') ||
+          'Бид бол гэр бүл — Соёл Эрдэмд хичээл бол зөвхөн зургаан жилийн нэг хэсэг.'
+        }
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Оюутны амьдрал' }]}
         backgroundImage={banners.get('page.student-life.banner') || undefined}
       />
@@ -152,11 +193,9 @@ export default async function StudentLifePage() {
       {/* Intro */}
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-base leading-relaxed text-text-body">
-            Соёл Эрдэмд оюутан байх нь зөвхөн хичээл биш — энэ бол гэр бүл,
-            найзууд, шинэ туршлага, амьдралын чухал үе юм. Бид клуб, спорт,
-            соёлын арга хэмжээ, дадлага, дотуур байр, тэтгэлэг гээд бүх
-            талаар дэмжлэг үзүүлдэг.
+          <p className="whitespace-pre-line text-base leading-relaxed text-text-body">
+            {sl.get('student-life.intro.body') ||
+              'Соёл Эрдэмд оюутан байх нь зөвхөн хичээл биш — энэ бол гэр бүл, найзууд, шинэ туршлага, амьдралын чухал үе юм. Бид клуб, спорт, соёлын арга хэмжээ, дадлага, дотуур байр, тэтгэлэг гээд бүх талаар дэмжлэг үзүүлдэг.'}
           </p>
         </div>
       </Section>
@@ -188,37 +227,46 @@ export default async function StudentLifePage() {
         <ChapterSection key={c.id} chapter={c} />
       ))}
 
-      {/* Annual highlights row — preserved from old layout */}
-      <Section background="white">
-        <SectionTitle title="ЖИЛ БҮРИЙН ОНЦЛОХ АРГА ХЭМЖЭЭ" align="left" />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {[
-            { n: '01', t: 'Бүнкёосай — япон соёлын баяр (12-р сар)' },
-            { n: '02', t: 'Танилцах үдэшлэг — явган аялал (9–10-р сар)' },
-            { n: '03', t: 'Спортын аварга шалгаруулах (намар)' },
-            { n: '04', t: 'Сайн үйлсийн аян (өвөл / хавар)' },
-          ].map((e) => (
-            <Card key={e.n} className="flex h-full flex-col gap-3">
-              <span className="text-3xl font-bold text-gold-500">{e.n}</span>
-              <p className="text-sm font-semibold text-navy-900">{e.t}</p>
-            </Card>
-          ))}
-        </div>
-      </Section>
+      {/* Annual highlights row */}
+      {annual.length > 0 && (
+        <Section background="white">
+          <SectionTitle
+            title={
+              sl.get('student-life.annual.heading') ||
+              'ЖИЛ БҮРИЙН ОНЦЛОХ АРГА ХЭМЖЭЭ'
+            }
+            align="left"
+          />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {annual.map((title, idx) => (
+              <Card key={`${title}-${idx}`} className="flex h-full flex-col gap-3">
+                <span className="text-3xl font-bold text-gold-500">
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <p className="text-sm font-semibold text-navy-900">{title}</p>
+              </Card>
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* Testimonials */}
       <Section background="cream">
-        <SectionTitle title="ОЮУТНУУДЫН ҮГ" />
+        <SectionTitle
+          title={sl.get('student-life.testimonial.heading') || 'ОЮУТНУУДЫН ҮГ'}
+        />
         <div className="grid gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((t) => (
-            <QuoteCard
-              key={t.name}
-              quote={t.quote}
-              name={t.name}
-              age={t.age}
-              program={t.program}
-            />
-          ))}
+          {(testimonials.length > 0 ? testimonials : fallbackTestimonials).map(
+            (t, idx) => (
+              <QuoteCard
+                key={`${t.name}-${idx}`}
+                quote={t.quote}
+                name={t.name}
+                age={t.age}
+                program={t.program}
+              />
+            ),
+          )}
         </div>
       </Section>
 

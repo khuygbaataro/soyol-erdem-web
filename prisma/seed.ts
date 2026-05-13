@@ -326,6 +326,25 @@ async function main() {
     { key: 'research.journal.sp-2025-n2.cover', group: 'research', type: 'IMAGE' as const, label: '4-р боть (2025 №2) — Нүүр зураг', hint: 'Сэтгүүлийн нүүрний зураг (3:4 хэмжээтэй тохиромжтой).', value: '', order: 14 },
     { key: 'research.journal.sp-2026-n1.cover', group: 'research', type: 'IMAGE' as const, label: '5-р боть (2026 №1) — Нүүр зураг', hint: 'Сэтгүүлийн нүүрний зураг (3:4 хэмжээтэй тохиромжтой).', value: '', order: 15 },
 
+    // Student-life page editable blocks
+    { key: 'student-life.hero.title', group: 'student-life', type: 'TEXT' as const, label: 'Hero — Гарчиг', value: 'ОЮУТНЫ АМЬДРАЛ', order: 1 },
+    { key: 'student-life.hero.subtitle', group: 'student-life', type: 'TEXT' as const, label: 'Hero — Товч тайлбар', hint: 'Banner-ийн доор харагдах нэг өгүүлбэр.', value: 'Бид бол гэр бүл — Соёл Эрдэмд хичээл бол зөвхөн зургаан жилийн нэг хэсэг.', multiline: true, order: 2 },
+    { key: 'student-life.intro.body', group: 'student-life', type: 'TEXT' as const, label: 'Удиртгал', hint: 'Хуудасны эхэн дэх танилцуулга текст.', value: 'Соёл Эрдэмд оюутан байх нь зөвхөн хичээл биш — энэ бол гэр бүл, найзууд, шинэ туршлага, амьдралын чухал үе юм. Бид клуб, спорт, соёлын арга хэмжээ, дадлага, дотуур байр, тэтгэлэг гээд бүх талаар дэмжлэг үзүүлдэг.', multiline: true, order: 3 },
+
+    { key: 'student-life.annual.heading', group: 'student-life', type: 'TEXT' as const, label: 'Жил бүрийн арга хэмжээ — Гарчиг', value: 'ЖИЛ БҮРИЙН ОНЦЛОХ АРГА ХЭМЖЭЭ', order: 4 },
+    { key: 'student-life.annual.1.title', group: 'student-life', type: 'TEXT' as const, label: 'Жил бүрийн арга хэмжээ — 1', value: 'Бүнкёосай — япон соёлын баяр (12-р сар)', order: 5 },
+    { key: 'student-life.annual.2.title', group: 'student-life', type: 'TEXT' as const, label: 'Жил бүрийн арга хэмжээ — 2', value: 'Танилцах үдэшлэг — явган аялал (9–10-р сар)', order: 6 },
+    { key: 'student-life.annual.3.title', group: 'student-life', type: 'TEXT' as const, label: 'Жил бүрийн арга хэмжээ — 3', value: 'Спортын аварга шалгаруулах (намар)', order: 7 },
+    { key: 'student-life.annual.4.title', group: 'student-life', type: 'TEXT' as const, label: 'Жил бүрийн арга хэмжээ — 4', value: 'Сайн үйлсийн аян (өвөл / хавар)', order: 8 },
+
+    { key: 'student-life.testimonial.heading', group: 'student-life', type: 'TEXT' as const, label: 'Оюутны үг — Гарчиг', value: 'ОЮУТНУУДЫН ҮГ', order: 9 },
+    { key: 'student-life.testimonial.1.quote', group: 'student-life', type: 'TEXT' as const, label: 'Оюутны үг — 1 (ишлэл)', value: 'Энэ жил Соёл Эрдэмд элсэн орсон. Ирэх жил Япон явахаар явах болсондоо маш баяртай байна. Багш нарын заах арга, харилцааны соёл үнэхээр сайхан.', multiline: true, order: 10 },
+    { key: 'student-life.testimonial.1.byline', group: 'student-life', type: 'TEXT' as const, label: 'Оюутны үг — 1 (нэр)', hint: 'Жишээ: Далантай · 21 · Япон хэлний орчуулагч анги', value: 'Далантай · 21 · Япон хэлний орчуулагч анги', order: 11 },
+    { key: 'student-life.testimonial.2.quote', group: 'student-life', type: 'TEXT' as const, label: 'Оюутны үг — 2 (ишлэл)', value: 'Интерншип хөтөлбөрөөр Япон явж дадлага хийсэн нь миний амьдралын хамгийн чухал туршлага байсан. Цалинтай дадлага хийж, япон соёл, ёс заншилтай танилцах боломж гайхалтай.', multiline: true, order: 12 },
+    { key: 'student-life.testimonial.2.byline', group: 'student-life', type: 'TEXT' as const, label: 'Оюутны үг — 2 (нэр)', value: 'Гэрэлт-Од · 23 · Аялал жуулчлалын менежмент', order: 13 },
+    { key: 'student-life.testimonial.3.quote', group: 'student-life', type: 'TEXT' as const, label: 'Оюутны үг — 3 (ишлэл)', value: 'Соёл Эрдэмд суралцсан 4 жил миний амьдралд эргэлт хийсэн. Одоо Япон корпорацид программистаар ажиллаж байна. Бид төгсөгчид болон одоогийн оюутнууд бол нэг гэр бүл.', multiline: true, order: 14 },
+    { key: 'student-life.testimonial.3.byline', group: 'student-life', type: 'TEXT' as const, label: 'Оюутны үг — 3 (нэр)', value: 'Наймангал · 26 · Программ хангамж — төгсөгч', order: 15 },
+
     // Inner-page banner photos — each one drives the <PageHero> photo on
     // its page. Empty value falls back to /nice_banner.png (the default).
     { key: 'page.programs.banner', group: 'banners', type: 'IMAGE' as const, label: 'Сургалт хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 1 },

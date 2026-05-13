@@ -11,6 +11,7 @@ const GROUP_LABELS: Record<string, string> = {
   about: 'Сургуулийн тухай',
   banners: 'Banner зургууд',
   research: 'Эрдэм шинжилгээ',
+  'student-life': 'Оюутны амьдрал',
 };
 
 interface LoadResult {
