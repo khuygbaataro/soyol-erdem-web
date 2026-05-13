@@ -37,7 +37,7 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-3">
           <div>
             <div className="mb-5">
-              <Logo withLabel size={56} invert variant="stacked" />
+              <Logo withLabel size={56} invert variant="single" />
             </div>
             <p className="text-sm leading-relaxed text-cream/80">
               {SITE.founded} онд байгуулагдсан, Япон улсын 100% хөрөнгө

@@ -41,10 +41,18 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Crisp glyph rendering across both Latin and Mongolian Cyrillic. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   body {
     @apply font-sans bg-white antialiased;
     color: var(--text-body);
+    /* Enable OpenType kerning + standard ligatures + contextual alts so
+       Inter's Cyrillic pairs (e.g. "ТТ", "АВ") look properly fitted. */
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    line-height: 1.6;
   }
   h1,
   h2,
@@ -54,6 +62,15 @@
   h6 {
     color: var(--text-heading);
     @apply font-semibold;
+    /* Tighter tracking on headlines reads more confident for display
+       sizes and matches the proportions Playfair was designed for. */
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  /* Serif headlines get an extra rendering hint — Playfair has classy
+     old-style figures and discretionary ligatures we may as well use. */
+  .font-serif {
+    font-feature-settings: 'kern' 1, 'liga' 1, 'dlig' 1, 'onum' 0;
   }
 }
 

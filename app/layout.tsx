@@ -1,18 +1,39 @@
 import type { Metadata } from 'next';
-import { Inter, Noto_Sans_Mongolian, Playfair_Display } from 'next/font/google';
+import {
+  Inter,
+  Noto_Sans_Mongolian,
+  Playfair_Display,
+} from 'next/font/google';
 import { SITE } from '@/lib/constants';
 import './globals.css';
 
+/**
+ * Body / UI sans. Inter handles Latin + Cyrillic well; we explicitly
+ * pin the weights we use so the browser only ships the styles we need
+ * (faster first paint, smaller font payload).
+ */
 const inter = Inter({
-  subsets: ['latin', 'cyrillic'],
+  subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
   variable: '--font-sans',
+  preload: true,
 });
 
+/**
+ * Display serif used for hero titles, section headings and brand
+ * wordmarks. The previous setup only loaded the Latin subset, so any
+ * Mongolian-Cyrillic headline (СУРГАЛТ, ЭРДЭМ ШИНЖИЛГЭЭ …) fell back to
+ * the platform default serif and looked off-brand. Adding `cyrillic`
+ * + `cyrillic-ext` makes Playfair render Cyrillic in the same family
+ * as Latin, and the curated weight list keeps the bundle small.
+ */
 const playfair = Playfair_Display({
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext', 'cyrillic'],
+  weight: ['500', '600', '700', '800'],
   display: 'swap',
   variable: '--font-serif',
+  preload: true,
 });
 
 const notoMn = Noto_Sans_Mongolian({
