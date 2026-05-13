@@ -66,6 +66,30 @@ export const FOOTER_LINKS = {
 export const LANGUAGES = ['MN', 'JP', 'EN'] as const;
 export type Language = (typeof LANGUAGES)[number];
 
+/**
+ * Known position keys on the /about/structure org chart. The Staff model
+ * uses these as a unique identifier so an admin entry maps onto a specific
+ * node in the chart. Adding a key here makes it selectable in the admin
+ * Staff form.
+ */
+export const STAFF_POSITION_KEYS = [
+  { key: 'rector', label: 'Захирал' },
+  { key: 'academic-affairs', label: 'Сургалтын алба' },
+  { key: 'scientific-secretary', label: 'Эрдэмтэн нарийн бичгийн дарга' },
+  { key: 'admin-finance', label: 'Захиргаа, санхүү, аж ахуй' },
+  { key: 'faculty-development', label: 'Багшийн хөгжлийн төв' },
+  { key: 'japanese-dept', label: 'Япон судлалын тэнхим' },
+  { key: 'it-dept', label: 'Мэдээллийн технологийн тэнхим' },
+  { key: 'library', label: '"Хажимэ" номын сан' },
+  { key: 'practice', label: 'Дадлагын бааз' },
+  { key: 'graduate-studies', label: 'Ахисан түвшний сургалтын алба' },
+  { key: 'research-center', label: 'Судалгааны төв' },
+  { key: 'archive', label: 'Архив' },
+  { key: 'marketing', label: 'Маркетингийн алба' },
+  { key: 'foreign-relations', label: 'Гадаад харилцааны алба' },
+  { key: 'student-council', label: 'Оюутны зөвлөл' },
+] as const;
+
 /* ─────────────────────────────────────────────────────────────────────────
  * High-school sub-site
  * Lives at /high-school behind its own route group + header so it reads as

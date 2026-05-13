@@ -450,6 +450,38 @@ async function main() {
   }
   console.log(`✓ Regulations (${regulations.length})`);
 
+  /* Staff — org-chart placeholders (admin can edit each). */
+  const staff = [
+    { positionKey: 'rector', position: 'Захирал', name: 'Т. Дорждагва', degree: 'Доктор (PhD), Дэд профессор', bio: 'Соёл Эрдэм Дээд Сургуулийн захирлаар олон жил ажиллаж буй, япон судлалын чиглэлээр докторын зэрэг хамгаалсан судлаач.', order: 0 },
+    { positionKey: 'academic-affairs', position: 'Сургалтын албаны эрхлэгч', name: 'Ц. Цэвэгсүрэн', degree: 'Магистр (MS)', bio: 'Сургалтын чанар, шинэчлэлийн чиглэлээр 10+ жил ажилласан мэргэжилтэн.', order: 1 },
+    { positionKey: 'scientific-secretary', position: 'Эрдэмтэн нарийн бичгийн дарга', name: 'Б. Мөнхзул', degree: 'Доктор (PhD)', bio: 'Эрдэм шинжилгээний бодлого, ахисан түвшний хөтөлбөрийн координатор.', order: 2 },
+    { positionKey: 'admin-finance', position: 'Захиргаа, санхүү, аж ахуйн эрхлэгч', name: 'Г. Балжинням', degree: 'Магистр (MBA)', bio: 'Санхүү, аж ахуйн менежментийн чиглэлээр магистрын зэрэгтэй.', order: 3 },
+    { positionKey: 'faculty-development', position: 'Багшийн хөгжлийн төвийн эрхлэгч', name: 'Р. Бямбаа', degree: 'Доктор (PhD)', bio: 'Сурган хүмүүжүүлэх ухаан, багш хөгжлийн арга зүйн чиглэлээр судлаач.', order: 4 },
+    { positionKey: 'japanese-dept', position: 'Япон судлалын тэнхимийн эрхлэгч', name: 'С. Уранцэцэг', degree: 'Магистр (MA)', order: 5 },
+    { positionKey: 'it-dept', position: 'Мэдээллийн технологийн тэнхимийн эрхлэгч', name: 'О. Цолмон', degree: 'Магистр (MS)', order: 6 },
+    { positionKey: 'library', position: '"Хажимэ" номын сангийн эрхлэгч', name: 'Д. Сарантуяа', degree: 'Бакалавр (BA)', order: 7 },
+    { positionKey: 'practice', position: 'Дадлагын баазын ахлах мэргэжилтэн', name: 'Л. Эрдэнэбат', degree: 'Магистр (MS)', order: 8 },
+    { positionKey: 'graduate-studies', position: 'Ахисан түвшний сургалтын алба', name: 'Ч. Энхболд', degree: 'Доктор (PhD)', order: 9 },
+    { positionKey: 'research-center', position: 'Судалгааны төвийн эрхлэгч', name: 'Ж. Гомбо-Очир', degree: 'Доктор (PhD), Профессор', order: 10 },
+    { positionKey: 'archive', position: 'Архивын ахлах ажилтан', name: 'Н. Болормаа', degree: 'Бакалавр (BA)', order: 11 },
+    { positionKey: 'marketing', position: 'Маркетингийн алба', name: 'Б. Оюун', degree: 'Магистр (MBA)', order: 12 },
+    { positionKey: 'foreign-relations', position: 'Гадаад харилцааны албаны эрхлэгч', name: 'У. Энхтуяа', degree: 'Магистр (MA)', order: 13 },
+    { positionKey: 'student-council', position: 'Оюутны зөвлөл', name: 'Сонгогдсон тэргүүн', degree: 'Оюутан удирдагч', order: 14 },
+  ];
+  for (const s of staff) {
+    await prisma.staff.upsert({
+      where: { positionKey: s.positionKey },
+      update: {
+        // Re-seed only updates structural metadata — leave admin-edited
+        // photo / bio / email / phone alone once they've been touched.
+        position: s.position,
+        order: s.order,
+      },
+      create: { ...s, active: true },
+    });
+  }
+  console.log(`✓ Staff (${staff.length})`);
+
   console.log('\n✅ Seed дуусав!\n');
   console.log('Login мэдээлэл:');
   console.log('  Admin: admin@soyolerdem.edu.mn / admin123');

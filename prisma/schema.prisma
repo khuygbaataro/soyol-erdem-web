@@ -210,6 +210,32 @@ model Newspaper {
   @@index([status, issueNumber])
 }
 
+/// Staff member rendered on the org-chart (/about/structure). Each row is
+/// keyed by a stable `positionKey` (rector, japanese-dept, …) that the
+/// chart node looks up. Admins can swap photo/name/degree per position.
+model Staff {
+  id          String   @id @default(cuid())
+  /// Chart-node identifier — matches the id used in the OrgChart component.
+  positionKey String   @unique
+  /// "Захирал", "Сургалтын албаны эрхлэгч" — title shown above the name.
+  position    String
+  /// "Т. Дорждагва" — display name.
+  name        String
+  /// "Доктор (PhD), Дэд профессор" / "Магистр (MS)" / "Бакалавр (BA)".
+  degree      String?
+  /// Photo URL (Vercel Blob).
+  photo       String?
+  /// Short bio rendered in the staff modal.
+  bio         String?
+  email       String?
+  phone       String?
+  /// When false the chart node is hidden / non-clickable.
+  active      Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 /// Numeric stats shown on the navy band (Hero/About) — editable list.
 model Stat {
   id        String   @id @default(cuid())

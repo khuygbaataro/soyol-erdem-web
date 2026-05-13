@@ -231,6 +231,21 @@ export const jobApplicationSchema = z.object({
 });
 export type JobApplicationInput = z.infer<typeof jobApplicationSchema>;
 
+/* Staff — org-chart staff member */
+export const staffSchema = z.object({
+  positionKey: z.string().min(1).max(60),
+  position: z.string().min(2).max(200),
+  name: z.string().min(2).max(200),
+  degree: z.string().max(200).optional().or(z.literal('')),
+  photo: z.string().url().optional().or(z.literal('')),
+  bio: z.string().max(2000).optional().or(z.literal('')),
+  email: z.string().email().optional().or(z.literal('')),
+  phone: z.string().max(40).optional().or(z.literal('')),
+  active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
+  order: z.coerce.number().int().min(0).max(999).optional(),
+});
+export type StaffInput = z.infer<typeof staffSchema>;
+
 /* Stat */
 export const statSchema = z.object({
   key: z.string().regex(slugRegex, 'Зөвхөн жижиг үсэг, тоо, зураас (-)').min(2).max(40),

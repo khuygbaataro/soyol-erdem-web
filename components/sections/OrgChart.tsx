@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GraduationCap, Mail, Phone, School as SchoolIcon, User, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -12,32 +12,36 @@ import { cn } from '@/lib/utils';
  * connected by dashed lines, top → bottom). Each clickable card opens an
  * animated modal showing the staff member's photo, name and degree.
  *
- * Staff data is currently hard-coded — when admin CRUD for staff is added
- * later, swap STAFF for a fetched record.
+ * Staff data is fetched server-side from the `Staff` model and passed in
+ * via the `staff` prop. The hard-coded FALLBACK_STAFF below acts as a
+ * safety net for development / first-time deploys before the DB is seeded.
  */
 
-interface Staff {
+export interface Staff {
+  /** Chart-node identifier — matches the OrgChart node id. */
+  positionKey: string;
   /** Full name, e.g. "Т. Дорждагва". */
   name: string;
   /** Job title rendered above the name in the modal. */
   position: string;
   /** "Бакалавр", "Магистр (MS)", "Доктор (PhD)", … */
-  degree?: string;
+  degree?: string | null;
   /** Public/CDN photo URL. Falls back to an initial avatar when empty. */
-  photo?: string;
+  photo?: string | null;
   /** Optional short biography for the modal body. */
-  bio?: string;
+  bio?: string | null;
   /** Optional contact details rendered in the modal footer. */
-  email?: string;
-  phone?: string;
+  email?: string | null;
+  phone?: string | null;
+  active?: boolean;
 }
 
 /**
- * Mapping from a chart-node id → staff member. Add more entries here as
- * positions get filled. Nodes without an entry render as non-interactive
- * boxes (used for collective bodies like УДИРДАХ ЗӨВЛӨЛ).
+ * Fallback staff used when the DB hasn't been seeded yet. After
+ * `npm run db:seed` runs against a fresh install these get replaced by
+ * the editable Staff rows.
  */
-const STAFF: Record<string, Staff> = {
+const FALLBACK_STAFF: Record<string, Omit<Staff, 'positionKey'>> = {
   rector: {
     name: 'Т. Дорждагва',
     position: 'Захирал',
@@ -126,10 +130,12 @@ interface NodeProps {
   level: 'top' | 'director' | 'mid' | 'pillar' | 'unit';
   centered?: boolean;
   onSelect?: (id: string) => void;
+  /** Staff map indexed by positionKey; nodes without an entry stay non-clickable. */
+  staffMap?: Map<string, Staff>;
 }
 
-function ChartNode({ id, label, level, centered, onSelect }: NodeProps) {
-  const staff = id ? STAFF[id] : undefined;
+function ChartNode({ id, label, level, centered, onSelect, staffMap }: NodeProps) {
+  const staff = id ? staffMap?.get(id) : undefined;
   const clickable = !!staff && !!onSelect;
 
   const baseStyles = {
@@ -167,12 +173,22 @@ function UnitNode({
   id,
   children,
   onSelect,
+  staffMap,
 }: {
   id?: string;
   children: React.ReactNode;
   onSelect?: (id: string) => void;
+  staffMap?: Map<string, Staff>;
 }) {
-  return <ChartNode id={id} label={children} level="unit" onSelect={onSelect} />;
+  return (
+    <ChartNode
+      id={id}
+      label={children}
+      level="unit"
+      onSelect={onSelect}
+      staffMap={staffMap}
+    />
+  );
 }
 
 function SiblingNode({ children }: { children: React.ReactNode }) {
@@ -245,9 +261,35 @@ const PILLARS: Pillar[] = [
 
 /* ─── Component ───────────────────────────────────────────────── */
 
-export function OrgChart() {
+interface OrgChartProps {
+  /** Staff list fetched server-side; falls back to FALLBACK_STAFF when empty. */
+  staff?: Staff[];
+}
+
+export function OrgChart({ staff }: OrgChartProps = {}) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const selected = selectedId ? STAFF[selectedId] : null;
+
+  // Build a key-indexed map. Admin rows take priority; any position the
+  // admin hasn't filled yet falls back to the hard-coded sample so the
+  // chart never has empty nodes.
+  const staffMap = useMemo(() => {
+    const m = new Map<string, Staff>();
+    // Fallback first
+    for (const [key, value] of Object.entries(FALLBACK_STAFF)) {
+      m.set(key, { positionKey: key, ...value });
+    }
+    // Admin overrides — only `active` rows surface on the chart
+    for (const s of staff ?? []) {
+      if (s.active === false) {
+        m.delete(s.positionKey);
+        continue;
+      }
+      m.set(s.positionKey, s);
+    }
+    return m;
+  }, [staff]);
+
+  const selected = selectedId ? staffMap.get(selectedId) ?? null : null;
 
   // Lock body scroll while modal open + ESC key handler
   useEffect(() => {
@@ -295,6 +337,7 @@ export function OrgChart() {
               label="ЗАХИРАЛ"
               level="director"
               onSelect={setSelectedId}
+              staffMap={staffMap}
             />
             <ChartNode label="Чанарын үнэлгээний алба" level="mid" />
           </div>
@@ -311,12 +354,13 @@ export function OrgChart() {
                 label={p.title}
                 level="pillar"
                 onSelect={setSelectedId}
+                staffMap={staffMap}
               />
               <span aria-hidden className="mx-auto h-4 w-px bg-navy-900/30" />
               <ul className="space-y-2">
                 {p.units.map((u) => (
                   <li key={u.label}>
-                    <UnitNode id={u.id} onSelect={setSelectedId}>
+                    <UnitNode id={u.id} onSelect={setSelectedId} staffMap={staffMap}>
                       {u.label}
                     </UnitNode>
                   </li>
