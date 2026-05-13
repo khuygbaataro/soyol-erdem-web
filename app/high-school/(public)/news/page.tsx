@@ -1,10 +1,10 @@
 import { PageHero } from '@/components/sections/PageHero';
 import { CtaBanner } from '@/components/sections/CtaBanner';
-import { NewsListClient } from '@/app/(public)/news/NewsListClient';
+import { HighSchoolNewsListClient } from './NewsListClient';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Ахлах сургууль · Мэдээ' };
+export const metadata = { title: 'Ахлах сургууль · Мэдээ мэдээлэл' };
 
 export default async function HighSchoolNewsPage() {
   const news = await prisma.news
@@ -28,22 +28,22 @@ export default async function HighSchoolNewsPage() {
   return (
     <>
       <PageHero
-        title="МЭДЭЭ"
+        title="МЭДЭЭ МЭДЭЭЛЭЛ"
         subtitle="Ахлах сургуулийн сүүлийн мэдээ, үйл явдал, амжилт."
         breadcrumb={[
           { label: 'Их сургууль', href: '/' },
           { label: 'Ахлах сургууль', href: '/high-school' },
-          { label: 'Мэдээ' },
+          { label: 'Мэдээ мэдээлэл' },
         ]}
       />
 
-      <NewsListClient items={items} hrefBase="/high-school/news" />
+      <HighSchoolNewsListClient items={items} />
 
       <CtaBanner
         title="Соёл Эрдэм Ахлах Сургууль"
         ctaLabel="Элсэлтийн мэдээлэл"
-        ctaHref="https://soyolerdem.edu.mn/high-school/elselt/"
-        secondary={{ label: 'Холбоо барих', href: '/high-school#contact' }}
+        ctaHref="/high-school/admission"
+        secondary={{ label: 'Холбоо барих', href: '/high-school/contact' }}
       />
     </>
   );

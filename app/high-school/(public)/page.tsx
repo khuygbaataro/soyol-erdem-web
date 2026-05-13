@@ -359,13 +359,13 @@ export default async function HighSchoolHomePage() {
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Button
-                  href="https://soyolerdem.edu.mn/high-school/elselt/"
+                  href="/high-school/admission"
                   variant="primary"
                   size="md"
                 >
                   Элсэлтийн мэдээлэл
                 </Button>
-                <Button href="/contact" variant="outline" size="md">
+                <Button href="/high-school/contact" variant="outline" size="md">
                   Бусад асуулт
                 </Button>
               </div>
@@ -378,8 +378,8 @@ export default async function HighSchoolHomePage() {
         title="Соёл Эрдэм Ахлах Сургууль"
         subtitle="Чанартай боловсрол, Япон хэл, соёл, IT-ийн чиглэлээр ирээдүйгээ эндээс эхлүүл."
         ctaLabel="Элсэлтийн мэдээлэл"
-        ctaHref="https://soyolerdem.edu.mn/high-school/elselt/"
-        secondary={{ label: 'Холбоо барих', href: '/contact' }}
+        ctaHref="/high-school/admission"
+        secondary={{ label: 'Холбоо барих', href: '/high-school/contact' }}
       />
     </>
   );

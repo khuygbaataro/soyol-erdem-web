@@ -126,7 +126,7 @@ export function HighSchoolHeader() {
 
             <div className="hidden shrink-0 items-center gap-3 xl:flex">
               <Button
-                href="https://soyolerdem.edu.mn/high-school/elselt/"
+                href="/high-school/admission"
                 variant="accent"
                 size="md"
                 icon={<ChevronRight className="h-4 w-4" />}
@@ -196,7 +196,7 @@ export function HighSchoolHeader() {
             </nav>
             <div className="space-y-3 border-t border-border-light px-6 py-5">
               <Button
-                href="https://soyolerdem.edu.mn/high-school/elselt/"
+                href="/high-school/admission"
                 variant="accent"
                 size="lg"
                 icon={<ChevronRight className="h-5 w-5" />}

@@ -87,8 +87,22 @@ export const HIGH_SCHOOL = {
 
 export const HIGH_SCHOOL_NAV_ITEMS = [
   { label: 'Нүүр', href: '/high-school' },
-  { label: 'Танилцуулга', href: '/high-school#about' },
-  { label: 'Хөтөлбөр', href: '/high-school#programs' },
+  { label: 'Танилцуулга', href: '/high-school/about' },
+  { label: 'Сургалт', href: '/high-school/programs' },
+  { label: 'Элсэлт', href: '/high-school/admission' },
   { label: 'Мэдээ', href: '/high-school/news' },
-  { label: 'Холбоо барих', href: '/high-school#contact' },
+  { label: 'Холбоо барих', href: '/high-school/contact' },
+];
+
+/**
+ * Categories used to tag /high-school/news articles. These map onto values
+ * stored in the existing `News.category` field (high-school site only), so
+ * the filter UI on /high-school/news can present a stable set of tabs.
+ */
+export const HIGH_SCHOOL_NEWS_CATEGORIES = [
+  { id: 'school-info', label: 'Ахлах сургуулийн мэдээлэл' },
+  { id: 'extra', label: 'Хичээлээс гадуур ажил' },
+  { id: 'exchange', label: 'Сурагч солилцоо' },
+  { id: 'library', label: 'Номын сан' },
+  { id: 'graduation', label: 'Төгсөлт' },
 ];
