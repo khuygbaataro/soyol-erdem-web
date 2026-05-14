@@ -5,28 +5,15 @@ import { Section } from '@/components/layout/Section';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { NewsCard } from '@/components/ui/NewsCard';
-import { FeatureCard } from '@/components/ui/FeatureCard';
 import { Badge } from '@/components/ui/Badge';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { QuickPortals } from '@/components/sections/QuickPortals';
-import {
-  HERO,
-  QUICK_FEATURES,
-} from '@/lib/content';
+import { HERO } from '@/lib/content';
 import { prisma } from '@/lib/prisma';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
 import { content, getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
-
-const PARTNER_PLACEHOLDERS = [
-  'Оберлин',
-  'Сэйжо',
-  'Хоккай Гакүэн',
-  'Риккё',
-  'Хокүто Бүнка',
-  '+30 гаруй',
-];
 
 export default async function HomePage() {
   const [latestNews, siteContent] = await Promise.all([
@@ -115,21 +102,7 @@ export default async function HomePage() {
           Багшийн систем, Цахим сургалт). */}
       <QuickPortals />
 
-      {/* 2. Quick features */}
-      <Section background="white" spacing="md">
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {QUICK_FEATURES.map((f) => (
-            <FeatureCard
-              key={f.title}
-              icon={f.icon}
-              title={f.title}
-              description={f.description}
-            />
-          ))}
-        </div>
-      </Section>
-
-      {/* 3. Internship highlight */}
+      {/* 2. Internship highlight */}
       <Section background="white">
         <Card className="overflow-hidden p-0" hover={false}>
           <div className="grid gap-0 lg:grid-cols-2">
@@ -223,22 +196,6 @@ export default async function HomePage() {
         </div>
       </Section>
 
-      {/* 5. Partner logos */}
-      <Section background="white" spacing="sm">
-        <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-text-muted">
-          Манай хамтрагч их сургуулиуд
-        </p>
-        <div className="grid grid-cols-2 items-center gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {PARTNER_PLACEHOLDERS.map((name) => (
-            <div
-              key={name}
-              className="flex h-16 items-center justify-center rounded-lg border border-border-light bg-white px-3 text-sm font-semibold text-text-muted grayscale transition-all duration-300 hover:border-gold-500 hover:text-navy-900 hover:grayscale-0"
-            >
-              {name}
-            </div>
-          ))}
-        </div>
-      </Section>
     </>
   );
 }
