@@ -553,6 +553,8 @@ export interface AdmissionProgram {
   ctaHref: string;
   /** Visually feature this card (gold border, slightly larger). */
   featured?: boolean;
+  /** Show an "Онлайнаар боломжтой" pill on the card. */
+  online?: boolean;
 }
 
 export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
@@ -605,6 +607,7 @@ export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
     ],
     cta: 'Хүсэлт илгээх',
     ctaHref: '/admission/register',
+    online: true,
   },
   {
     id: 'transfer-major',
@@ -621,6 +624,7 @@ export const ADMISSION_PROGRAMS: AdmissionProgram[] = [
     bullets2: ['Диплом, үнэмлэх', 'Холбогдох бичиг баримтууд'],
     cta: 'Дэлгэрэнгүй',
     ctaHref: '/admission/register',
+    online: true,
   },
   {
     id: 'transfer-abroad',

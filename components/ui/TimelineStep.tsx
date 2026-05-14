@@ -26,7 +26,7 @@ export function TimelineStep({
       <div className="relative flex w-full items-center justify-center">
         <span
           className={cn(
-            'z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 text-base font-bold transition-colors',
+            'z-10 flex h-14 w-14 items-center justify-center rounded-full border-2 text-lg font-bold transition-colors',
             isActive
               ? 'border-gold-500 bg-gold-500 text-navy-900'
               : 'border-border-medium bg-white text-text-muted',
@@ -38,8 +38,12 @@ export function TimelineStep({
           <span className="absolute left-1/2 top-1/2 h-0.5 w-full -translate-y-1/2 bg-border-light" />
         )}
       </div>
-      <h4 className="mt-4 text-sm font-semibold text-text-heading">{title}</h4>
-      <p className="mt-1 max-w-[160px] text-xs text-text-muted">{description}</p>
+      <h4 className="mt-5 text-base font-bold uppercase tracking-wide text-navy-900">
+        {title}
+      </h4>
+      <p className="mt-2 max-w-[230px] text-sm leading-relaxed text-text-body">
+        {description}
+      </p>
     </div>
   );
 }

@@ -1,4 +1,13 @@
-import { ArrowRight, Check, FileText, Globe, Mail, Phone, Wallet } from 'lucide-react';
+import {
+  ArrowRight,
+  Check,
+  FileText,
+  Globe,
+  Mail,
+  MonitorSmartphone,
+  Phone,
+  Wallet,
+} from 'lucide-react';
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -6,6 +15,7 @@ import { Card } from '@/components/ui/Card';
 import { TimelineStep } from '@/components/ui/TimelineStep';
 import { Button } from '@/components/ui/Button';
 import { Accordion } from '@/components/ui/Accordion';
+import { getSiteContentMap } from '@/lib/site-content';
 import {
   ADMISSION_FAQ,
   ADMISSION_PROGRAMS,
@@ -16,6 +26,7 @@ import {
 } from '@/lib/content';
 import { cn } from '@/lib/utils';
 
+export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Элсэлт',
   description:
@@ -28,7 +39,24 @@ const SUB_NAV = [
   { id: 'payment', label: 'Төлбөр, хөнгөлөлт', icon: Wallet },
 ] as const;
 
-export default function AdmissionPage() {
+export default async function AdmissionPage() {
+  const adm = await getSiteContentMap('admission');
+
+  const permits = [1, 2, 3]
+    .map((i) => ({
+      title: adm.get(`admission.permit.${i}.title`) || '',
+      body: adm.get(`admission.permit.${i}.body`) || '',
+      contact: adm.get(`admission.permit.${i}.contact`) || '',
+    }))
+    .filter((p) => p.title.trim().length > 0);
+
+  const foreignIntro =
+    adm.get('admission.foreign.intro') ||
+    'Гадаадын иргэн манай сургуульд элсэх журам, бүрдүүлэх материал, виза дэмжих захидал, дотуур байр болон хичээлийн жилийн графикын талаар мэдээллийг доороос үзнэ үү.';
+  const foreignCtaLabel =
+    adm.get('admission.foreign.cta.label') || 'Гадаад оюутан элсүүлэх журам';
+  const foreignCtaHref = adm.get('admission.foreign.cta.href') || '/contact';
+
   return (
     <>
       <PageHero
@@ -73,14 +101,22 @@ export default function AdmissionPage() {
                   : 'border-border-light',
               )}
             >
-              <h3
-                className={cn(
-                  'text-sm font-bold uppercase leading-snug tracking-wide',
-                  p.featured ? 'text-gold-500' : 'text-navy-900',
+              <div className="flex items-start justify-between gap-3">
+                <h3
+                  className={cn(
+                    'text-sm font-bold uppercase leading-snug tracking-wide',
+                    p.featured ? 'text-gold-500' : 'text-navy-900',
+                  )}
+                >
+                  {p.title}
+                </h3>
+                {p.online && (
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-navy-900 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-400">
+                    <MonitorSmartphone className="h-3 w-3" />
+                    Онлайн
+                  </span>
                 )}
-              >
-                {p.title}
-              </h3>
+              </div>
               <p className="mt-3 text-sm leading-relaxed text-text-body">
                 {p.intro}
               </p>
@@ -194,28 +230,52 @@ export default function AdmissionPage() {
 
       {/* Section 2 — Гадаад оюутан элсэх */}
       <Section background="white" id="foreign">
-        <SectionTitle
-          title="ГАДААД ОЮУТАН ЭЛСЭХ"
-          subtitle="Гадаад оюутан элсүүлэх журам."
-        />
-        <Card hover={false} className="mx-auto max-w-3xl">
-          <p className="text-sm leading-relaxed text-text-body">
-            Гадаадын иргэн манай сургуульд элсэх журам, бүрдүүлэх материал,
-            виза дэмжих захидал, дотуур байр болон хичээлийн жилийн график
-            зэрэг мэдээллийг бэлтгэж байна. Дэлгэрэнгүйг элсэлтийн албатай
-            холбогдож аваарай.
-          </p>
-          <div className="mt-6">
-            <Button
-              href="/contact"
-              variant="primary"
-              size="md"
-              icon={<ArrowRight className="h-4 w-4" />}
-            >
-              Элсэлтийн алба руу хандах
-            </Button>
+        <SectionTitle title="ГАДААД ОЮУТАН ЭЛСЭХ" />
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Main intro card — left column on lg */}
+          <Card hover={false} className="flex h-full flex-col lg:col-span-1">
+            <p className="flex-1 whitespace-pre-line text-sm leading-relaxed text-text-body">
+              {foreignIntro}
+            </p>
+            <div className="mt-6">
+              <Button
+                href={foreignCtaHref}
+                variant="primary"
+                size="md"
+                icon={<ArrowRight className="h-4 w-4" />}
+              >
+                {foreignCtaLabel}
+              </Button>
+            </div>
+          </Card>
+
+          {/* Permit cards — right two columns on lg */}
+          <div className="grid gap-4 lg:col-span-2 lg:grid-cols-1 xl:grid-cols-3">
+            {permits.map((p, idx) => (
+              <article
+                key={`${p.title}-${idx}`}
+                className="flex h-full flex-col rounded-card border border-border-light bg-cream-soft/40 p-5 shadow-sm"
+              >
+                <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
+                  <Globe className="h-4 w-4" />
+                </span>
+                <h3 className="text-sm font-bold leading-snug text-navy-900">
+                  {p.title}
+                </h3>
+                {p.body && (
+                  <p className="mt-2 whitespace-pre-line text-xs leading-relaxed text-text-body">
+                    {p.body}
+                  </p>
+                )}
+                {p.contact && (
+                  <p className="mt-3 whitespace-pre-line border-t border-border-light pt-3 text-[11px] leading-relaxed text-text-muted">
+                    {p.contact}
+                  </p>
+                )}
+              </article>
+            ))}
           </div>
-        </Card>
+        </div>
       </Section>
 
       {/* Section 3 — Төлбөр, хөнгөлөлт */}

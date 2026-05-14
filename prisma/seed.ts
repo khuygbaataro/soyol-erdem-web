@@ -473,6 +473,25 @@ async function main() {
       order: 210 + i,
     })),
 
+    // Admission page (/admission) — foreign-student section content.
+    // Main intro paragraph + CTA button (label and target URL), followed
+    // by three editable permit cards (visa, residence, registration).
+    { key: 'admission.foreign.intro', group: 'admission', type: 'TEXT' as const, label: 'Гадаад оюутан — Үндсэн тайлбар', hint: 'Гадаад оюутан элсэх ерөнхий мэдээлэл.', value: 'Гадаадын иргэн манай сургуульд элсэхэд бүрдүүлэх материал, виза дэмжих захидал, оршин суух зөвшөөрөл, элсэлтийн журам зэрэг мэдээллийг доорх журам бичигт танилцана уу. Дэлгэрэнгүйг гадаад харилцааны албатай холбогдоно уу.', multiline: true, order: 1 },
+    { key: 'admission.foreign.cta.label', group: 'admission', type: 'TEXT' as const, label: 'Гадаад оюутан — Үндсэн товчны нэр', value: 'Гадаад оюутан элсүүлэх журам', order: 2 },
+    { key: 'admission.foreign.cta.href', group: 'admission', type: 'TEXT' as const, label: 'Гадаад оюутан — Товчны URL', hint: 'PDF журамын URL эсвэл /contact гэх мэт холбоос.', value: '/contact', order: 3 },
+
+    { key: 'admission.permit.1.title', group: 'admission', type: 'TEXT' as const, label: '1-р зөвшөөрөл — Гарчиг', value: 'Виза зөвшөөрөл', order: 11 },
+    { key: 'admission.permit.1.body', group: 'admission', type: 'TEXT' as const, label: '1-р зөвшөөрөл — Тайлбар', hint: 'Зөвшөөрлийг хэрхэн авах талаар тайлбар.', value: 'Гадаадын иргэн Монгол улсад оюутны визээр (D ангилал) орж ирнэ. Сургууль виза дэмжих захидал, элсэн суралцагчийн гэрчилгээ, орох баталгаа зэрэг шаардлагатай материалуудыг бэлдэж өгнө. Виза хүсэлтийг өөрийн орны Монголын Элчин сайдын яам / консулд гаргана.', multiline: true, order: 12 },
+    { key: 'admission.permit.1.contact', group: 'admission', type: 'TEXT' as const, label: '1-р зөвшөөрөл — Хаана хандах', hint: 'Холбогдох ажилтан / газрын мэдээлэл.', value: 'Холбоо барих: Гадаад харилцааны алба\n7011-8584 · soyolerdem.daigaku@gmail.com', multiline: true, order: 13 },
+
+    { key: 'admission.permit.2.title', group: 'admission', type: 'TEXT' as const, label: '2-р зөвшөөрөл — Гарчиг', value: 'Оршин суух зөвшөөрөл', order: 21 },
+    { key: 'admission.permit.2.body', group: 'admission', type: 'TEXT' as const, label: '2-р зөвшөөрөл — Тайлбар', value: 'Монгол улсад 90-өөс дээш хоног оршин суух гадаадын иргэн ИХУГ (Иргэн харьяат ба гадаадын иргэний газар)-аас оршин суух зөвшөөрөл авна. Сургууль талаас элсэн суралцагчийн мэдэгдэл, гэрчилгээг гарган өгнө.', multiline: true, order: 22 },
+    { key: 'admission.permit.2.contact', group: 'admission', type: 'TEXT' as const, label: '2-р зөвшөөрөл — Хаана хандах', value: 'Хүсэлт гаргах: ИХУГ · 1900-1882 · mia.gov.mn\nСургуулийн талд: Гадаад харилцааны алба', multiline: true, order: 23 },
+
+    { key: 'admission.permit.3.title', group: 'admission', type: 'TEXT' as const, label: '3-р зөвшөөрөл — Гарчиг', value: 'Бүртгэлийн зөвшөөрөл', order: 31 },
+    { key: 'admission.permit.3.body', group: 'admission', type: 'TEXT' as const, label: '3-р зөвшөөрөл — Тайлбар', value: 'БСШУС-ын яамны харьяа Боловсролын магадлан итгэмжлэх төвөөр гадаад иргэний элсэлтийн бичиг баримтыг батлуулна. Бакалаврын зэрэг олгох хүртэлх албан ёсны үйл явц.', multiline: true, order: 32 },
+    { key: 'admission.permit.3.contact', group: 'admission', type: 'TEXT' as const, label: '3-р зөвшөөрөл — Хаана хандах', value: 'Холбоо барих: Сургалтын алба · 7011-8589', multiline: true, order: 33 },
+
     // Inner-page banner photos — each one drives the <PageHero> photo on
     // its page. Empty value falls back to /nice_banner.png (the default).
     { key: 'page.programs.banner', group: 'banners', type: 'IMAGE' as const, label: 'Сургалт хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 1 },

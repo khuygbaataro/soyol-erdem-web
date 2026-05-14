@@ -11,6 +11,7 @@ export const dynamic = 'force-dynamic';
 const GROUP_LABELS: Record<string, string> = {
   home: 'Нүүр хуудас',
   about: 'Сургуулийн тухай',
+  admission: 'Элсэлт',
   banners: 'Banner зургууд',
   research: 'Эрдэм шинжилгээ',
   elearning: 'elearning',
