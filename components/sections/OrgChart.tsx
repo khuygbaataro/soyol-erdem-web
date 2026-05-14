@@ -200,17 +200,63 @@ function SiblingNode({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Connector({ dashed = true }: { dashed?: boolean }) {
+function Connector({ dashed = true, height = 6 }: { dashed?: boolean; height?: number }) {
   return (
     <span
       aria-hidden
       className={cn(
-        'my-2 block h-6 w-px',
+        'mx-auto block w-px',
         dashed
-          ? 'bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.4)_0_3px,transparent_3px_8px)]'
-          : 'bg-navy-900/30',
+          ? 'bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.5)_0_3px,transparent_3px_7px)]'
+          : 'bg-navy-900/35',
       )}
+      style={{ height: `${height * 4}px` }}
     />
+  );
+}
+
+/**
+ * Horizontal sibling connector — the "left arm" or "right arm" of a node
+ * that pairs with a peer beside it. Drawn as a flat horizontal navy rule
+ * sitting in a flex row between two nodes.
+ */
+function SiblingConnector() {
+  return (
+    <span
+      aria-hidden
+      className="block h-px flex-1 bg-navy-900/35"
+    />
+  );
+}
+
+/**
+ * Branching connector — an inverted-T that drops a vertical line from the
+ * parent, runs a horizontal rule across N children, then drops short
+ * vertical lines down to each child. Used between Чанарын үнэлгээний
+ * алба and the four pillar columns at the bottom of the chart.
+ */
+function BranchConnector({ count }: { count: number }) {
+  return (
+    <div aria-hidden className="relative mx-auto mb-2 w-full" style={{ height: '32px' }}>
+      {/* Top vertical — parent → horizontal bar */}
+      <span className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-navy-900/40" />
+      {/* Horizontal bar across the columns */}
+      <span
+        className="absolute left-0 right-0 top-3 h-px bg-navy-900/40"
+        style={{
+          left: `calc(${100 / (count * 2)}% )`,
+          right: `calc(${100 / (count * 2)}% )`,
+        }}
+      />
+      {/* Vertical drops down to each column */}
+      {Array.from({ length: count }).map((_, i) => (
+        <span
+          key={i}
+          className="absolute top-3 h-5 w-px bg-navy-900/40"
+          style={{ left: `calc(${(100 / count) * (i + 0.5)}%)` }}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -308,13 +354,14 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
 
   return (
     <>
-      <div className="space-y-10">
-        {/* Top row — Удирдах зөвлөл + sibling high-school card */}
+      <div className="space-y-6">
+        {/* Row 1 — Удирдах зөвлөл (centre) + НЕБ-ын Соёл Эрдэм сургууль (right peer) */}
         <div className="flex flex-col items-center">
-          <div className="grid w-full gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
-            <div className="hidden sm:block" />
-            <ChartNode label="УДИРДАХ ЗӨВЛӨЛ" level="top" centered />
-            <div className="mt-4 flex justify-center sm:mt-0 sm:justify-start">
+          <div className="flex w-full items-center justify-center gap-0 sm:gap-3">
+            <div className="hidden flex-1 sm:block" />
+            <ChartNode label="УДИРДАХ ЗӨВЛӨЛ" level="top" />
+            <div className="hidden flex-1 items-center sm:flex">
+              <SiblingConnector />
               <SiblingNode>
                 Нийслэлийн Ерөнхий Боловсролын
                 <br />
@@ -323,15 +370,23 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
             </div>
           </div>
 
-          <Connector />
+          {/* mobile-only sibling card under the parent */}
+          <div className="mt-4 flex justify-center sm:hidden">
+            <SiblingNode>
+              Нийслэлийн Ерөнхий Боловсролын
+              <br />
+              Соёл Эрдэм сургууль (ЕБС)
+            </SiblingNode>
+          </div>
 
-          <ChartNode label="ЭРДМИЙН ЗӨВЛӨЛ" level="top" />
+          <Connector height={6} />
 
-          <Connector />
-
-          {/* Three-up: Захиргааны зөвлөл / Захирал / Чанарын үнэлгээний алба */}
-          <div className="grid w-full max-w-3xl gap-3 sm:grid-cols-3">
-            <ChartNode label="Захиргааны зөвлөл" level="mid" />
+          {/* Row 2 — Эрдмийн Зөвлөл ← ЗАХИРАЛ → Захиргааны Зөвлөл (three siblings) */}
+          <div className="flex w-full max-w-4xl items-center justify-center gap-0 sm:gap-3">
+            <div className="hidden flex-1 items-center justify-end sm:flex">
+              <ChartNode label="Эрдмийн зөвлөл" level="mid" />
+              <SiblingConnector />
+            </div>
             <ChartNode
               id="rector"
               label="ЗАХИРАЛ"
@@ -339,13 +394,28 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
               onSelect={setSelectedId}
               staffMap={staffMap}
             />
-            <ChartNode label="Чанарын үнэлгээний алба" level="mid" />
+            <div className="hidden flex-1 items-center sm:flex">
+              <SiblingConnector />
+              <ChartNode label="Захиргааны зөвлөл" level="mid" />
+            </div>
           </div>
 
-          <Connector />
+          {/* mobile-only sibling stack */}
+          <div className="mt-4 flex flex-col items-center gap-2 sm:hidden">
+            <ChartNode label="Эрдмийн зөвлөл" level="mid" />
+            <ChartNode label="Захиргааны зөвлөл" level="mid" />
+          </div>
+
+          <Connector height={6} />
+
+          {/* Row 3 — Чанарын үнэлгээний алба */}
+          <ChartNode label="Чанарын үнэлгээний алба" level="mid" />
         </div>
 
-        {/* Bottom — 4 pillar columns */}
+        {/* Branching connector — Чанарын алба → 4 pillars */}
+        <BranchConnector count={4} />
+
+        {/* Row 4 — 4 pillar columns */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {PILLARS.map((p) => (
             <div key={p.id} className="flex flex-col">
@@ -356,7 +426,7 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
                 onSelect={setSelectedId}
                 staffMap={staffMap}
               />
-              <span aria-hidden className="mx-auto h-4 w-px bg-navy-900/30" />
+              <span aria-hidden className="mx-auto h-4 w-px bg-navy-900/40" />
               <ul className="space-y-2">
                 {p.units.map((u) => (
                   <li key={u.label}>
