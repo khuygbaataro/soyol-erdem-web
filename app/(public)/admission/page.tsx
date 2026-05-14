@@ -37,7 +37,10 @@ const SUB_NAV = [
 ] as const;
 
 export default async function AdmissionPage() {
-  const adm = await getSiteContentMap('admission');
+  const [adm, banners] = await Promise.all([
+    getSiteContentMap('admission'),
+    getSiteContentMap('banners'),
+  ]);
 
   const permits = [1, 2, 3]
     .map((i) => ({
@@ -60,6 +63,7 @@ export default async function AdmissionPage() {
         title="ЭЛСЭЛТ"
         subtitle="2026-2027 оны хичээлийн жилийн элсэлтийн мэдээлэл."
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Элсэлт' }]}
+        backgroundImage={banners.get('page.admission.banner') || undefined}
       />
 
       {/* Sub-nav — three anchors per editor's spec */}

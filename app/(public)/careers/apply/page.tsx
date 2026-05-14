@@ -2,6 +2,7 @@ import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { CAREERS_DEFAULT_OPENINGS } from '@/lib/content';
 import { prisma } from '@/lib/prisma';
+import { getSiteContentMap } from '@/lib/site-content';
 import { JobApplyClient } from './JobApplyClient';
 
 export const dynamic = 'force-dynamic';
@@ -15,13 +16,16 @@ interface PageProps {
 }
 
 export default async function JobApplyPage({ searchParams }: PageProps) {
-  const dbOpenings = await prisma.jobOpening
-    .findMany({
-      where: { active: true },
-      orderBy: [{ order: 'asc' }, { title: 'asc' }],
-      select: { slug: true, title: true },
-    })
-    .catch(() => null);
+  const [dbOpenings, banners] = await Promise.all([
+    prisma.jobOpening
+      .findMany({
+        where: { active: true },
+        orderBy: [{ order: 'asc' }, { title: 'asc' }],
+        select: { slug: true, title: true },
+      })
+      .catch(() => null),
+    getSiteContentMap('banners'),
+  ]);
 
   const positions =
     dbOpenings && dbOpenings.length > 0
@@ -43,6 +47,7 @@ export default async function JobApplyPage({ searchParams }: PageProps) {
           { label: 'Нээлттэй ажлын байр', href: '/careers' },
           { label: 'Анкет' },
         ]}
+        backgroundImage={banners.get('page.careers-apply.banner') || undefined}
       />
       <Section background="cream-soft">
         <div className="mx-auto max-w-3xl">

@@ -5,6 +5,7 @@ import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
 import { prisma } from '@/lib/prisma';
+import { getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -14,12 +15,15 @@ export const metadata = {
 };
 
 export default async function RegulationsPage() {
-  const items = await prisma.regulation
-    .findMany({
-      where: { status: 'PUBLISHED' },
-      orderBy: [{ order: 'asc' }, { title: 'asc' }],
-    })
-    .catch(() => []);
+  const [items, banners] = await Promise.all([
+    prisma.regulation
+      .findMany({
+        where: { status: 'PUBLISHED' },
+        orderBy: [{ order: 'asc' }, { title: 'asc' }],
+      })
+      .catch(() => []),
+    getSiteContentMap('banners'),
+  ]);
 
   return (
     <>
@@ -27,6 +31,7 @@ export default async function RegulationsPage() {
         title="ДҮРЭМ ЖУРАМ"
         subtitle="Соёл Эрдэм Дээд Сургуулийн бүх мөрдөгдөж буй журмыг нэг газар. Дугаар бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Дүрэм журам' }]}
+        backgroundImage={banners.get('page.regulations.banner') || undefined}
       />
 
       <Section background="cream-soft" spacing="md">

@@ -499,6 +499,14 @@ async function main() {
     { key: 'page.student-life.banner', group: 'banners', type: 'IMAGE' as const, label: 'Оюутан хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 3 },
     { key: 'page.international.banner', group: 'banners', type: 'IMAGE' as const, label: 'Хамтын ажиллагаа хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 4 },
     { key: 'page.news.banner', group: 'banners', type: 'IMAGE' as const, label: 'Мэдээ хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 5 },
+    { key: 'page.admission.banner', group: 'banners', type: 'IMAGE' as const, label: 'Элсэлт хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 6 },
+    { key: 'page.admission-register.banner', group: 'banners', type: 'IMAGE' as const, label: 'Цахим бүртгэл хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 7 },
+    { key: 'page.careers.banner', group: 'banners', type: 'IMAGE' as const, label: 'Нээлттэй ажлын байр хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 8 },
+    { key: 'page.careers-apply.banner', group: 'banners', type: 'IMAGE' as const, label: 'Ажлын анкет хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 9 },
+    { key: 'page.contact.banner', group: 'banners', type: 'IMAGE' as const, label: 'Холбоо барих хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 10 },
+    { key: 'page.library.banner', group: 'banners', type: 'IMAGE' as const, label: 'Номын сан хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 11 },
+    { key: 'page.regulations.banner', group: 'banners', type: 'IMAGE' as const, label: 'Дүрэм журам хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 12 },
+    { key: 'page.sonin-hewlel.banner', group: 'banners', type: 'IMAGE' as const, label: 'Сонин хэвлэл хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 13 },
   ];
   for (const c of siteContent) {
     await prisma.siteContent.upsert({

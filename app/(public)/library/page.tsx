@@ -8,7 +8,9 @@ import {
   LIBRARY_INTRO,
   LIBRARY_SERVICES,
 } from '@/lib/content';
+import { getSiteContentMap } from '@/lib/site-content';
 
+export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Номын сан',
 };
@@ -19,13 +21,15 @@ const HOLDINGS = [
   { icon: BookMarked, label: 'Холдинг', value: '5,000+ ном' },
 ];
 
-export default function LibraryPage() {
+export default async function LibraryPage() {
+  const banners = await getSiteContentMap('banners');
   return (
     <>
       <PageHero
         title="НОМЫН САН"
         subtitle="Япон, Монгол, Англи хэл дээрх 5,000+ нэр төрлийн ном, эрдэм шинжилгээний нийтлэлтэй."
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Номын сан' }]}
+        backgroundImage={banners.get('page.library.banner') || undefined}
       />
 
       <Section background="white" spacing="sm">

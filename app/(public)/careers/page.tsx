@@ -11,6 +11,7 @@ import {
   CAREERS_REQUIREMENTS,
 } from '@/lib/content';
 import { prisma } from '@/lib/prisma';
+import { getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -22,13 +23,16 @@ export const metadata = {
 export default async function CareersPage() {
   // DB list when populated, otherwise the seeded defaults — same shape
   // either way so the rest of the page doesn't care.
-  const dbOpenings = await prisma.jobOpening
-    .findMany({
-      where: { active: true },
-      orderBy: [{ order: 'asc' }, { title: 'asc' }],
-      select: { slug: true, title: true, description: true },
-    })
-    .catch(() => null);
+  const [dbOpenings, banners] = await Promise.all([
+    prisma.jobOpening
+      .findMany({
+        where: { active: true },
+        orderBy: [{ order: 'asc' }, { title: 'asc' }],
+        select: { slug: true, title: true, description: true },
+      })
+      .catch(() => null),
+    getSiteContentMap('banners'),
+  ]);
 
   const openings =
     dbOpenings && dbOpenings.length > 0
@@ -44,6 +48,7 @@ export default async function CareersPage() {
           { label: 'Нүүр', href: '/' },
           { label: 'Нээлттэй ажлын байр' },
         ]}
+        backgroundImage={banners.get('page.careers.banner') || undefined}
       />
 
       {/* Intro */}

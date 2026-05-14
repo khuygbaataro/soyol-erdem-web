@@ -13,7 +13,9 @@ import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
 import { ContactForm } from '@/components/ui/ContactForm';
 import { CONTACT_INFO } from '@/lib/content';
+import { getSiteContentMap } from '@/lib/site-content';
 
+export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Холбоо барих',
 };
@@ -25,13 +27,15 @@ const SOCIAL = [
   { icon: Linkedin, label: 'LinkedIn', href: '#' },
 ];
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const banners = await getSiteContentMap('banners');
   return (
     <>
       <PageHero
         title="ХОЛБОО БАРИХ"
         subtitle="Бидэнтэй ямар ч асуудлаар чөлөөтэй холбогдоорой."
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Холбоо барих' }]}
+        backgroundImage={banners.get('page.contact.banner') || undefined}
       />
 
       <Section background="white">

@@ -1,6 +1,7 @@
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { prisma } from '@/lib/prisma';
+import { getSiteContentMap } from '@/lib/site-content';
 import { RegisterFormClient } from './RegisterFormClient';
 
 export const dynamic = 'force-dynamic';
@@ -13,13 +14,16 @@ export const metadata = {
 export default async function AdmissionRegisterPage() {
   // Pull the program list so the form's "Хөтөлбөр" step has the real
   // catalog instead of a hard-coded placeholder.
-  const programs = await prisma.program
-    .findMany({
-      where: { active: true },
-      orderBy: [{ order: 'asc' }, { name: 'asc' }],
-      select: { id: true, name: true, degree: true },
-    })
-    .catch(() => []);
+  const [programs, banners] = await Promise.all([
+    prisma.program
+      .findMany({
+        where: { active: true },
+        orderBy: [{ order: 'asc' }, { name: 'asc' }],
+        select: { id: true, name: true, degree: true },
+      })
+      .catch(() => []),
+    getSiteContentMap('banners'),
+  ]);
 
   return (
     <>
@@ -31,6 +35,7 @@ export default async function AdmissionRegisterPage() {
           { label: 'Элсэлт', href: '/admission' },
           { label: 'Цахим бүртгэл' },
         ]}
+        backgroundImage={banners.get('page.admission-register.banner') || undefined}
       />
       <Section background="cream-soft">
         <div className="mx-auto max-w-3xl">

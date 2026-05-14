@@ -2,6 +2,7 @@ import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { NewspapersList } from '@/components/sections/NewspapersList';
 import { prisma } from '@/lib/prisma';
+import { getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -11,18 +12,21 @@ export const metadata = {
 };
 
 export default async function SoninHewlelPage() {
-  const items = await prisma.newspaper
-    .findMany({
-      where: { status: 'PUBLISHED' },
-      orderBy: { issueNumber: 'desc' },
-      select: {
-        id: true,
-        issueNumber: true,
-        title: true,
-        publishedAt: true,
-      },
-    })
-    .catch(() => []);
+  const [items, banners] = await Promise.all([
+    prisma.newspaper
+      .findMany({
+        where: { status: 'PUBLISHED' },
+        orderBy: { issueNumber: 'desc' },
+        select: {
+          id: true,
+          issueNumber: true,
+          title: true,
+          publishedAt: true,
+        },
+      })
+      .catch(() => []),
+    getSiteContentMap('banners'),
+  ]);
 
   return (
     <>
@@ -30,6 +34,7 @@ export default async function SoninHewlelPage() {
         title="СОНИН ХЭВЛЭЛ"
         subtitle="Сургуулийн тогтмол хэвлэлийн архив. Дугаар бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Сонин хэвлэл' }]}
+        backgroundImage={banners.get('page.sonin-hewlel.banner') || undefined}
       />
 
       <Section background="cream-soft" spacing="md">
