@@ -122,31 +122,31 @@ export default async function HighSchoolHomePage() {
         take: 3,
       })
       .catch(() => []),
-    getSiteContentMap('hs-home'),
+    getSiteContentMap('ahlah-home'),
   ]);
 
   const heroSubtitle = content(
     site,
-    'hs-home.hero.subtitle',
+    'ahlah-home.hero.subtitle',
     'Хичээнгүй суралцагч · Чадварлаг багш · Япон хэл, соёл',
   );
-  const heroImage = site.get('hs-home.hero.image') || '';
+  const heroImage = site.get('ahlah-home.hero.image') || '';
   const philosophyTitle = content(
     site,
-    'hs-home.philosophy.title',
+    'ahlah-home.philosophy.title',
     'БИДНИЙ ЗАМ ЗОРИЛГО',
   );
   const programsTitle = content(
     site,
-    'hs-home.programs.title',
+    'ahlah-home.programs.title',
     'ХӨТӨЛБӨРҮҮД',
   );
   const programsSubtitle = content(
     site,
-    'hs-home.programs.subtitle',
+    'ahlah-home.programs.subtitle',
     'Япон хэл, төрөлжсөн IT, бүрэн дунд боловсролын зэрэгцээ Япон руу солилцооны 2+2 хөтөлбөрөөр сурагчдыг бэлдэнэ.',
   );
-  const newsTitle = content(site, 'hs-home.news.title', 'СҮҮЛИЙН МЭДЭЭ');
+  const newsTitle = content(site, 'ahlah-home.news.title', 'СҮҮЛИЙН МЭДЭЭ');
 
   return (
     <>

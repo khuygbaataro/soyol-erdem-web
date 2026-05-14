@@ -12,11 +12,11 @@ export const metadata = { title: 'Хуудасны агуулга' };
 // Only high-school sub-site groups appear here; the main university
 // content lives in /admin/site-content.
 const GROUP_LABELS: Record<string, string> = {
-  'hs-home': 'Нүүр хуудас',
-  'hs-about': 'Танилцуулга',
-  'hs-admission': 'Элсэлт',
-  'hs-programs': 'Хөтөлбөр',
-  'hs-contact': 'Холбоо барих',
+  'ahlah-home': 'Нүүр хуудас',
+  'ahlah-about': 'Танилцуулга',
+  'ahlah-admission': 'Элсэлт',
+  'ahlah-programs': 'Хөтөлбөр',
+  'ahlah-contact': 'Холбоо барих',
 };
 const ALLOWED_GROUPS = Object.keys(GROUP_LABELS);
 
@@ -80,7 +80,7 @@ export default async function HighSchoolSiteContentPage({
 }) {
   const requested = searchParams.group;
   const group =
-    requested && ALLOWED_GROUPS.includes(requested) ? requested : 'hs-home';
+    requested && ALLOWED_GROUPS.includes(requested) ? requested : 'ahlah-home';
   const { ok, items, groups } = await safeLoad(group);
 
   return (
