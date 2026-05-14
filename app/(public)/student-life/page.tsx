@@ -156,15 +156,22 @@ export default async function StudentLifePage() {
     .map((i) => sl.get(`student-life.annual.${i}.title`) || '')
     .filter((t) => t.trim().length > 0);
 
+  type Testimonial = {
+    quote: string;
+    name: string;
+    age: number | undefined;
+    program: string | undefined;
+  };
+
   const testimonials = [1, 2, 3]
-    .map((i) => {
+    .map((i): Testimonial | null => {
       const quote = sl.get(`student-life.testimonial.${i}.quote`) || '';
       const byline = sl.get(`student-life.testimonial.${i}.byline`) || '';
       return quote && byline
         ? { quote, ...parseTestimonialByline(byline) }
         : null;
     })
-    .filter((t): t is { quote: string; name: string; age?: number; program?: string } => t !== null);
+    .filter((t): t is Testimonial => t !== null);
 
   // Fall back to static defaults from lib/content.ts only when admin has not
   // filled the SiteContent rows.
