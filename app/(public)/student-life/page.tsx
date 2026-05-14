@@ -72,7 +72,15 @@ const CREAM_IDS = new Set([
   'japan-dance',
 ]);
 
-function ChapterSection({ chapter }: { chapter: StudentChapter }) {
+function ChapterSection({
+  chapter,
+  images,
+  caption,
+}: {
+  chapter: StudentChapter;
+  images: string[];
+  caption: string;
+}) {
   const Icon = CHAPTER_ICON[chapter.id] ?? BookOpen;
   const onCream = CREAM_IDS.has(chapter.id);
   return (
@@ -86,6 +94,17 @@ function ChapterSection({ chapter }: { chapter: StudentChapter }) {
             {chapter.heading}
           </h2>
         </header>
+
+        {images.length > 0 && (
+          <div className="mb-6">
+            <AnnualEventSlideshow
+              images={images}
+              label={chapter.heading}
+              aspectClassName="aspect-[16/9]"
+              caption={caption}
+            />
+          </div>
+        )}
 
         <p className="text-base leading-relaxed text-text-body">
           {chapter.lead}
@@ -159,34 +178,54 @@ export default async function StudentLifePage() {
       const images = [1, 2, 3, 4]
         .map((j) => sl.get(`student-life.annual.${i}.image.${j}`) || '')
         .filter((url) => url.trim().length > 0);
-      return { title, images };
+      const caption = sl.get(`student-life.annual.${i}.caption`) || '';
+      return { title, images, caption };
     })
     .filter((a) => a.title.trim().length > 0);
+
+  // Per-chapter images + caption — admin-managed via the
+  // `student-life.chapter.{id}.image.{1..4}` and `.caption` site-content keys.
+  const chapterMedia = new Map<string, { images: string[]; caption: string }>(
+    STUDENT_LIFE_CHAPTERS.map((c) => {
+      const images = [1, 2, 3, 4]
+        .map((j) => sl.get(`student-life.chapter.${c.id}.image.${j}`) || '')
+        .filter((url) => url.trim().length > 0);
+      const caption = sl.get(`student-life.chapter.${c.id}.caption`) || '';
+      return [c.id, { images, caption }];
+    }),
+  );
 
   type Testimonial = {
     quote: string;
     name: string;
     age: number | undefined;
     program: string | undefined;
+    photo: string | undefined;
   };
 
   const testimonials = [1, 2, 3]
     .map((i): Testimonial | null => {
       const quote = sl.get(`student-life.testimonial.${i}.quote`) || '';
       const byline = sl.get(`student-life.testimonial.${i}.byline`) || '';
+      const photo = sl.get(`student-life.testimonial.${i}.photo`) || '';
       return quote && byline
-        ? { quote, ...parseTestimonialByline(byline) }
+        ? {
+            quote,
+            ...parseTestimonialByline(byline),
+            photo: photo.trim().length > 0 ? photo : undefined,
+          }
         : null;
     })
     .filter((t): t is Testimonial => t !== null);
 
   // Fall back to static defaults from lib/content.ts only when admin has not
   // filled the SiteContent rows.
-  const fallbackTestimonials = TESTIMONIALS.map((t) => ({
+  const fallbackTestimonials: Testimonial[] = TESTIMONIALS.map((t) => ({
     quote: t.quote,
     name: t.name,
     age: t.age,
     program: t.program,
+    photo: undefined,
   }));
 
   return (
@@ -234,9 +273,17 @@ export default async function StudentLifePage() {
       </div>
 
       {/* All chapters in editor order */}
-      {STUDENT_LIFE_CHAPTERS.map((c) => (
-        <ChapterSection key={c.id} chapter={c} />
-      ))}
+      {STUDENT_LIFE_CHAPTERS.map((c) => {
+        const m = chapterMedia.get(c.id) ?? { images: [], caption: '' };
+        return (
+          <ChapterSection
+            key={c.id}
+            chapter={c}
+            images={m.images}
+            caption={m.caption}
+          />
+        );
+      })}
 
       {/* Annual highlights row */}
       {annual.length > 0 && (
@@ -259,9 +306,11 @@ export default async function StudentLifePage() {
                 </span>
                 <p className="text-sm font-semibold text-navy-900">{a.title}</p>
                 {a.images.length > 0 && (
-                  <div className="mt-auto pt-2">
-                    <AnnualEventSlideshow images={a.images} label={a.title} />
-                  </div>
+                  <AnnualEventSlideshow
+                    images={a.images}
+                    label={a.title}
+                    caption={a.caption}
+                  />
                 )}
               </Card>
             ))}
@@ -283,6 +332,7 @@ export default async function StudentLifePage() {
                 name={t.name}
                 age={t.age}
                 program={t.program}
+                photo={t.photo}
               />
             ),
           )}

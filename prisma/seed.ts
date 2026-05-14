@@ -422,6 +422,57 @@ async function main() {
     { key: 'student-life.testimonial.3.quote', group: 'student-life', type: 'TEXT' as const, label: 'Оюутны үг — 3 (ишлэл)', value: 'Соёл Эрдэмд суралцсан 4 жил миний амьдралд эргэлт хийсэн. Одоо Япон корпорацид программистаар ажиллаж байна. Бид төгсөгчид болон одоогийн оюутнууд бол нэг гэр бүл.', multiline: true, order: 35 },
     { key: 'student-life.testimonial.3.byline', group: 'student-life', type: 'TEXT' as const, label: 'Оюутны үг — 3 (нэр)', value: 'Наймангал · 26 · Программ хангамж — төгсөгч', order: 36 },
 
+    // Per-chapter slideshow images + caption — admin uploads up to 4 photos
+    // per chapter; the public page collapses the slideshow cleanly when the
+    // chapter has no images. Order numbers 100+ keep these grouped together
+    // at the end of the student-life admin form.
+    ...([
+      ['bunkyosai', 'Бүнкёосай'],
+      ['sport', 'Спорт, аялал'],
+      ['shiliin-bulag', '"Шилийн булаг" дадлага'],
+      ['hippo-family', 'Хиппо Фамили групп'],
+      ['dormitory', 'Дотуур байр'],
+      ['volunteer', 'Сайн үйлсийн аян'],
+      ['research', 'Эрдэм шинжилгээ'],
+      ['scholarship', 'Тэтгэлэг, урамшуулал'],
+      ['student-council', 'Оюутны зөвлөл'],
+      ['graduates', 'Төгсөгчид'],
+      ['japan-dance', 'Япон бүжгийн парад'],
+      ['rural-program', 'Албан бус сургалт — 30 жилийн ой'],
+    ] as const).flatMap(([id, label], chIdx) => {
+      const base = 100 + chIdx * 5;
+      return [
+        { key: `student-life.chapter.${id}.image.1`, group: 'student-life', type: 'IMAGE' as const, label: `${label} — Зураг 1`, hint: 'Бүлэгт харагдах slideshow (16:9). Хоосон бол slideshow гарахгүй.', value: '', order: base },
+        { key: `student-life.chapter.${id}.image.2`, group: 'student-life', type: 'IMAGE' as const, label: `${label} — Зураг 2`, hint: 'Заавал биш.', value: '', order: base + 1 },
+        { key: `student-life.chapter.${id}.image.3`, group: 'student-life', type: 'IMAGE' as const, label: `${label} — Зураг 3`, hint: 'Заавал биш.', value: '', order: base + 2 },
+        { key: `student-life.chapter.${id}.image.4`, group: 'student-life', type: 'IMAGE' as const, label: `${label} — Зураг 4`, hint: 'Заавал биш.', value: '', order: base + 3 },
+        { key: `student-life.chapter.${id}.caption`, group: 'student-life', type: 'TEXT' as const, label: `${label} — Зургийн тайлбар`, hint: 'Slideshow-н доор харагдах нэг мөр тайлбар. Заавал биш.', value: '', order: base + 4 },
+      ];
+    }),
+
+    // Annual-event captions — one line shown under the square slideshow on
+    // each "Жил бүрийн арга хэмжээ" card.
+    ...[1, 2, 3, 4].map((i) => ({
+      key: `student-life.annual.${i}.caption`,
+      group: 'student-life',
+      type: 'TEXT' as const,
+      label: `${i}-р арга хэмжээ — Зургийн тайлбар`,
+      hint: 'Slideshow-н доор харагдах нэг мөр. Заавал биш.',
+      value: '',
+      order: 200 + i,
+    })),
+
+    // Per-testimonial portrait photo — round avatar shown next to the name.
+    ...[1, 2, 3].map((i) => ({
+      key: `student-life.testimonial.${i}.photo`,
+      group: 'student-life',
+      type: 'IMAGE' as const,
+      label: `Оюутны үг — ${i} (зураг)`,
+      hint: 'Дугуй хөргийн зураг (квадрат хэлбэртэй сайн). Заавал биш.',
+      value: '',
+      order: 210 + i,
+    })),
+
     // Inner-page banner photos — each one drives the <PageHero> photo on
     // its page. Empty value falls back to /nice_banner.png (the default).
     { key: 'page.programs.banner', group: 'banners', type: 'IMAGE' as const, label: 'Сургалт хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 1 },
