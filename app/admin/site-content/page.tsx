@@ -6,13 +6,17 @@ import { requireRole } from '@/lib/auth-helpers';
 
 export const dynamic = 'force-dynamic';
 
+// Only main university groups appear here. High-school content (the
+// `ahlah-*` groups) is managed from /high-school/admin/site-content.
 const GROUP_LABELS: Record<string, string> = {
   home: 'Нүүр хуудас',
   about: 'Сургуулийн тухай',
   banners: 'Banner зургууд',
   research: 'Эрдэм шинжилгээ',
+  elearning: 'elearning',
   'student-life': 'Оюутны амьдрал',
 };
+const ALLOWED_GROUPS = Object.keys(GROUP_LABELS);
 
 interface LoadResult {
   ok: boolean;
@@ -23,8 +27,15 @@ interface LoadResult {
 async function safeLoad(group: string): Promise<LoadResult> {
   try {
     const [items, groups] = await Promise.all([
-      prisma.siteContent.findMany({ where: { group }, orderBy: { order: 'asc' } }),
-      prisma.siteContent.groupBy({ by: ['group'], _count: true }),
+      prisma.siteContent.findMany({
+        where: { group },
+        orderBy: { order: 'asc' },
+      }),
+      prisma.siteContent.groupBy({
+        by: ['group'],
+        where: { group: { in: ALLOWED_GROUPS } },
+        _count: true,
+      }),
     ]);
     return {
       ok: true,
@@ -71,7 +82,9 @@ export default async function AdminSiteContentPage({
   searchParams: { group?: string };
 }) {
   await requireRole(['ADMIN']);
-  const group = searchParams.group ?? 'home';
+  const requested = searchParams.group;
+  const group =
+    requested && ALLOWED_GROUPS.includes(requested) ? requested : 'home';
   const { ok, items, groups } = await safeLoad(group);
 
   return (

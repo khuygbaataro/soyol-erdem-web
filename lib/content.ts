@@ -983,7 +983,16 @@ export interface PartnerDetailed {
   /** Headline scholarship/discount string shown as a pill on the card,
    *  e.g. "100% тэтгэлэг", "50% хөнгөлөлт", "10–20% хөнгөлөлт". */
   headline?: string;
+  /** Logo image URL. Defaults to Google's favicon API
+   *  (`https://www.google.com/s2/favicons?domain=…&sz=128`) so every
+   *  partner has at least the brand mark; can be replaced with a higher-
+   *  quality Wikimedia / official-site asset later. */
+  logo?: string;
 }
+
+/** Google favicon API — high-res (sz=128) brand mark for any domain. */
+const favicon = (domain: string) =>
+  `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
 export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
   {
@@ -994,6 +1003,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2005 оны 9 сар',
     detail:
       'Япон улсын Аичи мужид байрладаг. Эдийн засгийн факультетдаа гадаадын улс орнуудаас оюутан элсүүлдэг. Тус сургуульд СЭДС-ийн бакалаврын хөтөлбөрийн оюутан их сургуульд 50%, япон хэлний сургуульд 10–20% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('seijoh-u.ac.jp'),
   },
   {
     name: 'Такүшёкү их сургууль',
@@ -1003,6 +1013,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2006 оны 1 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Олон улсын харилцаа, Худалдаа, Улс төр, Эдийн засаг зэрэг мэргэжлээр 10–20% хөнгөлөлттэй элсэн суралцах боломжтой.',
+    logo: favicon('takushoku-u.ac.jp'),
   },
   {
     name: 'Оберлин их сургууль',
@@ -1012,6 +1023,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2009 он',
     detail:
       'Оюутан солилцооны хөтөлбөрийг өнөөг хүртэл амжилттай хэрэгжүүлж байна. Жил бүр СЭДС-ийн бакалаврын хөтөлбөрийн 2–4 оюутныг сонгон шалгаруулж, сургалтын төлбөрийн 100%-ийн хөнгөлөлттэй нэг жил хүртэл хугацаанд суралцуулдаг.',
+    logo: favicon('obirin.ac.jp'),
   },
   {
     name: 'Гакко Хоүжин Охара Гакүэн',
@@ -1021,6 +1033,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2010 он',
     detail:
       'Япон улсын бүх мужид салбартай "Оохара" Япон хэлний сургууль. СЭДС-ийн бакалаврын хөтөлбөрийн оюутан 10–20% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('o-hara.ac.jp'),
   },
   {
     name: 'Ёкохама Дезайн Гакүин',
@@ -1030,6 +1043,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2012 оны 11 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Visual Design, Хувцасны дизайн, Манга зурагт номны дизайн, Япон хэл чиглэлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('ydg.ac.jp'),
   },
   {
     name: 'Гакко Хоүжин Дэнпа Коүка их сургуулийн групп',
@@ -1040,6 +1054,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2013 оны 5 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Айчи Технологийн их сургууль (механик, цахилгаан, тээвэр), Нагоя технологийн мэргэжлийн сургууль (компьютер, IT, CAD, тоглоом), Токай үйлдвэрлэл-урлалын сургууль (барилгын инженер, интерьер), Айчи бизнесийн мэргэжлийн сургууль, Айчи загвар дизайны сургууль, Айчи нийгмийн халамж эмнэлгийн сургууль, Нагоя гадаад хэл-зочид буудлын сургууль, Айчи мэдээллийн системийн сургууль зэрэг 8 сургуульд 10–20% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('aut.ac.jp'),
   },
   {
     name: 'Нийгата Сангёо их сургууль',
@@ -1049,6 +1064,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2014 оны 4 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Эдийн засаг, Байгууллагын менежмент, Санхүүгийн чиглэлээр 10–20% хөнгөлөлттэй элсэн суралцах боломжтой.',
+    logo: favicon('nsu.ac.jp'),
   },
   {
     name: 'Гакко Хоүжин Норт Азиа их сургууль',
@@ -1058,6 +1074,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2015 оны 6 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Эдийн засаг, Олон улсын харилцааны чиглэлээр 10–20%-ийн хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('nau.ac.jp'),
   },
   {
     name: 'Чюүоү Гакүин их сургууль',
@@ -1067,6 +1084,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2015 оны 9 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Хүмүүнлэгийн ухаан, Бизнес удирдлагын чиглэлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('cgu.ac.jp'),
   },
   {
     name: 'Хоккай Гакүэн их сургууль',
@@ -1076,6 +1094,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2015 оны 9 сар',
     detail:
       'СЭДС-ийн бакалавр, магистрын хөтөлбөрийн оюутан Инженер, Эдийн засаг, Бизнесийн удирдлага, Хүмүүнлэгийн чиглэлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('hgu.jp'),
   },
   {
     name: 'ABK Гаккан Нихонго Гакко',
@@ -1086,6 +1105,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2016 оны 4 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан 10–20% хөнгөлөлттэй япон хэлний сургуульд суралцах боломжтой.',
+    logo: favicon('abk.or.jp'),
   },
   {
     name: 'Нихон эм зүйн их сургууль',
@@ -1095,6 +1115,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2017 оны 12 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан эм зүйн чиглэлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('nichiyaku.ac.jp'),
   },
   {
     name: 'Хокүто Бүнка Гакүэн',
@@ -1104,6 +1125,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2021 оны 5 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Нийгмийн халамжийн мэргэжлийн коллежид 10–20%, япон хэлний сургуульд 10–50% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('hokuto-bunka.ac.jp'),
   },
   {
     name: 'Токива их сургууль',
@@ -1113,6 +1135,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2023 оны 2 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан 100% хөнгөлөлттэй 6 сараас 1 жилийн хугацаанд япон хэл болон Хүмүүнлэг, Бизнесийн удирдлага, Сувилахуйн чиглэлээр суралцах боломжтой.',
+    logo: favicon('tokiwa.ac.jp'),
   },
   {
     name: 'Нихон Вэлнэс Спорт их сургууль',
@@ -1123,6 +1146,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2023 оны 4 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Биеийн тамир, Эдийн засгийн чиглэлээр 10–20%-ийн хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('taiken.ac.jp'),
   },
   {
     name: 'Комазава охидын их сургууль',
@@ -1132,6 +1156,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     partnerSince: '2024 оны 5 сар',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн эмэгтэй оюутан Хүмүүнлэг, Сэтгэл судлал, Аялал жуулчлал, Нийтийн эрүүл мэнд, Сувилахуй зэрэг мэргэжлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('komajo.ac.jp'),
   },
   {
     name: 'Иватани Хигаши Хоккайдо коллеж',
@@ -1141,6 +1166,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     location: 'Япон, Канагава муж (Ёкохама)',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан IT мэргэжлийн, Гоо зүйн мэргэжлийн коллеж, Япон хэлний сургуульд 10–50% хөнгөлөлттэй суралцах боломжтой. Зөвхөн Хоккайдо салбарын Япон хэлний сургуульд N3-аас дээш япон хэлний түвшинтэй сурвал 50% хөнгөлнө.',
+    logo: favicon('iwatani-gakuen.ac.jp'),
   },
   {
     name: 'Нийгата эм зүйн их сургууль',
@@ -1150,6 +1176,7 @@ export const JAPAN_PARTNERS_DETAILED: PartnerDetailed[] = [
     location: 'Япон, Нийгата муж (Нийгата)',
     detail:
       'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан эм зүйн чиглэлээр их сургуульд 50%, япон хэлний сургуульд 10–20% хөнгөлөлттэй суралцах боломжтой.',
+    logo: favicon('nupals.ac.jp'),
   },
 ];
 
@@ -1162,6 +1189,7 @@ export const JAPAN_HIGH_SCHOOLS: PartnerDetailed[] = [
     partnerSince: '2025 оны 5 сар',
     detail:
       'Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн эмэгтэй сурагчдыг 50%-ийн хөнгөлөлттэй элсүүлэн суралцуулах боломжтой.',
+    logo: favicon('komajo.ed.jp'),
   },
   {
     name: 'Нихон Вэлнэс ахлах сургууль',
@@ -1171,6 +1199,7 @@ export const JAPAN_HIGH_SCHOOLS: PartnerDetailed[] = [
     partnerSince: '2024 оны 5 сар',
     detail:
       'Спортын чиглэлтэй ахлах сургууль. Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн сурагчдыг 50%-ийн хөнгөлөлттэй элсүүлэн суралцуулах боломжтой.',
+    logo: favicon('taiken.ac.jp'),
   },
 ];
 
@@ -1180,6 +1209,8 @@ export interface DomesticPartner {
   url: string;
   detail: string;
   activities: string[];
+  /** Logo image URL — same convention as PartnerDetailed.logo. */
+  logo?: string;
 }
 
 export const DOMESTIC_PARTNERS: DomesticPartner[] = [
@@ -1192,6 +1223,7 @@ export const DOMESTIC_PARTNERS: DomesticPartner[] = [
       '"Япон киноны өдөрлөг"',
       '"Японд суралцах талаар танилцуулах сургалт"',
     ],
+    logo: favicon('mn.emb-japan.go.jp'),
   },
   {
     name: 'Монгол-Японы Хүний Нөөцийн Хөгжлийн Төв',
@@ -1205,6 +1237,7 @@ export const DOMESTIC_PARTNERS: DomesticPartner[] = [
       '"Японы соёлыг танилцуулах баяр"',
       '"Нээлттэй семинар"',
     ],
+    logo: favicon('japan-center.edu.mn'),
   },
   {
     name: 'Монголын Япон Хэлний Багш нарын Холбоо',
@@ -1215,6 +1248,7 @@ export const DOMESTIC_PARTNERS: DomesticPartner[] = [
       'Жилд 2 удаа зохион байгуулагддаг "Япон хэлний түвшин тогтоох шалгалт — JLPT"-ийн зохион байгуулалт',
       '"Япон хэлний боловсролын симпозиум"',
     ],
+    logo: favicon('matj.mn'),
   },
 ];
 

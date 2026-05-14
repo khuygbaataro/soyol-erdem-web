@@ -19,6 +19,7 @@ import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { QuoteCard } from '@/components/ui/QuoteCard';
+import { AnnualEventSlideshow } from '@/components/sections/AnnualEventSlideshow';
 import { getSiteContentMap } from '@/lib/site-content';
 import {
   BUNKYOSAI_GRADE_ACTS,
@@ -153,8 +154,14 @@ export default async function StudentLifePage() {
   ]);
 
   const annual = [1, 2, 3, 4]
-    .map((i) => sl.get(`student-life.annual.${i}.title`) || '')
-    .filter((t) => t.trim().length > 0);
+    .map((i) => {
+      const title = sl.get(`student-life.annual.${i}.title`) || '';
+      const images = [1, 2, 3, 4]
+        .map((j) => sl.get(`student-life.annual.${i}.image.${j}`) || '')
+        .filter((url) => url.trim().length > 0);
+      return { title, images };
+    })
+    .filter((a) => a.title.trim().length > 0);
 
   type Testimonial = {
     quote: string;
@@ -242,12 +249,20 @@ export default async function StudentLifePage() {
             align="left"
           />
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {annual.map((title, idx) => (
-              <Card key={`${title}-${idx}`} className="flex h-full flex-col gap-3">
+            {annual.map((a, idx) => (
+              <Card
+                key={`${a.title}-${idx}`}
+                className="flex h-full flex-col gap-3"
+              >
                 <span className="text-3xl font-bold text-gold-500">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
-                <p className="text-sm font-semibold text-navy-900">{title}</p>
+                <p className="text-sm font-semibold text-navy-900">{a.title}</p>
+                {a.images.length > 0 && (
+                  <div className="mt-auto pt-2">
+                    <AnnualEventSlideshow images={a.images} label={a.title} />
+                  </div>
+                )}
               </Card>
             ))}
           </div>

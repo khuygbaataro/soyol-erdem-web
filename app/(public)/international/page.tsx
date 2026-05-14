@@ -52,9 +52,21 @@ function PartnerProfileCard({
     <details className="group h-full overflow-hidden rounded-card border border-border-light bg-white shadow-card transition-all duration-300 open:border-navy-900/40 hover:border-navy-900/40 hover:shadow-card-hover">
       <summary className="flex cursor-pointer list-none flex-col gap-3 p-5 [&::-webkit-details-marker]:hidden">
         <div className="flex items-start justify-between gap-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-400 ring-1 ring-navy-900/20">
-            <Icon className="h-4 w-4" />
-          </span>
+          {p.logo ? (
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-button border border-border-light bg-white p-1.5 shadow-sm">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={p.logo}
+                alt={`${p.name} лого`}
+                loading="lazy"
+                className="h-full w-full object-contain"
+              />
+            </span>
+          ) : (
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-button bg-navy-900 text-gold-400 ring-1 ring-navy-900/20">
+              <Icon className="h-5 w-5" />
+            </span>
+          )}
           {p.headline && (
             <span className="shrink-0 rounded-full bg-gold-500 px-3 py-1 text-[11px] font-bold leading-tight text-navy-900 shadow-sm">
               {p.headline}
@@ -183,9 +195,21 @@ export default async function InternationalPage() {
               key={d.name}
               className="flex h-full flex-col rounded-card border border-border-light bg-white p-6 shadow-card"
             >
-              <span className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-navy-900 text-gold-400">
-                <GraduationCap className="h-5 w-5" />
-              </span>
+              {d.logo ? (
+                <span className="mb-3 inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-button border border-border-light bg-white p-1.5 shadow-sm">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={d.logo}
+                    alt={`${d.name} лого`}
+                    loading="lazy"
+                    className="h-full w-full object-contain"
+                  />
+                </span>
+              ) : (
+                <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-gold-400">
+                  <GraduationCap className="h-5 w-5" />
+                </span>
+              )}
               <h3 className="text-base font-bold leading-snug text-navy-900">
                 {d.name}
               </h3>
