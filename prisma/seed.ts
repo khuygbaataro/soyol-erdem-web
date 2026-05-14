@@ -297,6 +297,24 @@ async function main() {
     { key: 'home.hero.image', group: 'home', type: 'IMAGE' as const, label: 'Hero — баруун талын зураг', hint: 'Барилгын зураг (4:5 эсвэл 5:4 хэмжээтэй сайн)', value: '', order: 7 },
     { key: 'home.internship.image', group: 'home', type: 'IMAGE' as const, label: 'Япон интерншипийн зураг', hint: 'Интерншипийн хэсэгт харагдах зураг (4:3 харьцаатай сайн)', value: '', order: 8 },
 
+    // Цахим сургалт (/elearning) — admin-editable banner + per-section copy
+    { key: 'elearning.hero.image', group: 'elearning', type: 'IMAGE' as const, label: 'Hero — баннер зураг', hint: 'Дээд талын баннер. Хоосон бол default баннер.', value: '', order: 1 },
+    { key: 'elearning.hero.subtitle', group: 'elearning', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Хаанаас ч, хэзээ ч суралцах боломж — Moodle платформд суурилсан уян хатан сургалтын систем.', multiline: true, order: 2 },
+    { key: 'elearning.moodle.url', group: 'elearning', type: 'TEXT' as const, label: 'Moodle URL', hint: 'Жишээ: http://elearn.soyolerdem.edu.mn/', value: 'http://elearn.soyolerdem.edu.mn/', order: 3 },
+    { key: 'elearning.intro.badge', group: 'elearning', type: 'TEXT' as const, label: 'Танилцуулга — pill', value: 'Moodle платформ · Соёл Эрдэм', order: 4 },
+    { key: 'elearning.intro.title', group: 'elearning', type: 'TEXT' as const, label: 'Танилцуулга — гарчиг', value: 'Хаанаас ч, хэзээ ч суралцах боломж', order: 5 },
+    { key: 'elearning.intro.body', group: 'elearning', type: 'TEXT' as const, label: 'Танилцуулга — параграф', value: 'Соёл Эрдэм Дээд Сургууль нь Moodle платформд суурилсан цахим сургалтын системээр дамжуулан оюутан, ажил эрхэлж буй иргэд, орон нутгийн болон гадаадад амьдарч буй монгол иргэдэд уян хатан хэлбэрээр суралцах боломжийг олгож байна.', multiline: true, order: 6 },
+    { key: 'elearning.programs.title', group: 'elearning', type: 'TEXT' as const, label: 'Чиглэлүүд — гарчиг', value: 'ЦАХИМААР СУРАЛЦАХ БОЛОМЖТОЙ ЧИГЛЭЛҮҮД', order: 7 },
+    { key: 'elearning.programs.subtitle', group: 'elearning', type: 'TEXT' as const, label: 'Чиглэлүүд — доод текст', value: 'Дараах мэргэжлийг бүхэлд нь эсвэл сонгосон хичээлээр нь цахимаар суралцаж болно.', multiline: true, order: 8 },
+    { key: 'elearning.advantages.title', group: 'elearning', type: 'TEXT' as const, label: 'Давуу тал — гарчиг', value: 'ЦАХИМ СУРГАЛТЫН ДАВУУ ТАЛ', order: 9 },
+    { key: 'elearning.advantages.subtitle', group: 'elearning', type: 'TEXT' as const, label: 'Давуу тал — доод текст', value: 'Уламжлалт танхимын сургалтаас юугаараа ялгаатай вэ?', order: 10 },
+    { key: 'elearning.audiences.title', group: 'elearning', type: 'TEXT' as const, label: 'Хэнд зориулагдсан — гарчиг', value: 'ХЭНД ЗОРИУЛАГДСАН БЭ?', order: 11 },
+    { key: 'elearning.cisco.title', group: 'elearning', type: 'TEXT' as const, label: 'CISCO — гарчиг', value: 'CISCO Networking Academy', order: 12 },
+    { key: 'elearning.cisco.body', group: 'elearning', type: 'TEXT' as const, label: 'CISCO — танилцуулга', value: 'СЭДС нь АНУ-ын CISCO Networking Academy-ийн албан ёсны гишүүнчлэлтэй. Программ хангамжийн мэргэжлийн оюутнууд 2023 оноос албан ёсны гэрчилгээтэй төгсдөг болсноор олон улсын IT компаниудад ажиллах боломжтой.', multiline: true, order: 13 },
+    { key: 'elearning.cisco.students', group: 'elearning', type: 'TEXT' as const, label: 'CISCO — оюутны хэсэг', value: 'Бакалавр, магистрын оюутнууд болон 10–12 ангийн сурагчид хичээлийн бус цагаар тусгайлсан хөтөлбөрөөр багшийн удирдлага дор суралцана. Сургалт амжилттай төгсөхөд CISCO-ийн олон улсад хүлээн зөвшөөрөгдсөн сертификат олгогдоно. Программ хангамжийн 4-р ангийн оюутан Л.Бүддорж, Б.Баяраа, Э.Тэмүүлэн нар 2023 оны 12-р сарын 25-нд анхны сертификатаа гардан авлаа.', multiline: true, order: 14 },
+    { key: 'elearning.why.title', group: 'elearning', type: 'TEXT' as const, label: 'Why-section — гарчиг', value: 'Цаг хугацаа, байршил, амьдралын хэв маягаас үл хамаарах боловсролын шинэ шийдэл', multiline: true, order: 15 },
+    { key: 'elearning.why.body', group: 'elearning', type: 'TEXT' as const, label: 'Why-section — параграф', value: 'Соёл Эрдэм Дээд Сургуулийн цахим сургалт нь зөвхөн диплом олгох бус, ажиллах ур чадвар, олон улсын боломж, цаг хугацаа болон байршлаас үл хамаарах боловсролын шинэ шийдэл юм.', multiline: true, order: 16 },
+
     // About
     { key: 'about.hero.title.line1', group: 'about', type: 'TEXT' as const, label: 'Hero — гарчиг 1-р мөр', value: 'Соёл Эрдэм', order: 1 },
     { key: 'about.hero.title.line2', group: 'about', type: 'TEXT' as const, label: 'Hero — гарчиг 2-р мөр', value: 'ИХ СУРГУУЛЬ', order: 2 },

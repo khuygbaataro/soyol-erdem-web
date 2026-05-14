@@ -29,14 +29,14 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { CtaBanner } from '@/components/sections/CtaBanner';
 import { SITE } from '@/lib/constants';
+import { content, getSiteContentMap } from '@/lib/site-content';
 
+export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Цахим сургалт',
   description:
     'Соёл Эрдэм Дээд Сургуулийн Moodle платформд суурилсан цахим сургалт — оюутан, ажил эрхэлж буй иргэд, орон нутаг болон гадаадад амьдарч буй иргэдэд уян хатан хэлбэрээр суралцах боломж.',
 };
-
-const MOODLE_URL = 'http://elearn.soyolerdem.edu.mn/';
 
 const PROGRAMS: { icon: LucideIcon; title: string; body: string }[] = [
   {
@@ -127,13 +127,104 @@ const EXTERNAL_RESOURCES: {
   },
 ];
 
-export default function ElearningPage() {
+export default async function ElearningPage() {
+  // Pull all elearning admin-editable strings in one query. Each block on
+  // the page reads from this map with a static fallback so the page never
+  // breaks if a key is missing or the table doesn't exist yet.
+  const site = await getSiteContentMap('elearning');
+
+  const heroSubtitle = content(
+    site,
+    'elearning.hero.subtitle',
+    'Хаанаас ч, хэзээ ч суралцах боломж — Moodle платформд суурилсан уян хатан сургалтын систем.',
+  );
+  const heroImage = site.get('elearning.hero.image') || '';
+
+  const moodleUrl = content(
+    site,
+    'elearning.moodle.url',
+    'http://elearn.soyolerdem.edu.mn/',
+  );
+  const moodleDomain = moodleUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
+
+  const introBadge = content(
+    site,
+    'elearning.intro.badge',
+    `Moodle платформ · ${SITE.name}`,
+  );
+  const introTitle = content(
+    site,
+    'elearning.intro.title',
+    'Хаанаас ч, хэзээ ч суралцах боломж',
+  );
+  const introBody = content(
+    site,
+    'elearning.intro.body',
+    'Соёл Эрдэм Дээд Сургууль нь Moodle платформд суурилсан цахим сургалтын системээр дамжуулан оюутан, ажил эрхэлж буй иргэд, орон нутгийн болон гадаадад амьдарч буй монгол иргэдэд уян хатан хэлбэрээр суралцах боломжийг олгож байна.',
+  );
+
+  const programsTitle = content(
+    site,
+    'elearning.programs.title',
+    'ЦАХИМААР СУРАЛЦАХ БОЛОМЖТОЙ ЧИГЛЭЛҮҮД',
+  );
+  const programsSubtitle = content(
+    site,
+    'elearning.programs.subtitle',
+    'Дараах мэргэжлийг бүхэлд нь эсвэл сонгосон хичээлээр нь цахимаар суралцаж болно.',
+  );
+
+  const advantagesTitle = content(
+    site,
+    'elearning.advantages.title',
+    'ЦАХИМ СУРГАЛТЫН ДАВУУ ТАЛ',
+  );
+  const advantagesSubtitle = content(
+    site,
+    'elearning.advantages.subtitle',
+    'Уламжлалт танхимын сургалтаас юугаараа ялгаатай вэ?',
+  );
+
+  const audiencesTitle = content(
+    site,
+    'elearning.audiences.title',
+    'ХЭНД ЗОРИУЛАГДСАН БЭ?',
+  );
+
+  const ciscoTitle = content(
+    site,
+    'elearning.cisco.title',
+    'CISCO Networking Academy',
+  );
+  const ciscoBody = content(
+    site,
+    'elearning.cisco.body',
+    'СЭДС нь АНУ-ын CISCO Networking Academy-ийн албан ёсны гишүүнчлэлтэй. Программ хангамжийн мэргэжлийн оюутнууд 2023 оноос албан ёсны гэрчилгээтэй төгсдөг болсноор олон улсын IT компаниудад ажиллах боломжтой.',
+  );
+  const ciscoStudents = content(
+    site,
+    'elearning.cisco.students',
+    'Бакалавр, магистрын оюутнууд болон 10–12 ангийн сурагчид хичээлийн бус цагаар тусгайлсан хөтөлбөрөөр багшийн удирдлага дор суралцана. Сургалт амжилттай төгсөхөд CISCO-ийн олон улсад хүлээн зөвшөөрөгдсөн сертификат олгогдоно. Программ хангамжийн 4-р ангийн оюутан Л.Бүддорж, Б.Баяраа, Э.Тэмүүлэн нар 2023 оны 12-р сарын 25-нд анхны сертификатаа гардан авлаа.',
+  );
+
+  const whyTitle = content(
+    site,
+    'elearning.why.title',
+    'Цаг хугацаа, байршил, амьдралын хэв маягаас үл хамаарах боловсролын шинэ шийдэл',
+  );
+  const whyBody = content(
+    site,
+    'elearning.why.body',
+    'Соёл Эрдэм Дээд Сургуулийн цахим сургалт нь зөвхөн диплом олгох бус, ажиллах ур чадвар, олон улсын боломж, цаг хугацаа болон байршлаас үл хамаарах боловсролын шинэ шийдэл юм.',
+  );
+
   return (
     <>
       <PageHero
         title="ЦАХИМ СУРГАЛТ"
-        subtitle="Хаанаас ч, хэзээ ч суралцах боломж — Moodle платформд суурилсан уян хатан сургалтын систем."
+        subtitle={heroSubtitle}
         breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Цахим сургалт' }]}
+        backgroundImage={heroImage || undefined}
       />
 
       {/* Intro band */}
@@ -141,22 +232,18 @@ export default function ElearningPage() {
         <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
           <div>
             <Badge variant="gold" className="mb-5">
-              Moodle платформ · {SITE.name}
+              {introBadge}
             </Badge>
             <h2 className="font-serif text-3xl font-bold leading-tight text-navy-900 md:text-4xl">
-              Хаанаас ч, хэзээ ч <br className="hidden sm:block" />
-              суралцах боломж
+              {introTitle}
             </h2>
             <div className="mt-4 h-1 w-14 rounded-full bg-gold-500" />
-            <p className="mt-6 text-base leading-relaxed text-text-body">
-              Соёл Эрдэм Дээд Сургууль нь <strong>Moodle</strong> платформд
-              суурилсан цахим сургалтын системээр дамжуулан оюутан, ажил эрхэлж
-              буй иргэд, орон нутгийн болон гадаадад амьдарч буй монгол
-              иргэдэд уян хатан хэлбэрээр суралцах боломжийг олгож байна.
+            <p className="mt-6 whitespace-pre-line text-base leading-relaxed text-text-body">
+              {introBody}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button
-                href={MOODLE_URL}
+                href={moodleUrl}
                 variant="primary"
                 size="lg"
                 icon={<ExternalLink className="h-4 w-4" />}
@@ -175,12 +262,12 @@ export default function ElearningPage() {
               Цахим сургалтын систем
             </p>
             <a
-              href={MOODLE_URL}
+              href={moodleUrl}
               target="_blank"
               rel="noreferrer"
               className="mt-2 inline-flex items-center gap-1.5 break-all font-serif text-xl font-bold hover:text-gold-400"
             >
-              elearn.soyolerdem.edu.mn
+              {moodleDomain}
               <ExternalLink className="h-4 w-4 shrink-0" />
             </a>
             <div className="mt-6 h-px w-full bg-gold-500/40" />
@@ -194,10 +281,7 @@ export default function ElearningPage() {
 
       {/* Programs */}
       <Section background="cream-soft" spacing="md">
-        <SectionTitle
-          title="ЦАХИМААР СУРАЛЦАХ БОЛОМЖТОЙ ЧИГЛЭЛҮҮД"
-          subtitle="Дараах мэргэжлийг бүхэлд нь эсвэл сонгосон хичээлээр нь цахимаар суралцаж болно."
-        />
+        <SectionTitle title={programsTitle} subtitle={programsSubtitle} />
         <div className="grid gap-6 md:grid-cols-2">
           {PROGRAMS.map((p) => {
             const Icon = p.icon;
@@ -220,10 +304,7 @@ export default function ElearningPage() {
 
       {/* Advantages */}
       <Section background="white" spacing="md">
-        <SectionTitle
-          title="ЦАХИМ СУРГАЛТЫН ДАВУУ ТАЛ"
-          subtitle="Уламжлалт танхимын сургалтаас юугаараа ялгаатай вэ?"
-        />
+        <SectionTitle title={advantagesTitle} subtitle={advantagesSubtitle} />
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {ADVANTAGES.map((a) => {
             const Icon = a.icon;
@@ -244,7 +325,7 @@ export default function ElearningPage() {
 
       {/* Audiences */}
       <Section background="cream-soft" spacing="md">
-        <SectionTitle title="ХЭНД ЗОРИУЛАГДСАН БЭ?" />
+        <SectionTitle title={audiencesTitle} />
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {AUDIENCES.map((a) => {
             const Icon = a.icon;
@@ -316,14 +397,11 @@ export default function ElearningPage() {
               Олон улсын гэрчилгээ
             </span>
             <h2 className="mt-4 font-serif text-3xl font-bold leading-tight text-white md:text-4xl">
-              CISCO Networking Academy
+              {ciscoTitle}
             </h2>
             <div className="mt-4 h-1 w-14 rounded-full bg-gold-500" />
-            <p className="mt-6 text-base leading-relaxed text-white/85">
-              СЭДС нь АНУ-ын <strong className="text-white">CISCO Networking Academy</strong>-ийн
-              албан ёсны гишүүнчлэлтэй. Программ хангамжийн мэргэжлийн оюутнууд
-              2023 оноос албан ёсны гэрчилгээтэй төгсдөг болсноор олон улсын
-              IT компаниудад ажиллах боломжтой.
+            <p className="mt-6 whitespace-pre-line text-base leading-relaxed text-white/85">
+              {ciscoBody}
             </p>
             <a
               href="https://www.netacad.com"
@@ -358,13 +436,8 @@ export default function ElearningPage() {
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-sm leading-relaxed text-white/75">
-              Бакалавр, магистрын оюутнууд болон 10–12 ангийн сурагчид
-              хичээлийн бус цагаар тусгайлсан хөтөлбөрөөр багшийн удирдлага
-              дор суралцана. Сургалт амжилттай төгсөхөд CISCO-ийн олон улсад
-              хүлээн зөвшөөрөгдсөн сертификат олгогдоно. Программ хангамжийн
-              4-р ангийн оюутан Л.Бүддорж, Б.Баяраа, Э.Тэмүүлэн нар 2023 оны
-              12-р сарын 25-нд анхны сертификатаа гардан авлаа.
+            <p className="mt-6 whitespace-pre-line text-sm leading-relaxed text-white/75">
+              {ciscoStudents}
             </p>
           </div>
         </div>
@@ -472,14 +545,11 @@ export default function ElearningPage() {
             Яагаад цахим сургалт?
           </p>
           <h2 className="mt-4 font-serif text-2xl font-bold leading-tight text-white md:text-3xl">
-            Цаг хугацаа, байршил, амьдралын хэв маягаас үл хамаарах боловсролын
-            шинэ шийдэл
+            {whyTitle}
           </h2>
           <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-gold-500" />
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/80">
-            Соёл Эрдэм Дээд Сургуулийн цахим сургалт нь зөвхөн диплом олгох
-            бус, ажиллах ур чадвар, олон улсын боломж, цаг хугацаа болон
-            байршлаас үл хамаарах боловсролын шинэ шийдэл юм.
+          <p className="mx-auto mt-6 max-w-2xl whitespace-pre-line text-base leading-relaxed text-white/80">
+            {whyBody}
           </p>
         </div>
       </Section>
@@ -488,7 +558,7 @@ export default function ElearningPage() {
       <Section background="cream-soft" spacing="md">
         <div className="grid gap-6 md:grid-cols-3">
           <a
-            href={MOODLE_URL}
+            href={moodleUrl}
             target="_blank"
             rel="noreferrer"
             className="group flex flex-col rounded-card border border-border-light bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:border-gold-500 hover:shadow-card-hover"
@@ -503,7 +573,7 @@ export default function ElearningPage() {
               Moodle цахим сургалтын системд нэвтрэх.
             </p>
             <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-gold-500">
-              elearn.soyolerdem.edu.mn
+              {moodleDomain}
               <ChevronRight className="h-3.5 w-3.5" />
             </span>
           </a>
@@ -552,7 +622,7 @@ export default function ElearningPage() {
         title="Ирээдүйг хаанаас ч барьж эхэл"
         subtitle="Соёл Эрдэм Дээд Сургуулийн цахим сургалтаар диплом + ур чадвар + олон улсын боломж."
         ctaLabel="Систем рүү нэвтрэх"
-        ctaHref={MOODLE_URL}
+        ctaHref={moodleUrl}
         secondary={{ label: 'Элсэлтийн мэдээлэл', href: '/admission' }}
       />
 

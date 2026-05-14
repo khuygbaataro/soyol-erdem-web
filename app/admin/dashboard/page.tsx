@@ -120,7 +120,7 @@ export default async function DashboardPage() {
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">
         {/* Recent news */}
-        <Card hover={false}>
+        <Card hover={false} className="min-w-0">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-bold text-navy-900">Сүүлийн мэдээ</h2>
             <Link
@@ -157,7 +157,7 @@ export default async function DashboardPage() {
         </Card>
 
         {/* Right rail */}
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-6">
           <Card hover={false}>
             <h2 className="mb-4 text-lg font-bold text-navy-900">Хурдан үйлдэл</h2>
             <div className="grid gap-2">
