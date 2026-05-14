@@ -25,6 +25,7 @@ import { CtaBanner } from '@/components/sections/CtaBanner';
 import { NewsCard } from '@/components/ui/NewsCard';
 import { prisma } from '@/lib/prisma';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
+import { content, getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -113,21 +114,47 @@ const HIGHLIGHTS: { icon: LucideIcon; title: string; body: string }[] = [
 ];
 
 export default async function HighSchoolHomePage() {
-  // Latest 3 published high-school news
-  const latestNews = await prisma.news
-    .findMany({
-      where: { status: 'PUBLISHED', site: 'HIGH_SCHOOL' },
-      orderBy: { publishedAt: 'desc' },
-      take: 3,
-    })
-    .catch(() => []);
+  const [latestNews, site] = await Promise.all([
+    prisma.news
+      .findMany({
+        where: { status: 'PUBLISHED', site: 'HIGH_SCHOOL' },
+        orderBy: { publishedAt: 'desc' },
+        take: 3,
+      })
+      .catch(() => []),
+    getSiteContentMap('hs-home'),
+  ]);
+
+  const heroSubtitle = content(
+    site,
+    'hs-home.hero.subtitle',
+    'Хичээнгүй суралцагч · Чадварлаг багш · Япон хэл, соёл',
+  );
+  const heroImage = site.get('hs-home.hero.image') || '';
+  const philosophyTitle = content(
+    site,
+    'hs-home.philosophy.title',
+    'БИДНИЙ ЗАМ ЗОРИЛГО',
+  );
+  const programsTitle = content(
+    site,
+    'hs-home.programs.title',
+    'ХӨТӨЛБӨРҮҮД',
+  );
+  const programsSubtitle = content(
+    site,
+    'hs-home.programs.subtitle',
+    'Япон хэл, төрөлжсөн IT, бүрэн дунд боловсролын зэрэгцээ Япон руу солилцооны 2+2 хөтөлбөрөөр сурагчдыг бэлдэнэ.',
+  );
+  const newsTitle = content(site, 'hs-home.news.title', 'СҮҮЛИЙН МЭДЭЭ');
 
   return (
     <>
       <PageHero
         title="АХЛАХ СУРГУУЛЬ"
-        subtitle="Япон хэл, соёл, IT-ийн чиглэлээр төрөлжсөн Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль."
+        subtitle={heroSubtitle}
         breadcrumb={[{ label: 'Их сургууль', href: '/' }, { label: 'Ахлах сургууль' }]}
+        backgroundImage={heroImage || undefined}
       />
 
       {/* About / Intro */}
@@ -178,7 +205,7 @@ export default async function HighSchoolHomePage() {
 
       {/* Vision / Mission / Values */}
       <Section background="cream-soft" spacing="md">
-        <SectionTitle title="БИДНИЙ ЗАМ ЗОРИЛГО" />
+        <SectionTitle title={philosophyTitle} />
         <div className="grid gap-6 md:grid-cols-3">
           {PHILOSOPHY.map((p) => {
             const Icon = p.icon;
@@ -216,10 +243,7 @@ export default async function HighSchoolHomePage() {
 
       {/* Programs */}
       <Section background="white" spacing="md" id="programs">
-        <SectionTitle
-          title="ХӨТӨЛБӨРҮҮД"
-          subtitle="Япон хэл, төрөлжсөн IT, бүрэн дунд боловсролын зэрэгцээ Япон руу солилцооны 2+2 хөтөлбөрөөр сурагчдыг бэлдэнэ."
-        />
+        <SectionTitle title={programsTitle} subtitle={programsSubtitle} />
         <div className="grid gap-6 md:grid-cols-2">
           {PROGRAMS.map((p) => {
             const Icon = p.icon;
@@ -269,7 +293,7 @@ export default async function HighSchoolHomePage() {
         <Section background="white" spacing="md">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="text-h2 font-bold text-text-heading">СҮҮЛИЙН МЭДЭЭ</h2>
+              <h2 className="text-h2 font-bold text-text-heading">{newsTitle}</h2>
               <div className="mt-4 h-1 w-16 rounded-full bg-gold-500" />
             </div>
             <Link

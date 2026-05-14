@@ -7,6 +7,7 @@ import {
   ChevronsLeft,
   FileText,
   LayoutDashboard,
+  LayoutTemplate,
   LogOut,
   School,
 } from 'lucide-react';
@@ -20,6 +21,7 @@ interface HighSchoolAdminSidebarProps {
 const NAV: { label: string; href: string; icon: typeof LayoutDashboard }[] = [
   { label: 'Самбар', href: '/high-school/admin/dashboard', icon: LayoutDashboard },
   { label: 'Мэдээ', href: '/high-school/admin/news', icon: FileText },
+  { label: 'Хуудасны агуулга', href: '/high-school/admin/site-content', icon: LayoutTemplate },
 ];
 
 /**

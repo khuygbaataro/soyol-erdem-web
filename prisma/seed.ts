@@ -315,6 +315,36 @@ async function main() {
     { key: 'elearning.why.title', group: 'elearning', type: 'TEXT' as const, label: 'Why-section — гарчиг', value: 'Цаг хугацаа, байршил, амьдралын хэв маягаас үл хамаарах боловсролын шинэ шийдэл', multiline: true, order: 15 },
     { key: 'elearning.why.body', group: 'elearning', type: 'TEXT' as const, label: 'Why-section — параграф', value: 'Соёл Эрдэм Дээд Сургуулийн цахим сургалт нь зөвхөн диплом олгох бус, ажиллах ур чадвар, олон улсын боломж, цаг хугацаа болон байршлаас үл хамаарах боловсролын шинэ шийдэл юм.', multiline: true, order: 16 },
 
+    // Ахлах сургууль (NEB) — admin-editable banner + per-page copy.
+    // Groups prefixed with `hs-` so /high-school/admin/site-content filters
+    // them out of the main university content list.
+    { key: 'hs-home.hero.image', group: 'hs-home', type: 'IMAGE' as const, label: 'Hero — баннер зураг', hint: 'Дээд талын баннер. Хоосон бол default баннер.', value: '', order: 1 },
+    { key: 'hs-home.hero.subtitle', group: 'hs-home', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Хичээнгүй суралцагч · Чадварлаг багш · Япон хэл, соёл', multiline: true, order: 2 },
+    { key: 'hs-home.intro.title', group: 'hs-home', type: 'TEXT' as const, label: 'Танилцуулга — гарчиг', value: 'НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН СОЁЛ ЭРДЭМ СУРГУУЛЬ', multiline: true, order: 3 },
+    { key: 'hs-home.intro.body', group: 'hs-home', type: 'TEXT' as const, label: 'Танилцуулга — параграф', value: '2023 онд байгуулагдсан Соёл Эрдэм Дээд Сургуулийн харьяа төрөлжсөн ахлах сургууль. Япон хэл, соёл болон Мэдээллийн технологийн чиглэлээр сурагчдыг чанартай боловсролоор хангана.', multiline: true, order: 4 },
+    { key: 'hs-home.philosophy.title', group: 'hs-home', type: 'TEXT' as const, label: 'Философи — гарчиг', value: 'СУРГУУЛИЙН ҮЗЭЛ БОДОЛ', order: 5 },
+    { key: 'hs-home.programs.title', group: 'hs-home', type: 'TEXT' as const, label: 'Хөтөлбөр — гарчиг', value: 'СУРГАЛТЫН ХӨТӨЛБӨР', order: 6 },
+    { key: 'hs-home.programs.subtitle', group: 'hs-home', type: 'TEXT' as const, label: 'Хөтөлбөр — доод текст', value: 'Япон хэл, IT, бүрэн дунд боловсрол + 2+2 солилцооны хөтөлбөр.', multiline: true, order: 7 },
+    { key: 'hs-home.news.title', group: 'hs-home', type: 'TEXT' as const, label: 'Мэдээ — гарчиг', value: 'СҮҮЛИЙН МЭДЭЭ', order: 8 },
+
+    // hs-about
+    { key: 'hs-about.hero.image', group: 'hs-about', type: 'IMAGE' as const, label: 'Hero — баннер зураг', value: '', order: 1 },
+    { key: 'hs-about.hero.subtitle', group: 'hs-about', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн танилцуулга.', multiline: true, order: 2 },
+    { key: 'hs-about.body', group: 'hs-about', type: 'TEXT' as const, label: 'Үндсэн агуулга', value: 'Соёл Эрдэм Ахлах Сургууль нь 2023 онд Соёл Эрдэм Дээд Сургуулийн харьяа төрөлжсөн ахлах сургуулиар байгуулагдсан.', multiline: true, order: 3 },
+
+    // hs-admission
+    { key: 'hs-admission.hero.image', group: 'hs-admission', type: 'IMAGE' as const, label: 'Hero — баннер зураг', value: '', order: 1 },
+    { key: 'hs-admission.hero.subtitle', group: 'hs-admission', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Соёл Эрдэм Ахлах сургуулийн элсэлтийн нөхцөл, шаардлага.', multiline: true, order: 2 },
+    { key: 'hs-admission.body', group: 'hs-admission', type: 'TEXT' as const, label: 'Үндсэн агуулга', value: '10-р анги болон 11-р ангид элсэх сурагчдыг хүлээн авна. Япон хэл, IT-ийн чиглэлээр 2 ангитайгаар суралцана.', multiline: true, order: 3 },
+
+    // hs-programs
+    { key: 'hs-programs.hero.image', group: 'hs-programs', type: 'IMAGE' as const, label: 'Hero — баннер зураг', value: '', order: 1 },
+    { key: 'hs-programs.hero.subtitle', group: 'hs-programs', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Ахлах сургуулийн сургалтын хөтөлбөрүүд.', multiline: true, order: 2 },
+
+    // hs-contact
+    { key: 'hs-contact.hero.image', group: 'hs-contact', type: 'IMAGE' as const, label: 'Hero — баннер зураг', value: '', order: 1 },
+    { key: 'hs-contact.hero.subtitle', group: 'hs-contact', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Соёл Эрдэм Ахлах сургуультай холбогдох.', multiline: true, order: 2 },
+
     // About
     { key: 'about.hero.title.line1', group: 'about', type: 'TEXT' as const, label: 'Hero — гарчиг 1-р мөр', value: 'Соёл Эрдэм', order: 1 },
     { key: 'about.hero.title.line2', group: 'about', type: 'TEXT' as const, label: 'Hero — гарчиг 2-р мөр', value: 'ИХ СУРГУУЛЬ', order: 2 },
