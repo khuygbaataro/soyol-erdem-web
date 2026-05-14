@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { GraduationCap, Mail, Phone, School as SchoolIcon, User, X } from 'lucide-react';
+import { GraduationCap, Mail, Phone, School as SchoolIcon, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 /**
@@ -430,11 +430,6 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
 
                 {/* Info */}
                 <div className="flex flex-col gap-3 p-6 sm:p-8">
-                  <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-gold-500/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-gold-600">
-                    <User className="h-3 w-3" />
-                    Ажилтан
-                  </span>
-
                   <h2 className="font-serif text-2xl font-bold leading-tight text-navy-900 md:text-3xl">
                     {selected.name}
                   </h2>
