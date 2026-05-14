@@ -1,5 +1,7 @@
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
+import { SectionTitle } from '@/components/ui/SectionTitle';
+import { AccreditationGallery } from '@/components/sections/AccreditationGallery';
 import { TIMELINE } from '@/lib/content';
 
 export const metadata = {
@@ -35,6 +37,17 @@ export default function HistoryPage() {
             </div>
           ))}
         </div>
+      </Section>
+
+      {/* Accreditation certificates — frame the 2003 / 2010 / 2020 scans
+          right below the timeline so visitors can see the actual awards
+          mentioned in the milestones above. */}
+      <Section background="cream-soft">
+        <SectionTitle
+          title="МАГАДЛАН ИТГЭМЖЛЭЛИЙН ГЭРЧИЛГЭЭ"
+          subtitle="БМИҮЗ-өөс олгосон гэрчилгээнүүд. Картан дээр товшоод томруулсан хувилбарыг үзнэ үү."
+        />
+        <AccreditationGallery />
       </Section>
     </>
   );
