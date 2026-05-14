@@ -204,6 +204,7 @@ export default async function AboutPage() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {mvv.map((item) => {
               const Icon = item.icon;
+              const isValues = item.title === 'ҮНЭТ ЗҮЙЛС';
               return (
                 <article
                   key={item.title}
@@ -215,9 +216,38 @@ export default async function AboutPage() {
                   <h3 className="text-base font-bold uppercase tracking-wide text-navy-900">
                     {item.title}
                   </h3>
-                  <p className="mt-3 flex-1 whitespace-pre-line text-sm leading-relaxed text-text-body">
-                    {item.text}
-                  </p>
+                  {isValues ? (
+                    /* Hanging-indent acronym list — letter column on the
+                       left, explanation on the right; wrapped text stays
+                       aligned with the explanation, not under the letter. */
+                    <ul className="mt-3 flex-1 space-y-2 text-sm leading-relaxed text-text-body">
+                      {item.text.split('\n').map((line, idx) => {
+                        const match = line.match(/^([А-ЯӨҮ])\s*[—–-]\s*(.+)$/);
+                        if (!match) {
+                          return (
+                            <li key={`${item.title}-${idx}`}>{line}</li>
+                          );
+                        }
+                        const [, letter, rest] = match;
+                        return (
+                          <li
+                            key={`${item.title}-${idx}`}
+                            className="flex gap-2"
+                          >
+                            <span className="w-4 shrink-0 font-bold text-navy-900">
+                              {letter}
+                            </span>
+                            <span className="shrink-0 text-text-muted">—</span>
+                            <span className="min-w-0 flex-1">{rest}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <p className="mt-3 flex-1 whitespace-pre-line text-sm leading-relaxed text-text-body">
+                      {item.text}
+                    </p>
+                  )}
                 </article>
               );
             })}

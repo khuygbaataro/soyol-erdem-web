@@ -193,7 +193,7 @@ export const MISSION_VISION_VALUES = {
     text: 'Япон хэл, соёл, программ хангамжийн хосолсон сургалт, гадаад хамтын ажиллагаагаар Монгол улсдаа тэргүүлэгч сургууль болно.',
   },
   values: {
-    title: 'ҮНЭТ ЗҮЙЛС (С-Э-Д-С)',
+    title: 'ҮНЭТ ЗҮЙЛС',
     icon: Star,
     // Newline-separated so the about-page card stacks each acronym
     // letter on its own line (rendered with `whitespace-pre-line`).

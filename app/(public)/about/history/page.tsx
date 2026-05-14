@@ -1,6 +1,5 @@
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
-import { SectionTitle } from '@/components/ui/SectionTitle';
 import { AccreditationGallery } from '@/components/sections/AccreditationGallery';
 import { TIMELINE } from '@/lib/content';
 
@@ -43,10 +42,12 @@ export default function HistoryPage() {
           right below the timeline so visitors can see the actual awards
           mentioned in the milestones above. */}
       <Section background="cream-soft">
-        <SectionTitle
-          title="МАГАДЛАН ИТГЭМЖЛЭЛИЙН ГЭРЧИЛГЭЭ"
-          subtitle="БМИҮЗ-өөс олгосон гэрчилгээнүүд. Картан дээр товшоод томруулсан хувилбарыг үзнэ үү."
-        />
+        <div className="mb-10 text-center">
+          <h2 className="font-serif text-3xl font-bold leading-tight text-navy-900 md:text-5xl">
+            МАГАДЛАН ИТГЭМЖЛЭЛИЙН ГЭРЧИЛГЭЭ
+          </h2>
+          <div className="mx-auto mt-5 h-1 w-20 rounded-full bg-gold-500" />
+        </div>
         <AccreditationGallery />
       </Section>
     </>
