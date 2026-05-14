@@ -67,6 +67,12 @@ const NAV: readonly NavGroup[] = [
     ],
   },
   {
+    label: 'Холбоо',
+    items: [
+      { label: 'Зурвас', href: '/admin/messages', icon: Inbox, roles: ['ADMIN', 'EDITOR'] },
+    ],
+  },
+  {
     label: 'Тохиргоо',
     items: [
       { label: 'Хуудасны агуулга', href: '/admin/site-content', icon: LayoutTemplate, roles: ['ADMIN'] },

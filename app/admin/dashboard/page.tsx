@@ -114,7 +114,7 @@ export default async function DashboardPage() {
           label="Шинэ зурвас"
           value={contactCount}
           hint={`Нийт уншсан ${totalViews.toLocaleString()}`}
-          href="/admin/dashboard"
+          href="/admin/messages"
         />
       </div>
 
@@ -188,19 +188,46 @@ export default async function DashboardPage() {
           </Card>
 
           <Card hover={false}>
-            <h2 className="mb-4 text-lg font-bold text-navy-900">Сүүлийн зурвас</h2>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-navy-900">Сүүлийн зурвас</h2>
+              <Link
+                href="/admin/messages"
+                className="text-xs font-semibold text-navy-900 hover:text-gold-500"
+              >
+                Бүгдийг үзэх →
+              </Link>
+            </div>
             {recentContacts.length === 0 ? (
               <p className="py-6 text-center text-xs text-text-muted">
                 Зурвас байхгүй.
               </p>
             ) : (
-              <ul className="space-y-3">
+              <ul className="divide-y divide-border-light">
                 {recentContacts.map((c) => (
-                  <li key={c.id} className="text-sm">
-                    <p className="font-semibold text-navy-900">{c.name}</p>
-                    <p className="text-xs text-text-muted">
-                      {c.subject} · {new Date(c.createdAt).toLocaleString('mn-MN')}
-                    </p>
+                  <li key={c.id}>
+                    <Link
+                      href={`/admin/messages/${c.id}`}
+                      className="flex flex-col py-2.5 transition-colors hover:text-gold-500"
+                    >
+                      <p
+                        className={
+                          c.read
+                            ? 'truncate text-sm text-text-body'
+                            : 'truncate text-sm font-semibold text-navy-900'
+                        }
+                      >
+                        {c.name}
+                      </p>
+                      <p className="truncate text-xs text-text-muted">
+                        {c.subject} ·{' '}
+                        {new Date(c.createdAt).toLocaleString('mn-MN', {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </p>
+                    </Link>
                   </li>
                 ))}
               </ul>
