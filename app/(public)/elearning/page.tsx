@@ -307,6 +307,69 @@ export default function ElearningPage() {
         </div>
       </Section>
 
+      {/* CISCO Networking Academy — dedicated section */}
+      <Section background="navy" spacing="md" id="cisco">
+        <div className="grid gap-8 lg:grid-cols-[1fr_2fr] lg:items-start">
+          <div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-gold-500/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-gold-400">
+              <Award className="h-3 w-3" />
+              Олон улсын гэрчилгээ
+            </span>
+            <h2 className="mt-4 font-serif text-3xl font-bold leading-tight text-white md:text-4xl">
+              CISCO Networking Academy
+            </h2>
+            <div className="mt-4 h-1 w-14 rounded-full bg-gold-500" />
+            <p className="mt-6 text-base leading-relaxed text-white/85">
+              СЭДС нь АНУ-ын <strong className="text-white">CISCO Networking Academy</strong>-ийн
+              албан ёсны гишүүнчлэлтэй. Программ хангамжийн мэргэжлийн оюутнууд
+              2023 оноос албан ёсны гэрчилгээтэй төгсдөг болсноор олон улсын
+              IT компаниудад ажиллах боломжтой.
+            </p>
+            <a
+              href="https://www.netacad.com"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-6 inline-flex items-center gap-1.5 rounded-button bg-gold-500 px-5 py-2.5 text-sm font-bold text-navy-900 transition-colors hover:bg-gold-400"
+            >
+              netacad.com
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
+
+          <div className="space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-gold-400">
+              Сургалтын чиглэлүүд
+            </p>
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {[
+                'IT Essentials',
+                'Networking Essentials',
+                'CPA: Programming Essentials in C++',
+                'Мэдээллийн аюулгүй байдлын мэргэшүүлэх сургалт',
+                'Компьютерын сүлжээ, Internet of Things',
+                'Программ хангамж, OS & IT, Packet Tracer',
+              ].map((c) => (
+                <li
+                  key={c}
+                  className="flex items-start gap-2.5 rounded-card border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/85"
+                >
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold-400" />
+                  <span>{c}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 text-sm leading-relaxed text-white/75">
+              Бакалавр, магистрын оюутнууд болон 10–12 ангийн сурагчид
+              хичээлийн бус цагаар тусгайлсан хөтөлбөрөөр багшийн удирдлага
+              дор суралцана. Сургалт амжилттай төгсөхөд CISCO-ийн олон улсад
+              хүлээн зөвшөөрөгдсөн сертификат олгогдоно. Программ хангамжийн
+              4-р ангийн оюутан Л.Бүддорж, Б.Баяраа, Э.Тэмүүлэн нар 2023 оны
+              12-р сарын 25-нд анхны сертификатаа гардан авлаа.
+            </p>
+          </div>
+        </div>
+      </Section>
+
       {/* Professional development */}
       <Section background="cream-soft" spacing="md">
         <SectionTitle
@@ -319,13 +382,12 @@ export default function ElearningPage() {
               <Award className="h-6 w-6" />
             </span>
             <h3 className="text-lg font-bold text-navy-900">
-              Cisco Academy · IT Passport
+              IT Passport · Япон стандартын шалгалт
             </h3>
             <p className="mt-3 text-sm leading-relaxed text-text-body">
-              Олон улсын гэрчилгээт IT сургалт болон Япон IT мэргэжилтнүүдийн
-              шалгалтанд бэлтгэх курсууд. Мэдээллийн технологи, гадаад хэл,
-              бизнес, үйлчилгээ, дижитал ур чадварын чиглэлээр мэргэжлийг
-              дээшлүүлэх боломжтой.
+              Япон IT мэргэжилтнүүдийн суурь мэдлэгийг үнэлэх олон улсын IT
+              Passport шалгалтанд бэлтгэх курс. Япон руу ажиллахаар явах
+              хүсэлтэй IT мэргэжилтнүүдэд хамгийн тохиромжтой.
             </p>
             <ul className="mt-4 space-y-2">
               {EXTERNAL_RESOURCES.map((r) => (

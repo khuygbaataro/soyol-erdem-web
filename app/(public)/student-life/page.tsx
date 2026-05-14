@@ -3,7 +3,6 @@ import {
   BookOpen,
   Briefcase,
   Check,
-  Code2,
   Footprints,
   GraduationCap,
   HandHeart,
@@ -44,7 +43,6 @@ const SUB_NAV = [
   { id: 'scholarship', label: 'Тэтгэлэг', icon: Award },
   { id: 'student-council', label: 'Оюутны зөвлөл', icon: Users },
   { id: 'graduates', label: 'Төгсөгчид', icon: GraduationCap },
-  { id: 'cisco', label: 'CISCO Academy', icon: Code2 },
 ] as const;
 
 // Per-chapter accent icon shown beside the heading.
@@ -59,7 +57,6 @@ const CHAPTER_ICON: Record<string, typeof BookOpen> = {
   scholarship: Award,
   'student-council': Users,
   graduates: GraduationCap,
-  cisco: Code2,
   'japan-dance': Sparkles,
   'rural-program': UserCheck,
 };
