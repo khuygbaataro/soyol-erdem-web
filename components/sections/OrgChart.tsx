@@ -143,7 +143,10 @@ function ChartNode({ id, label, level, centered, onSelect, staffMap }: NodeProps
     director:
       'bg-gold-500 text-navy-900 px-6 py-3 text-sm font-bold uppercase tracking-wider ring-2 ring-gold-500/40',
     mid: 'bg-navy-900 text-white px-5 py-2.5 text-xs font-semibold uppercase tracking-wide',
-    pillar: 'bg-navy-900 text-white px-4 py-3 text-xs font-bold uppercase tracking-wide text-center',
+    // Pillar headers now render as white cards (the four sections below
+    // Чанарын үнэлгээний алба are presented as a subordinate tier).
+    pillar:
+      'bg-white text-navy-900 border border-navy-900/30 px-4 py-3 text-xs font-bold uppercase tracking-wide text-center',
     unit: 'bg-white text-navy-900 border border-border-light px-4 py-2.5 text-sm',
   } as const;
 
@@ -205,10 +208,10 @@ function Connector({ dashed = true, height = 6 }: { dashed?: boolean; height?: n
     <span
       aria-hidden
       className={cn(
-        'mx-auto block w-px',
+        'mx-auto block',
         dashed
-          ? 'bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.5)_0_3px,transparent_3px_7px)]'
-          : 'bg-navy-900/35',
+          ? 'w-[1.5px] bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.7)_0_4px,transparent_4px_8px)]'
+          : 'w-[1.5px] bg-navy-900/70',
       )}
       style={{ height: `${height * 4}px` }}
     />
@@ -224,7 +227,7 @@ function SiblingConnector() {
   return (
     <span
       aria-hidden
-      className="block h-px flex-1 bg-navy-900/35"
+      className="block h-[1.5px] flex-1 bg-navy-900/70"
     />
   );
 }
@@ -239,10 +242,10 @@ function BranchConnector({ count }: { count: number }) {
   return (
     <div aria-hidden className="relative mx-auto mb-2 w-full" style={{ height: '32px' }}>
       {/* Top vertical — parent → horizontal bar */}
-      <span className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-navy-900/40" />
+      <span className="absolute left-1/2 top-0 h-3 w-[1.5px] -translate-x-1/2 bg-navy-900/70" />
       {/* Horizontal bar across the columns */}
       <span
-        className="absolute left-0 right-0 top-3 h-px bg-navy-900/40"
+        className="absolute top-3 h-[1.5px] bg-navy-900/70"
         style={{
           left: `calc(${100 / (count * 2)}% )`,
           right: `calc(${100 / (count * 2)}% )`,
@@ -252,10 +255,59 @@ function BranchConnector({ count }: { count: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <span
           key={i}
-          className="absolute top-3 h-5 w-px bg-navy-900/40"
+          className="absolute top-3 h-5 w-[1.5px] bg-navy-900/70"
           style={{ left: `calc(${(100 / count) * (i + 0.5)}%)` }}
         />
       ))}
+    </div>
+  );
+}
+
+/**
+ * Tree-style spine that connects a pillar header to its unit cards. The
+ * vertical line drops along the left edge of the unit column; each unit
+ * gets a short horizontal arm pointing into it. Reads like a classic
+ * org-chart sub-tree:
+ *
+ *   [Pillar header]
+ *      │
+ *      ├─[Unit 1]
+ *      ├─[Unit 2]
+ *      └─[Unit 3]
+ */
+function UnitTree({
+  units,
+  onSelect,
+  staffMap,
+}: {
+  units: { id?: string; label: string }[];
+  onSelect: (id: string) => void;
+  staffMap: Map<string, Staff>;
+}) {
+  if (units.length === 0) return null;
+  return (
+    <div className="relative mt-2 pl-6">
+      {/* Vertical spine — runs from just under the pillar header down to
+          the centre of the last unit card. */}
+      <span
+        aria-hidden
+        className="absolute left-3 top-0 w-[1.5px] bg-navy-900/70"
+        style={{ height: `calc(100% - 1.25rem)` }}
+      />
+      <ul className="space-y-3">
+        {units.map((u) => (
+          <li key={u.label} className="relative">
+            {/* Horizontal arm pointing from the spine into the card */}
+            <span
+              aria-hidden
+              className="absolute -left-3 top-1/2 h-[1.5px] w-3 bg-navy-900/70"
+            />
+            <UnitNode id={u.id} onSelect={onSelect} staffMap={staffMap}>
+              {u.label}
+            </UnitNode>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -415,7 +467,8 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
         {/* Branching connector — Чанарын алба → 4 pillars */}
         <BranchConnector count={4} />
 
-        {/* Row 4 — 4 pillar columns */}
+        {/* Row 4 — 4 pillar columns, each with its tree of units along
+            a left-side spine (mirrors the reference org-chart). */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {PILLARS.map((p) => (
             <div key={p.id} className="flex flex-col">
@@ -426,23 +479,17 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
                 onSelect={setSelectedId}
                 staffMap={staffMap}
               />
-              <span aria-hidden className="mx-auto h-4 w-px bg-navy-900/40" />
-              <ul className="space-y-2">
-                {p.units.map((u) => (
-                  <li key={u.label}>
-                    <UnitNode id={u.id} onSelect={setSelectedId} staffMap={staffMap}>
-                      {u.label}
-                    </UnitNode>
-                  </li>
-                ))}
-              </ul>
+              <UnitTree
+                units={p.units}
+                onSelect={setSelectedId}
+                staffMap={staffMap}
+              />
             </div>
           ))}
         </div>
 
-        <p className="pt-4 text-center text-xs text-text-muted">
-          💡 Цэнхэр болон цагаан картан дээр дарж тухайн ажилтны мэдээлэлтэй
-          танилцаарай.
+        <p className="pt-6 text-center text-sm text-text-muted md:text-base">
+          Ажилтны мэдээллийг үзэхийн тулд карт дээр дарна уу.
         </p>
       </div>
 
