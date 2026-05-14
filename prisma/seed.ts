@@ -295,6 +295,7 @@ async function main() {
     { key: 'home.hero.cta_primary', group: 'home', type: 'TEXT' as const, label: 'Hero — үндсэн товчны нэр', value: 'Мэргэжлээ сонгох', order: 5 },
     { key: 'home.hero.cta_secondary', group: 'home', type: 'TEXT' as const, label: 'Hero — нэмэлт товчны нэр', value: 'Элсэлтийн мэдээлэл', order: 6 },
     { key: 'home.hero.image', group: 'home', type: 'IMAGE' as const, label: 'Hero — баруун талын зураг', hint: 'Барилгын зураг (4:5 эсвэл 5:4 хэмжээтэй сайн)', value: '', order: 7 },
+    { key: 'home.internship.image', group: 'home', type: 'IMAGE' as const, label: 'Япон интерншипийн зураг', hint: 'Интерншипийн хэсэгт харагдах зураг (4:3 харьцаатай сайн)', value: '', order: 8 },
 
     // About
     { key: 'about.hero.title.line1', group: 'about', type: 'TEXT' as const, label: 'Hero — гарчиг 1-р мөр', value: 'Соёл Эрдэм', order: 1 },

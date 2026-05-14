@@ -52,6 +52,9 @@ export default async function HomePage() {
   // the home hero — tall navy glass tower).
   const heroImage =
     siteContent.get('home.hero.image') || '/school-building.png';
+  // Internship-highlight image lives under its own site-content key so
+  // admin can swap it from /admin/site-content without a redeploy.
+  const internshipImage = siteContent.get('home.internship.image') || '';
 
   return (
     <>
@@ -71,12 +74,11 @@ export default async function HomePage() {
               {heroBody}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              {/* Primary jumps straight to the 8-program grid; secondary
-                  lands on the admission overview. Both labels switched
-                  per the editor's home-page note ("Мэргэжлээ сонгох" /
-                  "Элсэлтийн мэдээлэл"). */}
+              {/* Primary lands on the program catalog; secondary on the
+                  admission overview. Labels are admin-editable via
+                  site-content keys home.hero.cta_primary / .cta_secondary. */}
               <Button
-                href="/admission#info"
+                href="/programs"
                 variant="primary"
                 size="lg"
                 icon={<ChevronRight className="h-5 w-5" />}
@@ -131,8 +133,23 @@ export default async function HomePage() {
       <Section background="white">
         <Card className="overflow-hidden p-0" hover={false}>
           <div className="grid gap-0 lg:grid-cols-2">
-            <div className="bg-cream p-2">
-              <ImagePlaceholder label="Япон улс — интерншип" aspect="aspect-[4/3] lg:aspect-auto lg:h-full" />
+            <div className="relative bg-cream p-2">
+              {internshipImage ? (
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-card lg:aspect-auto lg:h-full">
+                  <Image
+                    src={internshipImage}
+                    alt="Япон улс — интерншип"
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <ImagePlaceholder
+                  label="Япон улс — интерншип"
+                  aspect="aspect-[4/3] lg:aspect-auto lg:h-full"
+                />
+              )}
             </div>
             <div className="p-8 md:p-12">
               <Badge variant="gold" className="mb-4">
