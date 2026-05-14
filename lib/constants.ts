@@ -42,12 +42,12 @@ export const FOOTER_LINKS = {
   important: [
     {
       label: 'Багшийн веб',
-      href: 'https://teacher.soyolerdem.edu.mn',
+      href: 'http://202.5.200.14/teacher-login.html',
       external: true,
     },
     {
       label: 'Оюутны веб',
-      href: 'https://student.soyolerdem.edu.mn',
+      href: 'http://202.5.200.14/student-login.html',
       external: true,
     },
     {

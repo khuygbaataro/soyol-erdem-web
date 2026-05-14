@@ -11,13 +11,13 @@ interface PortalLink {
 const PORTALS: PortalLink[] = [
   {
     label: 'Оюутны систем',
-    href: 'https://student.soyolerdem.edu.mn',
+    href: 'http://202.5.200.14/student-login.html',
     icon: Laptop,
     external: true,
   },
   {
     label: 'Багшийн систем',
-    href: 'https://teacher.soyolerdem.edu.mn',
+    href: 'http://202.5.200.14/teacher-login.html',
     icon: UserSquare,
     external: true,
   },
