@@ -144,14 +144,19 @@ function ChartNode({ id, label, level, centered, onSelect, staffMap }: NodeProps
       'bg-gold-500 text-navy-900 px-6 py-3 text-sm font-bold uppercase tracking-wider ring-2 ring-gold-500/40',
     mid: 'bg-navy-900 text-white px-5 py-2.5 text-xs font-semibold uppercase tracking-wide',
     // Pillar headers now render as white cards (the four sections below
-    // Чанарын үнэлгээний алба are presented as a subordinate tier).
+    // Чанарын үнэлгээний алба are presented as a subordinate tier). A
+    // fixed min-height keeps the four cards visually identical even when
+    // a longer title wraps to two lines.
     pillar:
-      'bg-white text-navy-900 border border-navy-900/30 px-4 py-3 text-xs font-bold uppercase tracking-wide text-center',
+      'bg-white text-navy-900 border border-navy-900/30 px-4 py-3 text-xs font-bold uppercase tracking-wide text-center min-h-[3.5rem]',
     unit: 'bg-white text-navy-900 border border-border-light px-4 py-2.5 text-sm',
   } as const;
 
   const className = cn(
-    'inline-flex items-center justify-center rounded-md text-center shadow-card transition-all duration-200',
+    'items-center justify-center rounded-md text-center shadow-card transition-all duration-200',
+    // Pillar headers fill their grid column so all four read at the same
+    // width; the other levels shrink to their content.
+    level === 'pillar' ? 'flex w-full' : 'inline-flex',
     centered && 'mx-auto',
     baseStyles[level],
     clickable && 'cursor-pointer hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-2 hover:ring-gold-500/60',
@@ -288,19 +293,20 @@ function UnitTree({
   return (
     <div className="relative mt-2 pl-6">
       {/* Vertical spine — runs from just under the pillar header down to
-          the centre of the last unit card. */}
+          the centre of the last unit card. Rendered as a dotted navy line. */}
       <span
         aria-hidden
-        className="absolute left-3 top-0 w-[1.5px] bg-navy-900/70"
+        className="absolute left-3 top-0 w-[2px] bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.7)_0_3px,transparent_3px_7px)]"
         style={{ height: `calc(100% - 1.25rem)` }}
       />
       <ul className="space-y-3">
         {units.map((u) => (
           <li key={u.label} className="relative">
-            {/* Horizontal arm pointing from the spine into the card */}
+            {/* Horizontal arm pointing from the spine into the card —
+                same dotted treatment for visual consistency. */}
             <span
               aria-hidden
-              className="absolute -left-3 top-1/2 h-[1.5px] w-3 bg-navy-900/70"
+              className="absolute -left-3 top-1/2 h-[2px] w-3 bg-[image:repeating-linear-gradient(to_right,rgba(30,58,95,0.7)_0_3px,transparent_3px_7px)]"
             />
             <UnitNode id={u.id} onSelect={onSelect} staffMap={staffMap}>
               {u.label}
