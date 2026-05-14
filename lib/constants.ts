@@ -12,7 +12,7 @@ export const SITE = {
     email: 'info@soyolerdem.edu.mn',
     address:
       'СБД, 1 дүгээр хороо, Элчингийн гудамж 15а, Embassy One tower — 4, 5 дугаар давхарт',
-    facebook: 'https://www.facebook.com/soyolerdem.edu.mn',
+    facebook: 'https://www.facebook.com/soyolerdemedu',
   },
   workingHours: 'Даваа-Баасан: 08:00-17:00',
 };
