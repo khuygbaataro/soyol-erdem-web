@@ -1,3 +1,4 @@
+import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { NewspapersList } from '@/components/sections/NewspapersList';
 import { prisma } from '@/lib/prisma';
@@ -25,6 +26,12 @@ export default async function SoninHewlelPage() {
 
   return (
     <>
+      <PageHero
+        title="СОНИН ХЭВЛЭЛ"
+        subtitle="Сургуулийн тогтмол хэвлэлийн архив. Дугаар бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
+        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Сонин хэвлэл' }]}
+      />
+
       <Section background="cream-soft" spacing="md">
         <NewspapersList items={items} />
       </Section>

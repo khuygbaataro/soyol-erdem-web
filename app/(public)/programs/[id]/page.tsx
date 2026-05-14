@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Check, ChevronRight } from 'lucide-react';
+import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -29,6 +30,16 @@ export default async function ProgramDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <PageHero
+        title={program.name}
+        subtitle={program.shortDescription}
+        breadcrumb={[
+          { label: 'Нүүр', href: '/' },
+          { label: 'Мэргэжлүүд', href: '/programs' },
+          { label: program.name },
+        ]}
+      />
+
       <Section background="white">
         <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
           <div>

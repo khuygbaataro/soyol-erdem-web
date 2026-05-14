@@ -21,6 +21,7 @@ import {
   Wifi,
   type LucideIcon,
 } from 'lucide-react';
+import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
@@ -131,6 +132,13 @@ export default async function ElearningPage() {
   // breaks if a key is missing or the table doesn't exist yet.
   const site = await getSiteContentMap('elearning');
 
+  const heroSubtitle = content(
+    site,
+    'elearning.hero.subtitle',
+    'Хаанаас ч, хэзээ ч суралцах боломж — Moodle платформд суурилсан уян хатан сургалтын систем.',
+  );
+  const heroImage = site.get('elearning.hero.image') || '';
+
   const moodleUrl = content(
     site,
     'elearning.moodle.url',
@@ -211,6 +219,13 @@ export default async function ElearningPage() {
 
   return (
     <>
+      <PageHero
+        title="ЦАХИМ СУРГАЛТ"
+        subtitle={heroSubtitle}
+        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Цахим сургалт' }]}
+        backgroundImage={heroImage || undefined}
+      />
+
       {/* Intro band */}
       <Section background="white" spacing="md">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">

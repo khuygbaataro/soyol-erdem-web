@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { BookOpen, FileText } from 'lucide-react';
+import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
 import { prisma } from '@/lib/prisma';
@@ -22,6 +23,12 @@ export default async function RegulationsPage() {
 
   return (
     <>
+      <PageHero
+        title="ДҮРЭМ ЖУРАМ"
+        subtitle="Соёл Эрдэм Дээд Сургуулийн бүх мөрдөгдөж буй журмыг нэг газар. Дугаар бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
+        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Дүрэм журам' }]}
+      />
+
       <Section background="cream-soft" spacing="md">
         {items.length === 0 ? (
           <Card

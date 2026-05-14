@@ -1,3 +1,4 @@
+import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { CAREERS_DEFAULT_OPENINGS } from '@/lib/content';
 import { prisma } from '@/lib/prisma';
@@ -34,6 +35,15 @@ export default async function JobApplyPage({ searchParams }: PageProps) {
 
   return (
     <>
+      <PageHero
+        title="АЖЛЫН АНКЕТ"
+        subtitle="7 хэсэгтэй анкетыг бөглөн илгээснээр манай хүний нөөцийн алба тантай холбогдоно."
+        breadcrumb={[
+          { label: 'Нүүр', href: '/' },
+          { label: 'Нээлттэй ажлын байр', href: '/careers' },
+          { label: 'Анкет' },
+        ]}
+      />
       <Section background="cream-soft">
         <div className="mx-auto max-w-3xl">
           <JobApplyClient positions={allPositions} initialPosition={initialPosition} />

@@ -6,6 +6,7 @@ import {
   MonitorSmartphone,
   Wallet,
 } from 'lucide-react';
+import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
@@ -55,6 +56,12 @@ export default async function AdmissionPage() {
 
   return (
     <>
+      <PageHero
+        title="ЭЛСЭЛТ"
+        subtitle="2026-2027 оны хичээлийн жилийн элсэлтийн мэдээлэл."
+        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Элсэлт' }]}
+      />
+
       {/* Sub-nav — three anchors per editor's spec */}
       <div className="sticky top-20 z-30 border-b border-border-light bg-white/95 backdrop-blur">
         <div className="container-custom flex flex-wrap items-center gap-2 py-3">
@@ -305,6 +312,7 @@ export default async function AdmissionPage() {
           <Accordion items={ADMISSION_FAQ} />
         </div>
       </Section>
+
     </>
   );
 }

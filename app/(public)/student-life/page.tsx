@@ -14,6 +14,7 @@ import {
   UserCheck,
   Users,
 } from 'lucide-react';
+import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
@@ -166,7 +167,10 @@ function parseTestimonialByline(line: string) {
 export default async function StudentLifePage() {
   // Build a quick map for sub-nav-driven jumps; chapters are rendered in
   // their natural order from STUDENT_LIFE_CHAPTERS.
-  const sl = await getSiteContentMap('student-life');
+  const [banners, sl] = await Promise.all([
+    getSiteContentMap('banners'),
+    getSiteContentMap('student-life'),
+  ]);
 
   const annual = [1, 2, 3, 4]
     .map((i) => {
@@ -226,6 +230,16 @@ export default async function StudentLifePage() {
 
   return (
     <>
+      <PageHero
+        title={sl.get('student-life.hero.title') || 'ОЮУТНЫ АМЬДРАЛ'}
+        subtitle={
+          sl.get('student-life.hero.subtitle') ||
+          'Бид бол гэр бүл — Соёл Эрдэмд хичээл бол зөвхөн зургаан жилийн нэг хэсэг.'
+        }
+        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Оюутны амьдрал' }]}
+        backgroundImage={banners.get('page.student-life.banner') || undefined}
+      />
+
       {/* Intro */}
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">

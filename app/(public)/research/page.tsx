@@ -1,4 +1,5 @@
 import { Check, Download, FileText, Sparkles } from 'lucide-react';
+import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
@@ -21,7 +22,8 @@ export const metadata = {
 };
 
 export default async function ResearchPage() {
-  const [researchContent, researchItems] = await Promise.all([
+  const [banners, researchContent, researchItems] = await Promise.all([
+    getSiteContentMap('banners'),
     getSiteContentMap('research'),
     prisma.research
       .findMany({
@@ -31,6 +33,9 @@ export default async function ResearchPage() {
       })
       .catch(() => []),
   ]);
+
+  const banner =
+    banners.get('page.research.banner') || '/erdem_shinjilgee_banner.png';
 
   // Resolve admin-editable departments (3 slots) — fall back to static
   // content if a key is missing or empty.
@@ -69,6 +74,13 @@ export default async function ResearchPage() {
 
   return (
     <>
+      <PageHero
+        title="ЭРДЭМ ШИНЖИЛГЭЭ, СУДАЛГААНЫ АЖИЛ"
+        subtitle="Тэнхимүүдийн судалгааны тэргүүлэх чиглэл, ахисан түвшний судалгаа, олон улсын хамтын ажиллагаа."
+        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Эрдэм шинжилгээ' }]}
+        backgroundImage={banner}
+      />
+
       {/* Intro */}
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">

@@ -11,10 +11,12 @@ import {
   School,
   Users,
 } from 'lucide-react';
+import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { getSiteContentMap } from '@/lib/site-content';
 import {
   DOMESTIC_PARTNERS,
   INTERNATIONAL_BLOCKS,
@@ -106,8 +108,16 @@ function PartnerProfileCard({
 }
 
 export default async function InternationalPage() {
+  const banners = await getSiteContentMap('banners');
   return (
     <>
+      <PageHero
+        title="СУРГУУЛИЙН ГАДААД, ДОТООД ХАМТЫН АЖИЛЛАГАА"
+        subtitle="Япон улсын 30+ их сургууль, мэргэжлийн сургууль, олон улсын байгууллагатай хамтрах сүлжээ."
+        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Хамтын ажиллагаа' }]}
+        backgroundImage={banners.get('page.international.banner') || undefined}
+      />
+
       {/* Intro */}
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
