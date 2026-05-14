@@ -12,11 +12,11 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: 'admin@soyolerdem.edu.mn' },
-    update: {},
+    update: { name: 'Admin' },
     create: {
       email: 'admin@soyolerdem.edu.mn',
       password: adminPassword,
-      name: 'Захиргааны admin',
+      name: 'Admin',
       role: 'ADMIN',
     },
   });

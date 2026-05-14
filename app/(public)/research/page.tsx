@@ -1,11 +1,14 @@
-import { Check, Sparkles } from 'lucide-react';
+import { Check, Download, FileText, Sparkles } from 'lucide-react';
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 import { CtaBanner } from '@/components/sections/CtaBanner';
 import { ResearchJournalsList } from '@/components/sections/ResearchJournalsList';
 import { getSiteContentMap } from '@/lib/site-content';
+import { prisma } from '@/lib/prisma';
+import { RESEARCH_TYPE_LABEL } from '@/lib/admin-helpers';
 import {
   RESEARCH_AREAS,
   RESEARCH_DEPARTMENTS,
@@ -20,9 +23,16 @@ export const metadata = {
 };
 
 export default async function ResearchPage() {
-  const [banners, researchContent] = await Promise.all([
+  const [banners, researchContent, researchItems] = await Promise.all([
     getSiteContentMap('banners'),
     getSiteContentMap('research'),
+    prisma.research
+      .findMany({
+        where: { status: 'PUBLISHED' },
+        orderBy: [{ publishedAt: 'desc' }, { createdAt: 'desc' }],
+        take: 9,
+      })
+      .catch(() => []),
   ]);
 
   const banner =
@@ -161,6 +171,66 @@ export default async function ResearchPage() {
             ))}
         </div>
       </Section>
+
+      {/* Research items feed — admin-managed via /admin/research. Sits
+          between Онцлох үйл ажиллагаа and Эрдэм шинжилгээний сэтгүүл so
+          new publications + announcements land here automatically. */}
+      {researchItems.length > 0 && (
+        <Section background="white">
+          <SectionTitle
+            title="ЭРДЭМ ШИНЖИЛГЭЭНИЙ МЭДЭЭ, БҮТЭЭЛҮҮД"
+            subtitle="Манай эрдэмтэн багш нарын шинэ нийтлэл, илтгэл, ном, диссертаци болон төслийн мэдээ."
+          />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {researchItems.map((r) => (
+              <Card key={r.id} className="flex h-full flex-col">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="navy">
+                    {RESEARCH_TYPE_LABEL[r.type] ?? r.type}
+                  </Badge>
+                  <span className="text-xs font-semibold uppercase tracking-widest text-gold-500">
+                    {r.area}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-serif text-lg font-bold leading-snug text-navy-900">
+                  {r.title}
+                </h3>
+                <p className="mt-2 text-xs text-text-muted">{r.authors}</p>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-text-body line-clamp-4">
+                  {r.abstract}
+                </p>
+                <div className="mt-5 flex items-center justify-between border-t border-border-light pt-4">
+                  <span className="text-xs text-text-muted">
+                    {r.publishedAt
+                      ? new Date(r.publishedAt).toLocaleDateString('mn-MN', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })
+                      : ''}
+                  </span>
+                  {r.fileUrl ? (
+                    <a
+                      href={r.fileUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-900 transition-colors hover:text-gold-500"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      Татах
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 text-xs text-text-muted">
+                      <FileText className="h-3.5 w-3.5" />
+                      Хэвлэгдэх шатанд
+                    </span>
+                  )}
+                </div>
+              </Card>
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* Journals */}
       <Section background="white">
