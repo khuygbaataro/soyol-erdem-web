@@ -8,10 +8,10 @@ export const SITE = {
   url: 'https://soyolerdem.edu.mn',
   contact: {
     phone: '7011-8584',
-    phoneSecondary: '7011-8589',
-    email: 'soyolerdem.daigaku@gmail.com',
+    phoneSecondary: '9908-5696',
+    email: 'info@soyolerdem.edu.mn',
     address:
-      'Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо, Олимпийн гудамж',
+      'СБД, 1 дүгээр хороо, Элчингийн гудамж 15а, Embassy One tower — 4, 5 дугаар давхарт',
     facebook: 'https://www.facebook.com/soyolerdem.edu.mn',
   },
   workingHours: 'Даваа-Баасан: 08:00-17:00',
