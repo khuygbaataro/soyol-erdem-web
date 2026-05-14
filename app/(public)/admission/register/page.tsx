@@ -1,4 +1,3 @@
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { prisma } from '@/lib/prisma';
 import { RegisterFormClient } from './RegisterFormClient';
@@ -23,15 +22,6 @@ export default async function AdmissionRegisterPage() {
 
   return (
     <>
-      <PageHero
-        title="ЭЛСЭЛТИЙН ЦАХИМ БҮРТГЭЛ"
-        subtitle="Доорх 8 алхамтай анкетыг бөглөнө үү. Бүх асуултанд хариулсны дараа таны бүртгэл бидэнд илгээгдэнэ."
-        breadcrumb={[
-          { label: 'Нүүр', href: '/' },
-          { label: 'Элсэлт', href: '/admission' },
-          { label: 'Цахим бүртгэл' },
-        ]}
-      />
       <Section background="cream-soft">
         <div className="mx-auto max-w-3xl">
           <RegisterFormClient programs={programs} />

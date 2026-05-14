@@ -1,9 +1,7 @@
 import { BookMarked, Clock, MapPin } from 'lucide-react';
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import {
   LIBRARY_CATEGORIES,
   LIBRARY_INTRO,
@@ -23,12 +21,6 @@ const HOLDINGS = [
 export default function LibraryPage() {
   return (
     <>
-      <PageHero
-        title="НОМЫН САН"
-        subtitle="Япон, Монгол, Англи хэл дээрх 5,000+ нэр төрлийн ном, эрдэм шинжилгээний нийтлэлтэй."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Номын сан' }]}
-      />
-
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-base leading-relaxed text-text-body">{LIBRARY_INTRO}</p>
@@ -93,12 +85,6 @@ export default function LibraryPage() {
           })}
         </div>
       </Section>
-
-      <CtaBanner
-        title="Уншлагын танхимаараа орж үзээрэй"
-        ctaLabel="Бидний хаяг"
-        ctaHref="/contact"
-      />
     </>
   );
 }

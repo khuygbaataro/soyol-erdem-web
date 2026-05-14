@@ -1,20 +1,14 @@
-import { PageHero } from '@/components/sections/PageHero';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import { NewsListClient } from './NewsListClient';
 import { prisma } from '@/lib/prisma';
-import { getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Мэдээ' };
 
 export default async function NewsPage() {
-  const [news, banners] = await Promise.all([
-    prisma.news.findMany({
-      where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
-      orderBy: { publishedAt: 'desc' },
-    }),
-    getSiteContentMap('banners'),
-  ]);
+  const news = await prisma.news.findMany({
+    where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
+    orderBy: { publishedAt: 'desc' },
+  });
 
   const items = news.map((n) => ({
     id: n.slug,
@@ -28,24 +22,5 @@ export default async function NewsPage() {
     category: n.category,
   }));
 
-  const banner = banners.get('page.news.banner') || '/medee_banner.png';
-
-  return (
-    <>
-      <PageHero
-        title="МЭДЭЭ"
-        subtitle="Сургуулийн сүүлийн мэдээ, үйл явдал, амжилт."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Мэдээ' }]}
-        backgroundImage={banner}
-      />
-
-      <NewsListClient items={items} />
-
-      <CtaBanner
-        title="Сургуулиас санал болгох"
-        ctaLabel="Бидэнтэй холбогдох"
-        ctaHref="/contact"
-      />
-    </>
-  );
+  return <NewsListClient items={items} />;
 }

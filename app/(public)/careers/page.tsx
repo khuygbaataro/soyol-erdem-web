@@ -1,10 +1,8 @@
 import { ArrowRight, Briefcase, Check, Mail, Sparkles } from 'lucide-react';
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import {
   CAREERS_DEFAULT_OPENINGS,
   CAREERS_INTRO,
@@ -38,15 +36,6 @@ export default async function CareersPage() {
 
   return (
     <>
-      <PageHero
-        title="НЭЭЛТТЭЙ АЖЛЫН БАЙР"
-        subtitle="Манай багт нэгдэх багш, мэргэжилтнүүдийг урьж байна."
-        breadcrumb={[
-          { label: 'Нүүр', href: '/' },
-          { label: 'Нээлттэй ажлын байр' },
-        ]}
-      />
-
       {/* Intro */}
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
@@ -176,13 +165,6 @@ export default async function CareersPage() {
           </Button>
         </div>
       </Section>
-
-      <CtaBanner
-        title="Чанартай боловсрол, найрсаг хамт олон"
-        ctaLabel="Анкет бөглөх"
-        ctaHref="/careers/apply"
-        secondary={{ label: 'Холбоо барих', href: '/contact' }}
-      />
     </>
   );
 }

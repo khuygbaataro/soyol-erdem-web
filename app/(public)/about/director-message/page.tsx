@@ -1,9 +1,7 @@
 import Image from 'next/image';
 import { Quote } from 'lucide-react';
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { DIRECTOR_MESSAGE, SCHOOL_INFO } from '@/lib/content';
 import { content, getSiteContentMap } from '@/lib/site-content';
@@ -35,16 +33,6 @@ export default async function DirectorMessagePage() {
 
   return (
     <>
-      <PageHero
-        title="Захирлын мэндчилгээ"
-        subtitle={`${title}-аас та бүхэнд илгээх захидал.`}
-        breadcrumb={[
-          { label: 'Нүүр', href: '/' },
-          { label: 'Сургуулийн тухай', href: '/about' },
-          { label: 'Захирлын мэндчилгээ' },
-        ]}
-      />
-
       <Section background="white">
         <div className="grid gap-10 lg:grid-cols-[2fr_3fr]">
           <Card className="h-fit text-center" hover={false}>
@@ -83,13 +71,6 @@ export default async function DirectorMessagePage() {
           </article>
         </div>
       </Section>
-
-      <CtaBanner
-        title="Бидэнд нэгдээрэй"
-        ctaLabel="Элсэлт"
-        ctaHref="/admission"
-        secondary={{ label: 'Бидэнтэй холбогдох', href: '/contact' }}
-      />
     </>
   );
 }

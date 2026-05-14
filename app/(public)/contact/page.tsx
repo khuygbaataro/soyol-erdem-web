@@ -8,7 +8,6 @@ import {
   Phone,
   Youtube,
 } from 'lucide-react';
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
 import { ContactForm } from '@/components/ui/ContactForm';
@@ -28,12 +27,6 @@ const SOCIAL = [
 export default function ContactPage() {
   return (
     <>
-      <PageHero
-        title="ХОЛБОО БАРИХ"
-        subtitle="Бидэнтэй ямар ч асуудлаар чөлөөтэй холбогдоорой."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Холбоо барих' }]}
-      />
-
       <Section background="white">
         <div className="grid gap-10 lg:grid-cols-[5fr_7fr]">
           {/* Contact info */}

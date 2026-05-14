@@ -1,4 +1,3 @@
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { AccreditationGallery } from '@/components/sections/AccreditationGallery';
 import { TIMELINE } from '@/lib/content';
@@ -10,16 +9,6 @@ export const metadata = {
 export default function HistoryPage() {
   return (
     <>
-      <PageHero
-        title="Сургуулийн түүх"
-        subtitle={'1993 онд "Соёл" дамжаагаар эхэлж, өнөөдөр Монголын тэргүүлэх япон судлалын төв болсон зам.'}
-        breadcrumb={[
-          { label: 'Нүүр', href: '/' },
-          { label: 'Сургуулийн тухай', href: '/about' },
-          { label: 'Сургуулийн түүх' },
-        ]}
-      />
-
       <Section background="white">
         <div className="relative mx-auto max-w-3xl">
           <span className="absolute left-4 top-0 h-full w-0.5 bg-border-light" />

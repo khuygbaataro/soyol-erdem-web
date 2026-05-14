@@ -3,12 +3,9 @@ import {
   Check,
   FileText,
   Globe,
-  Mail,
   MonitorSmartphone,
-  Phone,
   Wallet,
 } from 'lucide-react';
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
@@ -21,7 +18,6 @@ import {
   ADMISSION_PROGRAMS,
   ADMISSION_REQUIREMENTS,
   ADMISSION_STEPS,
-  CONTACT_INFO,
   SCHOLARSHIPS,
 } from '@/lib/content';
 import { cn } from '@/lib/utils';
@@ -59,12 +55,6 @@ export default async function AdmissionPage() {
 
   return (
     <>
-      <PageHero
-        title="ЭЛСЭЛТ"
-        subtitle="2026-2027 оны хичээлийн жилийн элсэлтийн мэдээлэл."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Элсэлт' }]}
-      />
-
       {/* Sub-nav — three anchors per editor's spec */}
       <div className="sticky top-20 z-30 border-b border-border-light bg-white/95 backdrop-blur">
         <div className="container-custom flex flex-wrap items-center gap-2 py-3">
@@ -313,38 +303,6 @@ export default async function AdmissionPage() {
         <SectionTitle title="Тогтмол асуултууд" />
         <div className="mx-auto max-w-2xl">
           <Accordion items={ADMISSION_FAQ} />
-        </div>
-      </Section>
-
-      {/* CTA */}
-      <Section background="navy" spacing="md">
-        <div className="text-center">
-          <h2 className="text-h2 font-bold text-white">Бэлэн үү?</h2>
-          <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-gold-500" />
-          <p className="mx-auto mt-4 max-w-xl text-white/80">
-            Манай элсэлтийн алба руу хандана уу.
-          </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <Button
-              href={`tel:${CONTACT_INFO.phones[0].number.replace('-', '')}`}
-              variant="accent"
-              size="lg"
-              icon={<Phone className="h-5 w-5" />}
-              iconPosition="left"
-            >
-              {CONTACT_INFO.phones[0].number}
-            </Button>
-            <Button
-              href="/contact"
-              variant="outline"
-              size="lg"
-              icon={<Mail className="h-5 w-5" />}
-              iconPosition="left"
-              className="border-white text-white hover:bg-white hover:text-navy-900"
-            >
-              Холбоо барих
-            </Button>
-          </div>
         </div>
       </Section>
     </>

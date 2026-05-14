@@ -143,8 +143,9 @@ export default async function AboutPage() {
             {ABOUT_4_SECTIONS.map((section) => {
               const Icon = section.icon;
               return (
-                <article
+                <Link
                   key={section.number}
+                  href={section.href}
                   className="group relative flex h-full flex-col rounded-card border border-border-light bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-navy-900 hover:bg-navy-900 hover:shadow-card-hover"
                 >
                   <div className="mb-5 flex items-start justify-between">
@@ -163,7 +164,11 @@ export default async function AboutPage() {
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-text-body transition-colors duration-300 group-hover:text-white/80">
                     {section.text}
                   </p>
-                </article>
+
+                  <span className="mt-6 inline-flex h-10 w-10 items-center justify-center rounded-full bg-cream text-navy-900 ring-1 ring-border-light transition-all duration-300 group-hover:bg-gold-500 group-hover:text-navy-900 group-hover:ring-gold-500">
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </span>
+                </Link>
               );
             })}
           </div>

@@ -2,12 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Calendar, User } from 'lucide-react';
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Container } from '@/components/layout/Container';
 import { NewsCard } from '@/components/ui/NewsCard';
 import { Badge } from '@/components/ui/Badge';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import { prisma } from '@/lib/prisma';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
 
@@ -58,18 +56,6 @@ export default async function NewsDetailPage({ params }: PageProps) {
 
   return (
     <>
-      <PageHero
-        title={article.title}
-        breadcrumb={[
-          { label: 'Нүүр', href: '/' },
-          { label: 'Мэдээ', href: '/news' },
-          {
-            label:
-              article.title.slice(0, 40) + (article.title.length > 40 ? '…' : ''),
-          },
-        ]}
-      />
-
       <Section background="white" spacing="sm">
         <Container className="max-w-4xl">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-text-muted">
@@ -136,12 +122,6 @@ export default async function NewsDetailPage({ params }: PageProps) {
           </div>
         </Section>
       )}
-
-      <CtaBanner
-        title="Манай сургуулийг сонгож, ирээдүйгээ эндээс эхэл"
-        ctaLabel="Элсэх"
-        ctaHref="/admission"
-      />
     </>
   );
 }

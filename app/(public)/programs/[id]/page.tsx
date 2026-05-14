@@ -1,11 +1,9 @@
 import { notFound } from 'next/navigation';
 import { Check, ChevronRight } from 'lucide-react';
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import { prisma } from '@/lib/prisma';
 import { resolveIcon } from '@/lib/icon-map';
 
@@ -31,16 +29,6 @@ export default async function ProgramDetailPage({ params }: PageProps) {
 
   return (
     <>
-      <PageHero
-        title={program.name}
-        subtitle={program.shortDescription}
-        breadcrumb={[
-          { label: 'Нүүр', href: '/' },
-          { label: 'Мэргэжлүүд', href: '/programs' },
-          { label: program.name },
-        ]}
-      />
-
       <Section background="white">
         <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
           <div>
@@ -140,12 +128,6 @@ export default async function ProgramDetailPage({ params }: PageProps) {
           </aside>
         </div>
       </Section>
-
-      <CtaBanner
-        title="Энэ мэргэжлээр элсэхийг хүсэж байна уу?"
-        ctaLabel="Мэргэжлээ сонгох"
-        ctaHref="/admission"
-      />
     </>
   );
 }

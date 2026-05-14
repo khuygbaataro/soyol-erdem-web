@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { Quote } from 'lucide-react';
-import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
@@ -32,16 +31,6 @@ export default async function FounderPage() {
 
   return (
     <>
-      <PageHero
-        title="Үүсгэн байгуулагч"
-        subtitle={`${name} — ${title}.`}
-        breadcrumb={[
-          { label: 'Нүүр', href: '/' },
-          { label: 'Сургуулийн тухай', href: '/about' },
-          { label: 'Үүсгэн байгуулагч' },
-        ]}
-      />
-
       <Section background="white">
         <div className="grid gap-10 lg:grid-cols-[2fr_3fr]">
           <Card className="h-fit text-center" hover={false}>
@@ -80,7 +69,6 @@ export default async function FounderPage() {
           </article>
         </div>
       </Section>
-
     </>
   );
 }
