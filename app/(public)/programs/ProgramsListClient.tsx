@@ -16,6 +16,17 @@ interface Item {
 }
 
 /**
+ * Mapping from `Program.degree` (e.g. "Бакалавр") to the fuller display
+ * heading shown above each degree's card group. Falls back to the raw
+ * uppercased degree string when an entry isn't listed here.
+ */
+const DEGREE_HEADING_LABEL: Record<string, string> = {
+  Бакалавр: 'БАКАЛАВРЫН ХӨТӨЛБӨРҮҮД',
+  Магистр: 'МАГИСТРЫН ХӨТӨЛБӨРҮҮД',
+  Доктор: 'ДОКТОРЫН ХӨТӨЛБӨРҮҮД',
+};
+
+/**
  * Programs grouped by degree. Editor's request was to drop the
  * "Зэрэг бүгд / Хэл бүгд" filter row and present бакалавр / магистр
  * хөтөлбөрүүдийг тус тусдаа жагсаалт болгох.
@@ -66,7 +77,7 @@ export function ProgramsListClient({ items }: { items: Item[] }) {
           <div key={group.degree}>
             <div className="mb-6 flex items-end gap-4">
               <h2 className="text-h3 font-bold text-navy-900">
-                {group.degree.toUpperCase()}
+                {DEGREE_HEADING_LABEL[group.degree] ?? group.degree.toUpperCase()}
               </h2>
               <span className="mb-1 text-sm text-text-muted">
                 {group.items.length} хөтөлбөр

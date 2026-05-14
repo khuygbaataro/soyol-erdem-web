@@ -11,13 +11,13 @@ interface PortalLink {
 const PORTALS: PortalLink[] = [
   {
     label: 'Оюутны систем',
-    href: 'http://202.5.200.14/student-login.html',
+    href: 'https://sw-beta.xcloud.mn/Account/Login?ReturnUrl=%2F',
     icon: Laptop,
     external: true,
   },
   {
     label: 'Багшийн систем',
-    href: 'http://202.5.200.14/teacher-login.html',
+    href: 'https://tw.xcloud.mn/Account/Login?ReturnUrl=%2F',
     icon: UserSquare,
     external: true,
   },

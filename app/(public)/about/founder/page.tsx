@@ -3,7 +3,6 @@ import { Quote } from 'lucide-react';
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
-import { CtaBanner } from '@/components/sections/CtaBanner';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { FOUNDER_MESSAGE, SCHOOL_INFO } from '@/lib/content';
 import { content, getSiteContentMap } from '@/lib/site-content';
@@ -82,12 +81,6 @@ export default async function FounderPage() {
         </div>
       </Section>
 
-      <CtaBanner
-        title="Сургуулийн түүхтэй танилц"
-        ctaLabel="Бүтэц зохион байгуулалт"
-        ctaHref="/about/structure"
-        secondary={{ label: 'Захирлын мэндчилгээ', href: '/about/director-message' }}
-      />
     </>
   );
 }
