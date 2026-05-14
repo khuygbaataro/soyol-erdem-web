@@ -69,14 +69,14 @@ export function PageHero({
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between md:gap-10">
           <div className="min-w-0 flex-1">
             <h1
-              className="font-sans text-3xl font-extrabold uppercase leading-[1.05] tracking-[0.08em] text-white md:text-5xl md:tracking-[0.1em]"
+              className="font-display text-[1.75rem] font-extrabold uppercase leading-[1.05] tracking-[0.06em] text-white sm:text-3xl md:text-[2.5rem] md:tracking-[0.08em]"
               style={{
                 textShadow: '0 2px 18px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35)',
               }}
             >
               {title}
             </h1>
-            <div className="mt-4 h-[3px] w-14 rounded-full bg-[#f0a04a]" />
+            <div className="mt-4 h-[3px] w-12 rounded-full bg-[#f0a04a]" />
           </div>
           {subtitle && (
             <p className="max-w-sm text-[13px] leading-relaxed text-white/80 md:text-right md:text-sm">

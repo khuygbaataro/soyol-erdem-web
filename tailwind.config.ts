@@ -35,6 +35,10 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-sans)', 'sans-serif'],
         serif: ['var(--font-serif)', 'serif'],
+        // Display sans (Noto Sans) with comprehensive Mongolian Cyrillic
+        // coverage — used for page-hero banner titles where Inter's Ү / Ө
+        // glyphs render slightly inconsistently at extrabold weight.
+        display: ['var(--font-display)', 'var(--font-sans)', 'sans-serif'],
         mn: ['var(--font-mn)', 'sans-serif'],
       },
       fontSize: {
