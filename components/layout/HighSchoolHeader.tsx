@@ -84,11 +84,11 @@ export function HighSchoolHeader() {
                 className="shrink-0 object-contain"
                 style={{ width: 76, height: 76 }}
               />
-              <span className="flex flex-col font-serif font-bold tracking-tight text-white">
+              <span className="flex flex-col items-start font-serif font-bold tracking-tight text-white">
                 <span className="text-xl leading-tight md:text-2xl">
-                  Соёл Эрдэм
+                  СОЁЛ-ЭРДЭМ
                 </span>
-                <span className="text-base leading-tight text-white/90 md:text-lg">
+                <span className="text-lg leading-tight text-white/95 md:text-xl">
                   Сургууль
                 </span>
               </span>
