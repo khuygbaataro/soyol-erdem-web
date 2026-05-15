@@ -333,6 +333,13 @@ async function main() {
     { key: 'ahlah-home.programs.subtitle', group: 'ahlah-home', type: 'TEXT' as const, label: 'Хөтөлбөр — доод текст', value: 'Япон хэл, IT, бүрэн дунд боловсрол + 2+2 солилцооны хөтөлбөр.', multiline: true, order: 13 },
     { key: 'ahlah-home.news.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Мэдээ — гарчиг', value: 'СҮҮЛИЙН МЭДЭЭ', order: 14 },
 
+    // Footer block — admin-editable for the ahlah sub-site footer.
+    { key: 'ahlah-footer.tagline', group: 'ahlah-home', type: 'TEXT' as const, label: 'Footer — логоны доорх товч тайлбар', hint: '1-2 өгүүлбэрийн тайлбар.', value: 'Соёл Эрдэм Дээд Сургуулийн харьяа төрөлжсөн ерөнхий боловсролын ахлах сургууль. Япон хэл, соёл, IT-ийн чиглэлээр чанартай боловсрол олгоно.', multiline: true, order: 20 },
+    { key: 'ahlah-footer.phone.primary', group: 'ahlah-home', type: 'TEXT' as const, label: 'Footer — Утас (үндсэн)', value: '7011-8589', order: 21 },
+    { key: 'ahlah-footer.phone.secondary', group: 'ahlah-home', type: 'TEXT' as const, label: 'Footer — Утас (гар утас)', value: '9953-3738', order: 22 },
+    { key: 'ahlah-footer.email', group: 'ahlah-home', type: 'TEXT' as const, label: 'Footer — И-мэйл', value: 'info@soyolerdem.edu.mn', order: 23 },
+    { key: 'ahlah-footer.address', group: 'ahlah-home', type: 'TEXT' as const, label: 'Footer — Хаяг', hint: 'Бүтэн хаяг бичнэ үү. Мөр шилжүүлэх боломжтой.', value: 'Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо, Олимпийн гудамж', multiline: true, order: 24 },
+
     // ahlah-about
     { key: 'ahlah-about.hero.image', group: 'ahlah-about', type: 'IMAGE' as const, label: 'Hero — баннер зураг', value: '', order: 1 },
     { key: 'ahlah-about.hero.subtitle', group: 'ahlah-about', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн танилцуулга.', multiline: true, order: 2 },

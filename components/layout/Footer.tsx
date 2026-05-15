@@ -27,6 +27,18 @@ interface FooterProps {
    * Default: 'university'.
    */
   variant?: 'university' | 'high-school';
+  /**
+   * Admin-editable overrides for the contact block + tagline. Layouts
+   * pre-fetch these from site-content and pass them through so the
+   * Footer itself stays a synchronous server component.
+   */
+  overrides?: {
+    tagline?: string;
+    phonePrimary?: string;
+    phoneSecondary?: string;
+    email?: string;
+    address?: string;
+  };
 }
 
 /**
@@ -36,23 +48,38 @@ interface FooterProps {
  *     and admission entry, per Munkhchimeg's spec.
  *   • Холбоо барих — phone / email / address / hours.
  */
-export function Footer({ variant = 'university' }: FooterProps = {}) {
+export function Footer({
+  variant = 'university',
+  overrides = {},
+}: FooterProps = {}) {
   const year = new Date().getFullYear();
   const isHighSchool = variant === 'high-school';
 
   // Sub-site-aware contact block + copyright. Each branch sources its
   // own phone/email/address from the matching constants object so the
   // high-school footer doesn't accidentally inherit the main-university
-  // contact info.
-  const contactPhone = isHighSchool
-    ? `${HIGH_SCHOOL.contact.phonePrimary} / ${HIGH_SCHOOL.contact.phoneSecondary}`
-    : `${SITE.contact.phone} / ${SITE.contact.phoneSecondary}`;
-  const contactEmail = isHighSchool
-    ? HIGH_SCHOOL.contact.email
-    : SITE.contact.email;
-  const contactAddress = isHighSchool
-    ? HIGH_SCHOOL.contact.address
-    : SITE.contact.address;
+  // contact info. Admin overrides (when present) take precedence so
+  // editors can change the values from /high-school/admin/site-content.
+  const phonePrimary =
+    overrides.phonePrimary ||
+    (isHighSchool ? HIGH_SCHOOL.contact.phonePrimary : SITE.contact.phone);
+  const phoneSecondary =
+    overrides.phoneSecondary ||
+    (isHighSchool
+      ? HIGH_SCHOOL.contact.phoneSecondary
+      : SITE.contact.phoneSecondary);
+  const contactPhone = `${phonePrimary} / ${phoneSecondary}`;
+  const contactEmail =
+    overrides.email ||
+    (isHighSchool ? HIGH_SCHOOL.contact.email : SITE.contact.email);
+  const contactAddress =
+    overrides.address ||
+    (isHighSchool ? HIGH_SCHOOL.contact.address : SITE.contact.address);
+  const tagline =
+    overrides.tagline ||
+    (isHighSchool
+      ? 'Соёл Эрдэм Дээд Сургуулийн харьяа төрөлжсөн ерөнхий боловсролын ахлах сургууль. Япон хэл, соёл, IT-ийн чиглэлээр чанартай боловсрол олгоно.'
+      : `${SITE.founded} онд байгуулагдсан, Япон улсын 100% хөрөнгө оруулалттай дээд боловсролын сургалтын байгууллага.`);
   const copyrightName = isHighSchool ? HIGH_SCHOOL.name : SITE.fullName;
 
   return (
@@ -75,10 +102,8 @@ export function Footer({ variant = 'university' }: FooterProps = {}) {
                 label="Соёл Эрдэм"
               />
             </div>
-            <p className="text-sm leading-relaxed text-cream/80">
-              {isHighSchool
-                ? 'Соёл Эрдэм Дээд Сургуулийн харьяа төрөлжсөн ерөнхий боловсролын ахлах сургууль. Япон хэл, соёл, IT-ийн чиглэлээр чанартай боловсрол олгоно.'
-                : `${SITE.founded} онд байгуулагдсан, Япон улсын 100% хөрөнгө оруулалттай дээд боловсролын сургалтын байгууллага.`}
+            <p className="whitespace-pre-line text-sm leading-relaxed text-cream/80">
+              {tagline}
             </p>
             <div className="mt-5 flex items-center gap-3">
               {SOCIAL.map(({ icon: Icon, href, label }) => (
@@ -148,7 +173,7 @@ export function Footer({ variant = 'university' }: FooterProps = {}) {
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
-                <span>{contactAddress}</span>
+                <span className="whitespace-pre-line">{contactAddress}</span>
               </li>
             </ul>
           </div>
