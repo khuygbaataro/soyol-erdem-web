@@ -128,9 +128,48 @@ export default async function HighSchoolHomePage() {
   const heroSubtitle = content(
     site,
     'ahlah-home.hero.subtitle',
-    'Хичээнгүй суралцагч · Чадварлаг багш · Япон хэл, соёл',
+    'Чанартай боловсрол, Япон хэл, соёл, IT-ийн чиглэлээр ирээдүйгээ эндээс эхлүүл.',
   );
   const heroImage = site.get('ahlah-home.hero.image') || '';
+
+  const introBadge = content(
+    site,
+    'ahlah-home.intro.badge',
+    'Японы хөрөнгө оруулалттай · 2023 онд байгуулагдсан',
+  );
+  const introTitle = content(
+    site,
+    'ahlah-home.intro.title',
+    'Хичээнгүй суралцагч,\nЧадварлаг багш, Япон хэл, соёл',
+  );
+  const introBody = content(
+    site,
+    'ahlah-home.intro.body',
+    'Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль нь 2023 оны 8-р сарын 30-нд Японы хөрөнгө оруулалттайгаар үүсгэн байгуулагдаж, 2023–2024 оны хичээлийн жилд 10–11 ангитай, нийт мэргэжлийн 11 багш, 2 япон хэлний багштайгаар үйл ажиллагаагаа эхэлсэн.',
+  );
+  const introBody2 = content(
+    site,
+    'ahlah-home.intro.body2',
+    'Манай сургууль нь эх сургууль болох Соёл Эрдэм Дээд Сургуулийн 30+ жилийн япон судлалын баялаг туршлагад тулгуурлан япон хэл, соёл болон мэдээллийн технологид төрөлжсөн ерөнхий боловсролын сургалт явуулдаг.',
+  );
+  const introImage =
+    site.get('ahlah-home.intro.image') || '/НЕБ_Сургууль.png';
+  const overlayEyebrow = content(
+    site,
+    'ahlah-home.intro.overlay.eyebrow',
+    'Senior High School',
+  );
+  const overlayTitle = content(
+    site,
+    'ahlah-home.intro.overlay.title',
+    'Соёл Эрдэм',
+  );
+  const overlaySubtitle = content(
+    site,
+    'ahlah-home.intro.overlay.subtitle',
+    'Япон-Монголын боловсролын гүүр',
+  );
+
   const philosophyTitle = content(
     site,
     'ahlah-home.philosophy.title',
@@ -161,44 +200,61 @@ export default async function HighSchoolHomePage() {
       <Section background="white" spacing="md" id="about">
         <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
           <div>
-            <Badge variant="gold" className="mb-5">
-              Японы хөрөнгө оруулалттай · 2023 онд байгуулагдсан
-            </Badge>
-            <h2 className="font-serif text-3xl font-bold leading-tight text-navy-900 md:text-4xl">
-              Хичээнгүй суралцагч, <br className="hidden sm:block" />
-              Чадварлаг багш, Япон хэл, соёл
+            {introBadge && (
+              <Badge variant="gold" className="mb-5">
+                {introBadge}
+              </Badge>
+            )}
+            <h2 className="whitespace-pre-line font-serif text-3xl font-bold leading-tight text-navy-900 md:text-4xl">
+              {introTitle}
             </h2>
             <div className="mt-4 h-1 w-14 rounded-full bg-gold-500" />
-            <p className="mt-6 text-base leading-relaxed text-text-body">
-              Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль нь{' '}
-              <strong className="text-navy-900">2023 оны 8-р сарын 30</strong>-нд
-              Японы хөрөнгө оруулалттайгаар үүсгэн байгуулагдаж, 2023–2024 оны
-              хичээлийн жилд 10–11 ангитай, мэргэжлийн 11 багш, 2 япон хэлний
-              багштайгаар үйл ажиллагаагаа эхэлсэн.
-            </p>
-            <p className="mt-4 text-base leading-relaxed text-text-body">
-              Манай сургууль нь Япон хэл, соёл болон Мэдээллийн технологид
-              төрөлжсөн ерөнхий боловсролын тэргүүлэгч сургууль болохыг
-              эрхэмлэн ажилладаг.
-            </p>
+            {introBody && (
+              <p className="mt-6 whitespace-pre-line text-base leading-relaxed text-text-body">
+                {introBody}
+              </p>
+            )}
+            {introBody2 && (
+              <p className="mt-4 whitespace-pre-line text-base leading-relaxed text-text-body">
+                {introBody2}
+              </p>
+            )}
           </div>
 
           <div className="relative aspect-[4/5] overflow-hidden rounded-image bg-cream-soft shadow-card-hover">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/НЕБ_Сургууль.png"
-              alt="Соёл Эрдэм Ахлах Сургуулийн барилга"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-900/85 via-navy-900/50 to-transparent p-7 text-white">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
-                Senior High School
-              </p>
-              <p className="mt-1 font-serif text-2xl font-bold">Соёл Эрдэм</p>
-              <p className="mt-1 text-sm text-white/85">
-                Япон-Монголын боловсролын гүүр
-              </p>
-            </div>
+            {introImage ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={introImage}
+                  alt={`${overlayTitle || 'Соёл Эрдэм'} Ахлах Сургууль`}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-900/85 via-navy-900/50 to-transparent p-7 text-white">
+                  {overlayEyebrow && (
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
+                      {overlayEyebrow}
+                    </p>
+                  )}
+                  {overlayTitle && (
+                    <p className="mt-1 font-serif text-2xl font-bold">
+                      {overlayTitle}
+                    </p>
+                  )}
+                  {overlaySubtitle && (
+                    <p className="mt-1 whitespace-pre-line text-sm text-white/85">
+                      {overlaySubtitle}
+                    </p>
+                  )}
+                </div>
+              </>
+            ) : (
+              // Empty-state placeholder so the layout doesn't collapse before
+              // the admin uploads a photo.
+              <div className="flex h-full w-full items-center justify-center text-center text-sm text-text-muted">
+                Admin-аас зургаа оруулна уу.
+              </div>
+            )}
           </div>
         </div>
       </Section>

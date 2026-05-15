@@ -319,13 +319,19 @@ async function main() {
     // Groups prefixed with `hs-` so /high-school/admin/site-content filters
     // them out of the main university content list.
     { key: 'ahlah-home.hero.image', group: 'ahlah-home', type: 'IMAGE' as const, label: 'Hero — баннер зураг', hint: 'Дээд талын баннер. Хоосон бол default баннер.', value: '', order: 1 },
-    { key: 'ahlah-home.hero.subtitle', group: 'ahlah-home', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Хичээнгүй суралцагч · Чадварлаг багш · Япон хэл, соёл', multiline: true, order: 2 },
-    { key: 'ahlah-home.intro.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Танилцуулга — гарчиг', value: 'НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН СОЁЛ ЭРДЭМ СУРГУУЛЬ', multiline: true, order: 3 },
-    { key: 'ahlah-home.intro.body', group: 'ahlah-home', type: 'TEXT' as const, label: 'Танилцуулга — параграф', value: '2023 онд байгуулагдсан Соёл Эрдэм Дээд Сургуулийн харьяа төрөлжсөн ахлах сургууль. Япон хэл, соёл болон Мэдээллийн технологийн чиглэлээр сурагчдыг чанартай боловсролоор хангана.', multiline: true, order: 4 },
-    { key: 'ahlah-home.philosophy.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Философи — гарчиг', value: 'СУРГУУЛИЙН ҮЗЭЛ БОДОЛ', order: 5 },
-    { key: 'ahlah-home.programs.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Хөтөлбөр — гарчиг', value: 'СУРГАЛТЫН ХӨТӨЛБӨР', order: 6 },
-    { key: 'ahlah-home.programs.subtitle', group: 'ahlah-home', type: 'TEXT' as const, label: 'Хөтөлбөр — доод текст', value: 'Япон хэл, IT, бүрэн дунд боловсрол + 2+2 солилцооны хөтөлбөр.', multiline: true, order: 7 },
-    { key: 'ahlah-home.news.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Мэдээ — гарчиг', value: 'СҮҮЛИЙН МЭДЭЭ', order: 8 },
+    { key: 'ahlah-home.hero.subtitle', group: 'ahlah-home', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Чанартай боловсрол, Япон хэл, соёл, IT-ийн чиглэлээр ирээдүйгээ эндээс эхлүүл.', multiline: true, order: 2 },
+    { key: 'ahlah-home.intro.badge', group: 'ahlah-home', type: 'TEXT' as const, label: 'Танилцуулга — pill', hint: 'Гарчгийн дээр харагдах жижиг алтан pill.', value: 'Японы хөрөнгө оруулалттай · 2023 онд байгуулагдсан', order: 3 },
+    { key: 'ahlah-home.intro.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Танилцуулга — гарчиг', hint: 'Тойм бичих хоёр мөр.', value: 'Хичээнгүй суралцагч,\nЧадварлаг багш, Япон хэл, соёл', multiline: true, order: 4 },
+    { key: 'ahlah-home.intro.body', group: 'ahlah-home', type: 'TEXT' as const, label: 'Танилцуулга — 1-р параграф', value: 'Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль нь 2023 оны 8-р сарын 30-нд Японы хөрөнгө оруулалттайгаар үүсгэн байгуулагдаж, 2023–2024 оны хичээлийн жилд 10–11 ангитай, нийт мэргэжлийн 11 багш, 2 япон хэлний багштайгаар үйл ажиллагаагаа эхэлсэн.', multiline: true, order: 5 },
+    { key: 'ahlah-home.intro.body2', group: 'ahlah-home', type: 'TEXT' as const, label: 'Танилцуулга — 2-р параграф', value: 'Манай сургууль нь эх сургууль болох Соёл Эрдэм Дээд Сургуулийн 30+ жилийн япон судлалын баялаг туршлагад тулгуурлан япон хэл, соёл болон мэдээллийн технологид төрөлжсөн ерөнхий боловсролын сургалт явуулдаг.', multiline: true, order: 6 },
+    { key: 'ahlah-home.intro.image', group: 'ahlah-home', type: 'IMAGE' as const, label: 'Танилцуулга — баруун талын зураг', hint: 'Босоо (4:5 эсвэл 3:4) зураг сайн харагдана.', value: '/НЕБ_Сургууль.png', order: 7 },
+    { key: 'ahlah-home.intro.overlay.eyebrow', group: 'ahlah-home', type: 'TEXT' as const, label: 'Зургийн доорх — pill (Senior High School)', value: 'Senior High School', order: 8 },
+    { key: 'ahlah-home.intro.overlay.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Зургийн доорх — гарчиг', value: 'Соёл Эрдэм', order: 9 },
+    { key: 'ahlah-home.intro.overlay.subtitle', group: 'ahlah-home', type: 'TEXT' as const, label: 'Зургийн доорх — товч тайлбар', value: 'Япон-Монголын боловсролын гүүр', multiline: true, order: 10 },
+    { key: 'ahlah-home.philosophy.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Философи — гарчиг', value: 'СУРГУУЛИЙН ҮЗЭЛ БОДОЛ', order: 11 },
+    { key: 'ahlah-home.programs.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Хөтөлбөр — гарчиг', value: 'СУРГАЛТЫН ХӨТӨЛБӨР', order: 12 },
+    { key: 'ahlah-home.programs.subtitle', group: 'ahlah-home', type: 'TEXT' as const, label: 'Хөтөлбөр — доод текст', value: 'Япон хэл, IT, бүрэн дунд боловсрол + 2+2 солилцооны хөтөлбөр.', multiline: true, order: 13 },
+    { key: 'ahlah-home.news.title', group: 'ahlah-home', type: 'TEXT' as const, label: 'Мэдээ — гарчиг', value: 'СҮҮЛИЙН МЭДЭЭ', order: 14 },
 
     // ahlah-about
     { key: 'ahlah-about.hero.image', group: 'ahlah-about', type: 'IMAGE' as const, label: 'Hero — баннер зураг', value: '', order: 1 },
