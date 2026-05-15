@@ -16,6 +16,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { CtaBanner } from '@/components/sections/CtaBanner';
+import { HighSchoolAdmissionForm } from '@/components/ui/HighSchoolAdmissionForm';
 import { HIGH_SCHOOL } from '@/lib/constants';
 
 export const metadata = {
@@ -317,6 +318,19 @@ export default function HighSchoolAdmissionPage() {
             >
               Холбоо барих
             </Button>
+          </div>
+        </div>
+      </Section>
+
+      {/* Online application form */}
+      <Section background="cream-soft" spacing="md" id="apply">
+        <SectionTitle
+          title="ЦАХИМААР БҮРТГҮҮЛЭХ"
+          subtitle="10-р ангид элсэх сурагчдад зориулсан урьдчилсан бүртгэлийн форм. Хариуцсан ажилтан тантай 1-2 өдрийн дотор холбогдоно."
+        />
+        <div className="mx-auto max-w-3xl">
+          <div className="rounded-card border border-border-light bg-white p-6 shadow-card md:p-8">
+            <HighSchoolAdmissionForm />
           </div>
         </div>
       </Section>

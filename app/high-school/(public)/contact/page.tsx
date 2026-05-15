@@ -128,12 +128,14 @@ export default function HighSchoolContactPage() {
           <div className="space-y-6">
             <SectionTitle title="МЭДЭЭЛЭЛ ИЛГЭЭХ" align="left" />
 
-            <div className="rounded-card bg-gradient-to-br from-navy-900 via-[#243454] to-[#1c2745] p-8 text-white">
-              <Send className="h-8 w-8 text-gold-400" />
-              <h3 className="mt-4 font-serif text-xl font-bold">
+            <div className="rounded-card border border-border-light bg-white p-7 shadow-card">
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
+                <Send className="h-6 w-6" />
+              </span>
+              <h3 className="mt-4 font-serif text-xl font-bold text-navy-900">
                 Хамтын ажиллагаа, элсэлт, лавлах
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-white/85">
+              <p className="mt-3 text-sm leading-relaxed text-text-body">
                 Их сургуультай хамтран ажилладаг ерөнхий лавлах формыг
                 ашиглан санал хүсэлтээ илгээж болно. Тус формыг хариуцсан
                 ажилтан тантай 24 цагийн дотор холбоо барина.
@@ -146,7 +148,6 @@ export default function HighSchoolContactPage() {
                   href={`mailto:${HIGH_SCHOOL.contact.email}`}
                   variant="outline"
                   size="md"
-                  className="border-white/40 text-white hover:bg-white/10 hover:text-white"
                 >
                   Шууд и-мэйл
                 </Button>

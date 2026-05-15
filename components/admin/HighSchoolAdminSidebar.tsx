@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import {
   ChevronsLeft,
   FileText,
+  GraduationCap,
   LayoutDashboard,
   LayoutTemplate,
   LogOut,
@@ -20,6 +21,7 @@ interface HighSchoolAdminSidebarProps {
 
 const NAV: { label: string; href: string; icon: typeof LayoutDashboard }[] = [
   { label: 'Хянах самбар', href: '/high-school/admin/dashboard', icon: LayoutDashboard },
+  { label: 'Элсэлтийн хүсэлт', href: '/high-school/admin/applications', icon: GraduationCap },
   { label: 'Мэдээ', href: '/high-school/admin/news', icon: FileText },
   { label: 'Хуудасны агуулга', href: '/high-school/admin/site-content', icon: LayoutTemplate },
 ];

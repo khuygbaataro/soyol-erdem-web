@@ -76,7 +76,7 @@ export function HighSchoolHeader() {
               aria-label="Ахлах сургуулийн нүүр хуудас"
             >
               <Image
-                src="/ahlah_surguuliin_logo.png"
+                src="/ahlal-logo-new.png"
                 alt="Соёл Эрдэм Ахлах Сургуулийн лого"
                 width={76}
                 height={76}

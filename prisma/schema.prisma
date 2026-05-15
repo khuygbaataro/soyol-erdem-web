@@ -313,3 +313,33 @@ model JobApplication {
 
   @@index([read, createdAt])
 }
+
+/// Submission from the public high-school 10th-grade admission form.
+/// Shows up in /high-school/admin/applications as a structured inbox.
+model HighSchoolApplication {
+  id              String   @id @default(cuid())
+  /// Student full name — "С. Сурагч" style.
+  studentName     String
+  /// Birth date as free text (YYYY-MM-DD or "2010 оны 5 сар").
+  studentBirth    String?
+  /// School the student currently attends (9th grade).
+  currentSchool   String?
+  /// 9th-grade GPA / average grade if known.
+  currentGpa      String?
+  /// Preferred track: "japan" | "it" | "other".
+  track           String?
+  /// Parent / guardian name.
+  guardianName    String
+  /// Relationship to student (Эх / Эцэг / Хууль ёсны асран хамгаалагч).
+  guardianRel     String?
+  /// Contact phone (parent).
+  phone           String
+  /// Optional email for further correspondence.
+  email           String?
+  /// Optional free-text note from the family.
+  message         String?
+  read            Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  @@index([read, createdAt])
+}

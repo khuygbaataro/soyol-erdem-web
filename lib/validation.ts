@@ -93,6 +93,24 @@ export const contactSchema = z.object({
 });
 export type ContactInput = z.infer<typeof contactSchema>;
 
+/* High-school 10th-grade admission inquiry. Public form on
+ * /high-school/admission posts to /api/high-school/applications, the
+ * record lands in /high-school/admin/applications inbox.
+ */
+export const highSchoolApplicationSchema = z.object({
+  studentName: z.string().min(2).max(120),
+  studentBirth: z.string().max(60).optional().or(z.literal('')),
+  currentSchool: z.string().max(200).optional().or(z.literal('')),
+  currentGpa: z.string().max(20).optional().or(z.literal('')),
+  track: z.enum(['japan', 'it', 'other']).optional(),
+  guardianName: z.string().min(2).max(120),
+  guardianRel: z.string().max(60).optional().or(z.literal('')),
+  phone: z.string().min(6).max(40),
+  email: z.string().email().optional().or(z.literal('')),
+  message: z.string().max(2000).optional().or(z.literal('')),
+});
+export type HighSchoolApplicationInput = z.infer<typeof highSchoolApplicationSchema>;
+
 /* Admission application — 8-step wizard at /admission/register.
  *
  * Stored in `ContactSubmission` (no separate DB table yet so we don't need

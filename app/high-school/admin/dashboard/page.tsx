@@ -1,5 +1,12 @@
 import Link from 'next/link';
-import { ArrowRight, Calendar, FileText, School } from 'lucide-react';
+import {
+  ArrowRight,
+  Calendar,
+  FileText,
+  GraduationCap,
+  Inbox,
+  School,
+} from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -18,7 +25,7 @@ export const metadata = { title: 'Самбар' };
  * never see the main university admin chrome.
  */
 export default async function HighSchoolAdminDashboardPage() {
-  const [total, published, draft, latest] = await Promise.all([
+  const [total, published, draft, latest, unreadApplications] = await Promise.all([
     prisma.news.count({ where: { site: 'HIGH_SCHOOL' } }).catch(() => 0),
     prisma.news
       .count({ where: { site: 'HIGH_SCHOOL', status: 'PUBLISHED' } })
@@ -34,6 +41,7 @@ export default async function HighSchoolAdminDashboardPage() {
         include: { author: { select: { name: true } } },
       })
       .catch(() => [] as never[]),
+    prisma.highSchoolApplication.count({ where: { read: false } }).catch(() => 0),
   ]);
 
   return (
@@ -54,7 +62,7 @@ export default async function HighSchoolAdminDashboardPage() {
         }
       />
 
-      <div className="grid gap-5 md:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
         <Card hover={false}>
           <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
             <School className="h-5 w-5" />
@@ -82,6 +90,24 @@ export default async function HighSchoolAdminDashboardPage() {
           </p>
           <p className="mt-1 text-3xl font-bold text-navy-900">{draft}</p>
         </Card>
+        <Link
+          href="/high-school/admin/applications"
+          className="group block rounded-card border border-border-light bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-card-hover"
+        >
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-navy-900/10 text-navy-900">
+            <GraduationCap className="h-5 w-5" />
+          </span>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-text-muted">
+            Шинэ элсэлтийн хүсэлт
+          </p>
+          <p className="mt-1 inline-flex items-baseline gap-2 text-3xl font-bold text-navy-900">
+            {unreadApplications}
+            <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-gold-500">
+              <Inbox className="h-3 w-3" />
+              Inbox
+            </span>
+          </p>
+        </Link>
       </div>
 
       <div className="mt-8">
