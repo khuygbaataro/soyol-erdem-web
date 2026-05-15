@@ -64,11 +64,14 @@ export default async function ResearchPage() {
       '',
   );
 
-  // Cover images for each journal — keyed by journal id.
+  // Cover images for each journal — keyed by journal id. Admin upload
+  // (research.journal.{id}.cover) takes priority; otherwise we fall back
+  // to the static `cover` baked into RESEARCH_JOURNALS, so the shelf
+  // never has empty cards.
   const journalCovers = new Map(
     RESEARCH_JOURNALS.map((j) => [
       j.id,
-      researchContent.get(`research.journal.${j.id}.cover`) || null,
+      researchContent.get(`research.journal.${j.id}.cover`) || j.cover || null,
     ]),
   );
 

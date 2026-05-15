@@ -86,7 +86,11 @@ export default function JournalReadingPage({ params }: PageProps) {
 
       {/* Flipbook stage takes the full viewport */}
       <div className="flex h-full w-full items-center justify-center px-2 py-3 sm:px-4 sm:py-5">
-        <JournalFlipbook pdfUrl={journal.file} />
+        <JournalFlipbook
+          pdfUrl={journal.file}
+          coverImage={journal.cover}
+          coverAlt={`${journal.title} · ${journal.subtitle}`}
+        />
       </div>
     </div>
   );

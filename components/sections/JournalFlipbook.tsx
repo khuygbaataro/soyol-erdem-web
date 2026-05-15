@@ -21,6 +21,14 @@ interface JournalFlipbookProps {
   pdfUrl: string;
   /** Optional title shown in the toolbar above the book. */
   title?: string;
+  /**
+   * Optional cover image rendered as the first page of the book. When
+   * present, the flipbook total becomes coverImage + PDF pages, so the
+   * reader leafs through the cover into the article. Defaults: omitted.
+   */
+  coverImage?: string;
+  /** Used as the alt-text for the cover image. */
+  coverAlt?: string;
 }
 
 const PageWrapper = forwardRef<
@@ -50,7 +58,12 @@ const PageWrapper = forwardRef<
  * Sizing is recomputed on resize so the book uses as much of the viewport
  * as possible while keeping the printed page proportions intact (≈A4).
  */
-export function JournalFlipbook({ pdfUrl, title }: JournalFlipbookProps) {
+export function JournalFlipbook({
+  pdfUrl,
+  title,
+  coverImage,
+  coverAlt = '',
+}: JournalFlipbookProps) {
   const [numPages, setNumPages] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -179,6 +192,16 @@ export function JournalFlipbook({ pdfUrl, title }: JournalFlipbookProps) {
                 className: 'shadow-[0_30px_80px_-20px_rgba(0,0,0,0.65)]',
               } as any)}
             >
+              {coverImage && (
+                <PageWrapper key="cover" pageNumber={0}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={coverImage}
+                    alt={coverAlt}
+                    className="h-full w-full object-cover"
+                  />
+                </PageWrapper>
+              )}
               {Array.from({ length: numPages }, (_, i) => (
                 <PageWrapper key={i} pageNumber={i + 1}>
                   <Page
@@ -211,16 +234,21 @@ export function JournalFlipbook({ pdfUrl, title }: JournalFlipbookProps) {
             <ChevronLeft className="h-5 w-5" />
           </button>
           <span className="min-w-[6rem] text-center text-sm font-semibold tabular-nums">
-            {isPortrait
-              ? `${currentPage + 1} / ${numPages}`
-              : currentPage === 0
-                ? `1 / ${numPages}`
-                : `${currentPage + 1}–${Math.min(currentPage + 2, numPages)} / ${numPages}`}
+            {(() => {
+              const totalPages = numPages + (coverImage ? 1 : 0);
+              if (isPortrait) {
+                return `${currentPage + 1} / ${totalPages}`;
+              }
+              if (currentPage === 0) {
+                return `1 / ${totalPages}`;
+              }
+              return `${currentPage + 1}–${Math.min(currentPage + 2, totalPages)} / ${totalPages}`;
+            })()}
           </span>
           <button
             type="button"
             onClick={() => flip('next')}
-            disabled={currentPage >= numPages - 1}
+            disabled={currentPage >= numPages + (coverImage ? 1 : 0) - 1}
             aria-label="Дараагийн хуудас"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40"
           >
