@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import {
+  ArrowRight,
   CalendarCheck,
   ClipboardList,
   FileText,
@@ -152,59 +154,83 @@ export default function HighSchoolAdmissionPage() {
             </div>
           </div>
 
-          <div className="rounded-card bg-gradient-to-br from-navy-900 via-[#243454] to-[#1c2745] p-8 text-white">
-            <Sparkles className="h-8 w-8 text-gold-400" />
-            <h3 className="mt-4 font-serif text-xl font-bold">
-              Шууд бүртгүүлэх / лавлах
-            </h3>
-            <p className="mt-3 text-sm leading-relaxed text-white/80">
-              Элсэлтийн талаар лавлах, материалын талаар асуулт тавих бол
-              дараах хаягаар холбогдоно уу.
-            </p>
+          <div className="space-y-5">
+            {/* Primary CTA — clicks scroll down to the application form. */}
+            <Link
+              href="#apply"
+              className="group block rounded-card border-2 border-gold-500/40 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500 hover:shadow-card-hover"
+            >
+              <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-gold-500/15 text-gold-500 ring-1 ring-gold-500/30 transition-colors duration-300 group-hover:bg-gold-500 group-hover:text-white">
+                <Sparkles className="h-7 w-7" />
+              </span>
+              <h3 className="mt-5 font-serif text-2xl font-bold leading-tight text-navy-900">
+                Цахимаар бүртгүүлэх
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-text-body">
+                10-р ангид элсэх хүсэлтээ онлайн формоор илгээнэ үү.
+                Хариуцсан ажилтан тантай 1-2 өдрийн дотор холбогдоно.
+              </p>
+              <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-navy-900 transition-colors duration-300 group-hover:text-gold-500">
+                Цахим маягтыг бөглөх
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
+            </Link>
 
-            <div className="mt-6 space-y-4">
-              <a
-                href={`tel:${HIGH_SCHOOL.contact.phonePrimary.replace('-', '')}`}
-                className="flex items-center gap-3 transition-colors hover:text-gold-400"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-gold-400">
-                  <Phone className="h-4 w-4" />
-                </span>
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-white/55">
-                    Утас
-                  </p>
-                  <p className="font-bold">{HIGH_SCHOOL.contact.phonePrimary}</p>
-                </div>
-              </a>
-              <a
-                href={`tel:${HIGH_SCHOOL.contact.phoneSecondary.replace('-', '')}`}
-                className="flex items-center gap-3 transition-colors hover:text-gold-400"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-gold-400">
-                  <Phone className="h-4 w-4" />
-                </span>
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-white/55">
-                    Гар утас
-                  </p>
-                  <p className="font-bold">{HIGH_SCHOOL.contact.phoneSecondary}</p>
-                </div>
-              </a>
-              <a
-                href={`mailto:${HIGH_SCHOOL.contact.email}`}
-                className="flex items-center gap-3 transition-colors hover:text-gold-400"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-gold-400">
-                  <Mail className="h-4 w-4" />
-                </span>
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-white/55">
-                    И-мэйл
-                  </p>
-                  <p className="break-all font-bold">{HIGH_SCHOOL.contact.email}</p>
-                </div>
-              </a>
+            {/* Direct contact — small cards, gold-tinted icons. */}
+            <div className="rounded-card border border-border-light bg-cream-soft p-6">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gold-500">
+                Лавлах / шууд холбоо барих
+              </p>
+              <div className="mt-4 space-y-3">
+                <a
+                  href={`tel:${HIGH_SCHOOL.contact.phonePrimary.replace('-', '')}`}
+                  className="flex items-center gap-3 rounded-button bg-white px-4 py-3 transition-colors hover:bg-gold-500/5"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
+                    <Phone className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-text-muted">
+                      Утас
+                    </p>
+                    <p className="font-bold text-navy-900">
+                      {HIGH_SCHOOL.contact.phonePrimary}
+                    </p>
+                  </div>
+                </a>
+                <a
+                  href={`tel:${HIGH_SCHOOL.contact.phoneSecondary.replace('-', '')}`}
+                  className="flex items-center gap-3 rounded-button bg-white px-4 py-3 transition-colors hover:bg-gold-500/5"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
+                    <Phone className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-text-muted">
+                      Гар утас
+                    </p>
+                    <p className="font-bold text-navy-900">
+                      {HIGH_SCHOOL.contact.phoneSecondary}
+                    </p>
+                  </div>
+                </a>
+                <a
+                  href={`mailto:${HIGH_SCHOOL.contact.email}`}
+                  className="flex items-center gap-3 rounded-button bg-white px-4 py-3 transition-colors hover:bg-gold-500/5"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
+                    <Mail className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-text-muted">
+                      И-мэйл
+                    </p>
+                    <p className="break-all font-bold text-navy-900">
+                      {HIGH_SCHOOL.contact.email}
+                    </p>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
