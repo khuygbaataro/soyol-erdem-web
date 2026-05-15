@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
  *
  * Visually distinct from the main university Header:
  *  • Two-row layout (utility bar + main row) but uses a slightly warmer
- *    palette and shows a "← Их сургуульд буцах" link in the utility bar so
+ *    palette and shows a "← Дээд сургуульд буцах" link in the utility bar so
  *    visitors always know they're inside a sibling sub-site.
  *  • The main row carries a 高 kanji crest beside the school name to mark
  *    the high-school identity.
@@ -45,7 +45,7 @@ export function HighSchoolHeader() {
               className="inline-flex items-center gap-1.5 transition-colors hover:text-[#f5b06b]"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
-              <span>Их сургуульд буцах</span>
+              <span>Дээд сургуульд буцах</span>
             </Link>
 
             <div className="hidden items-center gap-5 md:flex">
@@ -76,21 +76,16 @@ export function HighSchoolHeader() {
               aria-label="Ахлах сургуулийн нүүр хуудас"
             >
               <Image
-                src="/logo.png"
-                alt=""
-                width={56}
-                height={56}
+                src="/ahlah_surguuliin_logo.png"
+                alt="Соёл Эрдэм Ахлах Сургуулийн лого"
+                width={76}
+                height={76}
                 priority
                 className="shrink-0 object-contain"
-                style={{ width: 56, height: 56 }}
+                style={{ width: 76, height: 76 }}
               />
-              <span className="flex flex-col leading-tight">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
-                  Соёл Эрдэм
-                </span>
-                <span className="font-serif text-lg font-bold leading-tight tracking-tight text-white md:text-xl">
-                  Ахлах Сургууль
-                </span>
+              <span className="font-serif text-xl font-bold leading-none tracking-tight text-white md:text-2xl">
+                Соёл Эрдэм
               </span>
             </Link>
 
@@ -192,7 +187,7 @@ export function HighSchoolHeader() {
                 className="mt-6 flex items-center gap-2 rounded-lg border border-border-light px-3 py-3 text-sm font-semibold text-text-muted transition-colors hover:bg-cream-soft hover:text-navy-900"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Их сургуульд буцах
+                Дээд сургуульд буцах
               </Link>
             </nav>
             <div className="space-y-3 border-t border-border-light px-6 py-5">
