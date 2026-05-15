@@ -106,6 +106,8 @@ export const HIGH_SCHOOL = {
     phonePrimary: '7011-8589',
     phoneSecondary: '9953-3738',
     email: 'info@soyolerdem.edu.mn',
+    address:
+      'Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо, Олимпийн гудамж',
   },
 };
 

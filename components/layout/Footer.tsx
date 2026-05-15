@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { Container } from './Container';
 import { Logo } from '@/components/icons/Logo';
-import { FOOTER_LINKS, SITE } from '@/lib/constants';
+import { FOOTER_LINKS, HIGH_SCHOOL, SITE } from '@/lib/constants';
 
 const SOCIAL = [
   { icon: Facebook, href: SITE.contact.facebook, label: 'Facebook' },
@@ -39,6 +39,21 @@ interface FooterProps {
 export function Footer({ variant = 'university' }: FooterProps = {}) {
   const year = new Date().getFullYear();
   const isHighSchool = variant === 'high-school';
+
+  // Sub-site-aware contact block + copyright. Each branch sources its
+  // own phone/email/address from the matching constants object so the
+  // high-school footer doesn't accidentally inherit the main-university
+  // contact info.
+  const contactPhone = isHighSchool
+    ? `${HIGH_SCHOOL.contact.phonePrimary} / ${HIGH_SCHOOL.contact.phoneSecondary}`
+    : `${SITE.contact.phone} / ${SITE.contact.phoneSecondary}`;
+  const contactEmail = isHighSchool
+    ? HIGH_SCHOOL.contact.email
+    : SITE.contact.email;
+  const contactAddress = isHighSchool
+    ? HIGH_SCHOOL.contact.address
+    : SITE.contact.address;
+  const copyrightName = isHighSchool ? HIGH_SCHOOL.name : SITE.fullName;
 
   return (
     <footer className="bg-navy-900 text-white">
@@ -120,22 +135,20 @@ export function Footer({ variant = 'university' }: FooterProps = {}) {
             <ul className="space-y-3 text-sm text-cream/80">
               <li className="flex items-start gap-3">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
-                <span>
-                  {SITE.contact.phone} / {SITE.contact.phoneSecondary}
-                </span>
+                <span>{contactPhone}</span>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
                 <a
-                  href={`mailto:${SITE.contact.email}`}
+                  href={`mailto:${contactEmail}`}
                   className="break-all transition-colors hover:text-gold-400"
                 >
-                  {SITE.contact.email}
+                  {contactEmail}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
-                <span>{SITE.contact.address}</span>
+                <span>{contactAddress}</span>
               </li>
             </ul>
           </div>
@@ -143,7 +156,7 @@ export function Footer({ variant = 'university' }: FooterProps = {}) {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-cream/60 md:flex-row">
           <p>
-            © {year} {SITE.fullName}. Бүх эрх хуулиар хамгаалагдсан.
+            © {year} {copyrightName}. Бүх эрх хуулиар хамгаалагдсан.
           </p>
           <Link
             href="/privacy"
