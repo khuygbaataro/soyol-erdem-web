@@ -85,10 +85,10 @@ export function HighSchoolHeader() {
                 style={{ width: 76, height: 76 }}
               />
               <span className="flex flex-col items-center font-serif font-bold tracking-tight text-white">
-                <span className="text-xl leading-tight md:text-2xl">
+                <span className="text-base leading-tight md:text-lg">
                   СОЁЛ ЭРДЭМ
                 </span>
-                <span className="text-lg leading-tight text-white/95 md:text-xl">
+                <span className="text-sm leading-tight text-white/95 md:text-base">
                   Сургууль
                 </span>
               </span>
