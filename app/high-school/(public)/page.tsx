@@ -186,7 +186,7 @@ export default async function HighSchoolHomePage() {
           <div className="relative aspect-[4/5] overflow-hidden rounded-image bg-cream-soft shadow-card-hover">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/highschool-photo.jpg"
+              src="/НЕБ_Сургууль.png"
               alt="Соёл Эрдэм Ахлах Сургуулийн барилга"
               className="absolute inset-0 h-full w-full object-cover"
             />
