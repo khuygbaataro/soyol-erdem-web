@@ -36,6 +36,10 @@ model News {
   excerpt     String
   body        String
   coverImage  String?
+  /// JSON-encoded array of extra image URLs shown as a slideshow on
+  /// the public detail page. e.g. `["https://…/a.jpg","https://…/b.jpg"]`.
+  /// Empty string / null means no slideshow.
+  gallery     String?
   category    NewsCategory
   status      ContentStatus @default(DRAFT)
   /// Which sub-site this article belongs to. UNIVERSITY = main site, HIGH_SCHOOL = /high-school sub-site.

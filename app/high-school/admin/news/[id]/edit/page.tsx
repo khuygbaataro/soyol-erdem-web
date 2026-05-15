@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { NewsForm } from '@/components/admin/NewsForm';
 import { prisma } from '@/lib/prisma';
+import { parseGallery } from '@/lib/news-gallery';
 
 interface PageProps {
   params: { id: string };
@@ -44,6 +45,7 @@ export default async function EditHighSchoolAdminNewsPage({ params }: PageProps)
           excerpt: news.excerpt,
           body: news.body,
           coverImage: news.coverImage,
+          gallery: parseGallery(news.gallery),
           category: news.category,
           status: news.status,
           site: news.site,

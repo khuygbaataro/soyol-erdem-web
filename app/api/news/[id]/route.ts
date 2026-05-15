@@ -26,6 +26,10 @@ export async function PUT(req: Request, { params }: Ctx) {
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.flatten() }, { status: 400 });
   }
 
+  const gallery = (parsed.data.gallery ?? []).filter(
+    (u) => typeof u === 'string' && u.trim().length > 0,
+  );
+
   const news = await prisma.news.update({
     where: { id: params.id },
     data: {
@@ -34,6 +38,7 @@ export async function PUT(req: Request, { params }: Ctx) {
       excerpt: parsed.data.excerpt,
       body: parsed.data.body,
       coverImage: parsed.data.coverImage || null,
+      gallery: gallery.length > 0 ? JSON.stringify(gallery) : null,
       category: parsed.data.category,
       status: parsed.data.status,
       ...(parsed.data.site && { site: parsed.data.site }),

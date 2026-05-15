@@ -35,6 +35,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Энэ slug аль хэдийн байна' }, { status: 409 });
   }
 
+  const gallery = (parsed.data.gallery ?? []).filter(
+    (u) => typeof u === 'string' && u.trim().length > 0,
+  );
+
   const news = await prisma.news.create({
     data: {
       title: parsed.data.title,
@@ -42,6 +46,7 @@ export async function POST(req: Request) {
       excerpt: parsed.data.excerpt,
       body: parsed.data.body,
       coverImage: parsed.data.coverImage || null,
+      gallery: gallery.length > 0 ? JSON.stringify(gallery) : null,
       category: parsed.data.category,
       status: parsed.data.status,
       site: parsed.data.site ?? 'UNIVERSITY',

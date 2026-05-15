@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { MultiImageUpload } from '@/components/admin/MultiImageUpload';
 import { slugify } from '@/lib/admin-helpers';
 
 interface NewsFormProps {
@@ -19,6 +20,8 @@ interface NewsFormProps {
     excerpt?: string;
     body?: string;
     coverImage?: string | null;
+    /** Pre-parsed slideshow URLs. Server passes the decoded array. */
+    gallery?: string[];
     category?: string;
     status?: string;
     site?: 'UNIVERSITY' | 'HIGH_SCHOOL';
@@ -73,6 +76,7 @@ export function NewsForm({
   const [excerpt, setExcerpt] = useState(initial.excerpt ?? '');
   const [body, setBody] = useState(initial.body ?? '');
   const [coverImage, setCoverImage] = useState(initial.coverImage ?? '');
+  const [gallery, setGallery] = useState<string[]>(initial.gallery ?? []);
   const [category, setCategory] = useState(initial.category ?? 'NEWS');
   const [status, setStatus] = useState(initial.status ?? 'DRAFT');
   const [publishedAt, setPublishedAt] = useState(
@@ -95,6 +99,7 @@ export function NewsForm({
         excerpt,
         body,
         coverImage: coverImage || undefined,
+        gallery: gallery.filter((u) => u.trim().length > 0),
         category,
         status,
         site: resolvedSite,
@@ -168,6 +173,17 @@ export function NewsForm({
             <ImageUpload
               value={coverImage}
               onChange={setCoverImage}
+              folder="news"
+            />
+          </FormField>
+          <FormField
+            label="Нэмэлт зургийн slideshow"
+            className="mt-4"
+            hint="Олон зураг нэмбэл мэдээний дотор slideshow болгож харуулна. Сум товчоор дэс дарааллыг өөрчилнө."
+          >
+            <MultiImageUpload
+              value={gallery}
+              onChange={setGallery}
               folder="news"
             />
           </FormField>

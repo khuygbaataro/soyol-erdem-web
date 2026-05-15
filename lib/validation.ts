@@ -8,6 +8,8 @@ export const newsSchema = z.object({
   excerpt: z.string().min(10).max(500),
   body: z.string().min(20),
   coverImage: z.string().url().optional().or(z.literal('')),
+  /** Extra slideshow images shown on the article detail page. */
+  gallery: z.array(z.string().url()).max(20).optional(),
   category: z.enum(['NEWS', 'EVENT', 'ANNOUNCEMENT', 'RESEARCH', 'ACHIEVEMENT', 'PROGRAM']),
   status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
   /** Which sub-site the article belongs to. Defaults to UNIVERSITY. */

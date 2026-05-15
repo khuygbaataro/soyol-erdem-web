@@ -8,8 +8,10 @@ import { Container } from '@/components/layout/Container';
 import { NewsCard } from '@/components/ui/NewsCard';
 import { Badge } from '@/components/ui/Badge';
 import { CtaBanner } from '@/components/sections/CtaBanner';
+import { AnnualEventSlideshow } from '@/components/sections/AnnualEventSlideshow';
 import { prisma } from '@/lib/prisma';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
+import { parseGallery } from '@/lib/news-gallery';
 
 interface PageProps {
   params: { id: string };
@@ -53,6 +55,7 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
   });
 
   const date = (article.publishedAt ?? article.createdAt).toISOString().slice(0, 10);
+  const gallery = parseGallery(article.gallery);
 
   return (
     <>
@@ -94,6 +97,16 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
                 priority
                 sizes="(max-width: 1024px) 100vw, 1024px"
                 className="object-cover"
+              />
+            </div>
+          )}
+
+          {gallery.length > 0 && (
+            <div className="mt-6">
+              <AnnualEventSlideshow
+                images={gallery}
+                label={article.title}
+                aspectClassName="aspect-[16/9]"
               />
             </div>
           )}
