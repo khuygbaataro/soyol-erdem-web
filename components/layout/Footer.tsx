@@ -20,6 +20,15 @@ const SOCIAL = [
   { icon: Linkedin, href: '#', label: 'LinkedIn' },
 ];
 
+interface FooterProps {
+  /**
+   * Which sub-site's brand block to render. The high-school footer swaps
+   * the crest image + label to the dedicated ahlal-logo-new asset.
+   * Default: 'university'.
+   */
+  variant?: 'university' | 'high-school';
+}
+
 /**
  * Site footer. Three columns:
  *   • Brand block — logo, founding tagline, social.
@@ -27,8 +36,9 @@ const SOCIAL = [
  *     and admission entry, per Munkhchimeg's spec.
  *   • Холбоо барих — phone / email / address / hours.
  */
-export function Footer() {
+export function Footer({ variant = 'university' }: FooterProps = {}) {
   const year = new Date().getFullYear();
+  const isHighSchool = variant === 'high-school';
 
   return (
     <footer className="bg-navy-900 text-white">
@@ -36,11 +46,24 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-3">
           <div>
             <div className="mb-5">
-              <Logo withLabel size={56} invert variant="single" />
+              <Logo
+                withLabel
+                size={56}
+                invert
+                variant="single"
+                src={isHighSchool ? '/ahlal-logo-new.png' : '/logo.png'}
+                alt={
+                  isHighSchool
+                    ? 'Соёл Эрдэм Ахлах Сургуулийн лого'
+                    : 'Соёл Эрдэм Дээд Сургуулийн лого'
+                }
+                label="Соёл Эрдэм"
+              />
             </div>
             <p className="text-sm leading-relaxed text-cream/80">
-              {SITE.founded} онд байгуулагдсан, Япон улсын 100% хөрөнгө
-              оруулалттай дээд боловсролын сургалтын байгууллага.
+              {isHighSchool
+                ? 'Соёл Эрдэм Дээд Сургуулийн харьяа төрөлжсөн ерөнхий боловсролын ахлах сургууль. Япон хэл, соёл, IT-ийн чиглэлээр чанартай боловсрол олгоно.'
+                : `${SITE.founded} онд байгуулагдсан, Япон улсын 100% хөрөнгө оруулалттай дээд боловсролын сургалтын байгууллага.`}
             </p>
             <div className="mt-5 flex items-center gap-3">
               {SOCIAL.map(({ icon: Icon, href, label }) => (

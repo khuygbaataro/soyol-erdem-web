@@ -10,7 +10,7 @@ export default function HighSchoolLayout({
     <div className="flex min-h-screen flex-col">
       <HighSchoolHeader />
       <main className="flex-1">{children}</main>
-      <Footer />
+      <Footer variant="high-school" />
     </div>
   );
 }

@@ -20,6 +20,10 @@ interface LogoProps {
   label?: string;
   /** Sublabel for stacked variant. Defaults to "Дээд сургууль". */
   sublabel?: string;
+  /** Override the crest image. Default `/logo.png` (main university). */
+  src?: string;
+  /** alt-text override for the crest. */
+  alt?: string;
 }
 
 /**
@@ -35,12 +39,14 @@ export function Logo({
   variant = 'single',
   label = 'Соёл Эрдэм',
   sublabel = 'Дээд сургууль',
+  src = '/logo.png',
+  alt = 'Соёл Эрдэм Дээд Сургуулийн лого',
 }: LogoProps) {
   return (
     <span className={cn('inline-flex items-center gap-3', className)}>
       <Image
-        src="/logo.png"
-        alt="Соёл Эрдэм Дээд Сургуулийн лого"
+        src={src}
+        alt={alt}
         width={size}
         height={size}
         priority
