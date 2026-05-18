@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { TranslationFields } from '@/components/admin/TranslationFields';
 import { STAFF_POSITION_KEYS } from '@/lib/constants';
 
 interface StaffFormProps {
@@ -20,6 +21,12 @@ interface StaffFormProps {
     degree?: string | null;
     photo?: string | null;
     bio?: string | null;
+    positionEn?: string | null;
+    positionJa?: string | null;
+    degreeEn?: string | null;
+    degreeJa?: string | null;
+    bioEn?: string | null;
+    bioJa?: string | null;
     email?: string | null;
     phone?: string | null;
     active?: boolean;
@@ -38,6 +45,12 @@ export function StaffForm({ initial = {}, mode }: StaffFormProps) {
   const [degree, setDegree] = useState(initial.degree ?? '');
   const [photo, setPhoto] = useState(initial.photo ?? '');
   const [bio, setBio] = useState(initial.bio ?? '');
+  const [positionEn, setPositionEn] = useState(initial.positionEn ?? '');
+  const [positionJa, setPositionJa] = useState(initial.positionJa ?? '');
+  const [degreeEn, setDegreeEn] = useState(initial.degreeEn ?? '');
+  const [degreeJa, setDegreeJa] = useState(initial.degreeJa ?? '');
+  const [bioEn, setBioEn] = useState(initial.bioEn ?? '');
+  const [bioJa, setBioJa] = useState(initial.bioJa ?? '');
   const [email, setEmail] = useState(initial.email ?? '');
   const [phone, setPhone] = useState(initial.phone ?? '');
   const [active, setActive] = useState(initial.active ?? true);
@@ -67,6 +80,12 @@ export function StaffForm({ initial = {}, mode }: StaffFormProps) {
         degree: degree || undefined,
         photo: photo || undefined,
         bio: bio || undefined,
+        positionEn: positionEn || undefined,
+        positionJa: positionJa || undefined,
+        degreeEn: degreeEn || undefined,
+        degreeJa: degreeJa || undefined,
+        bioEn: bioEn || undefined,
+        bioJa: bioJa || undefined,
         email: email || undefined,
         phone: phone || undefined,
         active,
@@ -182,6 +201,14 @@ export function StaffForm({ initial = {}, mode }: StaffFormProps) {
             />
           </FormField>
         </div>
+
+        <TranslationFields
+          fields={[
+            { key: 'position', label: 'Албан тушаалын нэр', enValue: positionEn, jaValue: positionJa, setEn: setPositionEn, setJa: setPositionJa },
+            { key: 'degree', label: 'Зэрэг', enValue: degreeEn, jaValue: degreeJa, setEn: setDegreeEn, setJa: setDegreeJa },
+            { key: 'bio', label: 'Богино намтар', multiline: true, rows: 4, enValue: bioEn, jaValue: bioJa, setEn: setBioEn, setJa: setBioJa },
+          ]}
+        />
       </Card>
 
       <div className="space-y-6">

@@ -2,22 +2,27 @@ import { PageHero } from '@/components/sections/PageHero';
 import { CtaBanner } from '@/components/sections/CtaBanner';
 import { HighSchoolNewsListClient } from './NewsListClient';
 import { prisma } from '@/lib/prisma';
+import { getServerLocale } from '@/lib/i18n/server';
+import { localisedField } from '@/lib/i18n/db';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Ахлах сургууль · Мэдээ мэдээлэл' };
 
 export default async function HighSchoolNewsPage() {
-  const news = await prisma.news
-    .findMany({
-      where: { status: 'PUBLISHED', site: 'HIGH_SCHOOL' },
-      orderBy: { publishedAt: 'desc' },
-    })
-    .catch(() => []);
+  const [news, locale] = await Promise.all([
+    prisma.news
+      .findMany({
+        where: { status: 'PUBLISHED', site: 'HIGH_SCHOOL' },
+        orderBy: { publishedAt: 'desc' },
+      })
+      .catch(() => []),
+    getServerLocale(),
+  ]);
 
   const items = news.map((n) => ({
     id: n.slug,
-    title: n.title,
-    excerpt: n.excerpt,
+    title: localisedField(n, 'title', locale),
+    excerpt: localisedField(n, 'excerpt', locale),
     image:
       n.coverImage ??
       'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=60',

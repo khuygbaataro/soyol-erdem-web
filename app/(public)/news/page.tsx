@@ -2,24 +2,27 @@ import { PageHero } from '@/components/sections/PageHero';
 import { NewsListClient } from './NewsListClient';
 import { prisma } from '@/lib/prisma';
 import { getSiteContentMap } from '@/lib/site-content';
+import { getServerLocale } from '@/lib/i18n/server';
+import { localisedField } from '@/lib/i18n/db';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Мэдээ' };
 
 export default async function NewsPage() {
-  const [news, banners] = await Promise.all([
+  const [news, banners, locale] = await Promise.all([
     prisma.news.findMany({
       where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
       orderBy: { publishedAt: 'desc' },
     }),
     getSiteContentMap('banners'),
+    getServerLocale(),
   ]);
 
   const items = news.map((n) => ({
     id: n.slug,
-    title: n.title,
-    excerpt: n.excerpt,
-    body: n.body,
+    title: localisedField(n, 'title', locale),
+    excerpt: localisedField(n, 'excerpt', locale),
+    body: localisedField(n, 'body', locale),
     image:
       n.coverImage ??
       'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=60',

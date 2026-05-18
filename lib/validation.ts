@@ -10,6 +10,14 @@ export const newsSchema = z.object({
   coverImage: z.string().url().optional().or(z.literal('')),
   /** Extra slideshow images shown on the article detail page. */
   gallery: z.array(z.string().url()).max(20).optional(),
+  /** Optional EN / JA translations — all empty strings allowed so admin
+   *  can save partial translations without blocking publish. */
+  titleEn: z.string().max(200).optional().or(z.literal('')),
+  titleJa: z.string().max(200).optional().or(z.literal('')),
+  excerptEn: z.string().max(500).optional().or(z.literal('')),
+  excerptJa: z.string().max(500).optional().or(z.literal('')),
+  bodyEn: z.string().optional().or(z.literal('')),
+  bodyJa: z.string().optional().or(z.literal('')),
   category: z.enum(['NEWS', 'EVENT', 'ANNOUNCEMENT', 'RESEARCH', 'ACHIEVEMENT', 'PROGRAM']),
   status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
   /** Which sub-site the article belongs to. Defaults to UNIVERSITY. */
@@ -58,6 +66,17 @@ export const programSchema = z.object({
   skills: z.string().min(0), // newline-separated
   curriculum: z.string().optional().or(z.literal('')),
   careerOutlook: z.string().max(5000).optional().or(z.literal('')),
+  // EN / JA translations — all optional, fall back to MN when empty.
+  nameEn: z.string().max(200).optional().or(z.literal('')),
+  nameJa: z.string().max(200).optional().or(z.literal('')),
+  shortDescriptionEn: z.string().max(500).optional().or(z.literal('')),
+  shortDescriptionJa: z.string().max(500).optional().or(z.literal('')),
+  fullDescriptionEn: z.string().optional().or(z.literal('')),
+  fullDescriptionJa: z.string().optional().or(z.literal('')),
+  skillsEn: z.string().optional().or(z.literal('')),
+  skillsJa: z.string().optional().or(z.literal('')),
+  careerOutlookEn: z.string().max(5000).optional().or(z.literal('')),
+  careerOutlookJa: z.string().max(5000).optional().or(z.literal('')),
   language: z.string().min(2),
   admissionScore: z.coerce.number().int().min(0).max(900).optional(),
   active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
@@ -259,6 +278,13 @@ export const staffSchema = z.object({
   degree: z.string().max(200).optional().or(z.literal('')),
   photo: z.string().url().optional().or(z.literal('')),
   bio: z.string().max(2000).optional().or(z.literal('')),
+  // EN / JA translations
+  positionEn: z.string().max(200).optional().or(z.literal('')),
+  positionJa: z.string().max(200).optional().or(z.literal('')),
+  degreeEn: z.string().max(200).optional().or(z.literal('')),
+  degreeJa: z.string().max(200).optional().or(z.literal('')),
+  bioEn: z.string().max(2000).optional().or(z.literal('')),
+  bioJa: z.string().max(2000).optional().or(z.literal('')),
   email: z.string().email().optional().or(z.literal('')),
   phone: z.string().max(40).optional().or(z.literal('')),
   active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),

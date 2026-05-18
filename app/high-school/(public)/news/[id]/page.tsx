@@ -12,6 +12,8 @@ import { AnnualEventSlideshow } from '@/components/sections/AnnualEventSlideshow
 import { prisma } from '@/lib/prisma';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
 import { parseGallery } from '@/lib/news-gallery';
+import { getServerLocale } from '@/lib/i18n/server';
+import { localisedField } from '@/lib/i18n/db';
 
 interface PageProps {
   params: { id: string };
@@ -56,18 +58,33 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
 
   const date = (article.publishedAt ?? article.createdAt).toISOString().slice(0, 10);
   const gallery = parseGallery(article.gallery);
+  const locale = await getServerLocale();
+  const title = localisedField(article, 'title', locale);
+  const excerpt = localisedField(article, 'excerpt', locale);
+  const body = localisedField(article, 'body', locale);
+  const backLabel =
+    locale === 'EN'
+      ? '← Back to high-school news'
+      : locale === 'JP'
+        ? '← 高校ニュース一覧に戻る'
+        : '← Ахлах сургуулийн мэдээ рүү буцах';
+  const relatedHeading =
+    locale === 'EN'
+      ? 'Related news'
+      : locale === 'JP'
+        ? '関連ニュース'
+        : 'Холбоотой мэдээ';
 
   return (
     <>
       <PageHero
-        title={article.title}
+        title={title}
         breadcrumb={[
           { label: 'Их сургууль', href: '/' },
           { label: 'Ахлах сургууль', href: '/high-school' },
           { label: 'Мэдээ', href: '/high-school/news' },
           {
-            label:
-              article.title.slice(0, 40) + (article.title.length > 40 ? '…' : ''),
+            label: title.slice(0, 40) + (title.length > 40 ? '…' : ''),
           },
         ]}
       />
@@ -92,7 +109,7 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
             <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-image bg-cream-soft">
               <Image
                 src={article.coverImage}
-                alt={article.title}
+                alt={title}
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 1024px"
@@ -105,15 +122,15 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
             <div className="mt-6">
               <AnnualEventSlideshow
                 images={gallery}
-                label={article.title}
+                label={title}
                 aspectClassName="aspect-[16/9]"
               />
             </div>
           )}
 
           <article className="mt-10 space-y-5 text-base leading-relaxed text-text-body">
-            <p className="text-lg font-semibold text-navy-900">{article.excerpt}</p>
-            {article.body.split('\n\n').map((p, idx) => (
+            <p className="text-lg font-semibold text-navy-900">{excerpt}</p>
+            {body.split('\n\n').map((p, idx) => (
               <p key={idx}>{p}</p>
             ))}
           </article>
@@ -123,7 +140,7 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
               href="/high-school/news"
               className="font-semibold text-navy-900 hover:text-gold-500"
             >
-              ← Ахлах сургуулийн мэдээ рүү буцах
+              {backLabel}
             </Link>
           </div>
         </Container>
@@ -131,7 +148,7 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
 
       {related.length > 0 && (
         <Section background="cream-soft">
-          <h2 className="mb-8 text-h3 font-bold text-navy-900">Холбоотой мэдээ</h2>
+          <h2 className="mb-8 text-h3 font-bold text-navy-900">{relatedHeading}</h2>
           <div className="grid gap-6 md:grid-cols-3">
             {related.map((r) => (
               <NewsCard
@@ -142,9 +159,9 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
                 }
                 date={(r.publishedAt ?? r.createdAt).toISOString().slice(0, 10)}
                 category={NEWS_CATEGORY_LABEL[r.category] ?? r.category}
-                title={r.title}
-                excerpt={r.excerpt}
-                body={r.body}
+                title={localisedField(r, 'title', locale)}
+                excerpt={localisedField(r, 'excerpt', locale)}
+                body={localisedField(r, 'body', locale)}
                 href={`/high-school/news/${r.slug}`}
               />
             ))}

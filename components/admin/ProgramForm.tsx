@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
+import { TranslationFields } from '@/components/admin/TranslationFields';
 import { slugify } from '@/lib/admin-helpers';
 
 interface Props {
@@ -34,6 +35,16 @@ export function ProgramForm({ initial = {}, mode }: Props) {
   const [skills, setSkills] = useState(initial.skills ?? '');
   const [curriculum, setCurriculum] = useState(initial.curriculum ?? '');
   const [careerOutlook, setCareerOutlook] = useState(initial.careerOutlook ?? '');
+  const [nameEn, setNameEn] = useState(initial.nameEn ?? '');
+  const [nameJa, setNameJa] = useState(initial.nameJa ?? '');
+  const [shortDescriptionEn, setShortDescriptionEn] = useState(initial.shortDescriptionEn ?? '');
+  const [shortDescriptionJa, setShortDescriptionJa] = useState(initial.shortDescriptionJa ?? '');
+  const [fullDescriptionEn, setFullDescriptionEn] = useState(initial.fullDescriptionEn ?? '');
+  const [fullDescriptionJa, setFullDescriptionJa] = useState(initial.fullDescriptionJa ?? '');
+  const [skillsEn, setSkillsEn] = useState(initial.skillsEn ?? '');
+  const [skillsJa, setSkillsJa] = useState(initial.skillsJa ?? '');
+  const [careerOutlookEn, setCareerOutlookEn] = useState(initial.careerOutlookEn ?? '');
+  const [careerOutlookJa, setCareerOutlookJa] = useState(initial.careerOutlookJa ?? '');
   const [language, setLanguage] = useState(initial.language ?? 'Япон, Монгол');
   const [admissionScore, setAdmissionScore] = useState<string>(initial.admissionScore?.toString() ?? '');
   const [active, setActive] = useState(initial.active ?? true);
@@ -52,6 +63,16 @@ export function ProgramForm({ initial = {}, mode }: Props) {
         name, slug, code: code || undefined, degree, duration,
         shortDescription, fullDescription, skills, curriculum: curriculum || undefined,
         careerOutlook: careerOutlook || undefined,
+        nameEn: nameEn || undefined,
+        nameJa: nameJa || undefined,
+        shortDescriptionEn: shortDescriptionEn || undefined,
+        shortDescriptionJa: shortDescriptionJa || undefined,
+        fullDescriptionEn: fullDescriptionEn || undefined,
+        fullDescriptionJa: fullDescriptionJa || undefined,
+        skillsEn: skillsEn || undefined,
+        skillsJa: skillsJa || undefined,
+        careerOutlookEn: careerOutlookEn || undefined,
+        careerOutlookJa: careerOutlookJa || undefined,
         language, admissionScore: admissionScore ? Number(admissionScore) : undefined,
         active, icon, order: Number(order),
       };
@@ -136,6 +157,16 @@ export function ProgramForm({ initial = {}, mode }: Props) {
             placeholder="Манай төгсөгчид Япон болон Монголын IT, бизнес, орчуулга..."
           />
         </FormField>
+
+        <TranslationFields
+          fields={[
+            { key: 'name', label: 'Нэр', enValue: nameEn, jaValue: nameJa, setEn: setNameEn, setJa: setNameJa },
+            { key: 'shortDescription', label: 'Товч тайлбар', multiline: true, rows: 3, enValue: shortDescriptionEn, jaValue: shortDescriptionJa, setEn: setShortDescriptionEn, setJa: setShortDescriptionJa },
+            { key: 'fullDescription', label: 'Хөтөлбөрийн зорилго', multiline: true, rows: 6, enValue: fullDescriptionEn, jaValue: fullDescriptionJa, setEn: setFullDescriptionEn, setJa: setFullDescriptionJa },
+            { key: 'skills', label: 'Олгох чадвар', multiline: true, rows: 5, enValue: skillsEn, jaValue: skillsJa, setEn: setSkillsEn, setJa: setSkillsJa },
+            { key: 'careerOutlook', label: 'Ажлын боломж', multiline: true, rows: 5, enValue: careerOutlookEn, jaValue: careerOutlookJa, setEn: setCareerOutlookEn, setJa: setCareerOutlookJa },
+          ]}
+        />
       </Card>
 
       <div className="space-y-6">

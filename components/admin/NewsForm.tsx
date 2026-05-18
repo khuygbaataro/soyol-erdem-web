@@ -10,6 +10,7 @@ import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
 import { ImageUpload } from '@/components/admin/ImageUpload';
 import { MultiImageUpload } from '@/components/admin/MultiImageUpload';
+import { TranslationFields } from '@/components/admin/TranslationFields';
 import { slugify } from '@/lib/admin-helpers';
 
 interface NewsFormProps {
@@ -22,6 +23,12 @@ interface NewsFormProps {
     coverImage?: string | null;
     /** Pre-parsed slideshow URLs. Server passes the decoded array. */
     gallery?: string[];
+    titleEn?: string | null;
+    titleJa?: string | null;
+    excerptEn?: string | null;
+    excerptJa?: string | null;
+    bodyEn?: string | null;
+    bodyJa?: string | null;
     category?: string;
     status?: string;
     site?: 'UNIVERSITY' | 'HIGH_SCHOOL';
@@ -77,6 +84,12 @@ export function NewsForm({
   const [body, setBody] = useState(initial.body ?? '');
   const [coverImage, setCoverImage] = useState(initial.coverImage ?? '');
   const [gallery, setGallery] = useState<string[]>(initial.gallery ?? []);
+  const [titleEn, setTitleEn] = useState(initial.titleEn ?? '');
+  const [titleJa, setTitleJa] = useState(initial.titleJa ?? '');
+  const [excerptEn, setExcerptEn] = useState(initial.excerptEn ?? '');
+  const [excerptJa, setExcerptJa] = useState(initial.excerptJa ?? '');
+  const [bodyEn, setBodyEn] = useState(initial.bodyEn ?? '');
+  const [bodyJa, setBodyJa] = useState(initial.bodyJa ?? '');
   const [category, setCategory] = useState(initial.category ?? 'NEWS');
   const [status, setStatus] = useState(initial.status ?? 'DRAFT');
   const [publishedAt, setPublishedAt] = useState(
@@ -100,6 +113,12 @@ export function NewsForm({
         body,
         coverImage: coverImage || undefined,
         gallery: gallery.filter((u) => u.trim().length > 0),
+        titleEn: titleEn || undefined,
+        titleJa: titleJa || undefined,
+        excerptEn: excerptEn || undefined,
+        excerptJa: excerptJa || undefined,
+        bodyEn: bodyEn || undefined,
+        bodyJa: bodyJa || undefined,
         category,
         status,
         site: resolvedSite,
@@ -188,6 +207,39 @@ export function NewsForm({
             />
           </FormField>
         </Card>
+
+        <TranslationFields
+          fields={[
+            {
+              key: 'title',
+              label: 'Гарчиг',
+              enValue: titleEn,
+              jaValue: titleJa,
+              setEn: setTitleEn,
+              setJa: setTitleJa,
+            },
+            {
+              key: 'excerpt',
+              label: 'Товч агуулга',
+              multiline: true,
+              rows: 3,
+              enValue: excerptEn,
+              jaValue: excerptJa,
+              setEn: setExcerptEn,
+              setJa: setExcerptJa,
+            },
+            {
+              key: 'body',
+              label: 'Бүтэн агуулга',
+              multiline: true,
+              rows: 12,
+              enValue: bodyEn,
+              jaValue: bodyJa,
+              setEn: setBodyEn,
+              setJa: setBodyJa,
+            },
+          ]}
+        />
       </div>
 
       {/* Sidebar */}

@@ -40,6 +40,15 @@ model News {
   /// the public detail page. e.g. `["https://…/a.jpg","https://…/b.jpg"]`.
   /// Empty string / null means no slideshow.
   gallery     String?
+  /// Optional English / Japanese translations. When empty the public
+  /// page falls back to the canonical Mongolian fields above so a
+  /// half-translated article still reads cleanly.
+  titleEn     String?
+  titleJa     String?
+  excerptEn   String?
+  excerptJa   String?
+  bodyEn      String?
+  bodyJa      String?
   category    NewsCategory
   status      ContentStatus @default(DRAFT)
   /// Which sub-site this article belongs to. UNIVERSITY = main site, HIGH_SCHOOL = /high-school sub-site.
@@ -139,6 +148,19 @@ model Program {
   /// "Ажлын боломж" / careers — admin-editable narrative shown on the
   /// program detail page. Optional; defaults to a generic blurb when empty.
   careerOutlook    String?
+  /// Optional English / Japanese translations of the headline marketing
+  /// fields. Pages fall back to the Mongolian source when these are
+  /// empty so partial translations don't break the catalog.
+  nameEn               String?
+  nameJa               String?
+  shortDescriptionEn   String?
+  shortDescriptionJa   String?
+  fullDescriptionEn    String?
+  fullDescriptionJa    String?
+  skillsEn             String?
+  skillsJa             String?
+  careerOutlookEn      String?
+  careerOutlookJa      String?
   language         String
   admissionScore   Int?
   active           Boolean  @default(true)
@@ -231,6 +253,15 @@ model Staff {
   photo       String?
   /// Short bio rendered in the staff modal.
   bio         String?
+  /// Optional English / Japanese translations of the public-facing
+  /// fields. Names usually stay as-is across locales, but position,
+  /// degree, and bio benefit from translation.
+  positionEn  String?
+  positionJa  String?
+  degreeEn    String?
+  degreeJa    String?
+  bioEn       String?
+  bioJa       String?
   email       String?
   phone       String?
   /// When false the chart node is hidden / non-clickable.
