@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/Badge';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { QuickPortals } from '@/components/sections/QuickPortals';
 import { prisma } from '@/lib/prisma';
-import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
+import { localiseNewsCategory } from '@/lib/admin-helpers';
 import { content, getSiteContentMap } from '@/lib/site-content';
 import { getServerLocale } from '@/lib/i18n/server';
 import { HOME_CONTENT } from '@/lib/i18n/content';
@@ -200,7 +200,7 @@ export default async function HomePage() {
                 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=60'
               }
               date={(n.publishedAt ?? n.createdAt).toISOString().slice(0, 10)}
-              category={NEWS_CATEGORY_LABEL[n.category] ?? n.category}
+              category={localiseNewsCategory(n.category, locale)}
               title={n.title}
               excerpt={n.excerpt}
               body={n.body}

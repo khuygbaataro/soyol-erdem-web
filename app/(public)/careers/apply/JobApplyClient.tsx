@@ -5,9 +5,73 @@ import { Check, Send } from 'lucide-react';
 import { toast, Toaster } from 'sonner';
 import { Button } from '@/components/ui/Button';
 
+interface JobApplyLabels {
+  submitCta: string;
+  errorRequired: { name: string; email: string; phone: string; position: string };
+  errorSubmit: string;
+  errorNetwork: string;
+  successToast: string;
+  successTitle: string;
+  successBody: string;
+  successBackCta: string;
+  successHomeCta: string;
+  sections: {
+    general: string;
+    position: string;
+    education: string;
+    experience: string;
+    teaching: string;
+    skills: string;
+    extra: string;
+  };
+  fields: {
+    fullName: string;
+    fullNamePh: string;
+    birth: string;
+    phone: string;
+    phonePh: string;
+    email: string;
+    emailPh: string;
+    address: string;
+    addressPh: string;
+    eduSchool: string;
+    eduMajor: string;
+    eduDegree: string;
+    eduDegreePh: string;
+    eduYear: string;
+    eduYearPh: string;
+    expOrg: string;
+    expRole: string;
+    expDuration: string;
+    expDurationPh: string;
+    expDuties: string;
+    tchUniversity: string;
+    tchUniversityPh: string;
+    tchSubjects: string;
+    tchResearch: string;
+    tchPublications: string;
+    tchPublicationsPh: string;
+    skDigital: string;
+    skLanguages: string;
+    skLanguagesPh: string;
+    skTools: string;
+    skToolsPh: string;
+    motReason: string;
+    motStrengths: string;
+    motAvailable: string;
+    motAvailablePh: string;
+    cvUrl: string;
+    cvUrlHint: string;
+    diplomaUrl: string;
+    diplomaUrlHint: string;
+  };
+  required: string;
+}
+
 interface Props {
   positions: string[];
   initialPosition: string;
+  labels: JobApplyLabels;
 }
 
 interface Education {
@@ -40,23 +104,16 @@ interface Motivation {
 }
 
 interface FormState {
-  // Section 1
   fullName: string;
   birthDate: string;
   phone: string;
   email: string;
   address: string;
-  // Section 2
   position: string;
-  // Section 3
   education: Education;
-  // Section 4
   experience: Experience;
-  // Section 5
   teaching: Teaching;
-  // Section 6
   skills: Skills;
-  // Section 7
   motivation: Motivation;
   cvUrl: string;
   diplomaUrl: string;
@@ -66,7 +123,7 @@ const inputClasses =
   'w-full rounded-button border border-border-light bg-white px-4 py-2.5 text-sm text-text-heading placeholder-text-muted transition-colors focus:border-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-900/10';
 const textareaClasses = `${inputClasses} min-h-[80px] py-2.5 leading-relaxed`;
 
-export function JobApplyClient({ positions, initialPosition }: Props) {
+export function JobApplyClient({ positions, initialPosition, labels }: Props) {
   const [pending, startTransition] = useTransition();
   const [submitted, setSubmitted] = useState(false);
   const [data, setData] = useState<FormState>({
@@ -110,19 +167,19 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!data.fullName.trim()) {
-      toast.error('Овог, нэр оруулна уу.');
+      toast.error(labels.errorRequired.name);
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) {
-      toast.error('И-мэйл хаяг хүчин төгөлдөр биш.');
+      toast.error(labels.errorRequired.email);
       return;
     }
     if (data.phone.trim().length < 6) {
-      toast.error('Утасны дугаар хүчин төгөлдөр биш.');
+      toast.error(labels.errorRequired.phone);
       return;
     }
     if (!data.position) {
-      toast.error('Ажлын байраа сонгоно уу.');
+      toast.error(labels.errorRequired.position);
       return;
     }
 
@@ -152,13 +209,13 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
         });
         if (!res.ok) {
           const j = await res.json().catch(() => null);
-          toast.error(j?.error ?? 'Илгээхэд алдаа гарлаа.');
+          toast.error(j?.error ?? labels.errorSubmit);
           return;
         }
         setSubmitted(true);
-        toast.success('Анкет амжилттай илгээгдлээ!');
+        toast.success(labels.successToast);
       } catch {
-        toast.error('Сүлжээний алдаа. Дахин оролдоно уу.');
+        toast.error(labels.errorNetwork);
       }
     });
   }
@@ -171,18 +228,15 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
           <Check className="h-7 w-7" />
         </span>
         <h2 className="mt-5 text-h3 font-bold text-navy-900">
-          Анкет амжилттай илгээгдлээ
+          {labels.successTitle}
         </h2>
-        <p className="mt-3 text-sm text-text-body">
-          Манай хүний нөөцийн алба тантай удахгүй холбогдоно. И-мэйл хаягтайгаа
-          танилцаж, спам хавтсыг шалгахаа бүү мартаарай.
-        </p>
+        <p className="mt-3 text-sm text-text-body">{labels.successBody}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Button href="/careers" variant="outline" size="md">
-            Нээлттэй ажлын байр руу буцах
+            {labels.successBackCta}
           </Button>
           <Button href="/" variant="primary" size="md">
-            Нүүр хуудас
+            {labels.successHomeCta}
           </Button>
         </div>
       </div>
@@ -190,24 +244,20 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
   }
 
   return (
-    <form
-      onSubmit={submit}
-      className="space-y-6"
-      noValidate
-    >
+    <form onSubmit={submit} className="space-y-6" noValidate>
       <Toaster richColors position="top-right" />
 
-      <Section number="1" title="Ерөнхий мэдээлэл">
+      <Section number="1" title={labels.sections.general}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Овог, нэр" required>
+          <Field label={labels.fields.fullName} required requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.fullName}
               onChange={(e) => set('fullName', e.target.value)}
-              placeholder="Жишээ: Доржийн Тэмүүлэн"
+              placeholder={labels.fields.fullNamePh}
             />
           </Field>
-          <Field label="Төрсөн он, сар, өдөр">
+          <Field label={labels.fields.birth} requiredMark={labels.required}>
             <input
               className={inputClasses}
               type="date"
@@ -215,36 +265,36 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
               onChange={(e) => set('birthDate', e.target.value)}
             />
           </Field>
-          <Field label="Холбоо барих утас" required>
+          <Field label={labels.fields.phone} required requiredMark={labels.required}>
             <input
               className={inputClasses}
               type="tel"
               value={data.phone}
               onChange={(e) => set('phone', e.target.value)}
-              placeholder="9911-2233"
+              placeholder={labels.fields.phonePh}
             />
           </Field>
-          <Field label="И-мэйл хаяг" required>
+          <Field label={labels.fields.email} required requiredMark={labels.required}>
             <input
               className={inputClasses}
               type="email"
               value={data.email}
               onChange={(e) => set('email', e.target.value)}
-              placeholder="example@gmail.com"
+              placeholder={labels.fields.emailPh}
             />
           </Field>
-          <Field label="Оршин суугаа хаяг" className="sm:col-span-2">
+          <Field label={labels.fields.address} requiredMark={labels.required} className="sm:col-span-2">
             <input
               className={inputClasses}
               value={data.address}
               onChange={(e) => set('address', e.target.value)}
-              placeholder="Жишээ: Сүхбаатар дүүрэг, 1-р хороо…"
+              placeholder={labels.fields.addressPh}
             />
           </Field>
         </div>
       </Section>
 
-      <Section number="2" title="Аль ажлын байранд хүсэлт гаргаж байна вэ?">
+      <Section number="2" title={labels.sections.position}>
         <div className="grid gap-3 sm:grid-cols-2">
           {positions.map((p) => {
             const active = p === data.position;
@@ -279,66 +329,66 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
         </div>
       </Section>
 
-      <Section number="3" title="Боловсролын мэдээлэл">
+      <Section number="3" title={labels.sections.education}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Төгссөн сургууль">
+          <Field label={labels.fields.eduSchool} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.education.school}
               onChange={(e) => setNested('education', 'school', e.target.value)}
             />
           </Field>
-          <Field label="Мэргэжил">
+          <Field label={labels.fields.eduMajor} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.education.major}
               onChange={(e) => setNested('education', 'major', e.target.value)}
             />
           </Field>
-          <Field label="Боловсролын зэрэг">
+          <Field label={labels.fields.eduDegree} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.education.degree}
               onChange={(e) => setNested('education', 'degree', e.target.value)}
-              placeholder="Бакалавр / Магистр / Доктор"
+              placeholder={labels.fields.eduDegreePh}
             />
           </Field>
-          <Field label="Төгссөн он">
+          <Field label={labels.fields.eduYear} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.education.year}
               onChange={(e) => setNested('education', 'year', e.target.value)}
-              placeholder="2020"
+              placeholder={labels.fields.eduYearPh}
             />
           </Field>
         </div>
       </Section>
 
-      <Section number="4" title="Ажлын туршлага">
+      <Section number="4" title={labels.sections.experience}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Өмнө ажиллаж байсан байгууллага">
+          <Field label={labels.fields.expOrg} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.experience.org}
               onChange={(e) => setNested('experience', 'org', e.target.value)}
             />
           </Field>
-          <Field label="Албан тушаал">
+          <Field label={labels.fields.expRole} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.experience.role}
               onChange={(e) => setNested('experience', 'role', e.target.value)}
             />
           </Field>
-          <Field label="Ажилласан хугацаа">
+          <Field label={labels.fields.expDuration} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.experience.duration}
               onChange={(e) => setNested('experience', 'duration', e.target.value)}
-              placeholder="2018–2024"
+              placeholder={labels.fields.expDurationPh}
             />
           </Field>
-          <Field label="Гол үүрэг, хариуцлага" className="sm:col-span-2">
+          <Field label={labels.fields.expDuties} requiredMark={labels.required} className="sm:col-span-2">
             <textarea
               className={textareaClasses}
               rows={3}
@@ -349,73 +399,73 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
         </div>
       </Section>
 
-      <Section number="5" title="Багшлах туршлага">
+      <Section number="5" title={labels.sections.teaching}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Их, дээд сургуульд багшилж байсан эсэх">
+          <Field label={labels.fields.tchUniversity} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.teaching.university}
               onChange={(e) => setNested('teaching', 'university', e.target.value)}
-              placeholder="Тийм / Үгүй (хаана?)"
+              placeholder={labels.fields.tchUniversityPh}
             />
           </Field>
-          <Field label="Зааж байсан хичээлүүд">
+          <Field label={labels.fields.tchSubjects} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.teaching.subjects}
               onChange={(e) => setNested('teaching', 'subjects', e.target.value)}
             />
           </Field>
-          <Field label="Судалгааны чиглэл" className="sm:col-span-2">
+          <Field label={labels.fields.tchResearch} requiredMark={labels.required} className="sm:col-span-2">
             <input
               className={inputClasses}
               value={data.teaching.research}
               onChange={(e) => setNested('teaching', 'research', e.target.value)}
             />
           </Field>
-          <Field label="Хэвлүүлсэн бүтээл, илтгэл" className="sm:col-span-2">
+          <Field label={labels.fields.tchPublications} requiredMark={labels.required} className="sm:col-span-2">
             <textarea
               className={textareaClasses}
               rows={3}
               value={data.teaching.publications}
               onChange={(e) => setNested('teaching', 'publications', e.target.value)}
-              placeholder="Гарсан бүтээл, эрдэм шинжилгээний илтгэл г.м."
+              placeholder={labels.fields.tchPublicationsPh}
             />
           </Field>
         </div>
       </Section>
 
-      <Section number="6" title="Ур чадвар">
+      <Section number="6" title={labels.sections.skills}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Компьютер, дижитал сургалтын хэрэгсэл" className="sm:col-span-2">
+          <Field label={labels.fields.skDigital} requiredMark={labels.required} className="sm:col-span-2">
             <input
               className={inputClasses}
               value={data.skills.digital}
               onChange={(e) => setNested('skills', 'digital', e.target.value)}
             />
           </Field>
-          <Field label="Гадаад хэлний мэдлэг">
+          <Field label={labels.fields.skLanguages} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.skills.languages}
               onChange={(e) => setNested('skills', 'languages', e.target.value)}
-              placeholder="Япон N2, Англи C1…"
+              placeholder={labels.fields.skLanguagesPh}
             />
           </Field>
-          <Field label="Ашигладаг хэрэгслүүд">
+          <Field label={labels.fields.skTools} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.skills.tools}
               onChange={(e) => setNested('skills', 'tools', e.target.value)}
-              placeholder="Moodle, Google Classroom, PowerPoint, Canva…"
+              placeholder={labels.fields.skToolsPh}
             />
           </Field>
         </div>
       </Section>
 
-      <Section number="7" title="Нэмэлт мэдээлэл">
+      <Section number="7" title={labels.sections.extra}>
         <div className="grid gap-4">
-          <Field label="Манай сургуульд ажиллах хүсэлтэй шалтгаан">
+          <Field label={labels.fields.motReason} requiredMark={labels.required}>
             <textarea
               className={textareaClasses}
               rows={3}
@@ -423,7 +473,7 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
               onChange={(e) => setNested('motivation', 'reason', e.target.value)}
             />
           </Field>
-          <Field label="Өөрийн давуу тал">
+          <Field label={labels.fields.motStrengths} requiredMark={labels.required}>
             <textarea
               className={textareaClasses}
               rows={3}
@@ -431,18 +481,19 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
               onChange={(e) => setNested('motivation', 'strengths', e.target.value)}
             />
           </Field>
-          <Field label="Ажилд орох боломжтой хугацаа">
+          <Field label={labels.fields.motAvailable} requiredMark={labels.required}>
             <input
               className={inputClasses}
               value={data.motivation.availableFrom}
               onChange={(e) => setNested('motivation', 'availableFrom', e.target.value)}
-              placeholder="Шууд / 2 долоо хоногийн дараа…"
+              placeholder={labels.fields.motAvailablePh}
             />
           </Field>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field
-              label="CV-ийн URL (Google Drive, Dropbox…)"
-              hint="CV-г онлайн хаягт байршуулаад линкийг энд оруулна уу."
+              label={labels.fields.cvUrl}
+              hint={labels.fields.cvUrlHint}
+              requiredMark={labels.required}
             >
               <input
                 className={inputClasses}
@@ -453,8 +504,9 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
               />
             </Field>
             <Field
-              label="Дипломын хуулбарын URL"
-              hint="Скан хуулбарыг онлайн хаягт байршуулаад линкийг оруулна."
+              label={labels.fields.diplomaUrl}
+              hint={labels.fields.diplomaUrlHint}
+              requiredMark={labels.required}
             >
               <input
                 className={inputClasses}
@@ -477,7 +529,7 @@ export function JobApplyClient({ positions, initialPosition }: Props) {
           icon={<Send className="h-4 w-4" />}
           iconPosition="left"
         >
-          Анкет илгээх
+          {labels.submitCta}
         </Button>
       </div>
     </form>
@@ -501,9 +553,7 @@ function Section({
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-900 text-sm font-bold text-gold-400">
           {number}
         </span>
-        <span className="font-serif text-lg font-bold text-navy-900">
-          {title}
-        </span>
+        <span className="font-serif text-lg font-bold text-navy-900">{title}</span>
       </legend>
       {children}
     </fieldset>
@@ -514,19 +564,21 @@ function Field({
   label,
   hint,
   required,
+  requiredMark = '*',
   className,
   children,
 }: {
   label: string;
   hint?: string;
   required?: boolean;
+  requiredMark?: string;
   className?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className={className}>
       <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-text-muted">
-        {label} {required && <span className="text-red-500">*</span>}
+        {label} {required && <span className="text-red-500">{requiredMark}</span>}
       </label>
       {children}
       {hint && <p className="mt-1 text-[11px] text-text-muted">{hint}</p>}

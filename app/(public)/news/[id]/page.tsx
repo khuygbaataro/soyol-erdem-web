@@ -8,7 +8,7 @@ import { NewsCard } from '@/components/ui/NewsCard';
 import { Badge } from '@/components/ui/Badge';
 import { AnnualEventSlideshow } from '@/components/sections/AnnualEventSlideshow';
 import { prisma } from '@/lib/prisma';
-import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
+import { localiseNewsCategory } from '@/lib/admin-helpers';
 import { parseGallery } from '@/lib/news-gallery';
 import { getServerLocale } from '@/lib/i18n/server';
 import { localisedField } from '@/lib/i18n/db';
@@ -85,7 +85,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
               {date}
             </span>
             <Badge variant="gold">
-              {NEWS_CATEGORY_LABEL[article.category] ?? article.category}
+              {localiseNewsCategory(article.category, locale)}
             </Badge>
             <span className="inline-flex items-center gap-1.5">
               <User className="h-4 w-4" />
@@ -143,7 +143,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
                   'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=60'
                 }
                 date={(r.publishedAt ?? r.createdAt).toISOString().slice(0, 10)}
-                category={NEWS_CATEGORY_LABEL[r.category] ?? r.category}
+                category={localiseNewsCategory(r.category, locale)}
                 title={localisedField(r, 'title', locale)}
                 excerpt={localisedField(r, 'excerpt', locale)}
                 body={localisedField(r, 'body', locale)}

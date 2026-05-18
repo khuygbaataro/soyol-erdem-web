@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/Badge';
 import { ResearchJournalsList } from '@/components/sections/ResearchJournalsList';
 import { getSiteContentMap } from '@/lib/site-content';
 import { prisma } from '@/lib/prisma';
-import { RESEARCH_TYPE_LABEL } from '@/lib/admin-helpers';
+import { localiseResearchType } from '@/lib/admin-helpers';
 import { RESEARCH_AREAS, RESEARCH_DEPARTMENTS } from '@/lib/content';
 import { RESEARCH_JOURNALS } from '@/lib/research-journals';
 import { getServerLocale } from '@/lib/i18n/server';
@@ -211,7 +211,7 @@ export default async function ResearchPage() {
               <Card key={r.id} className="flex h-full flex-col">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="navy">
-                    {RESEARCH_TYPE_LABEL[r.type] ?? r.type}
+                    {localiseResearchType(r.type, locale)}
                   </Badge>
                   <span className="text-xs font-semibold uppercase tracking-widest text-gold-500">
                     {r.area}

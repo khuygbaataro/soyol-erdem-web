@@ -4277,6 +4277,312 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
   },
 };
 
+/* ───────────────────── Careers / apply form ──────────────────────── */
+
+interface CareersApplyBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbCareers: string;
+  breadcrumbThis: string;
+  /** Bottom-of-form submit button. */
+  submitCta: string;
+  /** Sentinel position appended to the choices list so applicants
+   *  without a matching listing aren't dead-ended. */
+  otherPosition: string;
+  /** Toast strings — kept short so they fit the toast width. */
+  errorRequired: { name: string; email: string; phone: string; position: string };
+  errorSubmit: string;
+  errorNetwork: string;
+  successToast: string;
+  successTitle: string;
+  successBody: string;
+  successBackCta: string;
+  successHomeCta: string;
+  /** Section headings (numbered 1–7). */
+  sections: {
+    general: string;
+    position: string;
+    education: string;
+    experience: string;
+    teaching: string;
+    skills: string;
+    extra: string;
+  };
+  /** Field labels + placeholders + hints. Grouped by section so the
+   *  client component can shallow-destructure. */
+  fields: {
+    fullName: string;
+    fullNamePh: string;
+    birth: string;
+    phone: string;
+    phonePh: string;
+    email: string;
+    emailPh: string;
+    address: string;
+    addressPh: string;
+    eduSchool: string;
+    eduMajor: string;
+    eduDegree: string;
+    eduDegreePh: string;
+    eduYear: string;
+    eduYearPh: string;
+    expOrg: string;
+    expRole: string;
+    expDuration: string;
+    expDurationPh: string;
+    expDuties: string;
+    tchUniversity: string;
+    tchUniversityPh: string;
+    tchSubjects: string;
+    tchResearch: string;
+    tchPublications: string;
+    tchPublicationsPh: string;
+    skDigital: string;
+    skLanguages: string;
+    skLanguagesPh: string;
+    skTools: string;
+    skToolsPh: string;
+    motReason: string;
+    motStrengths: string;
+    motAvailable: string;
+    motAvailablePh: string;
+    cvUrl: string;
+    cvUrlHint: string;
+    diplomaUrl: string;
+    diplomaUrlHint: string;
+  };
+  required: string;
+}
+
+export const CAREERS_APPLY_CONTENT: Record<Language, CareersApplyBundle> = {
+  MN: {
+    heroTitle: 'АЖЛЫН АНКЕТ',
+    heroSubtitle:
+      '7 хэсэгтэй анкетыг бөглөн илгээснээр манай хүний нөөцийн алба тантай холбогдоно.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbCareers: 'Нээлттэй ажлын байр',
+    breadcrumbThis: 'Анкет',
+    submitCta: 'Анкет илгээх',
+    otherPosition: 'Бусад',
+    errorRequired: {
+      name: 'Овог, нэр оруулна уу.',
+      email: 'И-мэйл хаяг хүчин төгөлдөр биш.',
+      phone: 'Утасны дугаар хүчин төгөлдөр биш.',
+      position: 'Ажлын байраа сонгоно уу.',
+    },
+    errorSubmit: 'Илгээхэд алдаа гарлаа.',
+    errorNetwork: 'Сүлжээний алдаа. Дахин оролдоно уу.',
+    successToast: 'Анкет амжилттай илгээгдлээ!',
+    successTitle: 'Анкет амжилттай илгээгдлээ',
+    successBody:
+      'Манай хүний нөөцийн алба тантай удахгүй холбогдоно. И-мэйл хаягтайгаа танилцаж, спам хавтсыг шалгахаа бүү мартаарай.',
+    successBackCta: 'Нээлттэй ажлын байр руу буцах',
+    successHomeCta: 'Нүүр хуудас',
+    sections: {
+      general: 'Ерөнхий мэдээлэл',
+      position: 'Аль ажлын байранд хүсэлт гаргаж байна вэ?',
+      education: 'Боловсролын мэдээлэл',
+      experience: 'Ажлын туршлага',
+      teaching: 'Багшлах туршлага',
+      skills: 'Ур чадвар',
+      extra: 'Нэмэлт мэдээлэл',
+    },
+    fields: {
+      fullName: 'Овог, нэр',
+      fullNamePh: 'Жишээ: Доржийн Тэмүүлэн',
+      birth: 'Төрсөн он, сар, өдөр',
+      phone: 'Холбоо барих утас',
+      phonePh: '9911-2233',
+      email: 'И-мэйл хаяг',
+      emailPh: 'example@gmail.com',
+      address: 'Оршин суугаа хаяг',
+      addressPh: 'Жишээ: Сүхбаатар дүүрэг, 1-р хороо…',
+      eduSchool: 'Төгссөн сургууль',
+      eduMajor: 'Мэргэжил',
+      eduDegree: 'Боловсролын зэрэг',
+      eduDegreePh: 'Бакалавр / Магистр / Доктор',
+      eduYear: 'Төгссөн он',
+      eduYearPh: '2020',
+      expOrg: 'Өмнө ажиллаж байсан байгууллага',
+      expRole: 'Албан тушаал',
+      expDuration: 'Ажилласан хугацаа',
+      expDurationPh: '2018–2024',
+      expDuties: 'Гол үүрэг, хариуцлага',
+      tchUniversity: 'Их, дээд сургуульд багшилж байсан эсэх',
+      tchUniversityPh: 'Тийм / Үгүй (хаана?)',
+      tchSubjects: 'Зааж байсан хичээлүүд',
+      tchResearch: 'Судалгааны чиглэл',
+      tchPublications: 'Хэвлүүлсэн бүтээл, илтгэл',
+      tchPublicationsPh: 'Гарсан бүтээл, эрдэм шинжилгээний илтгэл г.м.',
+      skDigital: 'Компьютер, дижитал сургалтын хэрэгсэл',
+      skLanguages: 'Гадаад хэлний мэдлэг',
+      skLanguagesPh: 'Япон N2, Англи C1…',
+      skTools: 'Ашигладаг хэрэгслүүд',
+      skToolsPh: 'Moodle, Google Classroom, PowerPoint, Canva…',
+      motReason: 'Манай сургуульд ажиллах хүсэлтэй шалтгаан',
+      motStrengths: 'Өөрийн давуу тал',
+      motAvailable: 'Ажилд орох боломжтой хугацаа',
+      motAvailablePh: 'Шууд / 2 долоо хоногийн дараа…',
+      cvUrl: 'CV-ийн URL (Google Drive, Dropbox…)',
+      cvUrlHint: 'CV-г онлайн хаягт байршуулаад линкийг энд оруулна уу.',
+      diplomaUrl: 'Дипломын хуулбарын URL',
+      diplomaUrlHint: 'Скан хуулбарыг онлайн хаягт байршуулаад линкийг оруулна.',
+    },
+    required: '*',
+  },
+  EN: {
+    heroTitle: 'JOB APPLICATION',
+    heroSubtitle:
+      'Submit our 7-section application form and our HR team will be in touch.',
+    breadcrumbHome: 'Home',
+    breadcrumbCareers: 'Careers',
+    breadcrumbThis: 'Application',
+    submitCta: 'Submit application',
+    otherPosition: 'Other',
+    errorRequired: {
+      name: 'Please enter your name.',
+      email: 'Please enter a valid email address.',
+      phone: 'Please enter a valid phone number.',
+      position: 'Please choose a position.',
+    },
+    errorSubmit: 'Something went wrong.',
+    errorNetwork: 'Network error. Please try again.',
+    successToast: 'Application submitted!',
+    successTitle: 'Application submitted',
+    successBody:
+      "Our HR team will be in touch shortly. Please keep an eye on your inbox, and don't forget to check your spam folder.",
+    successBackCta: 'Back to careers',
+    successHomeCta: 'Home',
+    sections: {
+      general: 'General information',
+      position: 'Which position are you applying for?',
+      education: 'Education',
+      experience: 'Work experience',
+      teaching: 'Teaching experience',
+      skills: 'Skills',
+      extra: 'Additional information',
+    },
+    fields: {
+      fullName: 'Full name',
+      fullNamePh: 'e.g. John Doe',
+      birth: 'Date of birth',
+      phone: 'Phone',
+      phonePh: '+976 9911 2233',
+      email: 'Email',
+      emailPh: 'example@gmail.com',
+      address: 'Address',
+      addressPh: 'e.g. Sukhbaatar District, 1st Khoroo…',
+      eduSchool: 'University attended',
+      eduMajor: 'Major',
+      eduDegree: 'Degree',
+      eduDegreePh: 'Bachelor / Master / Doctor',
+      eduYear: 'Year graduated',
+      eduYearPh: '2020',
+      expOrg: 'Previous employer',
+      expRole: 'Position',
+      expDuration: 'Duration',
+      expDurationPh: '2018–2024',
+      expDuties: 'Key responsibilities',
+      tchUniversity: 'Previously taught at a university?',
+      tchUniversityPh: 'Yes / No (where?)',
+      tchSubjects: 'Subjects taught',
+      tchResearch: 'Research area',
+      tchPublications: 'Publications & talks',
+      tchPublicationsPh: 'Papers, conference talks, etc.',
+      skDigital: 'Computer & digital teaching tools',
+      skLanguages: 'Foreign-language proficiency',
+      skLanguagesPh: 'Japanese N2, English C1…',
+      skTools: 'Tools you use',
+      skToolsPh: 'Moodle, Google Classroom, PowerPoint, Canva…',
+      motReason: 'Why do you want to work here?',
+      motStrengths: 'Your strengths',
+      motAvailable: 'When can you start?',
+      motAvailablePh: 'Immediately / In 2 weeks…',
+      cvUrl: 'CV URL (Google Drive, Dropbox…)',
+      cvUrlHint: 'Upload your CV online and paste the link here.',
+      diplomaUrl: 'Diploma URL',
+      diplomaUrlHint: 'Upload a scan online and paste the link.',
+    },
+    required: '*',
+  },
+  JP: {
+    heroTitle: '求人応募',
+    heroSubtitle:
+      '7セクションの応募フォームを送信いただくと、人事部より追ってご連絡いたします。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbCareers: '採用情報',
+    breadcrumbThis: '応募',
+    submitCta: '応募を送信',
+    otherPosition: 'その他',
+    errorRequired: {
+      name: 'お名前をご入力ください。',
+      email: 'メールアドレスが正しくありません。',
+      phone: '電話番号が正しくありません。',
+      position: '応募する職種を選択してください。',
+    },
+    errorSubmit: '送信に失敗しました。',
+    errorNetwork: 'ネットワークエラー。もう一度お試しください。',
+    successToast: '応募を送信しました！',
+    successTitle: '応募を受け付けました',
+    successBody:
+      '人事部より追ってご連絡いたします。受信トレイをご確認いただき、迷惑メールフォルダもお忘れなくご確認ください。',
+    successBackCta: '採用情報へ戻る',
+    successHomeCta: 'ホーム',
+    sections: {
+      general: '基本情報',
+      position: 'ご応募の職種を選択してください',
+      education: '学歴',
+      experience: '職歴',
+      teaching: '教歴',
+      skills: 'スキル',
+      extra: '追加情報',
+    },
+    fields: {
+      fullName: '氏名',
+      fullNamePh: '例：山田 太郎',
+      birth: '生年月日',
+      phone: '電話番号',
+      phonePh: '+976 9911 2233',
+      email: 'メールアドレス',
+      emailPh: 'example@gmail.com',
+      address: '住所',
+      addressPh: '例：スフバートル区、第1ホロー…',
+      eduSchool: '出身校',
+      eduMajor: '専攻',
+      eduDegree: '学位',
+      eduDegreePh: '学士 / 修士 / 博士',
+      eduYear: '卒業年',
+      eduYearPh: '2020',
+      expOrg: '前職の勤務先',
+      expRole: '役職',
+      expDuration: '勤務期間',
+      expDurationPh: '2018〜2024',
+      expDuties: '主な業務内容',
+      tchUniversity: '大学での教歴の有無',
+      tchUniversityPh: '有 / 無（勤務先）',
+      tchSubjects: '担当科目',
+      tchResearch: '研究分野',
+      tchPublications: '発表論文・著作',
+      tchPublicationsPh: '論文、学会発表など',
+      skDigital: 'PC・デジタル教育ツール',
+      skLanguages: '外国語能力',
+      skLanguagesPh: '日本語N2、英語C1…',
+      skTools: '使用ツール',
+      skToolsPh: 'Moodle、Google Classroom、PowerPoint、Canva…',
+      motReason: '当校で働きたい理由',
+      motStrengths: 'あなたの強み',
+      motAvailable: '勤務開始可能時期',
+      motAvailablePh: '即日 / 2週間後…',
+      cvUrl: '履歴書URL（Google Drive、Dropboxなど）',
+      cvUrlHint: '履歴書をオンラインにアップロードし、リンクを貼り付けてください。',
+      diplomaUrl: '卒業証明書URL',
+      diplomaUrlHint: 'スキャンをオンラインにアップロードし、リンクを貼り付けてください。',
+    },
+    required: '*',
+  },
+};
+
 /* ───────────────────── High-school / contact ─────────────────────── */
 
 interface HsContactBundle {
