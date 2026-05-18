@@ -14,13 +14,9 @@ import { TimelineStep } from '@/components/ui/TimelineStep';
 import { Button } from '@/components/ui/Button';
 import { Accordion } from '@/components/ui/Accordion';
 import { getSiteContentMap } from '@/lib/site-content';
-import {
-  ADMISSION_FAQ,
-  ADMISSION_PROGRAMS,
-  ADMISSION_REQUIREMENTS,
-  ADMISSION_STEPS,
-  SCHOLARSHIPS,
-} from '@/lib/content';
+import { ADMISSION_PROGRAMS, SCHOLARSHIPS } from '@/lib/content';
+import { getServerLocale } from '@/lib/i18n/server';
+import { ADMISSION_CONTENT } from '@/lib/i18n/content';
 import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
@@ -30,17 +26,68 @@ export const metadata = {
     '2026-2027 оны хичээлийн жилийн элсэлтийн мэдээлэл — бакалавр, магистр, 30+, мэргэжил хөрвөх, гадаадаас шилжин суралцах, онлайн сургалт, бэлтгэл анги.',
 };
 
-const SUB_NAV = [
-  { id: 'info', label: 'Мэргэжлээ сонгох', icon: FileText },
-  { id: 'foreign', label: 'Гадаад оюутан элсэх', icon: Globe },
-  { id: 'payment', label: 'Төлбөр, хөнгөлөлт', icon: Wallet },
-] as const;
+const SUB_NAV_ICONS = {
+  info: FileText,
+  foreign: Globe,
+  payment: Wallet,
+} as const;
+
+// Localised label for the "Read more →" link on each scholarship card.
+const SCHOLARSHIP_READ_MORE: Record<'MN' | 'EN' | 'JP', string> = {
+  MN: 'Дэлгэрэнгүй →',
+  EN: 'Read more →',
+  JP: '詳しく見る →',
+};
+
+// Online-availability pill text.
+const ONLINE_LABEL: Record<'MN' | 'EN' | 'JP', string> = {
+  MN: 'Онлайн',
+  EN: 'Online',
+  JP: 'オンライン',
+};
+
+// Home breadcrumb crumb.
+const HOME_CRUMB: Record<'MN' | 'EN' | 'JP', string> = {
+  MN: 'Нүүр',
+  EN: 'Home',
+  JP: 'ホーム',
+};
 
 export default async function AdmissionPage() {
-  const [adm, banners] = await Promise.all([
+  const [adm, banners, locale] = await Promise.all([
     getSiteContentMap('admission'),
     getSiteContentMap('banners'),
+    getServerLocale(),
   ]);
+
+  const c = ADMISSION_CONTENT[locale];
+  // The icon + online flag stay on the original ADMISSION_PROGRAMS
+  // array (those aren't translatable); we look up the canonical program
+  // by `id` and replace the title / intro / bullets / cta with the
+  // localised text.
+  const programs = ADMISSION_PROGRAMS.map((p) => {
+    const tr = c.programs.find((x) => x.id === p.id);
+    return tr
+      ? {
+          ...p,
+          title: tr.title,
+          intro: tr.intro,
+          bulletsLabel: tr.bulletsLabel,
+          bullets: tr.bullets,
+          bullets2Label: tr.bullets2Label,
+          bullets2: tr.bullets2,
+          cta: tr.cta,
+        }
+      : p;
+  });
+  // Localised scholarships share the icon from the static list.
+  const scholarships = SCHOLARSHIPS.map((s, idx) => ({
+    icon: s.icon,
+    title: c.scholarships[idx]?.title ?? s.title,
+    description: c.scholarships[idx]?.description ?? s.description,
+  }));
+  // FAQ stays in the i18n bundle entirely.
+  const faqItems = c.faq;
 
   const permits = [1, 2, 3]
     .map((i) => ({
@@ -60,25 +107,25 @@ export default async function AdmissionPage() {
   return (
     <>
       <PageHero
-        title="ЭЛСЭЛТ"
-        subtitle="2026-2027 оны хичээлийн жилийн элсэлтийн мэдээлэл."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Элсэлт' }]}
+        title={c.heroTitle}
+        subtitle={c.heroSubtitle}
+        breadcrumb={[{ label: HOME_CRUMB[locale], href: '/' }, { label: c.heroTitle }]}
         backgroundImage={banners.get('page.admission.banner') || undefined}
       />
 
       {/* Sub-nav — three anchors per editor's spec */}
       <div className="sticky top-20 z-30 border-b border-border-light bg-white/95 backdrop-blur">
         <div className="container-custom flex flex-wrap items-center gap-2 py-3">
-          {SUB_NAV.map((item) => {
-            const Icon = item.icon;
+          {(['info', 'foreign', 'payment'] as const).map((id) => {
+            const Icon = SUB_NAV_ICONS[id];
             return (
               <a
-                key={item.id}
-                href={`#${item.id}`}
+                key={id}
+                href={`#${id}`}
                 className="inline-flex items-center gap-1.5 rounded-full border border-border-light bg-white px-4 py-1.5 text-sm font-semibold text-text-body transition-colors hover:border-navy-900 hover:text-navy-900"
               >
                 <Icon className="h-3.5 w-3.5" />
-                {item.label}
+                {c.subNav[id]}
               </a>
             );
           })}
@@ -88,11 +135,11 @@ export default async function AdmissionPage() {
       {/* Section 1 — Мэргэжлээ сонгох (8 program boxes) */}
       <Section background="cream-soft" id="info">
         <SectionTitle
-          title="МЭРГЭЖЛЭЭ СОНГОХ"
-          subtitle="2026-2027 оны хичээлийн жилийн элсэлтийн журам, тэтгэлэг ба элсэлтийн төрлүүд."
+          title={c.sectionInfoTitle}
+          subtitle={c.sectionInfoSubtitle}
         />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {ADMISSION_PROGRAMS.map((p) => (
+          {programs.map((p) => (
             <article
               key={p.id}
               className={cn(
@@ -114,7 +161,7 @@ export default async function AdmissionPage() {
                 {p.online && (
                   <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-navy-900 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-400">
                     <MonitorSmartphone className="h-3 w-3" />
-                    Онлайн
+                    {ONLINE_LABEL[locale]}
                   </span>
                 )}
               </div>
@@ -178,24 +225,21 @@ export default async function AdmissionPage() {
 
       {/* Steps */}
       <Section background="white">
-        <SectionTitle
-          title="ЭЛСЭЛТИЙН АЛХАМ"
-          subtitle="5 алхамт энгийн процесс."
-        />
+        <SectionTitle title={c.stepsTitle} subtitle={c.stepsSubtitle} />
         <div className="hidden items-start justify-between gap-2 lg:flex">
-          {ADMISSION_STEPS.map((s, idx) => (
+          {c.steps.map((s, idx) => (
             <TimelineStep
               key={s.number}
               number={s.number}
               title={s.title}
               description={s.description}
               isActive={idx === 0}
-              isLast={idx === ADMISSION_STEPS.length - 1}
+              isLast={idx === c.steps.length - 1}
             />
           ))}
         </div>
         <div className="space-y-4 lg:hidden">
-          {ADMISSION_STEPS.map((s) => (
+          {c.steps.map((s) => (
             <Card key={s.number} className="flex gap-4">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold-500 text-base font-bold text-navy-900">
                 {s.number}
@@ -213,11 +257,11 @@ export default async function AdmissionPage() {
       <Section background="cream-soft">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-h2 font-bold text-navy-900">
-            Элсэгчдэд тавигдах нийтлэг шаардлага
+            {c.requirementsHeading}
           </h2>
           <div className="mt-4 h-1 w-16 rounded-full bg-gold-500" />
           <ul className="mt-6 space-y-3">
-            {ADMISSION_REQUIREMENTS.map((req) => (
+            {c.requirements.map((req) => (
               <li key={req} className="flex items-start gap-3 text-text-body">
                 <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
                   <Check className="h-3.5 w-3.5" />
@@ -231,7 +275,7 @@ export default async function AdmissionPage() {
 
       {/* Section 2 — Гадаад оюутан элсэх */}
       <Section background="white" id="foreign">
-        <SectionTitle title="ГАДААД ОЮУТАН ЭЛСЭХ" />
+        <SectionTitle title={c.foreignTitle} />
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Main intro card — left column on lg */}
           <Card hover={false} className="flex h-full flex-col lg:col-span-1">
@@ -281,12 +325,9 @@ export default async function AdmissionPage() {
 
       {/* Section 3 — Төлбөр, хөнгөлөлт */}
       <Section background="cream-soft" id="payment">
-        <SectionTitle
-          title="ТӨЛБӨР, ХӨНГӨЛӨЛТ"
-          subtitle="Элсэгчидэд зориулсан төлбөрийн хөнгөлөлтийн нөхцөл."
-        />
+        <SectionTitle title={c.paymentTitle} subtitle={c.paymentSubtitle} />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {SCHOLARSHIPS.map((s) => {
+          {scholarships.map((s) => {
             const Icon = s.icon;
             return (
               <Card key={s.title} className="flex h-full flex-col">
@@ -301,7 +342,7 @@ export default async function AdmissionPage() {
                   href="#faq"
                   className="mt-4 text-sm font-semibold text-navy-900 hover:text-gold-500"
                 >
-                  Дэлгэрэнгүй →
+                  {SCHOLARSHIP_READ_MORE[locale]}
                 </a>
               </Card>
             );
@@ -311,9 +352,9 @@ export default async function AdmissionPage() {
 
       {/* FAQ */}
       <Section background="white" id="faq">
-        <SectionTitle title="Тогтмол асуултууд" />
+        <SectionTitle title={c.faqTitle} />
         <div className="mx-auto max-w-2xl">
-          <Accordion items={ADMISSION_FAQ} />
+          <Accordion items={faqItems} />
         </div>
       </Section>
 
