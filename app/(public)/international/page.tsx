@@ -19,13 +19,13 @@ import { Badge } from '@/components/ui/Badge';
 import { getSiteContentMap } from '@/lib/site-content';
 import {
   DOMESTIC_PARTNERS,
-  INTERNATIONAL_BLOCKS,
-  INTERNATIONAL_INTRO,
   JAPAN_HIGH_SCHOOLS,
   JAPAN_PARTNERS_DETAILED,
   PARTNER_UNIVERSITIES,
   type PartnerDetailed,
 } from '@/lib/content';
+import { getServerLocale } from '@/lib/i18n/server';
+import { INTERNATIONAL_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -38,14 +38,20 @@ const BLOCK_ICONS = [Users, Briefcase, Globe2, Leaf] as const;
  * Disclosure card for a partner profile. Collapsed shows just the
  * headline + scholarship pill; clicking reveals the full narrative
  * inline (no page navigation). Built on the native <details> element
- * so it works without any client-side JS.
+ * so it works without any client-side JS. `expandLabel` / `collapseLabel`
+ * arrive pre-localised from the calling page so the card stays
+ * locale-agnostic.
  */
 function PartnerProfileCard({
   p,
   icon: Icon = Building2,
+  expandLabel,
+  collapseLabel,
 }: {
   p: PartnerDetailed;
   icon?: typeof Building2;
+  expandLabel: string;
+  collapseLabel: string;
 }) {
   return (
     <details className="group h-full overflow-hidden rounded-card border border-border-light bg-white shadow-card transition-all duration-300 open:border-navy-900/40 hover:border-navy-900/40 hover:shadow-card-hover">
@@ -56,7 +62,7 @@ function PartnerProfileCard({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={p.logo}
-                alt={`${p.name} лого`}
+                alt={`${p.name} logo`}
                 loading="lazy"
                 className="h-full w-full object-contain"
               />
@@ -95,8 +101,8 @@ function PartnerProfileCard({
           )}
         </div>
         <span className="mt-1 inline-flex items-center gap-1 self-start text-[11px] font-bold uppercase tracking-wider text-navy-900 transition-colors group-open:text-gold-500">
-          <span className="group-open:hidden">Дэлгэрэнгүй</span>
-          <span className="hidden group-open:inline">Хаах</span>
+          <span className="group-open:hidden">{expandLabel}</span>
+          <span className="hidden group-open:inline">{collapseLabel}</span>
           <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-open:rotate-180" />
         </span>
       </summary>
@@ -108,29 +114,82 @@ function PartnerProfileCard({
 }
 
 export default async function InternationalPage() {
-  const banners = await getSiteContentMap('banners');
+  const [banners, locale] = await Promise.all([
+    getSiteContentMap('banners'),
+    getServerLocale(),
+  ]);
+  const c = INTERNATIONAL_CONTENT[locale];
+
+  // Join the canonical (Mongolian) lists in lib/content.ts — which carry
+  // structural fields like logos and the original Japanese name — with
+  // the locale-specific strings keyed by index. The Japanese display
+  // name (`nameJp`) is intentionally suppressed in JP locale because
+  // the main `name` is already the kanji rendering.
+  const japanPartners: PartnerDetailed[] = JAPAN_PARTNERS_DETAILED.map(
+    (p, idx) => {
+      const tr = c.japanPartners[idx];
+      if (!tr) return p;
+      return {
+        ...p,
+        name: tr.name,
+        nameJp: locale === 'JP' ? undefined : p.nameJp,
+        location: tr.location,
+        partnerSince: tr.partnerSince,
+        detail: tr.detail,
+        headline: tr.headline,
+      };
+    },
+  );
+
+  const highSchools: PartnerDetailed[] = JAPAN_HIGH_SCHOOLS.map((p, idx) => {
+    const tr = c.highSchools[idx];
+    if (!tr) return p;
+    return {
+      ...p,
+      name: tr.name,
+      nameJp: locale === 'JP' ? undefined : p.nameJp,
+      location: tr.location,
+      partnerSince: tr.partnerSince,
+      detail: tr.detail,
+      headline: tr.headline,
+    };
+  });
+
+  const domestic = DOMESTIC_PARTNERS.map((d, idx) => {
+    const tr = c.domestic[idx];
+    return tr
+      ? { ...d, name: tr.name, detail: tr.detail, activities: tr.activities }
+      : d;
+  });
+
+  const otherPartners = PARTNER_UNIVERSITIES.map((u, idx) => {
+    const tr = c.otherPartners[idx];
+    return tr ? tr : u;
+  });
+
   return (
     <>
       <PageHero
-        title="СУРГУУЛИЙН ГАДААД, ДОТООД ХАМТЫН АЖИЛЛАГАА"
-        subtitle="Япон улсын 30+ их сургууль, мэргэжлийн сургууль, олон улсын байгууллагатай хамтрах сүлжээ."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Хамтын ажиллагаа' }]}
+        title={c.heroTitle}
+        subtitle={c.heroSubtitle}
+        breadcrumb={[
+          { label: c.breadcrumbHome, href: '/' },
+          { label: c.breadcrumbThis },
+        ]}
         backgroundImage={banners.get('page.international.banner') || undefined}
       />
 
       {/* Intro */}
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-base leading-relaxed text-text-body">
-            {INTERNATIONAL_INTRO}
-          </p>
+          <p className="text-base leading-relaxed text-text-body">{c.intro}</p>
         </div>
       </Section>
 
       {/* Four themed callout blocks */}
       <Section background="cream-soft">
         <div className="space-y-6">
-          {INTERNATIONAL_BLOCKS.map((b, i) => {
+          {c.blocks.map((b, i) => {
             const Icon = BLOCK_ICONS[i] ?? Globe2;
             return (
               <article
@@ -159,12 +218,18 @@ export default async function InternationalPage() {
       {/* Detailed Japan partner profiles */}
       <Section background="white">
         <SectionTitle
-          title="ХАМТРАГЧ ЯПОН СУРГУУЛИУДЫН ТАНИЛЦУУЛГА"
-          subtitle={`${JAPAN_PARTNERS_DETAILED.length} их, дээд сургууль. Карт дээр дарж дэлгэрэнгүй танилцуулга, мэргэжил, тэтгэлгийн нөхцөлийг харна уу.`}
+          title={c.japanPartnersTitle}
+          subtitle={c.japanPartnersSubtitle(japanPartners.length)}
         />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {JAPAN_PARTNERS_DETAILED.map((p) => (
-            <PartnerProfileCard key={p.name} p={p} icon={Building2} />
+          {japanPartners.map((p) => (
+            <PartnerProfileCard
+              key={p.name}
+              p={p}
+              icon={Building2}
+              expandLabel={c.expand}
+              collapseLabel={c.collapse}
+            />
           ))}
         </div>
       </Section>
@@ -172,24 +237,27 @@ export default async function InternationalPage() {
       {/* High-school partners */}
       <Section background="cream-soft">
         <SectionTitle
-          title="ХАМТРАГЧ ЯПОН АХЛАХ СУРГУУЛИУД"
-          subtitle="НЕБ-ын Соёл Эрдэм сургуулийн сурагчдад нээлттэй хамтрагч сургуулиуд."
+          title={c.highSchoolsTitle}
+          subtitle={c.highSchoolsSubtitle}
         />
         <div className="grid gap-4 md:grid-cols-2">
-          {JAPAN_HIGH_SCHOOLS.map((p) => (
-            <PartnerProfileCard key={p.name} p={p} icon={School} />
+          {highSchools.map((p) => (
+            <PartnerProfileCard
+              key={p.name}
+              p={p}
+              icon={School}
+              expandLabel={c.expand}
+              collapseLabel={c.collapse}
+            />
           ))}
         </div>
       </Section>
 
       {/* Domestic Mongolia partners */}
       <Section background="white">
-        <SectionTitle
-          title="ДОТООД ХАМТЫН АЖИЛЛАГААТАЙ БАЙГУУЛЛАГУУД"
-          subtitle="Монгол улсад үйл ажиллагаа явуулдаг хамтрагч байгууллагууд."
-        />
+        <SectionTitle title={c.domesticTitle} subtitle={c.domesticSubtitle} />
         <div className="grid gap-5 md:grid-cols-3">
-          {DOMESTIC_PARTNERS.map((d) => (
+          {domestic.map((d) => (
             <article
               key={d.name}
               className="flex h-full flex-col rounded-card border border-border-light bg-white p-6 shadow-card"
@@ -199,7 +267,7 @@ export default async function InternationalPage() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={d.logo}
-                    alt={`${d.name} лого`}
+                    alt={`${d.name} logo`}
                     loading="lazy"
                     className="h-full w-full object-contain"
                   />
@@ -226,7 +294,7 @@ export default async function InternationalPage() {
               </p>
               <div className="mt-4 border-t border-border-light pt-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-gold-500">
-                  Хамтарсан арга хэмжээ
+                  {c.jointActivities}
                 </p>
                 <ul className="mt-2 space-y-1.5">
                   {d.activities.map((a) => (
@@ -246,14 +314,14 @@ export default async function InternationalPage() {
       </Section>
 
       {/* Compact directory for the remaining partners */}
-      {PARTNER_UNIVERSITIES.length > 0 && (
+      {otherPartners.length > 0 && (
         <Section background="cream-soft">
           <SectionTitle
-            title="БУСАД ХАМТРАГЧ БАЙГУУЛЛАГУУД"
-            subtitle="Гэрээт хамтрагч их, дээд сургууль, мэргэжлийн сургууль, холбоод."
+            title={c.otherPartnersTitle}
+            subtitle={c.otherPartnersSubtitle}
           />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {PARTNER_UNIVERSITIES.map((u) => (
+            {otherPartners.map((u) => (
               <Card key={u.name} className="flex h-full flex-col gap-2">
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-navy-900 text-gold-400">
                   <Building2 className="h-4 w-4" />

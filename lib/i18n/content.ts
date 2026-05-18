@@ -895,3 +895,809 @@ export const RESEARCH_CONTENT: Record<Language, ResearchBundle> = {
     publishing: '刊行準備中',
   },
 };
+
+/* ───────────────────── International page ────────────────────────── */
+
+/** A localised partner profile — same shape as PartnerDetailed minus
+ *  the structural fields (logo, nameJp). Joined by index with the
+ *  canonical Mongolian list in lib/content.ts. */
+interface LocalisedPartner {
+  name: string;
+  location: string;
+  partnerSince?: string;
+  detail: string;
+  headline?: string;
+}
+
+interface LocalisedDomestic {
+  name: string;
+  detail: string;
+  activities: string[];
+}
+
+interface LocalisedPartnerUni {
+  name: string;
+  location: string;
+  type: string;
+}
+
+interface InternationalBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbThis: string;
+  intro: string;
+  /** Three callout block heading/body pairs — order matches
+   *  INTERNATIONAL_BLOCKS in lib/content.ts. */
+  blocks: { heading: string; body: string }[];
+  japanPartnersTitle: string;
+  /** "{n} partner universities..." — `count` is substituted at render. */
+  japanPartnersSubtitle: (count: number) => string;
+  highSchoolsTitle: string;
+  highSchoolsSubtitle: string;
+  domesticTitle: string;
+  domesticSubtitle: string;
+  otherPartnersTitle: string;
+  otherPartnersSubtitle: string;
+  /** Collapsible card affordance. */
+  expand: string;
+  collapse: string;
+  /** Inline label inside each domestic partner card. */
+  jointActivities: string;
+  /** 18 Japan partners — same order as JAPAN_PARTNERS_DETAILED. */
+  japanPartners: LocalisedPartner[];
+  /** 2 high-school partners — same order as JAPAN_HIGH_SCHOOLS. */
+  highSchools: LocalisedPartner[];
+  /** 3 domestic partners — same order as DOMESTIC_PARTNERS. */
+  domestic: LocalisedDomestic[];
+  /** 16 directory entries — same order as PARTNER_UNIVERSITIES. */
+  otherPartners: LocalisedPartnerUni[];
+}
+
+export const INTERNATIONAL_CONTENT: Record<Language, InternationalBundle> = {
+  MN: {
+    heroTitle: 'СУРГУУЛИЙН ГАДААД, ДОТООД ХАМТЫН АЖИЛЛАГАА',
+    heroSubtitle:
+      'Япон улсын 30+ их сургууль, мэргэжлийн сургууль, олон улсын байгууллагатай хамтрах сүлжээ.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbThis: 'Хамтын ажиллагаа',
+    intro:
+      'Соёл Эрдэм Дээд Сургууль нь байгуулагдсан цагаасаа эхлэн гадаад харилцааны асуудлыг түлхүү анхаарч ирсэн. Япон улсын олон их дээд сургууль, хувийн хэвшил, олон улсын байгууллагуудтай сургалт, эрдэм шинжилгээний хамтын ажиллагааг хөгжүүлэхээс гадна оюутан, багш солилцооны хөтөлбөрийг хэрэгжүүлдэг.',
+    blocks: [
+      {
+        heading: 'Оюутан солилцооны хөтөлбөр',
+        body: 'Гадаад харилцаа, хамтын ажиллагааны хүрээнд оюутан солилцооны хөтөлбөр хэрэгжүүлдэг нь оюутнуудад Япон улсын их дээд сургуулиудад 50–100%-ийн тэтгэлэгээр суралцах таатай боломжийг олгодог. Одоогийн байдлаар энэхүү оюутан солилцооны хөтөлбөрт 100 гаруй оюутан хамрагдаад байна. Ирэх 2024–2025 оны хичээлийн жилд Программ хангамжийн хөтөлбөрөөр 2+2 хөтөлбөрийг хэрэгжүүлэхээр Япон улсын Велнесс Спортын их сургуультай хамтран ажиллах гэрээ байгуулан оюутнуудыг суралцуулах боломжтой болоод байна.',
+      },
+      {
+        heading: 'Интерншип — цалинтай дадлага (2014 оноос)',
+        body: 'СЭДС нь Монголд анх удаа Интерншип буюу цалинтай дадлагын хөтөлбөрийг 2014 оноос хэрэгжүүлж эхэлсэн. Энэхүү хөтөлбөр нь оюутнууд 3 сараас 1 жилийн хугацаатай Япон улсад ажиллаж амьдрахын зэрэгцээ Япон улсын түүх, соёл, аж амьдралын хэв маягаас суралцаж, халуун рашаан болон зочид буудалд ажиллан олон талын мэдлэг олж авдаг. Энэ хөтөлбөрийн хүрээнд оюутнууд сард 160,000 иен буюу монгол мөнгөөр 2,500,000 гаруй төгрөгийн цалин авдаг.',
+      },
+      {
+        heading: 'Байгаль экологийн хамтарсан дадлага',
+        body: '2006 оноос эхлэн жил бүр Япон улсын Оберлин их сургуультай хамтран хоёр улсын оюутнуудын байгаль экологийн хамтарсан дадлагыг зохион байгуулсаар ирсэн. Уг дадлагын хүрээнд хоёр орны оюутнууд харилцан мэдлэг солилцож, соёл, гадаад харилцаа, олон улс, түүх, хүрээлэн байгаа орчны тухай судалгаа хийдэг. Энэ хамтарсан дадлага нь цар хүрээгээ тэлэн 2016 оноос Риккё их сургууль, 2017 оноос Чюоү Гакүин их сургууль оролцох болсон. Оюутнууд хүрээлэн байгаа орчны тандалт ажиглалт хийж, Туул голын эрэг орчмын дагуу хог хаягдлыг түүж, байгаль орчинд ээлтэй сайн дурын ажлыг хамтдаа хийдэг нь дадлагыг улам илүү ач холбогдолтой болгодог.',
+      },
+    ],
+    japanPartnersTitle: 'ХАМТРАГЧ ЯПОН СУРГУУЛИУДЫН ТАНИЛЦУУЛГА',
+    japanPartnersSubtitle: (n) =>
+      `${n} их, дээд сургууль. Карт дээр дарж дэлгэрэнгүй танилцуулга, мэргэжил, тэтгэлгийн нөхцөлийг харна уу.`,
+    highSchoolsTitle: 'ХАМТРАГЧ ЯПОН АХЛАХ СУРГУУЛИУД',
+    highSchoolsSubtitle:
+      'НЕБ-ын Соёл Эрдэм сургуулийн сурагчдад нээлттэй хамтрагч сургуулиуд.',
+    domesticTitle: 'ДОТООД ХАМТЫН АЖИЛЛАГААТАЙ БАЙГУУЛЛАГУУД',
+    domesticSubtitle: 'Монгол улсад үйл ажиллагаа явуулдаг хамтрагч байгууллагууд.',
+    otherPartnersTitle: 'БУСАД ХАМТРАГЧ БАЙГУУЛЛАГУУД',
+    otherPartnersSubtitle:
+      'Гэрээт хамтрагч их, дээд сургууль, мэргэжлийн сургууль, холбоод.',
+    expand: 'Дэлгэрэнгүй',
+    collapse: 'Хаах',
+    jointActivities: 'Хамтарсан арга хэмжээ',
+    japanPartners: [
+      {
+        name: 'Сэйжо их сургууль',
+        headline: '50% хөнгөлөлт (их сургууль)',
+        location: 'Япон, Аичи муж',
+        partnerSince: '2005 оны 9 сар',
+        detail:
+          'Япон улсын Аичи мужид байрладаг. Эдийн засгийн факультетдаа гадаадын улс орнуудаас оюутан элсүүлдэг. Тус сургуульд СЭДС-ийн бакалаврын хөтөлбөрийн оюутан их сургуульд 50%, япон хэлний сургуульд 10–20% хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Такүшёкү их сургууль',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Токио (Бүнкёо, Хачико)',
+        partnerSince: '2006 оны 1 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Олон улсын харилцаа, Худалдаа, Улс төр, Эдийн засаг зэрэг мэргэжлээр 10–20% хөнгөлөлттэй элсэн суралцах боломжтой.',
+      },
+      {
+        name: 'Оберлин их сургууль',
+        headline: '100% тэтгэлэг — 1 жил',
+        location: 'Япон, Токио',
+        partnerSince: '2009 он',
+        detail:
+          'Оюутан солилцооны хөтөлбөрийг өнөөг хүртэл амжилттай хэрэгжүүлж байна. Жил бүр СЭДС-ийн бакалаврын хөтөлбөрийн 2–4 оюутныг сонгон шалгаруулж, сургалтын төлбөрийн 100%-ийн хөнгөлөлттэй нэг жил хүртэл хугацаанд суралцуулдаг.',
+      },
+      {
+        name: 'Гакко Хоүжин Охара Гакүэн',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон (бүх мужид салбартай)',
+        partnerSince: '2010 он',
+        detail:
+          'Япон улсын бүх мужид салбартай "Оохара" Япон хэлний сургууль. СЭДС-ийн бакалаврын хөтөлбөрийн оюутан 10–20% хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Ёкохама Дезайн Гакүин',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Канагава муж (Ёкохама)',
+        partnerSince: '2012 оны 11 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Visual Design, Хувцасны дизайн, Манга зурагт номны дизайн, Япон хэл чиглэлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Гакко Хоүжин Дэнпа Коүка их сургуулийн групп',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Айчи муж (Нагаоя)',
+        partnerSince: '2013 оны 5 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Айчи Технологийн их сургууль (механик, цахилгаан, тээвэр), Нагоя технологийн мэргэжлийн сургууль (компьютер, IT, CAD, тоглоом), Токай үйлдвэрлэл-урлалын сургууль (барилгын инженер, интерьер), Айчи бизнесийн мэргэжлийн сургууль, Айчи загвар дизайны сургууль, Айчи нийгмийн халамж эмнэлгийн сургууль, Нагоя гадаад хэл-зочид буудлын сургууль, Айчи мэдээллийн системийн сургууль зэрэг 8 сургуульд 10–20% хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Нийгата Сангёо их сургууль',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Нийгата муж (Кашивазаки)',
+        partnerSince: '2014 оны 4 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Эдийн засаг, Байгууллагын менежмент, Санхүүгийн чиглэлээр 10–20% хөнгөлөлттэй элсэн суралцах боломжтой.',
+      },
+      {
+        name: 'Гакко Хоүжин Норт Азиа их сургууль',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Акита муж (Акита)',
+        partnerSince: '2015 оны 6 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Эдийн засаг, Олон улсын харилцааны чиглэлээр 10–20%-ийн хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Чюүоү Гакүин их сургууль',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Чиба муж (Абико)',
+        partnerSince: '2015 оны 9 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Хүмүүнлэгийн ухаан, Бизнес удирдлагын чиглэлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Хоккай Гакүэн их сургууль',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Хоккайдо муж (Саппоро)',
+        partnerSince: '2015 оны 9 сар',
+        detail:
+          'СЭДС-ийн бакалавр, магистрын хөтөлбөрийн оюутан Инженер, Эдийн засаг, Бизнесийн удирдлага, Хүмүүнлэгийн чиглэлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'ABK Гаккан Нихонго Гакко',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Токио (Бүнкёо)',
+        partnerSince: '2016 оны 4 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан 10–20% хөнгөлөлттэй япон хэлний сургуульд суралцах боломжтой.',
+      },
+      {
+        name: 'Нихон эм зүйн их сургууль',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Сайтама муж + Токио',
+        partnerSince: '2017 оны 12 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан эм зүйн чиглэлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Хокүто Бүнка Гакүэн',
+        headline: 'Хүртэл 50% хөнгөлөлт',
+        location: 'Япон, Хоккайдо муж (Саппоро)',
+        partnerSince: '2021 оны 5 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Нийгмийн халамжийн мэргэжлийн коллежид 10–20%, япон хэлний сургуульд 10–50% хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Токива их сургууль',
+        headline: '100% тэтгэлэг — 6 сар–1 жил',
+        location: 'Япон, Ибараки муж (Мито)',
+        partnerSince: '2023 оны 2 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан 100% хөнгөлөлттэй 6 сараас 1 жилийн хугацаанд япон хэл болон Хүмүүнлэг, Бизнесийн удирдлага, Сувилахуйн чиглэлээр суралцах боломжтой.',
+      },
+      {
+        name: 'Нихон Вэлнэс Спорт их сургууль',
+        headline: '10–20% хөнгөлөлт',
+        location: 'Япон, Токио',
+        partnerSince: '2023 оны 4 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан Биеийн тамир, Эдийн засгийн чиглэлээр 10–20%-ийн хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Комазава охидын их сургууль',
+        headline: '10–20% хөнгөлөлт (зөвхөн эмэгтэй)',
+        location: 'Япон, Токио',
+        partnerSince: '2024 оны 5 сар',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн эмэгтэй оюутан Хүмүүнлэг, Сэтгэл судлал, Аялал жуулчлал, Нийтийн эрүүл мэнд, Сувилахуй зэрэг мэргэжлээр 10–20% хөнгөлөлттэй суралцах боломжтой.',
+      },
+      {
+        name: 'Иватани Хигаши Хоккайдо коллеж',
+        headline: 'Хүртэл 50% хөнгөлөлт',
+        location: 'Япон, Канагава муж (Ёкохама)',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан IT мэргэжлийн, Гоо зүйн мэргэжлийн коллеж, Япон хэлний сургуульд 10–50% хөнгөлөлттэй суралцах боломжтой. Зөвхөн Хоккайдо салбарын Япон хэлний сургуульд N3-аас дээш япон хэлний түвшинтэй сурвал 50% хөнгөлнө.',
+      },
+      {
+        name: 'Нийгата эм зүйн их сургууль',
+        headline: '50% хөнгөлөлт (их сургууль)',
+        location: 'Япон, Нийгата муж (Нийгата)',
+        detail:
+          'СЭДС-ийн бакалаврын хөтөлбөрийн оюутан эм зүйн чиглэлээр их сургуульд 50%, япон хэлний сургуульд 10–20% хөнгөлөлттэй суралцах боломжтой.',
+      },
+    ],
+    highSchools: [
+      {
+        name: 'Комазава ахлах сургууль',
+        headline: '50% хөнгөлөлт (эмэгтэй сурагч)',
+        location: 'Япон, Токио (Инаги дүүрэг)',
+        partnerSince: '2025 оны 5 сар',
+        detail:
+          'Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн эмэгтэй сурагчдыг 50%-ийн хөнгөлөлттэй элсүүлэн суралцуулах боломжтой.',
+      },
+      {
+        name: 'Нихон Вэлнэс ахлах сургууль',
+        headline: '50% хөнгөлөлт',
+        location: 'Япон, Мияги муж (Сэндай) + Нагано муж (Хигашичикума)',
+        partnerSince: '2024 оны 5 сар',
+        detail:
+          'Спортын чиглэлтэй ахлах сургууль. Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн сурагчдыг 50%-ийн хөнгөлөлттэй элсүүлэн суралцуулах боломжтой.',
+      },
+    ],
+    domestic: [
+      {
+        name: 'Монгол Улс дахь Япон Улсын Элчин сайдын яам',
+        detail:
+          'Соёл Эрдэм Дээд Сургууль нь Японы Элчин сайдын яамтай хамтран Японы хэл, соёл, боловсролыг таниулсан олон арга хэмжээнд оюутнууд, багш нараа идэвхтэй оролцуулсаар ирсэн.',
+        activities: [
+          '"Япон киноны өдөрлөг"',
+          '"Японд суралцах талаар танилцуулах сургалт"',
+        ],
+      },
+      {
+        name: 'Монгол-Японы Хүний Нөөцийн Хөгжлийн Төв',
+        detail:
+          'Сургууль анх байгуулагдсан цагаасаа эхлэн "Монгол-Япон төв"-тэй нягт хамтран ажиллаж ирсэн. Тус төвөөс зохион байгуулдаг Японы соёл, боловсролын олон арга хэмжээ, сургалтад багш, оюутнууд тогтмол идэвхтэй оролцдог.',
+        activities: [
+          '"Япон хэлний түвшин тогтоох жишиг шалгалт"',
+          '"Японы их дээд сургуулиудыг танилцуулах мэдээллийн ярмаг"',
+          '"Япон хэлний багш нарын заах аргын сургалт"',
+          '"Японы соёлыг танилцуулах баяр"',
+          '"Нээлттэй семинар"',
+        ],
+      },
+      {
+        name: 'Монголын Япон Хэлний Багш нарын Холбоо',
+        detail:
+          'Тус холбооноос зохион байгуулдаг багшийн хөгжлийг дэмжсэн арга хэмжээнд багш нараа тогтмол хамруулан хамтран ажиллаж байна.',
+        activities: [
+          'Жилд 2 удаа зохион байгуулагддаг "Япон хэлний түвшин тогтоох шалгалт — JLPT"-ийн зохион байгуулалт',
+          '"Япон хэлний боловсролын симпозиум"',
+        ],
+      },
+    ],
+    otherPartners: [
+      { name: 'Кайнан их сургууль', location: 'Япон', type: 'Их сургууль' },
+      { name: 'Хакүхо Жёши Танки их сургууль', location: 'Япон', type: 'Их сургууль' },
+      { name: 'Токёо Бүнгакүин', location: 'Япон, Токио', type: 'Сургууль' },
+      { name: 'Тоүкай Гакүин Бүнка Кёоёо мэргэжлийн сургууль', location: 'Япон', type: 'Мэргэжлийн сургууль' },
+      { name: 'Нихонго Кокүсай Гакүин', location: 'Япон', type: 'Япон хэлний сургууль' },
+      { name: 'Хассан II Касабланкагийн их сургууль', location: 'Морокко, Касабланка', type: 'Их сургууль' },
+      { name: 'Чанаккале Онсекиз Мартын их сургууль', location: 'Турк, Чанаккале', type: 'Их сургууль' },
+      { name: 'Нихон Вэлнэс Хоикү мэргэжлийн сургууль', location: 'Япон', type: 'Мэргэжлийн сургууль' },
+      { name: 'Кёорицү олон улсын солилцооны байгууллага', location: 'Япон', type: 'Байгууллага' },
+      { name: 'Олон улсын оюутныг дэмжих байгууллага', location: 'Япон', type: 'Байгууллага' },
+      { name: 'Нихон спортын шинжлэх ухааны их сургууль', location: 'Япон', type: 'Их сургууль' },
+      { name: 'Кёорицү Япон хэлний академи', location: 'Япон', type: 'Япон хэлний сургууль' },
+      { name: 'Японы хувийн их дээд сургуулиудын холбоо', location: 'Япон', type: 'Холбоо' },
+      { name: 'Фүкүока Мал Эмнэлэгийн мэргэжлийн сургууль', location: 'Япон, Фүкүока', type: 'Мэргэжлийн сургууль' },
+      { name: 'Риккё их сургууль', location: 'Япон, Токио', type: 'Их сургууль' },
+      { name: 'Ниппон академи', location: 'Япон', type: 'Академи' },
+    ],
+  },
+  EN: {
+    heroTitle: 'INTERNATIONAL & DOMESTIC PARTNERSHIPS',
+    heroSubtitle:
+      'A network of 30+ Japanese universities, vocational colleges and international organisations.',
+    breadcrumbHome: 'Home',
+    breadcrumbThis: 'Partnerships',
+    intro:
+      'Since its founding, Soyol Erdem University has prioritised international engagement. We develop academic and research cooperation with Japanese universities, private companies and international organisations, and we run regular student and faculty exchange programmes.',
+    blocks: [
+      {
+        heading: 'Student exchange programme',
+        body: 'Under our partnership network, our student exchange programme lets students study at Japanese universities on 50–100% scholarship. To date more than 100 students have taken part. From the 2024–2025 academic year, our Software Engineering programme will run a 2+2 pathway with Nihon Wellness Sports University in Japan, opening a new study route for our students.',
+      },
+      {
+        heading: 'Internship — paid placement (since 2014)',
+        body: 'Soyol Erdem was the first university in Mongolia to launch a paid Internship programme, starting in 2014. Students live and work in Japan for between 3 months and 1 year — typically at hot-spring resorts or hotels — and gain hands-on exposure to Japanese history, culture and daily life. Participants earn 160,000 yen per month (around 2.5M MNT).',
+      },
+      {
+        heading: 'Joint environmental fieldwork',
+        body: 'Since 2006 we have organised an annual joint environmental fieldwork programme with J.F. Oberlin University in Japan. Students from both countries exchange knowledge and research culture, international relations, history and the environment together. The programme expanded to include Rikkyo University from 2016 and Chuo Gakuin University from 2017. Students monitor the environment, clean up the banks of the Tuul River and join other eco-volunteering activities side by side — which gives the fieldwork its real meaning.',
+      },
+    ],
+    japanPartnersTitle: 'JAPANESE PARTNER UNIVERSITIES',
+    japanPartnersSubtitle: (n) =>
+      `${n} universities and colleges. Tap a card for the full profile, available majors and scholarship terms.`,
+    highSchoolsTitle: 'JAPANESE PARTNER HIGH SCHOOLS',
+    highSchoolsSubtitle:
+      'Schools open to students of our affiliated Soyol Erdem Secondary School.',
+    domesticTitle: 'DOMESTIC PARTNER ORGANISATIONS',
+    domesticSubtitle: 'Partner organisations operating inside Mongolia.',
+    otherPartnersTitle: 'OTHER PARTNER INSTITUTIONS',
+    otherPartnersSubtitle:
+      'Universities, vocational schools and associations with active cooperation agreements.',
+    expand: 'Read more',
+    collapse: 'Close',
+    jointActivities: 'Joint activities',
+    japanPartners: [
+      {
+        name: 'Seijoh University',
+        headline: '50% discount (university)',
+        location: 'Japan, Aichi',
+        partnerSince: 'Sep 2005',
+        detail:
+          'Located in Aichi Prefecture. Its Faculty of Economics admits international students. Soyol Erdem bachelor\'s students can study at the university with a 50% discount and at the affiliated Japanese-language school with a 10–20% discount.',
+      },
+      {
+        name: 'Takushoku University',
+        headline: '10–20% discount',
+        location: 'Japan, Tokyo (Bunkyo, Hachioji)',
+        partnerSince: 'Jan 2006',
+        detail:
+          'Soyol Erdem bachelor\'s students can enrol with a 10–20% discount in majors such as International Relations, Commerce, Politics and Economics.',
+      },
+      {
+        name: 'J.F. Oberlin University',
+        headline: '100% scholarship — 1 year',
+        location: 'Japan, Tokyo',
+        partnerSince: '2009',
+        detail:
+          'Our most established student exchange programme. Each year 2–4 Soyol Erdem bachelor\'s students are selected to study for up to one year on a 100% tuition scholarship.',
+      },
+      {
+        name: 'Ohara Gakuen Group',
+        headline: '10–20% discount',
+        location: 'Japan (branches in every prefecture)',
+        partnerSince: '2010',
+        detail:
+          '"Ohara" Japanese-language schools, with branches in every prefecture of Japan. Soyol Erdem bachelor\'s students can study with a 10–20% discount.',
+      },
+      {
+        name: 'Yokohama Design Gakuin',
+        headline: '10–20% discount',
+        location: 'Japan, Kanagawa (Yokohama)',
+        partnerSince: 'Nov 2012',
+        detail:
+          'Soyol Erdem bachelor\'s students can study Visual Design, Fashion Design, Manga / Illustration Book Design and Japanese with a 10–20% discount.',
+      },
+      {
+        name: 'Aichi University of Technology Group (Denpa Gakuen)',
+        headline: '10–20% discount',
+        location: 'Japan, Aichi (Nagoya)',
+        partnerSince: 'May 2013',
+        detail:
+          'Soyol Erdem bachelor\'s students can study at eight schools with a 10–20% discount: Aichi University of Technology (mechanical, electrical, transport), Nagoya College of Information Technology (computer, IT, CAD, games), Tokai Manufacturing & Crafts (architecture, interior), Aichi Business College, Aichi Fashion Design, Aichi Welfare & Medical, Nagoya Foreign-Language & Hotel, and Aichi Information Systems.',
+      },
+      {
+        name: 'Niigata Sangyo University',
+        headline: '10–20% discount',
+        location: 'Japan, Niigata (Kashiwazaki)',
+        partnerSince: 'Apr 2014',
+        detail:
+          'Soyol Erdem bachelor\'s students can enrol with a 10–20% discount in Economics, Business Management and Finance.',
+      },
+      {
+        name: 'North Asia University',
+        headline: '10–20% discount',
+        location: 'Japan, Akita (Akita)',
+        partnerSince: 'Jun 2015',
+        detail:
+          'Soyol Erdem bachelor\'s students can study Economics and International Relations with a 10–20% discount.',
+      },
+      {
+        name: 'Chuo Gakuin University',
+        headline: '10–20% discount',
+        location: 'Japan, Chiba (Abiko)',
+        partnerSince: 'Sep 2015',
+        detail:
+          'Soyol Erdem bachelor\'s students can study Humanities and Business Administration with a 10–20% discount.',
+      },
+      {
+        name: 'Hokkai-Gakuen University',
+        headline: '10–20% discount',
+        location: 'Japan, Hokkaido (Sapporo)',
+        partnerSince: 'Sep 2015',
+        detail:
+          'Soyol Erdem bachelor\'s and master\'s students can study Engineering, Economics, Business Administration and Humanities with a 10–20% discount.',
+      },
+      {
+        name: 'ABK College — Gakkan Japanese Language School',
+        headline: '10–20% discount',
+        location: 'Japan, Tokyo (Bunkyo)',
+        partnerSince: 'Apr 2016',
+        detail:
+          'Soyol Erdem bachelor\'s students can study at the Japanese-language school with a 10–20% discount.',
+      },
+      {
+        name: 'Nihon Pharmaceutical University',
+        headline: '10–20% discount',
+        location: 'Japan, Saitama + Tokyo',
+        partnerSince: 'Dec 2017',
+        detail:
+          'Soyol Erdem bachelor\'s students can study Pharmaceutical Sciences with a 10–20% discount.',
+      },
+      {
+        name: 'Hokuto Bunka Gakuen',
+        headline: 'Up to 50% discount',
+        location: 'Japan, Hokkaido (Sapporo)',
+        partnerSince: 'May 2021',
+        detail:
+          'Soyol Erdem bachelor\'s students can study at the Social Welfare vocational college with a 10–20% discount and at the affiliated Japanese-language school with a 10–50% discount.',
+      },
+      {
+        name: 'Tokiwa University',
+        headline: '100% scholarship — 6mo–1yr',
+        location: 'Japan, Ibaraki (Mito)',
+        partnerSince: 'Feb 2023',
+        detail:
+          'Soyol Erdem bachelor\'s students can study Japanese, Humanities, Business Administration or Nursing for 6 months to 1 year on a 100% scholarship.',
+      },
+      {
+        name: 'Nihon Wellness Sports University',
+        headline: '10–20% discount',
+        location: 'Japan, Tokyo',
+        partnerSince: 'Apr 2023',
+        detail:
+          'Soyol Erdem bachelor\'s students can study Physical Education and Economics with a 10–20% discount.',
+      },
+      {
+        name: "Komazawa Women's University",
+        headline: '10–20% discount (women only)',
+        location: 'Japan, Tokyo',
+        partnerSince: 'May 2024',
+        detail:
+          'Female Soyol Erdem bachelor\'s students can study Humanities, Psychology, Tourism, Public Health and Nursing with a 10–20% discount.',
+      },
+      {
+        name: 'Iwatani Higashi Hokkaido College',
+        headline: 'Up to 50% discount',
+        location: 'Japan, Kanagawa (Yokohama)',
+        detail:
+          'Soyol Erdem bachelor\'s students can study at the IT vocational college, the Beauty vocational college and the Japanese-language school with a 10–50% discount. Students who enrol at the Hokkaido-branch Japanese-language school with N3 or above receive a 50% discount.',
+      },
+      {
+        name: 'Niigata University of Pharmacy and Medical Life Sciences',
+        headline: '50% discount (university)',
+        location: 'Japan, Niigata (Niigata)',
+        detail:
+          'Soyol Erdem bachelor\'s students can study Pharmaceutical Sciences at the university with a 50% discount and at the affiliated Japanese-language school with a 10–20% discount.',
+      },
+    ],
+    highSchools: [
+      {
+        name: "Komazawa Gakuen Girls' Senior High School",
+        headline: '50% discount (female students)',
+        location: 'Japan, Tokyo (Inagi)',
+        partnerSince: 'May 2025',
+        detail:
+          'Female students of our affiliated Soyol Erdem Secondary School can enrol on a 50% tuition discount.',
+      },
+      {
+        name: 'Nihon Wellness High School',
+        headline: '50% discount',
+        location: 'Japan, Miyagi (Sendai) + Nagano (Higashichikuma)',
+        partnerSince: 'May 2024',
+        detail:
+          'Sports-focused high school. Students of our affiliated Soyol Erdem Secondary School can enrol on a 50% tuition discount.',
+      },
+    ],
+    domestic: [
+      {
+        name: 'Embassy of Japan in Mongolia',
+        detail:
+          'Soyol Erdem regularly involves its students and faculty in events organised by the Embassy of Japan to promote Japanese language, culture and education.',
+        activities: [
+          '"Japanese Film Days"',
+          '"Information sessions on studying in Japan"',
+        ],
+      },
+      {
+        name: 'Mongolia–Japan Center for Human Resources Development',
+        detail:
+          'Since the school\'s founding we have worked closely with the "Mongol–Japan Center". Our faculty and students take part regularly in the many cultural and educational events the centre organises.',
+        activities: [
+          '"JLPT mock examinations"',
+          '"Japanese university information fair"',
+          '"Teaching methodology training for Japanese-language teachers"',
+          '"Japanese culture festival"',
+          '"Open seminars"',
+        ],
+      },
+      {
+        name: 'Mongolian Association of Teachers of Japanese',
+        detail:
+          'We collaborate with the Association by enrolling our teachers in the professional-development events it organises.',
+        activities: [
+          'Twice-yearly delivery of the official "JLPT" Japanese-language proficiency test',
+          '"Japanese-language education symposium"',
+        ],
+      },
+    ],
+    otherPartners: [
+      { name: 'Kainan University', location: 'Japan', type: 'University' },
+      { name: 'Hakuho Joshi Junior College', location: 'Japan', type: 'University' },
+      { name: 'Tokyo Bungakuin', location: 'Japan, Tokyo', type: 'School' },
+      { name: 'Tokai Gakuin Bunka Kyoyo College', location: 'Japan', type: 'Vocational college' },
+      { name: 'Nihongo Kokusai Gakuin', location: 'Japan', type: 'Japanese language school' },
+      { name: 'Hassan II University of Casablanca', location: 'Morocco, Casablanca', type: 'University' },
+      { name: 'Çanakkale Onsekiz Mart University', location: 'Türkiye, Çanakkale', type: 'University' },
+      { name: 'Nihon Wellness Hoiku College', location: 'Japan', type: 'Vocational college' },
+      { name: 'Kyoritsu International Exchange Foundation', location: 'Japan', type: 'Organisation' },
+      { name: 'International Student Support Organisation', location: 'Japan', type: 'Organisation' },
+      { name: 'Nippon Sport Science University', location: 'Japan', type: 'University' },
+      { name: 'Kyoritsu Japanese Language Academy', location: 'Japan', type: 'Japanese language school' },
+      { name: 'Japan Association of Private Universities & Colleges', location: 'Japan', type: 'Association' },
+      { name: 'Fukuoka Veterinary College', location: 'Japan, Fukuoka', type: 'Vocational college' },
+      { name: 'Rikkyo University', location: 'Japan, Tokyo', type: 'University' },
+      { name: 'Nippon Academy', location: 'Japan', type: 'Academy' },
+    ],
+  },
+  JP: {
+    heroTitle: '国際・国内連携',
+    heroSubtitle:
+      '日本の30以上の大学・専門学校・国際機関とのネットワーク。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbThis: '連携',
+    intro:
+      'ソヨル・エルデム大学は創立以来、対外関係を重視してきました。日本の多くの大学・民間企業・国際機関と教育・研究面で協力し、学生・教員の交換プログラムも継続的に実施しています。',
+    blocks: [
+      {
+        heading: '学生交換プログラム',
+        body: '本学の国際連携の一環として実施している学生交換プログラムでは、学生が日本の大学に50〜100%の奨学金で留学することができます。これまでに100名以上が参加しました。2024〜2025年度からは、ソフトウェア工学専攻において日本ウェルネススポーツ大学との「2+2」プログラム協定を締結し、新たな進路が開かれています。',
+      },
+      {
+        heading: 'インターンシップ ― 有給実習（2014年〜）',
+        body: 'ソヨル・エルデムはモンゴルで初めて、有給インターンシッププログラムを2014年に開始しました。学生は3か月〜1年間、温泉施設やホテルなどで働きながら日本の歴史・文化・生活を体験できます。参加者は月160,000円（モンゴル通貨で約2,500,000トゥグルグ）の給与を得ています。',
+      },
+      {
+        heading: '環境エコロジー共同実習',
+        body: '2006年から毎年、日本の桜美林大学と共同で両国学生による環境エコロジー実習を実施してきました。両国の学生は文化・国際関係・歴史・環境について互いに学び合い、研究を行います。本プログラムは2016年から立教大学、2017年から中央学院大学も加わり、規模を拡大しています。学生はトゥール川沿岸でのモニタリングやゴミ拾いなど、環境ボランティア活動を共に行うことで、実習に一層の意義を持たせています。',
+      },
+    ],
+    japanPartnersTitle: '日本の提携大学',
+    japanPartnersSubtitle: (n) =>
+      `${n}校の大学・短大。カードをクリックすると詳細なプロフィール、専攻、奨学金条件をご覧いただけます。`,
+    highSchoolsTitle: '日本の提携高等学校',
+    highSchoolsSubtitle:
+      '本学附属ソヨル・エルデム高等学校の生徒が進学できる提携校。',
+    domesticTitle: '国内の提携機関',
+    domesticSubtitle: 'モンゴル国内で活動する提携機関。',
+    otherPartnersTitle: 'その他の提携機関',
+    otherPartnersSubtitle: '協定を結んでいる大学・専門学校・各種団体。',
+    expand: '詳細',
+    collapse: '閉じる',
+    jointActivities: '共同事業',
+    japanPartners: [
+      {
+        name: '星城大学',
+        headline: '50%割引（大学）',
+        location: '日本、愛知県',
+        partnerSince: '2005年9月',
+        detail:
+          '愛知県に位置し、経済学部に外国人留学生を受け入れています。本学学部生は、大学で50%、附属日本語学校で10〜20%の学費割引を受けて留学することができます。',
+      },
+      {
+        name: '拓殖大学',
+        headline: '10〜20%割引',
+        location: '日本、東京（文京・八王子）',
+        partnerSince: '2006年1月',
+        detail:
+          '本学学部生は、国際関係、商学、政治学、経済学などの専攻に10〜20%の割引で進学できます。',
+      },
+      {
+        name: '桜美林大学',
+        headline: '100%奨学金 ― 1年',
+        location: '日本、東京',
+        partnerSince: '2009年',
+        detail:
+          '最も成熟した学生交換プログラム。毎年本学学部生から2〜4名を選抜し、最長1年間、学費100%の奨学金で留学させています。',
+      },
+      {
+        name: '学校法人大原学園',
+        headline: '10〜20%割引',
+        location: '日本（全都道府県に校舎）',
+        partnerSince: '2010年',
+        detail:
+          '日本各地に校舎を持つ「大原」日本語学校。本学学部生は10〜20%の割引で留学できます。',
+      },
+      {
+        name: '横浜デザイン学院',
+        headline: '10〜20%割引',
+        location: '日本、神奈川県（横浜）',
+        partnerSince: '2012年11月',
+        detail:
+          '本学学部生はビジュアルデザイン、ファッションデザイン、マンガ・絵本デザイン、日本語コースを10〜20%の割引で受講できます。',
+      },
+      {
+        name: '学校法人電波学園 愛知工科大学グループ',
+        headline: '10〜20%割引',
+        location: '日本、愛知県（名古屋）',
+        partnerSince: '2013年5月',
+        detail:
+          '本学学部生は、愛知工科大学（機械・電気・交通）、名古屋情報工科専門学校（コンピュータ・IT・CAD・ゲーム）、東海工芸専門学校（建築・インテリア）、愛知ビジネス専門学校、愛知ファッションデザイン専門学校、愛知福祉医療専門学校、名古屋外語・ホテル専門学校、愛知情報システム専門学校の計8校に10〜20%の割引で進学できます。',
+      },
+      {
+        name: '新潟産業大学',
+        headline: '10〜20%割引',
+        location: '日本、新潟県（柏崎）',
+        partnerSince: '2014年4月',
+        detail:
+          '本学学部生は、経済学、経営学、ファイナンス分野に10〜20%の割引で進学できます。',
+      },
+      {
+        name: '学校法人ノースアジア大学',
+        headline: '10〜20%割引',
+        location: '日本、秋田県（秋田）',
+        partnerSince: '2015年6月',
+        detail:
+          '本学学部生は、経済学、国際関係分野に10〜20%の割引で進学できます。',
+      },
+      {
+        name: '中央学院大学',
+        headline: '10〜20%割引',
+        location: '日本、千葉県（我孫子）',
+        partnerSince: '2015年9月',
+        detail:
+          '本学学部生は、人文科学、経営学分野に10〜20%の割引で進学できます。',
+      },
+      {
+        name: '学校法人北海学園大学',
+        headline: '10〜20%割引',
+        location: '日本、北海道（札幌）',
+        partnerSince: '2015年9月',
+        detail:
+          '本学学部・修士課程の学生は、工学、経済学、経営学、人文科学分野に10〜20%の割引で進学できます。',
+      },
+      {
+        name: '学校法人ABK学館',
+        headline: '10〜20%割引',
+        location: '日本、東京（文京）',
+        partnerSince: '2016年4月',
+        detail: '本学学部生は、日本語学校に10〜20%の割引で留学できます。',
+      },
+      {
+        name: '日本薬科大学',
+        headline: '10〜20%割引',
+        location: '日本、埼玉県＋東京',
+        partnerSince: '2017年12月',
+        detail:
+          '本学学部生は、薬学分野に10〜20%の割引で進学できます。',
+      },
+      {
+        name: '学校法人北斗文化学園',
+        headline: '最大50%割引',
+        location: '日本、北海道（札幌）',
+        partnerSince: '2021年5月',
+        detail:
+          '本学学部生は、社会福祉専門学校に10〜20%、附属日本語学校に10〜50%の割引で留学できます。',
+      },
+      {
+        name: '常盤大学',
+        headline: '100%奨学金 ― 6か月〜1年',
+        location: '日本、茨城県（水戸）',
+        partnerSince: '2023年2月',
+        detail:
+          '本学学部生は、日本語・人文科学・経営学・看護学の分野に100%奨学金で6か月〜1年間留学できます。',
+      },
+      {
+        name: '日本ウェルネススポーツ大学',
+        headline: '10〜20%割引',
+        location: '日本、東京',
+        partnerSince: '2023年4月',
+        detail:
+          '本学学部生は、体育学、経済学分野に10〜20%の割引で進学できます。',
+      },
+      {
+        name: '駒沢女子大学',
+        headline: '10〜20%割引（女子学生のみ）',
+        location: '日本、東京',
+        partnerSince: '2024年5月',
+        detail:
+          '本学の女子学部生は、人文科学、心理学、観光、公衆衛生、看護学分野に10〜20%の割引で進学できます。',
+      },
+      {
+        name: '岩谷学園 東日本国際アカデミー',
+        headline: '最大50%割引',
+        location: '日本、神奈川県（横浜）',
+        detail:
+          '本学学部生は、IT専門学校、美容専門学校、日本語学校に10〜50%の割引で留学できます。北海道校の日本語学校でN3以上の方は50%割引が適用されます。',
+      },
+      {
+        name: '新潟薬科大学',
+        headline: '50%割引（大学）',
+        location: '日本、新潟県（新潟）',
+        detail:
+          '本学学部生は、薬学分野で大学に50%、附属日本語学校に10〜20%の割引で進学できます。',
+      },
+    ],
+    highSchools: [
+      {
+        name: '駒沢学園女子高等学校',
+        headline: '50%割引（女子生徒）',
+        location: '日本、東京（稲城）',
+        partnerSince: '2025年5月',
+        detail:
+          '本学附属ソヨル・エルデム高等学校の女子生徒は、50%の学費割引で進学できます。',
+      },
+      {
+        name: '日本ウエルネス高等学校',
+        headline: '50%割引',
+        location: '日本、宮城県（仙台）＋長野県（東筑摩）',
+        partnerSince: '2024年5月',
+        detail:
+          'スポーツ系の高等学校。本学附属ソヨル・エルデム高等学校の生徒は、50%の学費割引で進学できます。',
+      },
+    ],
+    domestic: [
+      {
+        name: '在モンゴル日本国大使館',
+        detail:
+          'ソヨル・エルデム大学は日本国大使館と協力し、日本語・文化・教育を紹介する数多くの行事に学生・教員を積極的に参加させてきました。',
+        activities: [
+          '「日本映画祭」',
+          '「日本留学説明会」',
+        ],
+      },
+      {
+        name: 'モンゴル日本人材開発センター',
+        detail:
+          '創立当初から「モンゴル・日本センター」と緊密に連携しています。同センターが主催する日本文化・教育関連の多彩なイベントや研修に、本学教員・学生は常時参加しています。',
+        activities: [
+          '「日本語能力試験 模擬試験」',
+          '「日本の大学情報フェア」',
+          '「日本語教師の指導法研修」',
+          '「日本文化紹介祭」',
+          '「公開セミナー」',
+        ],
+      },
+      {
+        name: 'モンゴル日本語教師会',
+        detail:
+          '本学は同会の教師向け研修事業に教員を継続的に派遣し、連携を進めています。',
+        activities: [
+          '年2回開催の「JLPT 日本語能力試験」運営',
+          '「日本語教育シンポジウム」',
+        ],
+      },
+    ],
+    otherPartners: [
+      { name: '開南大学', location: '日本', type: '大学' },
+      { name: '白鳳女子短期大学', location: '日本', type: '大学' },
+      { name: '東京文学院', location: '日本、東京', type: '学校' },
+      { name: '東海学院文化教養専門学校', location: '日本', type: '専門学校' },
+      { name: '日本語国際学院', location: '日本', type: '日本語学校' },
+      { name: 'ハッサン2世カサブランカ大学', location: 'モロッコ、カサブランカ', type: '大学' },
+      { name: 'チャナッカレ・オンセキズ・マルト大学', location: 'トルコ、チャナッカレ', type: '大学' },
+      { name: '日本ウェルネス保育専門学校', location: '日本', type: '専門学校' },
+      { name: '共立国際交流奨学財団', location: '日本', type: '団体' },
+      { name: '国際学生支援機構', location: '日本', type: '団体' },
+      { name: '日本体育大学', location: '日本', type: '大学' },
+      { name: '共立日本語学院', location: '日本', type: '日本語学校' },
+      { name: '日本私立大学協会', location: '日本', type: '協会' },
+      { name: '福岡ECO動物海洋専門学校', location: '日本、福岡', type: '専門学校' },
+      { name: '立教大学', location: '日本、東京', type: '大学' },
+      { name: 'ニッポンアカデミー', location: '日本', type: 'アカデミー' },
+    ],
+  },
+};
