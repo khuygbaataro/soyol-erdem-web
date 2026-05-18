@@ -1701,3 +1701,545 @@ export const INTERNATIONAL_CONTENT: Record<Language, InternationalBundle> = {
     ],
   },
 };
+
+/* ───────────────────── Student life page ─────────────────────────── */
+
+/** Per-chapter localised text. The `id` mirrors STUDENT_LIFE_CHAPTERS
+ *  in lib/content.ts so we can look up by id (not index) — this keeps
+ *  the join robust to chapter re-ordering. */
+interface LocalisedChapter {
+  id: string;
+  heading: string;
+  lead: string;
+  bullets?: string[];
+  body?: string;
+}
+
+interface LocalisedTestimonial {
+  quote: string;
+  name: string;
+  age: number;
+  program: string;
+}
+
+interface StudentLifeBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbThis: string;
+  intro: string;
+  /** Sub-nav chip labels — same order as SUB_NAV in the page. */
+  subNav: {
+    bunkyosai: string;
+    sport: string;
+    'shiliin-bulag': string;
+    dormitory: string;
+    volunteer: string;
+    research: string;
+    scholarship: string;
+    'student-council': string;
+    graduates: string;
+  };
+  /** 12 chapters keyed by id. */
+  chapters: LocalisedChapter[];
+  /** Bunkyosai grade × act strip — 4 items. */
+  bunkyosaiActs: { grade: string; act: string }[];
+  annualHeading: string;
+  testimonialHeading: string;
+  testimonials: LocalisedTestimonial[];
+}
+
+export const STUDENT_LIFE_CONTENT: Record<Language, StudentLifeBundle> = {
+  MN: {
+    heroTitle: 'ОЮУТНЫ АМЬДРАЛ',
+    heroSubtitle:
+      'Бид бол гэр бүл — Соёл Эрдэмд хичээл бол зөвхөн зургаан жилийн нэг хэсэг.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbThis: 'Оюутны амьдрал',
+    intro:
+      'Соёл Эрдэмд оюутан байх нь зөвхөн хичээл биш — энэ бол гэр бүл, найзууд, шинэ туршлага, амьдралын чухал үе юм. Бид клуб, спорт, соёлын арга хэмжээ, дадлага, дотуур байр, тэтгэлэг гээд бүх талаар дэмжлэг үзүүлдэг.',
+    subNav: {
+      bunkyosai: 'Бүнкёосай',
+      sport: 'Спорт, аялал',
+      'shiliin-bulag': 'Дадлага',
+      dormitory: 'Дотуур байр',
+      volunteer: 'Сайн үйлс',
+      research: 'Эрдэм шинжилгээ',
+      scholarship: 'Тэтгэлэг',
+      'student-council': 'Оюутны зөвлөл',
+      graduates: 'Төгсөгчид',
+    },
+    chapters: [
+      {
+        id: 'bunkyosai',
+        heading: 'Япон хэл, соёлын баяр — Бүнкёосай',
+        lead: 'Соёл Эрдэм Дээд Сургуулийн жил бүрийн уламжлалт Япон хэл, соёлын баяр "Бүнкёосай" урлагын наадам нь анх 1998 оноос эхэлж, өнөөг хүртэл 27 дахь удаагаа амжилттай зохион байгуулагдлаа. Япон хэл, соёлыг сурталчлахаас гадна оюутнууд япон хэлийг хэрхэн сурч мэдсэнээ тайлагнадаг урлагийн арга хэмжээ юм.',
+        body:
+          'Урлагын наадам нь оюутны япон хэлний чадварыг дээшлүүлэх, япон соёлыг таниулах, багаар ажиллах, харилцааны соёл, удирдан манлайлах зэрэг олон чадвар, дадлыг суулгадаг. Шүүхээр Япон улсаас хүндэт зочид, Монгол дахь Япон улсын Бүрэн эрхт элчин сайд, элчин сайдын яамны мэргэжилтэн, ЖАЙКА олон улсын байгууллага, Монгол-Япон төв зэрэг байгууллагын төлөөлөл хүрэлцэн ирдэг.',
+      },
+      {
+        id: 'sport',
+        heading: 'Спортын арга хэмжээ, явган аялал',
+        lead: 'Жил бүр уламжлал болсон спортын арга хэмжээний хүрээнд Соёл Эрдэм Дээд Сургуулийн САГСАН БӨМБӨГИЙН АВАРГА ШАЛГАРУУЛАХ, ГАР БӨМБӨГИЙН тэмцээн, шатар-даамны тэмцээнийг тогтмол зохион байгуулдаг.',
+        body:
+          'Өдрийн хүнсээ базаасан оюутнууд үүргэвчээ үүрсээр сургуулийн өмнө цугларч, сургуулийнхаа уриа, тугаа мандуулсаар нэгдсэн командаар Улаанбаатар хотын дундуур Баянзүрх товчоо хүртэл 12 км явган аялдаг. Зам зуур мод тарих, орчноо цэвэрлэх буянт үйлсэд оюутан бүр хувь нэмрээ оруулдаг.',
+      },
+      {
+        id: 'shiliin-bulag',
+        heading: 'Дадлага — "Шилийн булаг" жуулчны бааз',
+        lead: 'Соёл Эрдэм Дээд Сургууль нь дэргэдээ "Шилийн булаг" жуулчны баазтай. Бааз нь Улаанбаатар хотоос зүүн зүгт 62 км, Төв аймгийн Эрдэнэ сум дахь Баяндаваагийн аманд байрладаг. Нэг ээлжиндээ 80 хүн хүлээн авах гэр буудал, 150 хүний хүчин чадалтай ресторантай.',
+        bullets: [
+          'Жил бүрийн зун танилцах болон үйлдвэрлэлийн дадлагаа хийдэг',
+          'Япон жуулчид амардаг тул хэлний практик дадлагын талбар',
+          'Морь, тэмээ барих/унах, монгол гэр барих/буулгах, тараг, сүү боловсруулах ахуй соёл',
+          'Өөрсдийн тарьсан хүнсний ногоогоор хоол бэлдэх, ногоо тариалах сонирхол',
+        ],
+        body:
+          'СЭДС нь Япон улсын Оберлин их сургуультай хамтран оюутны хамтарсан дадлагыг жил бүр уламжлал болгон зохион байгуулсаар ирсэн. Хоёр орны оюутнууд харилцан мэдээллээ солилцон, соёл, гадаад харилцаа, түүх, хүрээлэн байгаа орчны судалгаа хийж, санал солилцдогоороо ач холбогдолтой.',
+      },
+      {
+        id: 'hippo-family',
+        heading: 'Хиппо Фамали Групп',
+        lead: 'Японы Хиппо Фамили клубийн 300 гаруй хүн гэр бүлийн хамт сургуулийн "Шилийн булаг" бааз дээр ирж Монгол ахуй соёлтой танилцлаа. Мөн монгол айлд хонож, монголчуудын амьдралын хэв маяг, аж байдалтай танилцан мартагдашгүй мөчийг өнгөрүүлсэн.',
+      },
+      {
+        id: 'dormitory',
+        heading: 'Дотуур байр',
+        lead: 'Хичээлийн I байрны 5 давхарт нийт 30 хүртэл хүн байрлах хүчин чадалтай, 8 өрөөтэй оюутны дотуур байр + 1 өрөөтэй зочны дотуур байртай. 2024–2025 оны хичээлийн жилээс гадаад, дотоодын суралцагч 10 оюутан, япон тэнхимийн гадаад багш байрлаж эхэлсэн.',
+        bullets: [
+          'Манай сургуульд элссэн оюутан бүрд дотуур байранд байрлах боломж олгодог',
+          'Хүсэлт гаргасан оюутныг байрлуулах хүрэлцээтэй',
+          'Хичээлийн бус цагт номын сан, компьютерын анги, интернэт нээлттэй',
+          'Өрөө бүр дотроо жорлон, ус-уян шүршүүр, гал тогооны иж бүрэн тавилгатай',
+          'Хөргөгч, ус буцалгагч, цахилгаан зуух, хоолны сав суулга',
+          'Өрөө бүр угаалгын машинаар бүрэн хангагдсан',
+        ],
+      },
+      {
+        id: 'volunteer',
+        heading: 'Сайн үйлсийн аян',
+        lead: 'Соёл Эрдэм Дээд Сургуулийн эрдэмтэн багш, оюутан сурагчид нь нийгэмд эерэг нөлөөлөл түгээх, бусдад туслах сайн үйлсийн аяныг тогтмол зохион байгуулж байна.',
+        bullets: [
+          '2024 он — "Жавар сэнгэсэн хүйтнийг жаргалтай сэтгэлээр давцгаая" — нийслэлийн хууль сахиулах, хот тохижуулах, нийтийн тээврийн ажилтнуудад зориулсан өвлийн аян.',
+          '2025 он — "Энх улирал ханхалсан ээлтэй хавраа угтацгаая" — мал төллөж буй цаг үед малчдад нялх төлийн элгэвч, нэмнээ, төлийн уут өргөх хаврын аян (3-р сарын 4).',
+        ],
+      },
+      {
+        id: 'research',
+        heading: 'Оюутны эрдэм шинжилгээ',
+        lead: 'Эрдэм шинжилгээ, судалгааны төв нь оюутны эрдэм шинжилгээний хурлыг жил бүр зохион байгуулдаг бөгөөд сэтгүүлийг хэвлэн эрдэм шинжилгээний ажлын үнэлэмжийг дээшлүүлэх, бусад сургуулийн оюутнуудтай хамтын ажиллагааг өргөжүүлэх, хамтарсан судалгааны ажил бичих, оюутанд үзүүлэх үйлчилгээний чанарыг сайжруулах чиглэлээр үйл ажиллагаа явуулна.',
+      },
+      {
+        id: 'scholarship',
+        heading: 'Тэтгэлэг, урамшуулал',
+        lead: 'СЭДС нь суралцагчдын амжилтыг урамшуулах тогтолцоотой. Захирлын 2020.04.22-ны 01/10 тоот тушаалын хавсралтаар оюутны сурах, хөгжих үйл ажиллагааг урамшуулах журам мөрдөгдөж байна.',
+        bullets: [
+          '3.6 болон түүнээс дээш голч дүнтэй I, II улирал бүрд захирлын нэрэмжит тэтгэлэг — голч дүнгээс хамаарч ₮100,000–₮150,000 хөнгөлөлт',
+          'Тив, дэлхий, олон улсын тэмцээнд алт, мөнгө, хүрэл медалийн эзэд болсон оюутнуудыг урамшуулна',
+          'Сургуулийн шилдэг оюутан, Монголын оюутны холбооны манлайлагч, хүүхэд залуучуудын тэргүүний залуу алтан медаль',
+          'Япон улсын элчин сайдын яамны 1 жилийн 100% тэтгэлэгт хөтөлбөр (улсын хэмжээнд 10 оюутнаас 1–2 СЭДС-аас тогтмол шалгардаг)',
+          'Үүсгэн байгуулагчийн тэтгэлэг — сурлага, идэвх санаачилгын үнэлгээгээр',
+        ],
+        body:
+          '2020 оны Ази тивийн аварга шалгаруулах тэмцээнд Монгол улсаа төлөөлөн насанд хүрэгчдийн ангилалд өрсөлдөн мөнгөн медаль хүртсэн төгсөгч одоо Япон улсад суралцаж байна.',
+      },
+      {
+        id: 'student-council',
+        heading: 'Оюутны зөвлөл',
+        lead: 'Соёл Эрдэм Дээд Сургуулийн оюутны байгууллага анх 2000 онд байгуулагдсан. Оюутны зөвлөл нь нийт оюутнуудыг төлөөлөн эрх ашгийг хамгаалж, сурлага, сахилга хариуцлага, ёс зүйг дээшлүүлэх арга хэмжээг багш, оюутнуудтай хамтран зохион байгуулдаг.',
+        bullets: [
+          'Танилцах үдэшлэг — шинээр элссэн оюутнуудтайгаа жил бүрийн 9–10 сард "Шилийн булаг" буюу Богд уулын баруун ширээт рүү явган аялал',
+          'Эрдэм шинжилгээний хурал — намар эсвэл хавар',
+          'Бүнкёосай Япон соёлын наадам — жил бүр 12 сард',
+          'Шилдэг оюутан шалгаруулах + шинэ жилийн баяр (12-р сарын 10–25)',
+          'Намрын аварга шалгаруулах сагсан бөмбөг, шатар-даамны тэмцээн',
+          'Орчуулгын болон IT өөрөө удирдах клубууд',
+        ],
+      },
+      {
+        id: 'graduates',
+        heading: 'Төгсөгчид',
+        lead: 'Манай сургуулийн төгсөгчид зөв монгол хүн, япон хүн мэт ёс суртахуун, соёлын өндөр мэдрэмжтэй нийгмийн гишүүнээр төлөвшиж, олон тэргүүлэгч байгууллагад манлайлан ажиллаж байна.',
+        bullets: [
+          'Монгол улс дахь Япон улсын элчин сайдын яам',
+          'Япон улсын Нарита нисэх онгоцны буудал',
+          'Монгол-Японы хүний нөөцийн хөгжлийн төв',
+          'Японы хөрөнгө оруулалттай компаниуд',
+          'ЖАЙКА олон улсын байгууллага',
+          'Урлаг, спортын салбарт эх орондоо болон Япон улсад манлайлж байгаа төгсөгчид',
+        ],
+        body:
+          'Гадаад харилцаа тогтвортой өргөжсөнтэй холбоотойгоор нийт төгсөгчдийн 40 орчим хувь нь Япон улсад дадлага хийж, суралцаж, ажиллаж ирсэн. Сургууль байгуулагдсан цагаас хойш давхардсан тоогоор 1500 гаруй оюутныг Япон улсад суралцуулж, дадлагажуулж ажиллуулахаар илгээсэн.',
+      },
+      {
+        id: 'japan-dance',
+        heading: 'Япон бүжгийн парад',
+        lead: 'Соёл Эрдэм Дээд Сургууль нь Күмамото мужийн Япон-Монголын найрамдлын нийгэмлэгтэй хамтран Япон бүжгийн парадыг Сүхбаатарын талбайд зохион байгууллаа. Японы үндэсний бүжгийн соёлыг Монголчуудад танилцуулах зорилгоор "Үтэмун Соүдори" бүжгийг СЭДС-ийн оюутнууд оролцон үзүүллээ.',
+      },
+      {
+        id: 'rural-program',
+        heading: 'Албан бус сургалт — 30 жилийн ой',
+        lead: '1993 оноос 2004 он хүртэл Төв аймгийн бүх суманд 11 жил, Говь-Алтай аймгийн Тонхил, Дарви, Шарга 3 суманд 3 жил, Дорнод аймгийн Цагаан-Овоо, Баян-Уул, Хөлөнбүйр 3 суманд 3 жил орон нутгийн сургуулиас зайдуу малчин айлын хүүхдүүдэд "Амьдрах ухаан"-ы эчнээ хэлбэрээр Албан бус сургалтыг буцалтгүй тусламжаар хэрэгжүүлсэн нь СЭДС-ийн нийгэмд оруулсан хувь нэмрийн томоохон төсөл болсон 30 жилийн ойтой.',
+      },
+    ],
+    bunkyosaiActs: [
+      { grade: '1-р анги', act: 'Япон хэл дээр найрал дуу болон хамтлаг дуу дуулна.' },
+      { grade: '2-р анги', act: 'Япон хэл дээр жүжигчилсэн тоглолт хийнэ.' },
+      { grade: '3-р анги', act: 'Япон хэл дээр өөрийн сонгосон сэдвээр илтгэл тавина.' },
+      { grade: '4-р анги', act: 'Япон хэл дээр шүлэг уншина.' },
+    ],
+    annualHeading: 'ЖИЛ БҮРИЙН ОНЦЛОХ АРГА ХЭМЖЭЭ',
+    testimonialHeading: 'ОЮУТНУУДЫН ҮГ',
+    testimonials: [
+      {
+        quote:
+          'Энэ жил Соёл Эрдэмд элсэн орсон. Ирэх жил Япон явахаар явах болсондоо маш баяртай байна. Багш нарын заах арга, харилцааны соёл үнэхээр сайхан.',
+        name: 'Далантай',
+        age: 21,
+        program: 'Япон хэлний орчуулагч анги',
+      },
+      {
+        quote:
+          'Интерншип хөтөлбөрөөр Япон явж дадлага хийсэн нь миний амьдралын хамгийн чухал туршлага байсан. Цалинтай дадлага хийж, япон соёл, ёс заншилтай танилцах боломж гайхалтай.',
+        name: 'Гэрэлт-Од',
+        age: 23,
+        program: 'Аялал жуулчлалын менежмент',
+      },
+      {
+        quote:
+          'Соёл Эрдэмд суралцсан 4 жил миний амьдралд эргэлт хийсэн. Одоо Япон корпорацид программистаар ажиллаж байна. Бид төгсөгчид болон одоогийн оюутнууд бол нэг гэр бүл.',
+        name: 'Наймангал',
+        age: 26,
+        program: 'Программ хангамж — төгсөгч',
+      },
+    ],
+  },
+  EN: {
+    heroTitle: 'STUDENT LIFE',
+    heroSubtitle:
+      'We are family — at Soyol Erdem, class is only one piece of your six-year journey.',
+    breadcrumbHome: 'Home',
+    breadcrumbThis: 'Student life',
+    intro:
+      'Being a student at Soyol Erdem is more than coursework — it is family, friends, new experiences and a defining chapter of your life. We support our students through clubs, sports, cultural events, internships, dormitory life and scholarships.',
+    subNav: {
+      bunkyosai: 'Bunkyosai',
+      sport: 'Sports & trips',
+      'shiliin-bulag': 'Internship',
+      dormitory: 'Dormitory',
+      volunteer: 'Volunteering',
+      research: 'Research',
+      scholarship: 'Scholarships',
+      'student-council': 'Student council',
+      graduates: 'Graduates',
+    },
+    chapters: [
+      {
+        id: 'bunkyosai',
+        heading: 'Japanese language & culture festival — Bunkyosai',
+        lead: 'Soyol Erdem University\'s annual Japanese language and culture festival "Bunkyosai" was first held in 1998 and has now been staged 27 times. Beyond promoting Japanese language and culture, the festival is the stage on which students report what they have learned.',
+        body:
+          'The festival lifts students\' Japanese-language ability and showcases Japanese culture while building team-work, communication and leadership skills. Distinguished guests typically include the Ambassador Extraordinary and Plenipotentiary of Japan to Mongolia, embassy specialists, representatives from JICA and from the Mongolia–Japan Center.',
+      },
+      {
+        id: 'sport',
+        heading: 'Sports events & hikes',
+        lead: 'Each year we hold our long-running sports events: the Soyol Erdem basketball championship, the volleyball tournament and the chess / draughts competitions.',
+        body:
+          'Carrying their packed lunches in backpacks, students gather in front of the school, raise the school motto and flag, and hike together for 12 km across Ulaanbaatar to Bayanzurkh Tolgoi. Along the route they plant trees and help clean up the area as a small act of community service.',
+      },
+      {
+        id: 'shiliin-bulag',
+        heading: 'Internship — "Shiliin Bulag" tourist camp',
+        lead: 'Soyol Erdem University runs its own "Shiliin Bulag" tourist camp. The site is 62 km east of Ulaanbaatar in Bayandavaa, Erdene sum of Tov Province. It can host 80 guests per shift in ger-style accommodation, with a restaurant for 150 diners.',
+        bullets: [
+          'Annual orientation and practical internships every summer',
+          'A live language lab — Japanese tourists holiday here, so students practise daily',
+          'Hands-on with horses and camels, putting up and taking down a ger, churning yogurt and milk',
+          'Cooking from the camp\'s own vegetable garden — and learning to grow them',
+        ],
+        body:
+          'Soyol Erdem holds an annual joint internship with J.F. Oberlin University. Students from both countries exchange views and study culture, international relations, history and the environment together — the value of the programme lies precisely in this back-and-forth.',
+      },
+      {
+        id: 'hippo-family',
+        heading: 'Hippo Family Club',
+        lead: 'More than 300 members of the Japanese "Hippo Family Club" visited our "Shiliin Bulag" camp with their families to experience Mongolian life. They also stayed overnight with local Mongolian families and learned first-hand about how Mongolians live — an unforgettable experience.',
+      },
+      {
+        id: 'dormitory',
+        heading: 'Dormitory',
+        lead: 'The 5th floor of our main building (Block I) houses an 8-room student dormitory for up to 30 residents, plus a 1-room guest dormitory. From the 2024–2025 academic year, 10 international and domestic students and a visiting Japanese-language faculty member have moved in.',
+        bullets: [
+          'Every admitted student is offered the option of dormitory housing',
+          'Capacity is sufficient for all incoming requests',
+          'Library, computer lab and Wi-Fi open outside class hours',
+          'Each room has its own toilet, hot/cold shower and full kitchen',
+          'Refrigerator, kettle, electric stove and cookware',
+          'A washing machine in every room',
+        ],
+      },
+      {
+        id: 'volunteer',
+        heading: 'Volunteer campaigns',
+        lead: 'The faculty and students of Soyol Erdem regularly organise volunteer campaigns aimed at giving back to the community and helping those in need.',
+        bullets: [
+          '2024 — "Warming the bitter winter with a joyful heart" — a winter campaign supporting the capital\'s police, sanitation workers and public-transport staff.',
+          '2025 — "Welcoming spring in a season of new life" — a spring campaign (4 March) delivering newborn-livestock blankets, pelts and birthing supplies to herders during the lambing season.',
+        ],
+      },
+      {
+        id: 'research',
+        heading: 'Student research',
+        lead: 'Our Research and Studies Centre organises the annual student research conference, publishes the proceedings, raises the standard of student research, extends cooperation with peers from other universities, supports joint research, and works continuously to improve the quality of services we offer to students.',
+      },
+      {
+        id: 'scholarship',
+        heading: 'Scholarships & awards',
+        lead: 'Soyol Erdem maintains a structured system of merit rewards. Under Appendix 01/10 to the Rector\'s order of 22 April 2020, a formal regulation governs awards for student learning and development.',
+        bullets: [
+          'Rector\'s scholarship each I and II term for students with a GPA of 3.6 or higher — ₮100,000–₮150,000 depending on GPA',
+          'Cash awards for students who win gold, silver or bronze at continental, world or international competitions',
+          'School Best Student, leader of the Mongolian Student Union, "Outstanding Youth" gold medal',
+          'Embassy of Japan 1-year 100% scholarship (1–2 of the 10 national recipients consistently come from Soyol Erdem)',
+          'Founder\'s scholarship — based on academic performance and initiative',
+        ],
+        body:
+          'A graduate who represented Mongolia in the adult category at the 2020 Asian Championships, taking silver, is now studying in Japan.',
+      },
+      {
+        id: 'student-council',
+        heading: 'Student council',
+        lead: 'Soyol Erdem\'s student body was first organised in 2000. The Student Council represents all students, defends their interests, and works with faculty to deliver events that lift academic performance, discipline and ethics.',
+        bullets: [
+          'Orientation event — every September–October, an opening hike with new students to "Shiliin Bulag" or Bogd Khan Mountain\'s western Shireet',
+          'Student research conference — in autumn or spring',
+          'Bunkyosai Japanese-culture festival — every December',
+          'Best-student awards + New Year celebration (10–25 December)',
+          'Autumn basketball championship and chess / draughts tournament',
+          'Self-run translation and IT student clubs',
+        ],
+      },
+      {
+        id: 'graduates',
+        heading: 'Graduates',
+        lead: 'Our graduates carry themselves with the ethics and cultural sensitivity of both a true Mongolian and a true Japanese citizen, and go on to lead in many of the country\'s top organisations.',
+        bullets: [
+          'Embassy of Japan in Mongolia',
+          'Narita International Airport, Japan',
+          'Mongolia–Japan Center for Human Resources Development',
+          'Japanese-invested companies',
+          'JICA',
+          'Graduates leading in the arts and sports both at home and in Japan',
+        ],
+        body:
+          'Thanks to our deep international ties, around 40% of all graduates have interned, studied or worked in Japan. Since the school\'s founding, more than 1,500 students (counting repeats) have been placed in Japan to study, intern or work.',
+      },
+      {
+        id: 'japan-dance',
+        heading: 'Japanese dance parade',
+        lead: 'Together with the Kumamoto Japan-Mongolia Friendship Association, Soyol Erdem University staged a Japanese-dance parade at Sukhbaatar Square. Soyol Erdem students performed the "Otemo-yan Sodori" dance to introduce Japan\'s traditional dance culture to a Mongolian audience.',
+      },
+      {
+        id: 'rural-program',
+        heading: 'Non-formal education — 30th anniversary',
+        lead: 'From 1993 to 2004, Soyol Erdem ran a grant-funded "Life Skills" non-formal correspondence programme: 11 years across every sum of Tov Province, 3 years in Tonkhil, Darvi and Sharga (Govi-Altai), and 3 years in Tsagaan-Ovoo, Bayan-Uul and Khulunbuir (Dornod) — reaching children from herder families living far from local schools. The 30th anniversary of this flagship community-impact project is now upon us.',
+      },
+    ],
+    bunkyosaiActs: [
+      { grade: 'Year 1', act: 'Chorus and group song in Japanese.' },
+      { grade: 'Year 2', act: 'Dramatic stage performance in Japanese.' },
+      { grade: 'Year 3', act: 'Public speech in Japanese on a topic of the student\'s choice.' },
+      { grade: 'Year 4', act: 'Poetry recitation in Japanese.' },
+    ],
+    annualHeading: 'ANNUAL HIGHLIGHTS',
+    testimonialHeading: 'STUDENT VOICES',
+    testimonials: [
+      {
+        quote:
+          'I enrolled at Soyol Erdem this year. I\'m thrilled that next year I\'ll be heading to Japan. The teaching style and the way our faculty communicate are wonderful.',
+        name: 'Dalantai',
+        age: 21,
+        program: 'Japanese Translation programme',
+      },
+      {
+        quote:
+          'Going to Japan on the Internship programme was the most important experience of my life. A paid placement that lets you experience Japanese culture and customs is incredible.',
+        name: 'Gerelt-Od',
+        age: 23,
+        program: 'Tourism Management',
+      },
+      {
+        quote:
+          'My four years at Soyol Erdem changed the course of my life. I now work as a software engineer at a Japanese corporation. Graduates and current students alike — we are one family.',
+        name: 'Naimangal',
+        age: 26,
+        program: 'Software Engineering — alumnus',
+      },
+    ],
+  },
+  JP: {
+    heroTitle: '学生生活',
+    heroSubtitle:
+      '私たちは家族 ― ソヨル・エルデムでは、授業は6年間の旅の一部に過ぎません。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbThis: '学生生活',
+    intro:
+      'ソヨル・エルデムでの学生生活は、授業だけにとどまりません。家族、友人、新しい体験、そして人生の重要な節目そのものです。クラブ、スポーツ、文化行事、インターンシップ、寮、奨学金まで、あらゆる面で学生を支援しています。',
+    subNav: {
+      bunkyosai: '文教祭',
+      sport: 'スポーツ・遠足',
+      'shiliin-bulag': 'インターン',
+      dormitory: '学生寮',
+      volunteer: 'ボランティア',
+      research: '研究',
+      scholarship: '奨学金',
+      'student-council': '学生会',
+      graduates: '卒業生',
+    },
+    chapters: [
+      {
+        id: 'bunkyosai',
+        heading: '日本語・日本文化祭 ― 文教祭',
+        lead: 'ソヨル・エルデム大学が毎年伝統的に開催する日本語・日本文化祭「文教祭」は1998年に始まり、これまで27回を数えます。日本語と日本文化を広めるだけでなく、学生が日本語学習の成果を発表する文化イベントでもあります。',
+        body:
+          '本祭は学生の日本語力の向上、日本文化の紹介、チームワーク、コミュニケーション、リーダーシップなど、多様な能力と態度を育てます。来賓として在モンゴル日本国特命全権大使、大使館専門家、JICA、モンゴル日本人材開発センターなどの代表が招かれます。',
+      },
+      {
+        id: 'sport',
+        heading: 'スポーツ行事・遠足',
+        lead: '毎年恒例のスポーツ行事として、ソヨル・エルデム大学のバスケットボール選手権、バレーボール大会、チェス・チェッカー大会を定期的に開催しています。',
+        body:
+          '昼食を背負って学生たちは学校前に集まり、校訓と校旗を掲げて整然と隊列を組み、ウランバートル市街を抜けバヤンズルフ峠まで12kmを徒歩で歩きます。道中、植樹や周辺清掃などの社会貢献活動にも全員が参加します。',
+      },
+      {
+        id: 'shiliin-bulag',
+        heading: 'インターンシップ ― 「シリーン・ブラグ」観光キャンプ',
+        lead: 'ソヨル・エルデム大学は付属の「シリーン・ブラグ」観光キャンプを運営しています。ウランバートルから東62kmのトゥブ県エルデネ・ソムにあるバヤンダワー渓谷に位置し、ゲル式の宿泊施設で1回あたり80名、150名収容のレストランも備えます。',
+        bullets: [
+          '毎年夏に新入生オリエンテーション・生産実習を実施',
+          '日本人観光客が滞在するため、生きた日本語実習の場',
+          '馬・ラクダの取り扱い、ゲルの組立・解体、ヨーグルト・牛乳の加工など遊牧文化体験',
+          '自分たちで育てた野菜での調理、菜園作りの楽しみ',
+        ],
+        body:
+          'ソヨル・エルデムは桜美林大学と毎年共同で学生実習を実施してきました。両国の学生が互いに情報を共有し、文化・国際関係・歴史・環境について研究・意見交換を行うことに意義があります。',
+      },
+      {
+        id: 'hippo-family',
+        heading: 'ヒッポ・ファミリークラブ',
+        lead: '日本のヒッポ・ファミリークラブの300名以上のメンバーが家族とともに本学「シリーン・ブラグ」キャンプを訪問し、モンゴルの暮らし・文化に触れました。さらにモンゴルの一般家庭にホームステイし、モンゴル人の生活様式に親しむ忘れられない時間を過ごしました。',
+      },
+      {
+        id: 'dormitory',
+        heading: '学生寮',
+        lead: '校舎I号館5階に、定員30名・8室の学生寮と1室のゲストルームを備えています。2024〜2025年度から、国内外の学生10名と日本語学科の外国人教員が入居を始めました。',
+        bullets: [
+          '本学に入学した学生全員に寮入居の機会を提供',
+          '希望者全員を収容できる十分な定員',
+          '授業外の時間は図書館、PC教室、Wi-Fiを開放',
+          '各部屋にトイレ・温水冷水シャワー・キッチンの完備',
+          '冷蔵庫、電気ケトル、電気コンロ、調理器具一式',
+          '全室に洗濯機を設置',
+        ],
+      },
+      {
+        id: 'volunteer',
+        heading: 'ボランティア活動',
+        lead: 'ソヨル・エルデム大学の教員・学生は、社会に良い影響を与え、人を支えるボランティア活動を継続的に行っています。',
+        bullets: [
+          '2024年 ― 「凍てつく寒さも温かい心で乗り越えよう」 ― ウランバートル市の警察・清掃・公共交通職員を支援する冬のキャンペーン',
+          '2025年 ― 「新しい命の春を歓迎しよう」 ― 出産期の遊牧民に新生児用毛布・産用布・産袋を届ける春のキャンペーン（3月4日）',
+        ],
+      },
+      {
+        id: 'research',
+        heading: '学生研究',
+        lead: '研究・調査センターは毎年学生研究大会を主催し、論文集を発行することで研究の質を高めるとともに、他大学の学生との連携拡大、共同研究の支援、学生サービスの質向上に取り組んでいます。',
+      },
+      {
+        id: 'scholarship',
+        heading: '奨学金・表彰',
+        lead: 'ソヨル・エルデムには学生の成果を称える体系的な仕組みがあります。2020年4月22日付学長令01/10の附則により、学習・成長活動を奨励する規程が定められています。',
+        bullets: [
+          'GPA3.6以上の学生に対する学期ごとの学長奨学金 ― GPAに応じて10万〜15万トゥグルグの免除',
+          '大陸・世界・国際大会で金・銀・銅メダルを獲得した学生への表彰',
+          '学内最優秀学生、モンゴル学生連盟リーダー、青少年功労金メダル',
+          '在モンゴル日本国大使館の1年100%奨学金（全国10名のうち1〜2名は本学から選出）',
+          '創立者奨学金 ― 学業成績と自発性に応じて',
+        ],
+        body:
+          '2020年のアジア選手権でモンゴルを代表し、成人部門で銀メダルを獲得した卒業生は、現在日本に留学しています。',
+      },
+      {
+        id: 'student-council',
+        heading: '学生会',
+        lead: 'ソヨル・エルデムの学生組織は2000年に発足しました。学生会は全学生を代表してその利益を守り、学業・規律・倫理を高める行事を教員と協力して企画・運営しています。',
+        bullets: [
+          '新入生歓迎会 ― 毎年9〜10月に新入生と「シリーン・ブラグ」またはボグド・ハーン山西の「シレート」へ遠足',
+          '学生研究大会 ― 秋または春に開催',
+          '文教祭（日本文化祭） ― 毎年12月開催',
+          '最優秀学生表彰＋年末祝賀会（12月10〜25日）',
+          '秋季バスケットボール選手権、チェス・チェッカー大会',
+          '翻訳・IT自主クラブ',
+        ],
+      },
+      {
+        id: 'graduates',
+        heading: '卒業生',
+        lead: '本学卒業生は、立派なモンゴル人としても日本人としても通用する高い倫理観と文化感覚を備えた社会人として成長し、多くの主要組織で指導的役割を果たしています。',
+        bullets: [
+          '在モンゴル日本国大使館',
+          '日本の成田国際空港',
+          'モンゴル日本人材開発センター',
+          '日本資本系企業',
+          'JICA国際協力機構',
+          '芸術・スポーツ分野で母国・日本において活躍する卒業生',
+        ],
+        body:
+          '対外関係の拡大に伴い、卒業生の約40%が日本で実習・留学・就業を経験しています。創立以来、延べ1,500名以上の学生を留学・実習・就業のため日本へ送り出してきました。',
+      },
+      {
+        id: 'japan-dance',
+        heading: '日本舞踊パレード',
+        lead: 'ソヨル・エルデム大学は熊本県の日本モンゴル友好協会と共同で、スフバートル広場にて日本舞踊パレードを開催しました。日本の伝統舞踊文化をモンゴル人に紹介するため、「おてもやんそーだいり（オテモヤン・ソードリ）」をソヨル・エルデムの学生が披露しました。',
+      },
+      {
+        id: 'rural-program',
+        heading: '非公式教育 ― 30周年',
+        lead: '1993年から2004年にかけて、トゥブ県全ソムで11年、ゴビ・アルタイ県のトンヒル・ダルヴィ・シャルガ3ソムで3年、ドルノド県のツァガーン＝オヴォー、バヤン＝オール、フルンブイル3ソムで3年にわたり、地方の学校から離れた遊牧民家庭の子供たちに対して、無償助成で「生活力」非公式通信教育プログラムを実施しました。本学による社会貢献の代表的事業として、30周年を迎えます。',
+      },
+    ],
+    bunkyosaiActs: [
+      { grade: '1年生', act: '日本語による合唱・グループ歌唱。' },
+      { grade: '2年生', act: '日本語による演劇上演。' },
+      { grade: '3年生', act: '日本語による自由テーマのスピーチ。' },
+      { grade: '4年生', act: '日本語による詩の朗読。' },
+    ],
+    annualHeading: '年間ハイライト',
+    testimonialHeading: '学生の声',
+    testimonials: [
+      {
+        quote:
+          '今年ソヨル・エルデムに入学しました。来年日本に行くことが決まり、とても嬉しいです。先生方の教え方やコミュニケーションの仕方が本当に素晴らしいです。',
+        name: 'ダラントゥイ',
+        age: 21,
+        program: '日本語通訳コース',
+      },
+      {
+        quote:
+          'インターンシッププログラムで日本に行き実習したことは、私の人生で最も大切な経験でした。有給で実習しながら日本の文化や習慣に触れられる機会は素晴らしいです。',
+        name: 'ゲレルト＝オド',
+        age: 23,
+        program: '観光経営',
+      },
+      {
+        quote:
+          'ソヨル・エルデムで学んだ4年間は私の人生の転機でした。今は日本企業でプログラマとして働いています。卒業生も在校生も、私たちは一つの家族です。',
+        name: 'ナイマンガル',
+        age: 26,
+        program: 'ソフトウェア工学 ― 卒業生',
+      },
+    ],
+  },
+};

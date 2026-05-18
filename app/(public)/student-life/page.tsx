@@ -21,30 +21,40 @@ import { Card } from '@/components/ui/Card';
 import { QuoteCard } from '@/components/ui/QuoteCard';
 import { AnnualEventSlideshow } from '@/components/sections/AnnualEventSlideshow';
 import { getSiteContentMap } from '@/lib/site-content';
-import {
-  BUNKYOSAI_GRADE_ACTS,
-  STUDENT_LIFE_CHAPTERS,
-  TESTIMONIALS,
-  type StudentChapter,
-} from '@/lib/content';
+import { STUDENT_LIFE_CHAPTERS, type StudentChapter } from '@/lib/content';
 import { cn } from '@/lib/utils';
+import { getServerLocale } from '@/lib/i18n/server';
+import { STUDENT_LIFE_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Оюутны амьдрал',
 };
 
-const SUB_NAV = [
-  { id: 'bunkyosai', label: 'Бүнкёосай', icon: Music },
-  { id: 'sport', label: 'Спорт, аялал', icon: Footprints },
-  { id: 'shiliin-bulag', label: 'Дадлага', icon: Briefcase },
-  { id: 'dormitory', label: 'Дотуур байр', icon: Home },
-  { id: 'volunteer', label: 'Сайн үйлс', icon: HandHeart },
-  { id: 'research', label: 'Эрдэм шинжилгээ', icon: Microscope },
-  { id: 'scholarship', label: 'Тэтгэлэг', icon: Award },
-  { id: 'student-council', label: 'Оюутны зөвлөл', icon: Users },
-  { id: 'graduates', label: 'Төгсөгчид', icon: GraduationCap },
-] as const;
+const SUB_NAV_ICONS = {
+  bunkyosai: Music,
+  sport: Footprints,
+  'shiliin-bulag': Briefcase,
+  dormitory: Home,
+  volunteer: HandHeart,
+  research: Microscope,
+  scholarship: Award,
+  'student-council': Users,
+  graduates: GraduationCap,
+} as const;
+
+// Sub-nav ordering — must match STUDENT_LIFE_CONTENT[locale].subNav.
+const SUB_NAV_IDS: (keyof typeof SUB_NAV_ICONS)[] = [
+  'bunkyosai',
+  'sport',
+  'shiliin-bulag',
+  'dormitory',
+  'volunteer',
+  'research',
+  'scholarship',
+  'student-council',
+  'graduates',
+];
 
 // Per-chapter accent icon shown beside the heading.
 const CHAPTER_ICON: Record<string, typeof BookOpen> = {
@@ -128,26 +138,6 @@ function ChapterSection({
             {chapter.body}
           </p>
         )}
-
-        {/* Bunkyosai gets a special grade-by-grade activity strip. */}
-        {chapter.id === 'bunkyosai' && (
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {BUNKYOSAI_GRADE_ACTS.map((g, idx) => (
-              <div
-                key={g.grade}
-                className="flex h-full flex-col gap-2 rounded-card border border-border-light bg-white p-5 shadow-card"
-              >
-                <span className="text-2xl font-bold leading-none text-gold-500">
-                  {String(idx + 1).padStart(2, '0')}
-                </span>
-                <p className="text-xs font-bold uppercase tracking-widest text-navy-900">
-                  {g.grade}
-                </p>
-                <p className="text-sm leading-relaxed text-text-body">{g.act}</p>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </Section>
   );
@@ -167,10 +157,31 @@ function parseTestimonialByline(line: string) {
 export default async function StudentLifePage() {
   // Build a quick map for sub-nav-driven jumps; chapters are rendered in
   // their natural order from STUDENT_LIFE_CHAPTERS.
-  const [banners, sl] = await Promise.all([
+  const [banners, sl, locale] = await Promise.all([
     getSiteContentMap('banners'),
     getSiteContentMap('student-life'),
+    getServerLocale(),
   ]);
+  const c = STUDENT_LIFE_CONTENT[locale];
+  // Admin-editable overrides only flow through for MN; EN / JP always
+  // resolve from the hand-written translation bundle so language
+  // switches never leak mixed-language strings.
+  const useSiteContent = locale === 'MN';
+
+  // Build the translated chapter list by joining STUDENT_LIFE_CHAPTERS
+  // (canonical order + the static fallback) with the localised bundle
+  // keyed by id.
+  const chapters: StudentChapter[] = STUDENT_LIFE_CHAPTERS.map((chap) => {
+    const tr = c.chapters.find((x) => x.id === chap.id);
+    if (!tr) return chap;
+    return {
+      ...chap,
+      heading: tr.heading,
+      lead: tr.lead,
+      bullets: tr.bullets ?? chap.bullets,
+      body: tr.body ?? chap.body,
+    };
+  });
 
   const annual = [1, 2, 3, 4]
     .map((i) => {
@@ -185,13 +196,14 @@ export default async function StudentLifePage() {
 
   // Per-chapter images + caption — admin-managed via the
   // `student-life.chapter.{id}.image.{1..4}` and `.caption` site-content keys.
+  // Media is language-agnostic so we read it for every locale.
   const chapterMedia = new Map<string, { images: string[]; caption: string }>(
-    STUDENT_LIFE_CHAPTERS.map((c) => {
+    STUDENT_LIFE_CHAPTERS.map((chap) => {
       const images = [1, 2, 3, 4]
-        .map((j) => sl.get(`student-life.chapter.${c.id}.image.${j}`) || '')
+        .map((j) => sl.get(`student-life.chapter.${chap.id}.image.${j}`) || '')
         .filter((url) => url.trim().length > 0);
-      const caption = sl.get(`student-life.chapter.${c.id}.caption`) || '';
-      return [c.id, { images, caption }];
+      const caption = sl.get(`student-life.chapter.${chap.id}.caption`) || '';
+      return [chap.id, { images, caption }];
     }),
   );
 
@@ -203,24 +215,26 @@ export default async function StudentLifePage() {
     photo: string | undefined;
   };
 
-  const testimonials = [1, 2, 3]
-    .map((i): Testimonial | null => {
-      const quote = sl.get(`student-life.testimonial.${i}.quote`) || '';
-      const byline = sl.get(`student-life.testimonial.${i}.byline`) || '';
-      const photo = sl.get(`student-life.testimonial.${i}.photo`) || '';
-      return quote && byline
-        ? {
-            quote,
-            ...parseTestimonialByline(byline),
-            photo: photo.trim().length > 0 ? photo : undefined,
-          }
-        : null;
-    })
-    .filter((t): t is Testimonial => t !== null);
+  // Admin-uploaded testimonials (with optional photos) only apply for MN.
+  // For EN / JP we use the hand-written translation bundle directly.
+  const adminTestimonials: Testimonial[] = useSiteContent
+    ? [1, 2, 3]
+        .map((i): Testimonial | null => {
+          const quote = sl.get(`student-life.testimonial.${i}.quote`) || '';
+          const byline = sl.get(`student-life.testimonial.${i}.byline`) || '';
+          const photo = sl.get(`student-life.testimonial.${i}.photo`) || '';
+          return quote && byline
+            ? {
+                quote,
+                ...parseTestimonialByline(byline),
+                photo: photo.trim().length > 0 ? photo : undefined,
+              }
+            : null;
+        })
+        .filter((t): t is Testimonial => t !== null)
+    : [];
 
-  // Fall back to static defaults from lib/content.ts only when admin has not
-  // filled the SiteContent rows.
-  const fallbackTestimonials: Testimonial[] = TESTIMONIALS.map((t) => ({
+  const localisedTestimonials: Testimonial[] = c.testimonials.map((t) => ({
     quote: t.quote,
     name: t.name,
     age: t.age,
@@ -228,15 +242,31 @@ export default async function StudentLifePage() {
     photo: undefined,
   }));
 
+  const testimonials =
+    adminTestimonials.length > 0 ? adminTestimonials : localisedTestimonials;
+
+  // Hero + intro: admin override wins for MN only.
+  const heroTitle =
+    (useSiteContent && sl.get('student-life.hero.title')) || c.heroTitle;
+  const heroSubtitle =
+    (useSiteContent && sl.get('student-life.hero.subtitle')) || c.heroSubtitle;
+  const introBody =
+    (useSiteContent && sl.get('student-life.intro.body')) || c.intro;
+  const annualHeading =
+    (useSiteContent && sl.get('student-life.annual.heading')) || c.annualHeading;
+  const testimonialHeading =
+    (useSiteContent && sl.get('student-life.testimonial.heading')) ||
+    c.testimonialHeading;
+
   return (
     <>
       <PageHero
-        title={sl.get('student-life.hero.title') || 'ОЮУТНЫ АМЬДРАЛ'}
-        subtitle={
-          sl.get('student-life.hero.subtitle') ||
-          'Бид бол гэр бүл — Соёл Эрдэмд хичээл бол зөвхөн зургаан жилийн нэг хэсэг.'
-        }
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Оюутны амьдрал' }]}
+        title={heroTitle}
+        subtitle={heroSubtitle}
+        breadcrumb={[
+          { label: c.breadcrumbHome, href: '/' },
+          { label: c.breadcrumbThis },
+        ]}
         backgroundImage={banners.get('page.student-life.banner') || undefined}
       />
 
@@ -244,8 +274,7 @@ export default async function StudentLifePage() {
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
           <p className="whitespace-pre-line text-base leading-relaxed text-text-body">
-            {sl.get('student-life.intro.body') ||
-              'Соёл Эрдэмд оюутан байх нь зөвхөн хичээл биш — энэ бол гэр бүл, найзууд, шинэ туршлага, амьдралын чухал үе юм. Бид клуб, спорт, соёлын арга хэмжээ, дадлага, дотуур байр, тэтгэлэг гээд бүх талаар дэмжлэг үзүүлдэг.'}
+            {introBody}
           </p>
         </div>
       </Section>
@@ -253,19 +282,19 @@ export default async function StudentLifePage() {
       {/* Sub-nav — sticky chip strip with quick anchors */}
       <div className="sticky top-20 z-30 border-y border-border-light bg-white/95 backdrop-blur">
         <div className="container-custom flex flex-nowrap items-center gap-2 overflow-x-auto py-3">
-          {SUB_NAV.map((item) => {
-            const Icon = item.icon;
+          {SUB_NAV_IDS.map((id) => {
+            const Icon = SUB_NAV_ICONS[id];
             return (
               <a
-                key={item.id}
-                href={`#${item.id}`}
+                key={id}
+                href={`#${id}`}
                 className={cn(
                   'inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border-light bg-white px-3 py-1.5 text-xs font-semibold text-text-body',
                   'transition-colors hover:border-navy-900 hover:text-navy-900',
                 )}
               >
                 <Icon className="h-3 w-3" />
-                {item.label}
+                {c.subNav[id]}
               </a>
             );
           })}
@@ -273,28 +302,42 @@ export default async function StudentLifePage() {
       </div>
 
       {/* All chapters in editor order */}
-      {STUDENT_LIFE_CHAPTERS.map((c) => {
-        const m = chapterMedia.get(c.id) ?? { images: [], caption: '' };
+      {chapters.map((chap) => {
+        const m = chapterMedia.get(chap.id) ?? { images: [], caption: '' };
         return (
-          <ChapterSection
-            key={c.id}
-            chapter={c}
-            images={m.images}
-            caption={m.caption}
-          />
+          <div key={chap.id}>
+            <ChapterSection chapter={chap} images={m.images} caption={m.caption} />
+            {/* Bunkyosai gets a special grade-by-grade activity strip. */}
+            {chap.id === 'bunkyosai' && (
+              <Section background={CREAM_IDS.has(chap.id) ? 'cream-soft' : 'white'} spacing="sm">
+                <div className="mx-auto max-w-4xl">
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {c.bunkyosaiActs.map((g, idx) => (
+                      <div
+                        key={g.grade}
+                        className="flex h-full flex-col gap-2 rounded-card border border-border-light bg-white p-5 shadow-card"
+                      >
+                        <span className="text-2xl font-bold leading-none text-gold-500">
+                          {String(idx + 1).padStart(2, '0')}
+                        </span>
+                        <p className="text-xs font-bold uppercase tracking-widest text-navy-900">
+                          {g.grade}
+                        </p>
+                        <p className="text-sm leading-relaxed text-text-body">{g.act}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Section>
+            )}
+          </div>
         );
       })}
 
       {/* Annual highlights row */}
       {annual.length > 0 && (
         <Section background="white">
-          <SectionTitle
-            title={
-              sl.get('student-life.annual.heading') ||
-              'ЖИЛ БҮРИЙН ОНЦЛОХ АРГА ХЭМЖЭЭ'
-            }
-            align="left"
-          />
+          <SectionTitle title={annualHeading} align="left" />
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {annual.map((a, idx) => (
               <Card
@@ -320,22 +363,18 @@ export default async function StudentLifePage() {
 
       {/* Testimonials */}
       <Section background="cream">
-        <SectionTitle
-          title={sl.get('student-life.testimonial.heading') || 'ОЮУТНУУДЫН ҮГ'}
-        />
+        <SectionTitle title={testimonialHeading} />
         <div className="grid gap-6 md:grid-cols-3">
-          {(testimonials.length > 0 ? testimonials : fallbackTestimonials).map(
-            (t, idx) => (
-              <QuoteCard
-                key={`${t.name}-${idx}`}
-                quote={t.quote}
-                name={t.name}
-                age={t.age}
-                program={t.program}
-                photo={t.photo}
-              />
-            ),
-          )}
+          {testimonials.map((t, idx) => (
+            <QuoteCard
+              key={`${t.name}-${idx}`}
+              quote={t.quote}
+              name={t.name}
+              age={t.age}
+              program={t.program}
+              photo={t.photo}
+            />
+          ))}
         </div>
       </Section>
 
