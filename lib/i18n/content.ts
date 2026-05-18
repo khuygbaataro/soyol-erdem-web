@@ -3085,3 +3085,1305 @@ export const HS_HOME_CONTENT: Record<Language, HsHomeBundle> = {
     bannerSecondaryCta: 'お問い合わせ',
   },
 };
+
+/* ───────────────────── High-school / about ───────────────────────── */
+
+interface HsAboutBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbUniversity: string;
+  breadcrumbHs: string;
+  breadcrumbThis: string;
+  introBadge: string;
+  introTitle1: string;
+  introTitle2: string;
+  introBody1: string;
+  introBody1Date: string;
+  introBody2: string;
+  posterLine1: string;
+  posterLine2: string;
+  posterLine3: string;
+  philosophyTitle: string;
+  philosophy: { label: string; title: string; body: string }[];
+  directorTitle: string;
+  directorName: string;
+  directorRole: string;
+  directorBody: { strongLead?: string; body: string }[];
+  stats: { value: string; label: string }[];
+  orgTitle: string;
+  orgSubtitle: string;
+  org: { heading: string; nodes: { title: string; subtitle?: string; people?: string[] }[] }[];
+  highlightsTitle: string;
+  highlights: { title: string; body: string }[];
+  partnershipsTitle: string;
+  partnershipsSubtitle: string;
+  partnerships: string[];
+  bannerTitle: string;
+  bannerSubtitle: string;
+  bannerCta: string;
+  bannerSecondary: string;
+}
+
+export const HS_ABOUT_CONTENT: Record<Language, HsAboutBundle> = {
+  MN: {
+    heroTitle: 'ТАНИЛЦУУЛГА',
+    heroSubtitle:
+      'Нийслэлийн Ерөнхий боловсролын Соёл Эрдэм сургууль — япон хэл, соёл, мэдээллийн технологийн чиглэлээр төрөлжсөн ахлах сургууль.',
+    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbHs: 'Ахлах сургууль',
+    breadcrumbThis: 'Танилцуулга',
+    introBadge: 'Японы хөрөнгө оруулалттай · 2023 онд байгуулагдсан',
+    introTitle1: 'Хичээнгүй суралцагч,',
+    introTitle2: 'Чадварлаг багш, Япон хэл, соёл',
+    introBody1:
+      'Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль нь {date}-нд япон улсын хөрөнгө оруулалттайгаар үүсгэн байгуулагдаж, 2023–2024 оны хичээлийн жилд 10–11 ангитайгаар, нийт мэргэжлийн 11 багш, 2 япон хэлний багштайгаар үйл ажиллагаагаа эхэлсэн.',
+    introBody1Date: '2023 оны 8-р сарын 30',
+    introBody2:
+      'Манай сургууль нь эх сургууль болох Соёл Эрдэм Дээд Сургуулийн 30+ жилийн япон судлалын баялаг туршлагад тулгуурлан япон хэл, соёл болон мэдээллийн технологид төрөлжсөн ерөнхий боловсролын сургалт явуулдаг.',
+    posterLine1: 'Senior High School',
+    posterLine2: 'Соёл Эрдэм',
+    posterLine3: 'Япон-Монголын боловсролын гүүр',
+    philosophyTitle: 'ЭРХЭМ ЗОРИЛГО',
+    philosophy: [
+      {
+        label: 'Алсын хараа',
+        title: 'Тэргүүлэгч төрөлжсөн ЕБС',
+        body: 'Япон хэл, соёл болон мэдээллийн технологийн чиглэлээр төрөлжсөн ерөнхий боловсролын тэргүүлэгч сургууль болох.',
+      },
+      {
+        label: 'Уриа',
+        title: 'Чадварлаг багш — Чанартай боловсрол',
+        body: 'Хичээнгүй суралцагч, чадварлаг багш, япон хэл, соёлын дээдээс тогтсон чанартай боловсрол.',
+      },
+      {
+        label: 'Үнэт зүйл',
+        title: 'С · Э · А · С',
+        body: 'С – Соёл уламжлалаа дээдэлсэн · Э – Эрдэм мэдлэгийг эрхэмлэсэн · А – Амьдрах арга ухаанд суралцсан · С – Сурлагын хоцрогдолгүй суралцагч бэлтгэх.',
+      },
+    ],
+    directorTitle: 'ЗАХИРЛЫН МЭНДЧИЛГЭЭ',
+    directorName: 'Д. Эрдэнэцэцэг',
+    directorRole: 'Захирал · Соёл Эрдэм Ахлах сургууль',
+    directorBody: [
+      {
+        body: 'Манай сургуулийг үүсгэн байгуулагч Макихара Соичи гуайны итгэл найдвар, япон улсын 100% хөрөнгө оруулалтаар 1996 онд эх сургууль Соёл Эрдэм Дээд Сургууль үүсэн байгуулагдсанаас хойш ~1500 төгсөгчийг бэлтгэж, тэдгээрийн 40 орчим хувь нь Япон улсад суралцаж, ажиллаж байна.',
+      },
+      {
+        body: 'Энэхүү 30 гаруй жилийн япон судлалын баялаг туршлагаа үндэс болгож, бид 2023 онд ахлах сургуулиа байгуулсан. Багш, ажилтан, сурагч, эцэг эх, хамтрагч байгууллагууд та бүхэндээ халуун мэндчилгээ дэвшүүлж байна.',
+      },
+      {
+        body: 'Бид олон улсын стандартын дагуу боловсрол олгож, монгол сэтгэлгээ, япон ёс, чанартай ажлын зан үйлийг хослуулсан мэргэжилтнүүдийг бэлтгэхийг эрхэмлэн ажилладаг. Соёл Эрдэм сурагч байх нь зөвхөн хичээл биш — нэг гэр бүлийн гишүүн болохыг хэлнэ.',
+      },
+    ],
+    stats: [
+      { value: '2023', label: 'Үүсгэн байгуулагдсан' },
+      { value: '100%', label: 'Мэргэжлийн багш' },
+      { value: '11+', label: 'Мэргэжлийн багш нар' },
+      { value: '2', label: 'Япон хэлний багш' },
+    ],
+    orgTitle: 'БҮТЭЦ ЗОХИОН БАЙГУУЛАЛТ',
+    orgSubtitle: 'Сургуулийн удирдлагын болон сургалтын нэгжүүд.',
+    org: [
+      {
+        heading: 'Удирдлага',
+        nodes: [
+          { title: 'Удирдах зөвлөлийн дарга', subtitle: 'Үүсгэн байгуулагч', people: ['Макихара Соичи'] },
+          { title: 'Захирал', people: ['Д. Эрдэнэцэцэг'] },
+        ],
+      },
+      {
+        heading: 'Үндсэн нэгжүүд',
+        nodes: [
+          { title: 'Гадаад харилцаа' },
+          { title: 'Сургалтын алба' },
+          { title: 'Аж ахуй' },
+        ],
+      },
+      {
+        heading: 'Сургалтын бүтэц',
+        nodes: [
+          { title: 'X анги', subtitle: '10-р анги' },
+          { title: 'XI анги', subtitle: '11-р анги' },
+          { title: 'XII анги', subtitle: '12-р анги' },
+        ],
+      },
+      {
+        heading: 'Дэмжих нэгжүүд',
+        nodes: [
+          { title: 'Хими, физик, мэдээллийн технологийн кабинет' },
+          { title: 'Номын сан' },
+          { title: 'Нягтлан бодогч' },
+          { title: 'Нярав' },
+        ],
+      },
+    ],
+    highlightsTitle: 'ОНЦЛОХ АРГА ХЭМЖЭЭ, АМЖИЛТ',
+    highlights: [
+      {
+        title: 'Бүнкёосай — Соёлын наадам',
+        body: 'Япон уламжлалт "Бүнкёосай" наадмыг 26 удаа дараалан амжилттай зохион байгуулж, нийт сурагч багштай хамтран япон соёлыг танилцуулдаг уламжлалтай.',
+      },
+      {
+        title: '"Алтан гадас" одон',
+        body: 'Математикийн багш С. Боожоо "Алтан гадас" одонгоор шагнагдсан.',
+      },
+      {
+        title: 'Япон хамтын ажиллагаа',
+        body: 'Япон улсын 30+ их, дээд сургууль, мэргэжлийн сургуультай хамтран ажилладаг өргөн сүлжээтэй.',
+      },
+      {
+        title: 'Шилийн булаг туристын бааз',
+        body: 'Зуны цуглаан, сурагч-багш хамтын дадлага, гадны зочин аяллагчтай уулзалт зэргийг зохион байгуулдаг.',
+      },
+    ],
+    partnershipsTitle: 'ЯПОН УЛСТАЙ ХАМТЫН АЖИЛЛАГАА',
+    partnershipsSubtitle:
+      'Эх сургууль Соёл Эрдэм ДС-ийн япон сүлжээтэй хамтран сурагчдад дараах боломжуудыг олгодог.',
+    partnerships: [
+      '50–100% хүртэлх тэтгэлэгт хөтөлбөрүүд',
+      'Япон руу хэлний практик дадлага (сард ~2.5 сая төгрөгийн цалинтай)',
+      '2+2 болон 1+3 солилцооны хөтөлбөр',
+      'Япон засгийн газрын Монбукагакүшо тэтгэлэг',
+      'Оберлин их сургуультай байгаль-экологийн жил тутмын дадлага',
+      'Риккёо, Чюоүгакүин их сургуулиудтай судалгааны хамтын ажиллагаа',
+    ],
+    bannerTitle: 'Манай ахлах сургуульд элсэх үү?',
+    bannerSubtitle: 'Япон хэл, соёл, мэдээллийн технологийг хосолсон чанартай боловсрол.',
+    bannerCta: 'Элсэлтийн мэдээлэл',
+    bannerSecondary: 'Холбоо барих',
+  },
+  EN: {
+    heroTitle: 'ABOUT',
+    heroSubtitle:
+      'Soyol Erdem Senior High School — a specialised high school in Japanese language, culture and information technology.',
+    breadcrumbUniversity: 'University',
+    breadcrumbHs: 'High school',
+    breadcrumbThis: 'About',
+    introBadge: 'Japanese-funded · established 2023',
+    introTitle1: 'Diligent learners,',
+    introTitle2: 'skilled teachers, Japanese language & culture',
+    introBody1:
+      'Soyol Erdem Senior High School was founded on {date} with Japanese investment and opened its 2023–2024 academic year with grade 10 and 11 classes, 11 subject teachers and 2 Japanese-language teachers.',
+    introBody1Date: '30 August 2023',
+    introBody2:
+      'Building on the 30+ years of Japanese-studies expertise of our parent institution, Soyol Erdem University, our high-school programme specialises in Japanese language, culture and information technology while delivering the full national curriculum.',
+    posterLine1: 'Senior High School',
+    posterLine2: 'Soyol Erdem',
+    posterLine3: 'A Japan–Mongolia education bridge',
+    philosophyTitle: 'MISSION & VISION',
+    philosophy: [
+      {
+        label: 'Vision',
+        title: 'A leading specialised high school',
+        body: 'To be the leading senior high school specialised in Japanese language, culture and IT.',
+      },
+      {
+        label: 'Motto',
+        title: 'Skilled teachers — quality education',
+        body: 'Diligent learners, skilled teachers, and quality education rooted in Japanese language and culture.',
+      },
+      {
+        label: 'Values',
+        title: 'S · E · A · S',
+        body: 'S — Honouring our cultural heritage · E — Esteeming knowledge and learning · A — Apprenticing life skills · S — Studying without falling behind.',
+      },
+    ],
+    directorTitle: "DIRECTOR'S MESSAGE",
+    directorName: 'D. Erdenetsetseg',
+    directorRole: 'Director · Soyol Erdem Senior High School',
+    directorBody: [
+      {
+        body: 'Carrying forward the trust placed in our founder, Mr Soichi Makihara, our parent institution Soyol Erdem University was founded in 1996 with 100% Japanese investment. Since then we have prepared roughly 1,500 graduates, around 40% of whom go on to study or work in Japan.',
+      },
+      {
+        body: 'Building on this 30-year tradition of Japanese-studies excellence, we founded our high school in 2023. To our teachers, staff, students, parents and partner institutions — a warm welcome.',
+      },
+      {
+        body: 'We deliver education to international standards and aim to develop young professionals who combine a Mongolian outlook with Japanese discipline and a quality work ethic. To be a Soyol Erdem student is not just to attend class — it is to be part of one family.',
+      },
+    ],
+    stats: [
+      { value: '2023', label: 'Year founded' },
+      { value: '100%', label: 'Qualified faculty' },
+      { value: '11+', label: 'Subject teachers' },
+      { value: '2', label: 'Japanese-language teachers' },
+    ],
+    orgTitle: 'ORGANISATIONAL STRUCTURE',
+    orgSubtitle: 'Our leadership and academic units.',
+    org: [
+      {
+        heading: 'Leadership',
+        nodes: [
+          { title: 'Chair of the Board', subtitle: 'Founder', people: ['Soichi Makihara'] },
+          { title: 'Director', people: ['D. Erdenetsetseg'] },
+        ],
+      },
+      {
+        heading: 'Core units',
+        nodes: [
+          { title: 'International affairs' },
+          { title: 'Academic office' },
+          { title: 'Operations' },
+        ],
+      },
+      {
+        heading: 'Academic structure',
+        nodes: [
+          { title: 'Class X', subtitle: 'Grade 10' },
+          { title: 'Class XI', subtitle: 'Grade 11' },
+          { title: 'Class XII', subtitle: 'Grade 12' },
+        ],
+      },
+      {
+        heading: 'Support units',
+        nodes: [
+          { title: 'Chemistry, physics & IT labs' },
+          { title: 'Library' },
+          { title: 'Accountant' },
+          { title: 'Stock manager' },
+        ],
+      },
+    ],
+    highlightsTitle: 'EVENTS & ACHIEVEMENTS',
+    highlights: [
+      {
+        title: 'Bunkyosai — culture festival',
+        body: 'The traditional Japanese "Bunkyosai" festival has been staged successfully 26 years in a row, with all students and teachers introducing Japanese culture together.',
+      },
+      {
+        title: '"Polaris" national medal',
+        body: 'Mathematics teacher S. Boozoo was awarded the "Polaris" national medal.',
+      },
+      {
+        title: 'Cooperation with Japan',
+        body: 'A broad network of cooperation with 30+ Japanese universities, colleges and vocational schools.',
+      },
+      {
+        title: 'Shiliin Bulag tourist camp',
+        body: 'The site hosts summer gatherings, joint student–faculty placements and meetings with international guests.',
+      },
+    ],
+    partnershipsTitle: 'COOPERATION WITH JAPAN',
+    partnershipsSubtitle:
+      "In partnership with the Japanese network of our parent institution, Soyol Erdem University, we offer students the following opportunities.",
+    partnerships: [
+      'Scholarships covering 50–100% of tuition',
+      'Paid language placements in Japan (~MNT 2.5M / month)',
+      '2+2 and 1+3 exchange pathways',
+      'MEXT (Monbukagakusho) scholarships from the Japanese government',
+      'Annual environmental fieldwork with J.F. Oberlin University',
+      'Research cooperation with Rikkyo and Chuo Gakuin universities',
+    ],
+    bannerTitle: 'Considering enrolling at our high school?',
+    bannerSubtitle: 'Quality education combining Japanese language, culture and IT.',
+    bannerCta: 'Admission details',
+    bannerSecondary: 'Contact',
+  },
+  JP: {
+    heroTitle: '学校紹介',
+    heroSubtitle:
+      'ソヨル・エルデム高等学校 ― 日本語・日本文化・情報技術に特化した高等学校。',
+    breadcrumbUniversity: '大学',
+    breadcrumbHs: '高等学校',
+    breadcrumbThis: '学校紹介',
+    introBadge: '日本資本 ・ 2023年設立',
+    introTitle1: '勤勉な学習者と',
+    introTitle2: '熟練の教員、日本語・日本文化',
+    introBody1:
+      'ソヨル・エルデム高等学校は{date}、日本資本のもとに設立され、2023〜2024年度に10年・11年生クラスを開設、教科専任教員11名、日本語教員2名で活動を開始しました。',
+    introBody1Date: '2023年8月30日',
+    introBody2:
+      '母体であるソヨル・エルデム大学が30年以上にわたり培ってきた日本研究の知見を基盤に、日本語・日本文化・情報技術に特化しつつ、国の正規カリキュラムを提供しています。',
+    posterLine1: 'Senior High School',
+    posterLine2: 'ソヨル・エルデム',
+    posterLine3: '日本とモンゴルを結ぶ教育の架け橋',
+    philosophyTitle: 'ミッションとビジョン',
+    philosophy: [
+      {
+        label: 'ビジョン',
+        title: '専門特化型のリーディング校',
+        body: '日本語・日本文化・ITに特化した高等学校として、リーディング校となることを目指します。',
+      },
+      {
+        label: 'スローガン',
+        title: '熟練の教員 ― 質の高い教育',
+        body: '勤勉な学習者と熟練の教員により、日本語・日本文化に根ざした質の高い教育を提供します。',
+      },
+      {
+        label: '価値観',
+        title: 'С・Э・А・С',
+        body: 'С ― 文化的伝統を重んじる ・ Э ― 学問・知識を尊ぶ ・ А ― 生きる力を身につける ・ С ― 学業に遅れない学習者を育てる。',
+      },
+    ],
+    directorTitle: '校長挨拶',
+    directorName: 'Д.エルデネツェツェグ',
+    directorRole: '校長 ・ ソヨル・エルデム高等学校',
+    directorBody: [
+      {
+        body: '本校の設立は、創立者である牧原荘一氏のご信頼と、日本からの100%出資のもと、1996年に母体ソヨル・エルデム大学が誕生したことに端を発します。それ以来、約1,500名の卒業生を輩出し、その約40%が日本で学び、働いています。',
+      },
+      {
+        body: 'この30余年にわたる日本研究の蓄積を礎に、2023年に高等学校を設立しました。教職員、生徒、保護者、提携機関の皆様に心より歓迎のご挨拶を申し上げます。',
+      },
+      {
+        body: '私たちは国際基準に準拠した教育を提供し、モンゴル人らしい思考と日本人らしい礼節、質の高い職業観を兼ね備えた人材の育成を目指しています。ソヨル・エルデムの生徒であるということは、授業を受けることだけではなく、一つの家族の一員となることを意味します。',
+      },
+    ],
+    stats: [
+      { value: '2023', label: '設立年' },
+      { value: '100%', label: '専門教員' },
+      { value: '11+', label: '教科専任教員' },
+      { value: '2', label: '日本語教員' },
+    ],
+    orgTitle: '組織構成',
+    orgSubtitle: '本校の運営および教育担当部署。',
+    org: [
+      {
+        heading: '運営',
+        nodes: [
+          { title: '理事長', subtitle: '創立者', people: ['牧原 荘一'] },
+          { title: '校長', people: ['Д.エルデネツェツェグ'] },
+        ],
+      },
+      {
+        heading: '主要部署',
+        nodes: [
+          { title: '国際交流' },
+          { title: '教務課' },
+          { title: '総務' },
+        ],
+      },
+      {
+        heading: '学年構成',
+        nodes: [
+          { title: 'X組', subtitle: '10年生' },
+          { title: 'XI組', subtitle: '11年生' },
+          { title: 'XII組', subtitle: '12年生' },
+        ],
+      },
+      {
+        heading: 'サポート部署',
+        nodes: [
+          { title: '理科・情報技術実験室' },
+          { title: '図書館' },
+          { title: '経理' },
+          { title: '管理' },
+        ],
+      },
+    ],
+    highlightsTitle: '特色ある行事・実績',
+    highlights: [
+      {
+        title: '文教祭 ― 文化祭',
+        body: '日本伝統の「文教祭」を26年連続で成功裏に開催し、全生徒・全教員で日本文化を紹介する伝統となっています。',
+      },
+      {
+        title: '「北極星」勲章',
+        body: '数学教員 С.ボーゾー氏が「北極星」勲章を受章。',
+      },
+      {
+        title: '日本との連携',
+        body: '日本の30以上の大学・短大・専門学校との幅広い協力ネットワークを有しています。',
+      },
+      {
+        title: 'シリーン・ブラグ観光キャンプ',
+        body: '夏期合宿、生徒・教員合同実習、海外からのゲストとの交流などを企画しています。',
+      },
+    ],
+    partnershipsTitle: '日本との連携',
+    partnershipsSubtitle:
+      '母体ソヨル・エルデム大学の日本ネットワークと連携し、生徒に下記の機会を提供しています。',
+    partnerships: [
+      '学費の50〜100%をカバーする奨学金プログラム',
+      '日本での有給語学実習（月収約2,500,000トゥグルグ）',
+      '2+2および1+3交換プログラム',
+      '日本政府文部科学省（MEXT）奨学金',
+      '桜美林大学との毎年の環境エコロジー実習',
+      '立教大学・中央学院大学との研究連携',
+    ],
+    bannerTitle: '本校への入学をご検討中ですか？',
+    bannerSubtitle: '日本語・日本文化・ITを融合した質の高い教育。',
+    bannerCta: '入学案内',
+    bannerSecondary: 'お問い合わせ',
+  },
+};
+
+/* ───────────────────── High-school / programs ────────────────────── */
+
+interface HsProgramsBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbUniversity: string;
+  breadcrumbHs: string;
+  breadcrumbThis: string;
+  structureTitle: string;
+  structureSubtitle: string;
+  structure: { title: string; description: string }[];
+  jpBadge: string;
+  jpTitle: string;
+  jpBody: string;
+  jpLevels: { tag: string; title: string; bullets: string[] }[];
+  itBadge: string;
+  itTitle: string;
+  itBody: string;
+  itTopics: { title: string; body: string }[];
+  teachersBadge: string;
+  teachersTitle: string;
+  teachersBody: string;
+  teachers: { name: string; role: string; note: string }[];
+  teacherStats: { value: string; label: string }[];
+  resourcesTitle: string;
+  resources: { title: string; body: string }[];
+  bannerTitle: string;
+  bannerSubtitle: string;
+  bannerCta: string;
+  bannerSecondary: string;
+}
+
+export const HS_PROGRAMS_CONTENT: Record<Language, HsProgramsBundle> = {
+  MN: {
+    heroTitle: 'СУРГАЛТ',
+    heroSubtitle: 'Ерөнхий боловсролын суурь + Япон хэл, соёл + Төрөлжсөн мэдээллийн технологи.',
+    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbHs: 'Ахлах сургууль',
+    breadcrumbThis: 'Сургалт',
+    structureTitle: 'СУРГАЛТЫН БҮТЭЦ',
+    structureSubtitle:
+      'Ерөнхий боловсролын тогтсон стандартыг япон хэл, соёл болон IT-ийн төрөлжсөн хөтөлбөртэй хослуулсан.',
+    structure: [
+      {
+        title: 'Ерөнхий боловсролын суурь',
+        description:
+          'Боловсролын тухай хуулийн дагуу 10–12 анги бүрэн дунд боловсролын стандарт хөтөлбөр — Монгол хэл-уран зохиол, Математик, Хими, Физик, Биологи, Газарзүй, Түүх, Иргэний боловсрол, Биеийн тамир.',
+      },
+      {
+        title: 'Япон хэл, соёл',
+        description:
+          '10–12 ангид JLPT N5 → N3 түвшинд хүрэхүйц хичээл. Япон ёс заншил, нийгмийн харилцаа, соёлын онцлогийг танилцуулсан хичээлүүд.',
+      },
+      {
+        title: 'Төрөлжсөн IT',
+        description:
+          'Алгоритм, өгөгдлийн бүтэц, програмчлал, веб болон AI-ийн үндэс — сурагч төвтэй практикаар суралцана.',
+      },
+    ],
+    jpBadge: 'Япон хэл, соёл',
+    jpTitle: 'Япон хэлний түвшинт хөтөлбөр',
+    jpBody:
+      'Сургуулийн төгсөгчид Япон руу үргэлжлүүлэн суралцах, япон байгууллагад ажиллах түвшинд хүрэхэд тулгуурлан 3 жилд JLPT N5-аас N3-N2 хүртэлх түвшинд хүргэх системтэй хөтөлбөртэй. Долоо хоногт 4 цагийн япон хэлний хичээл явагдана.',
+    jpLevels: [
+      {
+        tag: '10-р анги',
+        title: 'JLPT N5 (Эхлэн суралцагч)',
+        bullets: [
+          'Хирагана, катакана үсэг бичих, унших',
+          'Үндсэн 100+ кандзи',
+          'Энгийн өдөр тутмын хэллэг (өөрийгөө танилцуулах, цаг, хоол)',
+          'Япон ёс заншлын танилцуулга, бүх хичээлд 4 цаг/долоо хоног',
+        ],
+      },
+      {
+        tag: '11-р анги',
+        title: 'JLPT N4 (Дунд эхлэл)',
+        bullets: [
+          'Кандзи 300+',
+          'Илүү нарийвчилсан грамматик, өнгөрсөн-ирээдүй цаг хэлбэр',
+          'Япон уран зохиолоос ишлэл, дуу, кино',
+          'Хичээлээс гадуур "Bunkyousai" наадамд оролцох',
+        ],
+      },
+      {
+        tag: '12-р анги',
+        title: 'JLPT N3 → N2 түвшин',
+        bullets: [
+          'Кандзи 650+',
+          'Япон руу солилцоонд явах түвшинд бичгийн болон ярианы орчуулга',
+          'Япон их сургуулийн элсэлтийн шалгалтын дасгал',
+          'Олон улсын эрх бүхий шалгалтаар чадвараа баталгаажуулна',
+        ],
+      },
+    ],
+    itBadge: 'Төрөлжсөн IT',
+    itTitle: 'Мэдээллийн технологийн төрөлжсөн анги',
+    itBody:
+      '10–11 ангид сурагч төвтэй, оролцоонд тулгуурласан аргачлалаар программчлал, веб технологи, AI, өгөгдлийн шинжилгээний ойлголтуудыг тус сургуулийн дэргэдэх IT-Digital-AI мэргэжлийн сургуультай хамтран заана. Эх сургууль СЭДС-ын Программ хангамжийн мэргэжилтэй 2+2 хөтөлбөрөөр шууд үргэлжлүүлэн суралцаж болно.',
+    itTopics: [
+      { title: 'Алгоритм ба програмчлал', body: 'Логик сэтгэлгээний үндэс, Python/JavaScript хэлээр практик дасгал.' },
+      { title: 'Өгөгдлийн бүтэц', body: 'Жагсаалт, харгалзаа, мод болон график бүтцийн ойлголт.' },
+      { title: 'Веб технологи', body: 'HTML, CSS, JavaScript ашиглан төсөл хийж, хэрэглэгчийн интерфейс зохиох.' },
+      { title: 'AI болон өгөгдөл', body: 'Хиймэл оюун ухааны үндсэн ойлголт, өгөгдлийн шинжилгээний эхлэн суралцах хичээл.' },
+    ],
+    teachersBadge: 'Багш нар',
+    teachersTitle: 'Мэргэжлийн багш нар',
+    teachersBody:
+      'Бид мэргэжлийн ур чадвар, тогтсон арга зүй, япон хэл соёлын мэдлэг хосолсон чанартай багшийн бүрэлдэхүүнтэй. 100% багш нар нь мэргэжлийн үнэмлэхтэй, олон жилийн туршлагатай.',
+    teachers: [
+      { name: 'С. Боожоо', role: 'Математикийн багш', note: '"Алтан гадас" одонгоор шагнагдсан' },
+      { name: 'Япон хэлний 2 багш', role: 'Эх хэлтэн / JLPT N1', note: 'Япон-Монголын соёл, орчуулга судлал' },
+      { name: '11+ мэргэжлийн багш', role: 'Ерөнхий боловсрол', note: 'Боловсролын магистр зэрэгтэй' },
+    ],
+    teacherStats: [
+      { value: '11+', label: 'Мэргэжлийн багш' },
+      { value: '2', label: 'Япон хэлний багш' },
+      { value: '100%', label: 'Мэргэжлийн үнэмлэхтэй' },
+      { value: '50+', label: 'Япон зочин багш (СЭДС)' },
+    ],
+    resourcesTitle: 'СУРГАЛТЫН ОРЧИН',
+    resources: [
+      { title: 'IT кабинет', body: 'Орчин үеийн компьютер, дэлгэц, сүлжээний техник хангамжтай суралцагч төвтэй кабинет.' },
+      { title: 'Номын сан', body: 'Япон, монгол хэл дээрх 5000+ номтой; сурагчид JLPT номон материалаар бэлтгэнэ.' },
+      { title: 'Хими, физикийн лаборатори', body: 'Бодит туршилт хийх боломжтой шинжлэх ухааны лабораторийн өрөөнүүдтэй.' },
+    ],
+    bannerTitle: 'Япон хэл, IT, чанартай боловсрол',
+    bannerSubtitle: '2026-2027 оны хичээлийн жилийн элсэлт нээлттэй.',
+    bannerCta: 'Элсэлтийн мэдээлэл',
+    bannerSecondary: 'Холбоо барих',
+  },
+  EN: {
+    heroTitle: 'PROGRAMMES',
+    heroSubtitle: 'The full national curriculum + Japanese language and culture + specialised IT.',
+    breadcrumbUniversity: 'University',
+    breadcrumbHs: 'High school',
+    breadcrumbThis: 'Programmes',
+    structureTitle: 'PROGRAMME STRUCTURE',
+    structureSubtitle:
+      'The national curriculum combined with our specialised Japanese-language, cultural and IT tracks.',
+    structure: [
+      {
+        title: 'National curriculum',
+        description:
+          "The full grade 10–12 secondary curriculum required by Mongolia's Education Law — Mongolian language and literature, mathematics, chemistry, physics, biology, geography, history, civics and physical education.",
+      },
+      {
+        title: 'Japanese language & culture',
+        description:
+          'Classes designed to reach JLPT N5 → N3 across grades 10–12. Lessons that introduce Japanese customs, social etiquette and cultural specifics.',
+      },
+      {
+        title: 'Specialised IT',
+        description:
+          'Algorithms, data structures, programming, the web and the fundamentals of AI — taught through hands-on, student-centred practice.',
+      },
+    ],
+    jpBadge: 'Japanese language & culture',
+    jpTitle: 'Tiered Japanese-language programme',
+    jpBody:
+      'Built around the level our graduates need to continue their studies in Japan or work for Japanese organisations, the programme systematically moves students from JLPT N5 to N3–N2 over three years. Japanese-language classes run 4 hours per week.',
+    jpLevels: [
+      {
+        tag: 'Grade 10',
+        title: 'JLPT N5 (beginner)',
+        bullets: [
+          'Reading and writing hiragana and katakana',
+          'Core 100+ kanji',
+          'Everyday phrases (introducing yourself, telling the time, food)',
+          'An introduction to Japanese customs, 4 hours / week in every class',
+        ],
+      },
+      {
+        tag: 'Grade 11',
+        title: 'JLPT N4 (lower-intermediate)',
+        bullets: [
+          '300+ kanji',
+          'More detailed grammar, past- and future-tense forms',
+          'Excerpts of Japanese literature, songs and films',
+          'Participation in the extracurricular "Bunkyosai" festival',
+        ],
+      },
+      {
+        tag: 'Grade 12',
+        title: 'JLPT N3 → N2',
+        bullets: [
+          '650+ kanji',
+          'Written and spoken translation at exchange-ready level',
+          'Practice for Japanese university entrance exams',
+          'Certification through internationally recognised exams',
+        ],
+      },
+    ],
+    itBadge: 'Specialised IT',
+    itTitle: 'Specialised information-technology track',
+    itBody:
+      'In grades 10–11, we teach programming, web technologies, AI and data-analytics fundamentals through a student-centred, participatory approach — co-delivered with our affiliated IT-Digital-AI vocational school. Students can then continue directly into our parent institution\'s Software Engineering programme via a 2+2 pathway.',
+    itTopics: [
+      { title: 'Algorithms & programming', body: 'Foundations of logical reasoning with hands-on Python / JavaScript practice.' },
+      { title: 'Data structures', body: 'Lists, maps, trees and graph structures.' },
+      { title: 'Web technologies', body: 'Building projects in HTML, CSS and JavaScript and designing user interfaces.' },
+      { title: 'AI & data', body: 'An introduction to artificial intelligence and to data-analytics fundamentals.' },
+    ],
+    teachersBadge: 'Faculty',
+    teachersTitle: 'Our subject teachers',
+    teachersBody:
+      'We combine professional expertise, established teaching method and Japanese language and cultural depth. 100% of our teaching staff are certified professionals with years of classroom experience.',
+    teachers: [
+      { name: 'S. Boozoo', role: 'Mathematics teacher', note: 'Awarded the "Polaris" national medal' },
+      { name: '2 Japanese-language teachers', role: 'Native speakers / JLPT N1', note: 'Japan–Mongolia cultural & translation studies' },
+      { name: '11+ subject teachers', role: 'National curriculum', note: "Master's degrees in education" },
+    ],
+    teacherStats: [
+      { value: '11+', label: 'Subject teachers' },
+      { value: '2', label: 'Japanese-language teachers' },
+      { value: '100%', label: 'Certified faculty' },
+      { value: '50+', label: 'Visiting Japan faculty (parent uni.)' },
+    ],
+    resourcesTitle: 'OUR FACILITIES',
+    resources: [
+      { title: 'IT lab', body: 'A student-centred IT classroom with modern computers, displays and networking equipment.' },
+      { title: 'Library', body: '5,000+ books in Japanese and Mongolian; students prepare for the JLPT with dedicated study materials.' },
+      { title: 'Chemistry & physics labs', body: 'Science labs equipped for hands-on experiments.' },
+    ],
+    bannerTitle: 'Japanese language, IT, quality education',
+    bannerSubtitle: 'Admissions are open for the 2026–2027 academic year.',
+    bannerCta: 'Admission details',
+    bannerSecondary: 'Contact',
+  },
+  JP: {
+    heroTitle: 'プログラム',
+    heroSubtitle: '国の正規カリキュラム ＋ 日本語・日本文化 ＋ 専門情報技術。',
+    breadcrumbUniversity: '大学',
+    breadcrumbHs: '高等学校',
+    breadcrumbThis: 'プログラム',
+    structureTitle: 'プログラム構成',
+    structureSubtitle:
+      '国の正規カリキュラムに、日本語・日本文化およびIT専門コースを組み合わせています。',
+    structure: [
+      {
+        title: '正規カリキュラム',
+        description:
+          'モンゴル教育法に基づく10〜12年生の正規カリキュラム ― モンゴル語・文学、数学、化学、物理、生物、地理、歴史、市民教育、体育。',
+      },
+      {
+        title: '日本語・日本文化',
+        description:
+          '10〜12年生でJLPT N5→N3レベルを目指す授業を実施。日本の習慣、社会作法、文化的特色を紹介する授業も併設。',
+      },
+      {
+        title: '専門IT',
+        description:
+          'アルゴリズム、データ構造、プログラミング、Web、AIの基礎を、生徒中心の実践型授業で学習します。',
+      },
+    ],
+    jpBadge: '日本語・日本文化',
+    jpTitle: '日本語レベル別プログラム',
+    jpBody:
+      '卒業生が日本へ進学し、または日本企業で勤務できるレベルに到達することを基準に、3年間でJLPT N5からN3〜N2まで到達する体系的なプログラムを提供します。週4時間の日本語授業を実施します。',
+    jpLevels: [
+      {
+        tag: '10年生',
+        title: 'JLPT N5（初級）',
+        bullets: [
+          'ひらがな・カタカナの読み書き',
+          '基本100以上の漢字',
+          '日常会話（自己紹介、時間、食事）',
+          '日本の習慣を紹介、全授業で週4時間',
+        ],
+      },
+      {
+        tag: '11年生',
+        title: 'JLPT N4（初中級）',
+        bullets: [
+          '漢字300以上',
+          'より詳細な文法、過去・未来形',
+          '日本文学の抜粋、歌、映画',
+          '課外行事「文教祭」への参加',
+        ],
+      },
+      {
+        tag: '12年生',
+        title: 'JLPT N3 → N2',
+        bullets: [
+          '漢字650以上',
+          '交換留学レベルの文書・会話翻訳',
+          '日本の大学入試対策',
+          '国際認証試験で能力を証明',
+        ],
+      },
+    ],
+    itBadge: '専門IT',
+    itTitle: '情報技術専門コース',
+    itBody:
+      '10〜11年生で、生徒中心・参加型の手法により、プログラミング、Web技術、AI、データ分析の概念を、附属のIT-Digital-AI専門学校と連携して教えます。卒業後は母体ソヨル・エルデム大学のソフトウェア工学専攻に2+2プログラムで進学することも可能です。',
+    itTopics: [
+      { title: 'アルゴリズムとプログラミング', body: '論理的思考の基礎を、Python・JavaScriptを用いた実践で学習。' },
+      { title: 'データ構造', body: 'リスト、辞書、ツリー、グラフ構造の概念。' },
+      { title: 'Web技術', body: 'HTML・CSS・JavaScriptでプロジェクトを制作し、ユーザインタフェースを設計。' },
+      { title: 'AIとデータ', body: '人工知能の基礎概念、データ分析の入門授業。' },
+    ],
+    teachersBadge: '教員',
+    teachersTitle: '専門教員',
+    teachersBody:
+      '専門技能、確立された指導法、日本語・日本文化の知識を兼ね備えた教員陣を擁しています。教員の100%が専門資格を有し、長年の教育経験を持ちます。',
+    teachers: [
+      { name: 'С.ボーゾー', role: '数学教員', note: '「北極星」勲章受章' },
+      { name: '日本語教員 2名', role: 'ネイティブ ・ JLPT N1', note: '日蒙文化・翻訳研究' },
+      { name: '11+ 教科専任教員', role: '正規カリキュラム', note: '教育修士号取得' },
+    ],
+    teacherStats: [
+      { value: '11+', label: '教科専任教員' },
+      { value: '2', label: '日本語教員' },
+      { value: '100%', label: '有資格教員' },
+      { value: '50+', label: '日本人客員教員（母体大学）' },
+    ],
+    resourcesTitle: '学習環境',
+    resources: [
+      { title: 'IT教室', body: '最新のPC・ディスプレイ・ネットワーク機材を備えた、生徒中心のIT教室。' },
+      { title: '図書館', body: '日本語・モンゴル語の蔵書5,000冊以上。生徒はJLPT教材で学習。' },
+      { title: '化学・物理実験室', body: '実験を実施できる理科実験室を完備。' },
+    ],
+    bannerTitle: '日本語・IT・質の高い教育',
+    bannerSubtitle: '2026〜2027年度入学受付中。',
+    bannerCta: '入学案内',
+    bannerSecondary: 'お問い合わせ',
+  },
+};
+
+/* ───────────────────── High-school / admission ───────────────────── */
+
+interface HsAdmissionBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbUniversity: string;
+  breadcrumbHs: string;
+  breadcrumbThis: string;
+  introBadge: string;
+  introTitle: string;
+  introBody: string;
+  infoBox: {
+    enrolLabel: string;
+    enrolValue: string;
+    yearLabel: string;
+    yearValue: string;
+    formatLabel: string;
+    formatValue: string;
+    trackLabel: string;
+    trackValue: string;
+  };
+  applyCardTitle: string;
+  applyCardBody: string;
+  applyCardCta: string;
+  directContactEyebrow: string;
+  phoneLabel: string;
+  mobileLabel: string;
+  emailLabel: string;
+  requirementsTitle: string;
+  requirements: { title: string; body: string }[];
+  stepsTitle: string;
+  stepsSubtitle: string;
+  steps: { title: string; body: string }[];
+  docsTitle: string;
+  docs: string[];
+  timelineTitle: string;
+  timeline: { date: string; event: string }[];
+  tuitionTitle: string;
+  tuitionBody: string;
+  tuitionPhoneCta: string;
+  tuitionContactCta: string;
+  formSectionTitle: string;
+  formSectionSubtitle: string;
+  bannerTitle: string;
+  bannerCta: string;
+  bannerSecondary: string;
+  /** Form labels passed to the HighSchoolAdmissionForm client component. */
+  form: {
+    studentSection: string;
+    studentNameLabel: string;
+    studentNamePh: string;
+    studentBirthLabel: string;
+    studentBirthPh: string;
+    currentSchoolLabel: string;
+    currentSchoolPh: string;
+    currentGpaLabel: string;
+    currentGpaPh: string;
+    trackLabel: string;
+    trackUndecided: string;
+    trackJapan: string;
+    trackIt: string;
+    trackOther: string;
+    guardianSection: string;
+    guardianNameLabel: string;
+    guardianNamePh: string;
+    guardianRelLabel: string;
+    guardianRelPh: string;
+    phoneLabel: string;
+    phonePh: string;
+    emailLabel: string;
+    emailPh: string;
+    messageLabel: string;
+    messagePh: string;
+    submitCta: string;
+    errorSubmit: string;
+    errorNetwork: string;
+    successTitle: string;
+    successBody: string;
+    successAgain: string;
+    requiredNote: string;
+  };
+}
+
+export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
+  MN: {
+    heroTitle: 'ЭЛСЭЛТ',
+    heroSubtitle: 'Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн 10-р ангид элсэх журам, шаардлага.',
+    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbHs: 'Ахлах сургууль',
+    breadcrumbThis: 'Элсэлт',
+    introBadge: '2026-2027 оны хичээлийн жил',
+    introTitle: 'Ирээдүйгээ Соёл Эрдэмээс эхэл',
+    introBody:
+      'Соёл Эрдэм Ахлах Сургууль нь 10–11–12 ангид Япон хэл, соёл болон мэдээллийн технологид төрөлжсөн чанартай ерөнхий боловсрол олгодог. Эх сургууль СЭДС-ийн 30 жилийн япон судлалын баялаг туршлагаар суурилсан, япон 30+ их сургуультай хамтын ажиллагаатай сүлжээтэй.',
+    infoBox: {
+      enrolLabel: 'Элсэлт хүлээж авах',
+      enrolValue: '10-р анги',
+      yearLabel: 'Хичээлийн жил',
+      yearValue: '2026-2027',
+      formatLabel: 'Сургалтын хэлбэр',
+      formatValue: 'Өдрийн, орон тооны',
+      trackLabel: 'Төрөлжсөн чиглэл',
+      trackValue: 'Япон хэл / IT',
+    },
+    applyCardTitle: 'Цахимаар бүртгүүлэх',
+    applyCardBody:
+      '10-р ангид элсэх хүсэлтээ онлайн формоор илгээнэ үү. Хариуцсан ажилтан тантай 1-2 өдрийн дотор холбогдоно.',
+    applyCardCta: 'Цахим маягтыг бөглөх',
+    directContactEyebrow: 'Лавлах / шууд холбоо барих',
+    phoneLabel: 'Утас',
+    mobileLabel: 'Гар утас',
+    emailLabel: 'И-мэйл',
+    requirementsTitle: 'ЭЛСЭЛТИЙН ШААРДЛАГА',
+    requirements: [
+      {
+        title: '9 жилийн боловсролын гэрчилгээтэй',
+        body: 'Тухайн оны хичээлийн жилийн 9-р ангиа төгссөн, ерөнхий боловсролын дунд боловсролын гэрчилгээтэй сурагч элсэх боломжтой.',
+      },
+      {
+        title: 'Дундаж голч 70-аас дээш',
+        body: '9-р ангийн жилийн эцсийн дүнгийн дундаж голч оноо 70%-аас дээш байх шаардлагатай.',
+      },
+      {
+        title: 'Япон хэл, IT-д сонирхолтой',
+        body: 'Япон хэл, соёлд эсвэл мэдээллийн технологийн чиглэлд сонирхолтой, цаашид Япон руу үргэлжлүүлэн суралцах эсвэл IT мэргэжлийн чиглэлээр явахыг хүсэж буй сурагч.',
+      },
+      {
+        title: 'Эцэг эх, асран хамгаалагчтай зөвлөлдсөн',
+        body: 'Сурагч ба эцэг эхийн хамтарсан шийдвэрээр элсэлтийн материал бүрдүүлсэн байна.',
+      },
+    ],
+    stepsTitle: 'ЭЛСЭХ ҮЕ ШАТУУД',
+    stepsSubtitle: '4 алхамаар манай сургуульд элсэх ажиллагаа дуусна.',
+    steps: [
+      { title: '1. Бүртгүүлэх', body: 'Дараах формоор урьдчилсан бүртгэлд хамрагдана. Утсаар (7011-8589) холбоо барьж мэдээлэл авч болно.' },
+      { title: '2. Материал бүрдүүлэх', body: 'Иргэний үнэмлэхний хуулбар, дүнгийн тодорхойлолт, эрүүл мэндийн хуудас, өргөдөл зэргийг бүрдүүлэн авчирна.' },
+      { title: '3. Ярилцлага / шалгалт', body: 'Япон хэлний онцлох ангид элсэх бол ерөнхий мэдлэгийн тест + ярилцлага хийгдэнэ.' },
+      { title: '4. Шийдвэр + гэрээ', body: 'Шалгалтын дүн гарсны дараа сургалтын гэрээ байгуулна. Анхны ангид хичээл эхлэх өдөр бүртгэлээ баталгаажуулна.' },
+    ],
+    docsTitle: 'БҮРДҮҮЛЭХ МАТЕРИАЛ',
+    docs: [
+      '9-р ангийн жилийн эцсийн дүнгийн тодорхойлолт (эх)',
+      '9 жилийн боловсролын гэрчилгээ (хуулбар)',
+      'Иргэний үнэмлэхний хуулбар (сурагч + эцэг эх)',
+      'Эрүүл мэндийн хуудас (М-Д хэвлэмэл маягт)',
+      '3×4 хэмжээний 2 хувь зураг',
+      'Элсэлтийн өргөдөл (сургуулиас өгнө)',
+    ],
+    timelineTitle: 'ХУГАЦАА',
+    timeline: [
+      { date: '5–6 сар', event: 'Урьдчилсан бүртгэл нээлттэй' },
+      { date: '6–7 сар', event: 'Материал хүлээн авах хугацаа' },
+      { date: '7 сар', event: 'Ярилцлага, шалгалт' },
+      { date: '8 сар', event: 'Дүн зарлах, гэрээ байгуулах' },
+      { date: '9 сар', event: 'Хичээл эхлэх' },
+    ],
+    tuitionTitle: 'Сургалтын төлбөр, тэтгэлгийн боломж',
+    tuitionBody:
+      'Сургалтын төлбөр болон тэтгэлгийн боломжуудын тухай мэдээлэл элсэлтийн хугацаанд өргөдөл өгсөн сурагч, эцэг эхэд тус тус танилцуулга хийгдэнэ. Эх сургуулийн япон тэтгэлэгт хамрагдах, солилцооны хөтөлбөрт орох боломжийг хэлэлцэх боломжтой.',
+    tuitionPhoneCta: 'Утасаар лавлах',
+    tuitionContactCta: 'Холбоо барих',
+    formSectionTitle: 'ЦАХИМААР БҮРТГҮҮЛЭХ',
+    formSectionSubtitle:
+      '10-р ангид элсэх сурагчдад зориулсан урьдчилсан бүртгэлийн форм. Хариуцсан ажилтан тантай 1-2 өдрийн дотор холбогдоно.',
+    bannerTitle: 'Соёл Эрдэм Ахлах Сургуульд тавтай морил',
+    bannerCta: 'Танилцуулга үзэх',
+    bannerSecondary: 'Сургалт',
+    form: {
+      studentSection: 'Сурагчийн мэдээлэл',
+      studentNameLabel: 'Сурагчийн овог нэр *',
+      studentNamePh: 'С. Сурагчийн нэр',
+      studentBirthLabel: 'Төрсөн он, сар, өдөр',
+      studentBirthPh: '2010-05-15',
+      currentSchoolLabel: 'Одоо суралцаж буй сургууль (9-р анги)',
+      currentSchoolPh: 'Жишээ: 5-р сургууль',
+      currentGpaLabel: '9-р ангийн дундаж голч',
+      currentGpaPh: '80%',
+      trackLabel: 'Сонирхож буй чиглэл',
+      trackUndecided: 'Сонгоогүй / Шийдээгүй',
+      trackJapan: 'Япон хэл, соёл',
+      trackIt: 'Мэдээллийн технологи (IT)',
+      trackOther: 'Бусад / Хосолсон',
+      guardianSection: 'Эцэг эх / Асран хамгаалагчийн мэдээлэл',
+      guardianNameLabel: 'Овог нэр *',
+      guardianNamePh: 'Б. Эцэг эх',
+      guardianRelLabel: 'Сурагчтай ямар хамааралтай вэ?',
+      guardianRelPh: 'Эх / Эцэг / Асран хамгаалагч',
+      phoneLabel: 'Утас *',
+      phonePh: '9999-9999',
+      emailLabel: 'И-мэйл',
+      emailPh: 'email@example.com',
+      messageLabel: 'Нэмэлт асуулт / тайлбар',
+      messagePh: 'Тэтгэлэг, дотуур байр, элсэлтийн талаар асуултаа бичнэ үү...',
+      submitCta: 'Хүсэлт илгээх',
+      errorSubmit: 'Илгээхэд алдаа гарлаа. Дахин оролдоно уу.',
+      errorNetwork: 'Сүлжээний алдаа. Холболтоо шалгана уу.',
+      successTitle: 'Таны бүртгэлийн хүсэлт амжилттай илгээгдлээ.',
+      successBody: 'Хариуцсан ажилтан ажлын 1-2 өдрийн дотор танд утсаар эсвэл и-мэйлээр хариу өгнө.',
+      successAgain: 'Дахин бүртгэх',
+      requiredNote: '* тэмдэгтэй талбарууд заавал бөглөгдөнө. Таны мэдээлэл зөвхөн элсэлтийн зориулалтаар ашиглагдана.',
+    },
+  },
+  EN: {
+    heroTitle: 'ADMISSIONS',
+    heroSubtitle: 'How to apply for grade 10 at Soyol Erdem Senior High School — requirements and process.',
+    breadcrumbUniversity: 'University',
+    breadcrumbHs: 'High school',
+    breadcrumbThis: 'Admissions',
+    introBadge: '2026–2027 academic year',
+    introTitle: 'Start your future at Soyol Erdem',
+    introBody:
+      'Soyol Erdem Senior High School delivers quality secondary education specialised in Japanese language, culture and information technology across grades 10, 11 and 12. We are built on our parent institution\'s 30-year Japanese-studies tradition and on its network of cooperation with 30+ Japanese universities.',
+    infoBox: {
+      enrolLabel: 'Intake',
+      enrolValue: 'Grade 10',
+      yearLabel: 'Academic year',
+      yearValue: '2026–2027',
+      formatLabel: 'Format',
+      formatValue: 'Day, full-time',
+      trackLabel: 'Specialisation',
+      trackValue: 'Japanese / IT',
+    },
+    applyCardTitle: 'Apply online',
+    applyCardBody:
+      'Submit your grade 10 application through the online form. Our admissions officer will be in touch within 1–2 working days.',
+    applyCardCta: 'Fill in the online form',
+    directContactEyebrow: 'Direct contact / enquiries',
+    phoneLabel: 'Phone',
+    mobileLabel: 'Mobile',
+    emailLabel: 'Email',
+    requirementsTitle: 'ADMISSION REQUIREMENTS',
+    requirements: [
+      {
+        title: '9-year basic-education certificate',
+        body: 'Open to students who have completed grade 9 in the current academic year and hold a 9-year basic-education certificate.',
+      },
+      {
+        title: 'GPA above 70',
+        body: 'A grade 9 final-year average GPA above 70% is required.',
+      },
+      {
+        title: 'Interest in Japanese or IT',
+        body: 'For students interested in Japanese language and culture or IT, who would like to continue their studies in Japan or pursue an IT career.',
+      },
+      {
+        title: 'Decided together with parents / guardians',
+        body: 'The application materials should reflect a joint decision between the student and the parents.',
+      },
+    ],
+    stepsTitle: 'APPLICATION STEPS',
+    stepsSubtitle: 'Four steps to enrol at our high school.',
+    steps: [
+      { title: '1. Pre-register', body: 'Fill in the form below to pre-register. You can also call (7011-8589) for information.' },
+      { title: '2. Prepare documents', body: 'Bring an ID card copy, school-grade certificate, health record and your written application.' },
+      { title: '3. Interview / test', body: 'For the specialised Japanese-language track, a general-knowledge test and interview are conducted.' },
+      { title: '4. Decision + enrolment', body: "After the results we sign the enrolment agreement; you then confirm your enrolment on the first day of class." },
+    ],
+    docsTitle: 'REQUIRED DOCUMENTS',
+    docs: [
+      'Original grade 9 final-year transcript',
+      'Copy of the 9-year basic-education certificate',
+      "Copies of the student's and the parents' ID cards",
+      'Health record (M-D printed form)',
+      '2 × 3 × 4 photos',
+      'Application letter (provided by the school)',
+    ],
+    timelineTitle: 'TIMELINE',
+    timeline: [
+      { date: 'May–Jun', event: 'Pre-registration opens' },
+      { date: 'Jun–Jul', event: 'Document submission window' },
+      { date: 'Jul', event: 'Interview & test' },
+      { date: 'Aug', event: 'Results & enrolment agreement' },
+      { date: 'Sep', event: 'Classes begin' },
+    ],
+    tuitionTitle: 'Tuition & scholarship options',
+    tuitionBody:
+      'Tuition details and scholarship options are introduced individually to applicants and their families during the admissions process. We can also discuss eligibility for our parent institution\'s Japan-side scholarships and exchange programmes.',
+    tuitionPhoneCta: 'Call to enquire',
+    tuitionContactCta: 'Contact us',
+    formSectionTitle: 'APPLY ONLINE',
+    formSectionSubtitle:
+      'Pre-registration form for prospective grade 10 students. Our admissions officer will be in touch within 1–2 working days.',
+    bannerTitle: 'Welcome to Soyol Erdem Senior High School',
+    bannerCta: 'About us',
+    bannerSecondary: 'Programmes',
+    form: {
+      studentSection: 'Student information',
+      studentNameLabel: "Student's full name *",
+      studentNamePh: "Student's name",
+      studentBirthLabel: 'Date of birth',
+      studentBirthPh: '2010-05-15',
+      currentSchoolLabel: 'Current school (grade 9)',
+      currentSchoolPh: 'e.g. School No. 5',
+      currentGpaLabel: 'Grade 9 GPA',
+      currentGpaPh: '80%',
+      trackLabel: 'Track of interest',
+      trackUndecided: 'Not yet decided',
+      trackJapan: 'Japanese language & culture',
+      trackIt: 'Information technology (IT)',
+      trackOther: 'Other / Combined',
+      guardianSection: 'Parent / guardian information',
+      guardianNameLabel: 'Full name *',
+      guardianNamePh: "Parent's name",
+      guardianRelLabel: 'Relationship to the student',
+      guardianRelPh: 'Mother / Father / Guardian',
+      phoneLabel: 'Phone *',
+      phonePh: '+976 9999 9999',
+      emailLabel: 'Email',
+      emailPh: 'email@example.com',
+      messageLabel: 'Additional questions / notes',
+      messagePh: 'Questions about scholarships, dormitory, admissions…',
+      submitCta: 'Submit application',
+      errorSubmit: 'Something went wrong. Please try again.',
+      errorNetwork: 'Network error. Please check your connection.',
+      successTitle: 'Your application has been submitted.',
+      successBody: 'Our admissions officer will reach out by phone or email within 1–2 working days.',
+      successAgain: 'Submit another',
+      requiredNote: '* required fields. Your information is used only for admissions purposes.',
+    },
+  },
+  JP: {
+    heroTitle: '入学案内',
+    heroSubtitle: 'ソヨル・エルデム高等学校10年生（高校1年生相当）への出願手順と条件。',
+    breadcrumbUniversity: '大学',
+    breadcrumbHs: '高等学校',
+    breadcrumbThis: '入学案内',
+    introBadge: '2026〜2027年度',
+    introTitle: 'ソヨル・エルデムから未来を始めよう',
+    introBody:
+      'ソヨル・エルデム高等学校は、10〜11〜12年生において日本語・日本文化・情報技術に特化した質の高い中等教育を提供しています。母体ソヨル・エルデム大学の30年にわたる日本研究の蓄積と、日本の30以上の大学との連携ネットワークに支えられています。',
+    infoBox: {
+      enrolLabel: '募集学年',
+      enrolValue: '10年生',
+      yearLabel: '学年度',
+      yearValue: '2026〜2027',
+      formatLabel: '形態',
+      formatValue: '昼間・全日制',
+      trackLabel: '専門コース',
+      trackValue: '日本語 / IT',
+    },
+    applyCardTitle: 'オンライン出願',
+    applyCardBody:
+      '10年生への出願はオンラインフォームからお願いします。担当者より1〜2営業日以内にご連絡いたします。',
+    applyCardCta: 'オンラインフォームを開く',
+    directContactEyebrow: 'お問い合わせ / 直接連絡',
+    phoneLabel: '電話',
+    mobileLabel: '携帯',
+    emailLabel: 'メール',
+    requirementsTitle: '出願条件',
+    requirements: [
+      {
+        title: '9年制基礎教育修了証保持',
+        body: '当該年度に9年生を修了し、基礎教育修了証を有する生徒が対象です。',
+      },
+      {
+        title: '評定平均70以上',
+        body: '9年生の年度末成績の平均評定が70%以上であること。',
+      },
+      {
+        title: '日本語・ITに関心',
+        body: '日本語・日本文化または情報技術に関心があり、将来日本への進学またはIT分野への進路を希望する生徒。',
+      },
+      {
+        title: '保護者と相談済み',
+        body: '生徒と保護者が共同で意思決定し、出願書類を整えていること。',
+      },
+    ],
+    stepsTitle: '出願手順',
+    stepsSubtitle: '4ステップで入学手続きが完了します。',
+    steps: [
+      { title: '1. 仮登録', body: '下記フォームで仮登録を行います。お電話（7011-8589）でもご案内いたします。' },
+      { title: '2. 書類準備', body: '身分証コピー、成績証明、健康診断書、願書をご準備ください。' },
+      { title: '3. 面接 / 試験', body: '日本語特別クラス志望の場合は、一般知識テスト＋面接を実施します。' },
+      { title: '4. 合否 + 契約', body: '結果発表後に入学契約を締結し、初日に登録を確定します。' },
+    ],
+    docsTitle: '必要書類',
+    docs: [
+      '9年生年度末成績証明書（原本）',
+      '9年制基礎教育修了証（コピー）',
+      '生徒・保護者の身分証コピー',
+      '健康診断書（指定様式）',
+      '3×4写真 2枚',
+      '入学願書（学校で配布）',
+    ],
+    timelineTitle: 'スケジュール',
+    timeline: [
+      { date: '5〜6月', event: '仮登録受付' },
+      { date: '6〜7月', event: '書類受付期間' },
+      { date: '7月', event: '面接・試験' },
+      { date: '8月', event: '合否発表・入学契約' },
+      { date: '9月', event: '授業開始' },
+    ],
+    tuitionTitle: '学費・奨学金について',
+    tuitionBody:
+      '学費および奨学金の詳細は、出願後、生徒・保護者へ個別にご案内いたします。母体大学の日本側奨学金や交換留学プログラムへの参加可否についてもご相談いただけます。',
+    tuitionPhoneCta: '電話で問い合わせ',
+    tuitionContactCta: 'お問い合わせ',
+    formSectionTitle: 'オンライン出願',
+    formSectionSubtitle:
+      '10年生志望者のための仮登録フォーム。担当者より1〜2営業日以内にご連絡いたします。',
+    bannerTitle: 'ソヨル・エルデム高等学校へようこそ',
+    bannerCta: '学校紹介',
+    bannerSecondary: 'プログラム',
+    form: {
+      studentSection: '生徒情報',
+      studentNameLabel: '生徒氏名 *',
+      studentNamePh: '山田 太郎',
+      studentBirthLabel: '生年月日',
+      studentBirthPh: '2010-05-15',
+      currentSchoolLabel: '現在在籍校（9年生）',
+      currentSchoolPh: '例：第5学校',
+      currentGpaLabel: '9年生の評定平均',
+      currentGpaPh: '80%',
+      trackLabel: '希望コース',
+      trackUndecided: '未定',
+      trackJapan: '日本語・日本文化',
+      trackIt: '情報技術（IT）',
+      trackOther: 'その他 / 複合',
+      guardianSection: '保護者情報',
+      guardianNameLabel: '氏名 *',
+      guardianNamePh: '保護者氏名',
+      guardianRelLabel: '生徒との続柄',
+      guardianRelPh: '母 / 父 / 保護者',
+      phoneLabel: '電話 *',
+      phonePh: '+976 9999 9999',
+      emailLabel: 'メール',
+      emailPh: 'email@example.com',
+      messageLabel: 'ご質問・備考',
+      messagePh: '奨学金、寮、出願に関するご質問をお書きください…',
+      submitCta: '出願を送信',
+      errorSubmit: '送信に失敗しました。もう一度お試しください。',
+      errorNetwork: 'ネットワークエラー。接続をご確認ください。',
+      successTitle: '出願を受け付けました。',
+      successBody: '担当者より1〜2営業日以内にお電話またはメールでご連絡いたします。',
+      successAgain: 'もう一件送信',
+      requiredNote: '* は必須項目です。お預かりした情報は入学手続きのみに使用します。',
+    },
+  },
+};
+
+/* ───────────────────── High-school / contact ─────────────────────── */
+
+interface HsContactBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbUniversity: string;
+  breadcrumbHs: string;
+  breadcrumbThis: string;
+  contactsTitle: string;
+  phonePrimaryLabel: string;
+  phoneSecondaryLabel: string;
+  emailLabel: string;
+  addressLabel: string;
+  addressLine: string;
+  hoursLabel: string;
+  hoursValue: string;
+  hoursWeekend: string;
+  messageTitle: string;
+  messageCardTitle: string;
+  messageCardBody: string;
+  messageFormCta: string;
+  messageEmailCta: string;
+  admissionPreviewTitle: string;
+  admissionPreviewBody: string;
+  admissionPreviewCta: string;
+}
+
+export const HS_CONTACT_CONTENT: Record<Language, HsContactBundle> = {
+  MN: {
+    heroTitle: 'ХОЛБОО БАРИХ',
+    heroSubtitle:
+      'Лавлах, элсэлт, хамтын ажиллагааны санал — бидэнтэй чөлөөтэй холбоо барина уу.',
+    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbHs: 'Ахлах сургууль',
+    breadcrumbThis: 'Холбоо барих',
+    contactsTitle: 'ТАНТАЙ ХОЛБОГДОХ',
+    phonePrimaryLabel: 'Утас (Сургуулийн дугаар)',
+    phoneSecondaryLabel: 'Утас (Гар утас)',
+    emailLabel: 'И-мэйл',
+    addressLabel: 'Хаяг',
+    addressLine: 'Улаанбаатар хот, Сүхбаатар дүүрэг,\n1-р хороо, Олимпийн гудамж',
+    hoursLabel: 'Ажиллах цаг',
+    hoursValue: 'Даваа–Баасан, 08:00–17:00',
+    hoursWeekend: 'Бямба, Ням — амрах өдөр',
+    messageTitle: 'МЭДЭЭЛЭЛ ИЛГЭЭХ',
+    messageCardTitle: 'Хамтын ажиллагаа, элсэлт, лавлах',
+    messageCardBody:
+      'Их сургуультай хамтран ажилладаг ерөнхий лавлах формыг ашиглан санал хүсэлтээ илгээж болно. Тус формыг хариуцсан ажилтан тантай 24 цагийн дотор холбоо барина.',
+    messageFormCta: 'Лавлах форм',
+    messageEmailCta: 'Шууд и-мэйл',
+    admissionPreviewTitle: 'Элсэлтийн бэлтгэлийн тойм',
+    admissionPreviewBody:
+      '2026-2027 оны хичээлийн жилийн элсэлт нээлттэй. Шаардлага, бүрдүүлэх материал, хугацааны мэдээллийг элсэлтийн хуудаснаас үзнэ үү.',
+    admissionPreviewCta: 'Элсэлтийн мэдээлэл',
+  },
+  EN: {
+    heroTitle: 'CONTACT',
+    heroSubtitle:
+      'Enquiries, admissions, partnership proposals — feel free to reach out.',
+    breadcrumbUniversity: 'University',
+    breadcrumbHs: 'High school',
+    breadcrumbThis: 'Contact',
+    contactsTitle: 'GET IN TOUCH',
+    phonePrimaryLabel: 'Phone (school)',
+    phoneSecondaryLabel: 'Phone (mobile)',
+    emailLabel: 'Email',
+    addressLabel: 'Address',
+    addressLine: 'Olympic Street, 1st Khoroo,\nSukhbaatar District, Ulaanbaatar',
+    hoursLabel: 'Opening hours',
+    hoursValue: 'Mon–Fri, 08:00–17:00',
+    hoursWeekend: 'Sat–Sun — closed',
+    messageTitle: 'SEND US A MESSAGE',
+    messageCardTitle: 'Partnerships, admissions, enquiries',
+    messageCardBody:
+      "You can submit your enquiry through the university's shared contact form. Our team typically responds within 24 hours.",
+    messageFormCta: 'Contact form',
+    messageEmailCta: 'Email directly',
+    admissionPreviewTitle: 'Admissions overview',
+    admissionPreviewBody:
+      'Admissions for the 2026–2027 academic year are open. See requirements, documents and timeline on the admissions page.',
+    admissionPreviewCta: 'Admission details',
+  },
+  JP: {
+    heroTitle: 'お問い合わせ',
+    heroSubtitle:
+      'お問い合わせ・入学相談・連携のご提案 ― お気軽にご連絡ください。',
+    breadcrumbUniversity: '大学',
+    breadcrumbHs: '高等学校',
+    breadcrumbThis: 'お問い合わせ',
+    contactsTitle: 'お問い合わせ先',
+    phonePrimaryLabel: '電話（代表）',
+    phoneSecondaryLabel: '電話（携帯）',
+    emailLabel: 'メール',
+    addressLabel: '住所',
+    addressLine: 'モンゴル国ウランバートル市スフバートル区\n第1ホロー、オリンピック通り',
+    hoursLabel: '受付時間',
+    hoursValue: '月〜金、08:00〜17:00',
+    hoursWeekend: '土日 ― 休業',
+    messageTitle: 'メッセージを送る',
+    messageCardTitle: '連携・入学・お問い合わせ',
+    messageCardBody:
+      '大学共通のお問い合わせフォームよりご質問・ご要望をお送りいただけます。担当者より24時間以内にご連絡いたします。',
+    messageFormCta: 'お問い合わせフォーム',
+    messageEmailCta: 'メールで直接',
+    admissionPreviewTitle: '入学案内 概要',
+    admissionPreviewBody:
+      '2026〜2027年度の入学受付中。条件・必要書類・スケジュールは入学案内ページをご覧ください。',
+    admissionPreviewCta: '入学案内',
+  },
+};

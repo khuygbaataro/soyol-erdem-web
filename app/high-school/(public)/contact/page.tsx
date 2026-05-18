@@ -1,33 +1,31 @@
-import {
-  Calendar,
-  Clock,
-  Mail,
-  MapPin,
-  Phone,
-  Send,
-} from 'lucide-react';
+import { Calendar, Clock, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Button } from '@/components/ui/Button';
 import { HIGH_SCHOOL } from '@/lib/constants';
+import { getServerLocale } from '@/lib/i18n/server';
+import { HS_CONTACT_CONTENT } from '@/lib/i18n/content';
 
+export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Ахлах сургуультай холбоо барих',
-  description:
-    'Соёл Эрдэм ахлах сургуулийн утас, и-мэйл, хаяг, ажиллах цаг.',
+  description: 'Соёл Эрдэм ахлах сургуулийн утас, и-мэйл, хаяг, ажиллах цаг.',
 };
 
-export default function HighSchoolContactPage() {
+export default async function HighSchoolContactPage() {
+  const locale = await getServerLocale();
+  const c = HS_CONTACT_CONTENT[locale];
+
   return (
     <>
       <PageHero
-        title="ХОЛБОО БАРИХ"
-        subtitle="Лавлах, элсэлт, хамтын ажиллагааны санал — бидэнтэй чөлөөтэй холбоо барина уу."
+        title={c.heroTitle}
+        subtitle={c.heroSubtitle}
         breadcrumb={[
-          { label: 'Их сургууль', href: '/' },
-          { label: 'Ахлах сургууль', href: '/high-school' },
-          { label: 'Холбоо барих' },
+          { label: c.breadcrumbUniversity, href: '/' },
+          { label: c.breadcrumbHs, href: '/high-school' },
+          { label: c.breadcrumbThis },
         ]}
       />
 
@@ -35,7 +33,7 @@ export default function HighSchoolContactPage() {
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Contact details */}
           <div className="space-y-6">
-            <SectionTitle title="ТАНТАЙ ХОЛБОГДОХ" align="left" />
+            <SectionTitle title={c.contactsTitle} align="left" />
 
             <div className="space-y-4">
               <a
@@ -47,7 +45,7 @@ export default function HighSchoolContactPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                    Утас (Сургуулийн дугаар)
+                    {c.phonePrimaryLabel}
                   </p>
                   <p className="mt-1 font-serif text-xl font-bold text-navy-900 group-hover:text-gold-500">
                     {HIGH_SCHOOL.contact.phonePrimary}
@@ -64,7 +62,7 @@ export default function HighSchoolContactPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                    Утас (Гар утас)
+                    {c.phoneSecondaryLabel}
                   </p>
                   <p className="mt-1 font-serif text-xl font-bold text-navy-900 group-hover:text-gold-500">
                     {HIGH_SCHOOL.contact.phoneSecondary}
@@ -81,7 +79,7 @@ export default function HighSchoolContactPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                    И-мэйл
+                    {c.emailLabel}
                   </p>
                   <p className="mt-1 break-all font-serif text-xl font-bold text-navy-900 group-hover:text-gold-500">
                     {HIGH_SCHOOL.contact.email}
@@ -95,12 +93,10 @@ export default function HighSchoolContactPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                    Хаяг
+                    {c.addressLabel}
                   </p>
-                  <p className="mt-1 text-base font-semibold text-navy-900">
-                    Улаанбаатар хот, Сүхбаатар дүүрэг,
-                    <br />
-                    1-р хороо, Олимпийн гудамж
+                  <p className="mt-1 whitespace-pre-line text-base font-semibold text-navy-900">
+                    {c.addressLine}
                   </p>
                 </div>
               </div>
@@ -111,14 +107,12 @@ export default function HighSchoolContactPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                    Ажиллах цаг
+                    {c.hoursLabel}
                   </p>
                   <p className="mt-1 text-base font-semibold text-navy-900">
-                    Даваа–Баасан, 08:00–17:00
+                    {c.hoursValue}
                   </p>
-                  <p className="mt-0.5 text-xs text-text-muted">
-                    Бямба, Ням — амрах өдөр
-                  </p>
+                  <p className="mt-0.5 text-xs text-text-muted">{c.hoursWeekend}</p>
                 </div>
               </div>
             </div>
@@ -126,30 +120,28 @@ export default function HighSchoolContactPage() {
 
           {/* Send-a-message info */}
           <div className="space-y-6">
-            <SectionTitle title="МЭДЭЭЛЭЛ ИЛГЭЭХ" align="left" />
+            <SectionTitle title={c.messageTitle} align="left" />
 
             <div className="rounded-card border border-border-light bg-white p-7 shadow-card">
               <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
                 <Send className="h-6 w-6" />
               </span>
               <h3 className="mt-4 font-serif text-xl font-bold text-navy-900">
-                Хамтын ажиллагаа, элсэлт, лавлах
+                {c.messageCardTitle}
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-text-body">
-                Их сургуультай хамтран ажилладаг ерөнхий лавлах формыг
-                ашиглан санал хүсэлтээ илгээж болно. Тус формыг хариуцсан
-                ажилтан тантай 24 цагийн дотор холбоо барина.
+                {c.messageCardBody}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button href="/contact" variant="accent" size="md">
-                  Лавлах форм
+                  {c.messageFormCta}
                 </Button>
                 <Button
                   href={`mailto:${HIGH_SCHOOL.contact.email}`}
                   variant="outline"
                   size="md"
                 >
-                  Шууд и-мэйл
+                  {c.messageEmailCta}
                 </Button>
               </div>
             </div>
@@ -159,20 +151,14 @@ export default function HighSchoolContactPage() {
                 <Calendar className="h-5 w-5" />
               </span>
               <h3 className="mt-4 text-base font-bold text-navy-900">
-                Элсэлтийн бэлтгэлийн тойм
+                {c.admissionPreviewTitle}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-text-body">
-                2026-2027 оны хичээлийн жилийн элсэлт нээлттэй. Шаардлага,
-                бүрдүүлэх материал, хугацааны мэдээллийг элсэлтийн хуудаснаас
-                үзнэ үү.
+                {c.admissionPreviewBody}
               </p>
               <div className="mt-4">
-                <Button
-                  href="/high-school/admission"
-                  variant="primary"
-                  size="md"
-                >
-                  Элсэлтийн мэдээлэл
+                <Button href="/high-school/admission" variant="primary" size="md">
+                  {c.admissionPreviewCta}
                 </Button>
               </div>
             </div>
