@@ -9,7 +9,18 @@ import Image from 'next/image';
 import { Container } from './Container';
 import { Button } from '@/components/ui/Button';
 import { HIGH_SCHOOL, HIGH_SCHOOL_NAV_ITEMS } from '@/lib/constants';
+import { useTranslation } from '@/components/system/LocaleProvider';
+import type { TranslationKey } from '@/lib/i18n/messages';
 import { cn } from '@/lib/utils';
+
+const HS_NAV_KEYS: Record<string, TranslationKey> = {
+  '/high-school': 'hsNav.home',
+  '/high-school/about': 'hsNav.about',
+  '/high-school/programs': 'hsNav.programs',
+  '/high-school/admission': 'hsNav.admission',
+  '/high-school/news': 'hsNav.news',
+  '/high-school/contact': 'hsNav.contact',
+};
 
 /**
  * Sticky header for the /high-school sub-site.
@@ -27,6 +38,7 @@ import { cn } from '@/lib/utils';
 export function HighSchoolHeader() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const t = useTranslation();
 
   const isActive = (href: string) => {
     const path = href.split('#')[0];
@@ -45,7 +57,7 @@ export function HighSchoolHeader() {
               className="inline-flex items-center gap-1.5 transition-colors hover:text-[#f5b06b]"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
-              <span>Дээд сургуульд буцах</span>
+              <span>{t('hsNav.backToUniversity')}</span>
             </Link>
 
             <div className="hidden items-center gap-5 md:flex">
@@ -97,6 +109,8 @@ export function HighSchoolHeader() {
             <nav className="hidden min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-1 xl:flex">
               {HIGH_SCHOOL_NAV_ITEMS.map((item) => {
                 const active = isActive(item.href);
+                const tKey = HS_NAV_KEYS[item.href];
+                const label = tKey ? t(tKey) : item.label;
                 return (
                   <Link
                     key={item.href}
@@ -108,7 +122,7 @@ export function HighSchoolHeader() {
                     )}
                   >
                     <span className="relative inline-block py-1.5">
-                      {item.label}
+                      {label}
                       <span
                         aria-hidden
                         className={cn(
@@ -132,14 +146,14 @@ export function HighSchoolHeader() {
                 icon={<ChevronRight className="h-4 w-4" />}
                 className="uppercase tracking-[0.08em]"
               >
-                Элсэлт
+                {t('hsNav.admission')}
               </Button>
             </div>
 
             <button
               type="button"
               onClick={() => setOpen(true)}
-              aria-label="Цэс нээх"
+              aria-label={t('common.openMenu')}
               className="flex h-12 w-12 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 xl:hidden"
             >
               <Menu className="h-6 w-6" />
@@ -165,7 +179,7 @@ export function HighSchoolHeader() {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                aria-label="Цэс хаах"
+                aria-label={t('common.close')}
                 className="flex h-10 w-10 items-center justify-center rounded-full text-navy-900 transition-colors hover:bg-cream-soft"
               >
                 <X className="h-6 w-6" />
@@ -173,18 +187,22 @@ export function HighSchoolHeader() {
             </div>
             <nav className="flex-1 overflow-y-auto px-6 py-6">
               <ul className="space-y-1">
-                {HIGH_SCHOOL_NAV_ITEMS.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className="flex items-center justify-between rounded-lg px-3 py-3 text-base font-semibold text-navy-900 transition-colors hover:bg-cream-soft"
-                    >
-                      {item.label}
-                      <ChevronRight className="h-4 w-4 text-text-muted" />
-                    </Link>
-                  </li>
-                ))}
+                {HIGH_SCHOOL_NAV_ITEMS.map((item) => {
+                  const tKey = HS_NAV_KEYS[item.href];
+                  const label = tKey ? t(tKey) : item.label;
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        className="flex items-center justify-between rounded-lg px-3 py-3 text-base font-semibold text-navy-900 transition-colors hover:bg-cream-soft"
+                      >
+                        {label}
+                        <ChevronRight className="h-4 w-4 text-text-muted" />
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
               <Link
                 href="/"
@@ -192,7 +210,7 @@ export function HighSchoolHeader() {
                 className="mt-6 flex items-center gap-2 rounded-lg border border-border-light px-3 py-3 text-sm font-semibold text-text-muted transition-colors hover:bg-cream-soft hover:text-navy-900"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Дээд сургуульд буцах
+                {t('hsNav.backToUniversity')}
               </Link>
             </nav>
             <div className="space-y-3 border-t border-border-light px-6 py-5">

@@ -46,29 +46,6 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
-  /*
-   * Google Translate hides its hover-tooltip + suggestion popup but
-   * still injects a top banner iframe ("Translated to English …") and
-   * pushes body down 40px. Both look out of place against our header.
-   * The rules below restore the original layout and keep the helper
-   * UI hidden — we drive the language choice from our own LanguageSwitch.
-   */
-  .goog-te-banner-frame,
-  .skiptranslate iframe.goog-te-banner-frame,
-  #goog-gt-tt,
-  .goog-te-balloon-frame {
-    display: none !important;
-    visibility: hidden !important;
-  }
-  body {
-    top: 0 !important;
-  }
-  /* Google injects a yellow highlight on translated text on hover.
-     Suppress it so the page reads as a clean translation. */
-  font font {
-    background-color: transparent !important;
-    box-shadow: none !important;
-  }
   body {
     @apply font-sans bg-white antialiased;
     color: var(--text-body);

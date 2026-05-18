@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import {
   Noto_Sans,
   Noto_Sans_Mongolian,
   Playfair_Display,
   Roboto,
 } from 'next/font/google';
-import { GoogleTranslate } from '@/components/system/GoogleTranslate';
+import { LocaleProvider } from '@/components/system/LocaleProvider';
+import { normaliseLocale, LOCALE_COOKIE } from '@/lib/i18n/locale';
 import { SITE } from '@/lib/constants';
 import './globals.css';
 
@@ -89,15 +91,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // Pre-resolve the locale on the server so the first render already
+  // renders in the user's chosen language — no Mongolian flash, no
+  // Google Translate iframe. Cookie persists across sessions.
+  const cookieStore = await cookies();
+  const locale = normaliseLocale(cookieStore.get(LOCALE_COOKIE)?.value);
+
   return (
     <html
-      lang="mn"
+      lang={locale.toLowerCase()}
       className={`${roboto.variable} ${notoSans.variable} ${playfair.variable} ${notoMn.variable}`}
     >
       <body className="bg-white antialiased">
-        {children}
-        <GoogleTranslate />
+        <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>
       </body>
     </html>
   );

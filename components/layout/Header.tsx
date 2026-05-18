@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronRight, Menu, MapPin, Phone } from 'lucide-react';
@@ -10,11 +10,8 @@ import { Logo } from '@/components/icons/Logo';
 import { LanguageSwitch } from '@/components/ui/LanguageSwitch';
 import { Button } from '@/components/ui/Button';
 import { NAV_ITEMS, SITE } from '@/lib/constants';
-import type { Language } from '@/lib/constants';
-import {
-  readGoogleTranslateLang,
-  setGoogleTranslateLang,
-} from '@/lib/google-translate';
+import { useLocale } from '@/components/system/LocaleProvider';
+import type { TranslationKey } from '@/lib/i18n/messages';
 import { cn } from '@/lib/utils';
 
 // Utility-bar links. The high-school card sits first and renders larger
@@ -24,15 +21,27 @@ import { cn } from '@/lib/utils';
 // (now reachable from the footer "Чухал холбоос" column).
 const UTILITY_LINKS = [
   {
-    label: 'НЕБ-ЫН СОЁЛ ЭРДЭМ СУРГУУЛЬ',
+    key: 'header.utility.highSchool' as TranslationKey,
     href: '/high-school',
     external: false,
     featured: true,
   },
-  { label: 'Номын сан', href: '/library', external: false, featured: false },
-  { label: 'Сонин хэвлэл', href: '/sonin-hewlel', external: false, featured: false },
-  { label: 'Дүрэм журам', href: '/regulations', external: false, featured: false },
+  { key: 'header.utility.library' as TranslationKey, href: '/library', external: false, featured: false },
+  { key: 'header.utility.newspaper' as TranslationKey, href: '/sonin-hewlel', external: false, featured: false },
+  { key: 'header.utility.regulations' as TranslationKey, href: '/regulations', external: false, featured: false },
 ] as const;
+
+// Main nav labels are looked up at render time so they translate with
+// the active locale. `key` maps onto i18n/messages, `href` stays in MN.
+const NAV_KEYS: Record<string, TranslationKey> = {
+  '/': 'nav.home',
+  '/about': 'nav.about',
+  '/programs': 'nav.programs',
+  '/research': 'nav.research',
+  '/student-life': 'nav.studentLife',
+  '/international': 'nav.international',
+  '/news': 'nav.news',
+};
 
 /**
  * Sticky two-row site header.
@@ -46,23 +55,8 @@ const UTILITY_LINKS = [
  */
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState<Language>('MN');
+  const { locale, setLocale, t } = useLocale();
   const pathname = usePathname();
-
-  // Sync local highlight with whichever language Google Translate is
-  // currently rendering. The cookie persists across navigations, so on
-  // first paint we want the active pill to match what the user actually
-  // sees on the page.
-  useEffect(() => {
-    setLang(readGoogleTranslateLang());
-  }, []);
-
-  function changeLang(next: Language) {
-    setLang(next);
-    // Set the Google cookie + reload so the translation applies to the
-    // whole document, not just the components mounted right now.
-    setGoogleTranslateLang(next);
-  }
 
   return (
     <>
@@ -82,7 +76,7 @@ export function Header() {
               </a>
               <span className="hidden items-center gap-1.5 lg:flex">
                 <MapPin className="h-3.5 w-3.5" aria-hidden />
-                <span>Сүхбаатар дүүрэг, Улаанбаатар</span>
+                <span>{t('header.address')}</span>
               </span>
             </div>
 
@@ -92,23 +86,10 @@ export function Header() {
                   institution instead of blending into the utility row.
                   Library / Newspaper trail it as quick-access portals. */}
               <ul className="hidden items-center gap-2 lg:flex">
-                {UTILITY_LINKS.map((link) => (
-                  <li key={link.label}>
-                    {link.external ? (
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className={cn(
-                          'transition-colors',
-                          link.featured
-                            ? 'inline-flex items-center rounded-full bg-gold-500/15 px-3.5 py-1.5 text-[13px] font-bold uppercase tracking-[0.06em] text-gold-400 ring-1 ring-gold-500/40 hover:bg-gold-500 hover:text-navy-900 hover:ring-gold-500'
-                            : 'block px-2.5 py-1.5 hover:bg-white/10 hover:text-[#f5b06b]',
-                        )}
-                      >
-                        {link.label}
-                      </a>
-                    ) : (
+                {UTILITY_LINKS.map((link) => {
+                  const label = t(link.key);
+                  return (
+                    <li key={link.key}>
                       <Link
                         href={link.href}
                         className={cn(
@@ -118,18 +99,18 @@ export function Header() {
                             : 'block px-2.5 py-1.5 hover:bg-white/10 hover:text-[#f5b06b]',
                         )}
                       >
-                        {link.label}
+                        {label}
                       </Link>
-                    )}
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
 
               <span className="hidden h-4 w-px bg-white/15 lg:block" aria-hidden />
 
               <LanguageSwitch
-                currentLang={lang}
-                onChange={changeLang}
+                currentLang={locale}
+                onChange={setLocale}
                 invert
                 className="text-[12.5px]"
               />
@@ -153,6 +134,8 @@ export function Header() {
                 const isActive =
                   pathname === item.href ||
                   (item.href !== '/' && pathname?.startsWith(item.href));
+                const tKey = NAV_KEYS[item.href];
+                const label = tKey ? t(tKey) : item.label;
                 return (
                   <Link
                     key={item.href}
@@ -170,7 +153,7 @@ export function Header() {
                       half of the navbar.
                     */}
                     <span className="relative inline-block py-1.5">
-                      {item.label}
+                      {label}
                       <span
                         aria-hidden
                         className={cn(
@@ -194,14 +177,14 @@ export function Header() {
                 icon={<ChevronRight className="h-4 w-4" />}
                 className="uppercase tracking-[0.08em]"
               >
-                Элсэлт
+                {t('nav.admission')}
               </Button>
             </div>
 
             <button
               type="button"
               onClick={() => setOpen(true)}
-              aria-label="Цэс нээх"
+              aria-label={t('common.openMenu')}
               className="flex h-12 w-12 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 xl:hidden"
             >
               <Menu className="h-6 w-6" />
@@ -213,8 +196,8 @@ export function Header() {
       <MobileMenu
         isOpen={open}
         onClose={() => setOpen(false)}
-        currentLang={lang}
-        onLangChange={changeLang}
+        currentLang={locale}
+        onLangChange={setLocale}
       />
     </>
   );

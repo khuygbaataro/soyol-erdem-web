@@ -12,6 +12,7 @@ import {
 import { Container } from './Container';
 import { Logo } from '@/components/icons/Logo';
 import { FOOTER_LINKS, HIGH_SCHOOL, SITE } from '@/lib/constants';
+import { getServerTranslator } from '@/lib/i18n/server';
 
 const SOCIAL = [
   { icon: Facebook, href: SITE.contact.facebook, label: 'Facebook' },
@@ -48,10 +49,11 @@ interface FooterProps {
  *     and admission entry, per Munkhchimeg's spec.
  *   • Холбоо барих — phone / email / address / hours.
  */
-export function Footer({
+export async function Footer({
   variant = 'university',
   overrides = {},
 }: FooterProps = {}) {
+  const t = await getServerTranslator();
   const year = new Date().getFullYear();
   const isHighSchool = variant === 'high-school';
 
@@ -123,7 +125,7 @@ export function Footer({
 
           <div>
             <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-gold-400">
-              Чухал холбоос
+              {t('footer.importantLinks')}
             </h3>
             <ul className="space-y-3 text-sm">
               {FOOTER_LINKS.important.map((link) =>
@@ -155,7 +157,7 @@ export function Footer({
 
           <div>
             <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-gold-400">
-              Холбоо барих
+              {t('footer.contact')}
             </h3>
             <ul className="space-y-3 text-sm text-cream/80">
               <li className="flex items-start gap-3">
@@ -181,13 +183,13 @@ export function Footer({
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-cream/60 md:flex-row">
           <p>
-            © {year} {copyrightName}. Бүх эрх хуулиар хамгаалагдсан.
+            © {year} {copyrightName}. {t('footer.copyright')}
           </p>
           <Link
             href="/privacy"
             className="transition-colors hover:text-gold-400"
           >
-            Нууцлалын бодлого
+            {t('footer.privacy')}
           </Link>
         </div>
       </Container>

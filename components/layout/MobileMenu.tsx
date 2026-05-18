@@ -9,6 +9,18 @@ import { LanguageSwitch } from '@/components/ui/LanguageSwitch';
 import { Button } from '@/components/ui/Button';
 import { NAV_ITEMS } from '@/lib/constants';
 import type { Language } from '@/lib/constants';
+import { useTranslation } from '@/components/system/LocaleProvider';
+import type { TranslationKey } from '@/lib/i18n/messages';
+
+const NAV_KEYS: Record<string, TranslationKey> = {
+  '/': 'nav.home',
+  '/about': 'nav.about',
+  '/programs': 'nav.programs',
+  '/research': 'nav.research',
+  '/student-life': 'nav.studentLife',
+  '/international': 'nav.international',
+  '/news': 'nav.news',
+};
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -27,6 +39,7 @@ export function MobileMenu({
   currentLang,
   onLangChange,
 }: MobileMenuProps) {
+  const t = useTranslation();
   useEffect(() => {
     if (isOpen) {
       const original = document.body.style.overflow;
@@ -52,7 +65,7 @@ export function MobileMenu({
             <button
               type="button"
               onClick={onClose}
-              aria-label="Цэс хаах"
+              aria-label={t('common.close')}
               className="flex h-10 w-10 items-center justify-center rounded-full text-navy-900 transition-colors hover:bg-cream-soft"
             >
               <X className="h-6 w-6" />
@@ -61,18 +74,22 @@ export function MobileMenu({
 
           <nav className="flex-1 overflow-y-auto px-6 py-6">
             <ul className="space-y-1">
-              {NAV_ITEMS.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={onClose}
-                    className="flex items-center justify-between rounded-lg px-3 py-3 text-base font-semibold text-navy-900 transition-colors hover:bg-cream-soft"
-                  >
-                    {item.label}
-                    <ChevronRight className="h-4 w-4 text-text-muted" />
-                  </Link>
-                </li>
-              ))}
+              {NAV_ITEMS.map((item) => {
+                const tKey = NAV_KEYS[item.href];
+                const label = tKey ? t(tKey) : item.label;
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={onClose}
+                      className="flex items-center justify-between rounded-lg px-3 py-3 text-base font-semibold text-navy-900 transition-colors hover:bg-cream-soft"
+                    >
+                      {label}
+                      <ChevronRight className="h-4 w-4 text-text-muted" />
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
@@ -90,7 +107,7 @@ export function MobileMenu({
               icon={<ChevronRight className="h-5 w-5" />}
               className="w-full"
             >
-              Элсэлт
+              {t('nav.admission')}
             </Button>
           </div>
         </motion.div>
