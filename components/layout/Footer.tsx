@@ -74,14 +74,26 @@ export async function Footer({
   const contactEmail =
     overrides.email ||
     (isHighSchool ? HIGH_SCHOOL.contact.email : SITE.contact.email);
+  // Admin-supplied overrides win. Otherwise the contact address and
+  // tagline read from the locale-aware MESSAGES bundle so EN / JP
+  // visitors see a translated value, not the literal Mongolian
+  // constant. (HighSchool layouts pass `overrides.address` when admin
+  // has filled the SiteContent EN/JP slot; if those slots are empty
+  // the override resolves to '' and we fall through here.)
   const contactAddress =
     overrides.address ||
-    (isHighSchool ? HIGH_SCHOOL.contact.address : SITE.contact.address);
+    t(
+      isHighSchool
+        ? 'footer.address.highSchool'
+        : 'footer.address.university',
+    );
   const tagline =
     overrides.tagline ||
-    (isHighSchool
-      ? 'Соёл Эрдэм Дээд Сургуулийн харьяа төрөлжсөн ерөнхий боловсролын ахлах сургууль. Япон хэл, соёл, IT-ийн чиглэлээр чанартай боловсрол олгоно.'
-      : `${SITE.founded} онд байгуулагдсан, Япон улсын 100% хөрөнгө оруулалттай дээд боловсролын сургалтын байгууллага.`);
+    t(
+      isHighSchool
+        ? 'footer.tagline.highSchool'
+        : 'footer.tagline.university',
+    );
   const copyrightName = isHighSchool ? HIGH_SCHOOL.name : SITE.fullName;
 
   return (
@@ -137,7 +149,7 @@ export async function Footer({
                       rel="noreferrer noopener"
                       className="inline-flex items-center gap-1.5 text-cream/80 transition-colors hover:text-gold-400"
                     >
-                      {link.label}
+                      {t(link.labelKey)}
                       <ExternalLink className="h-3 w-3" aria-hidden />
                     </a>
                   </li>
@@ -147,7 +159,7 @@ export async function Footer({
                       href={link.href}
                       className="text-cream/80 transition-colors hover:text-gold-400"
                     >
-                      {link.label}
+                      {t(link.labelKey)}
                     </Link>
                   </li>
                 ),

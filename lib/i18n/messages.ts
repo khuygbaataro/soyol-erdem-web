@@ -55,6 +55,23 @@ export const MESSAGES: Record<Language, Messages> = {
     'footer.contact': 'ХОЛБОО БАРИХ',
     'footer.copyright': 'Бүх эрх хуулиар хамгаалагдсан.',
     'footer.privacy': 'Нууцлалын бодлого',
+    'footer.link.teacherWeb': 'Багшийн веб',
+    'footer.link.studentWeb': 'Оюутны веб',
+    'footer.link.elearning': 'Цахим сургалт',
+    'footer.link.admission': 'Элсэлтийн мэдээлэл',
+    'footer.tagline.university':
+      '1993 онд байгуулагдсан, Япон улсын 100% хөрөнгө оруулалттай дээд боловсролын сургалтын байгууллага.',
+    'footer.tagline.highSchool':
+      'Соёл Эрдэм Дээд Сургуулийн харьяа төрөлжсөн ерөнхий боловсролын ахлах сургууль. Япон хэл, соёл, IT-ийн чиглэлээр чанартай боловсрол олгоно.',
+    'footer.address.university':
+      'СБД, 1 дүгээр хороо, Элчингийн гудамж 15а, Embassy One tower — 4, 5 дугаар давхарт',
+    'footer.address.highSchool':
+      'Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо, Олимпийн гудамж',
+
+    // ─── Quick portals (home page strip) ──────────────────────────
+    'portal.studentSystem': 'Оюутны систем',
+    'portal.teacherSystem': 'Багшийн систем',
+    'portal.elearning': 'Цахим сургалт',
   },
 
   EN: {
@@ -101,6 +118,23 @@ export const MESSAGES: Record<Language, Messages> = {
     'footer.contact': 'CONTACT',
     'footer.copyright': 'All rights reserved.',
     'footer.privacy': 'Privacy policy',
+    'footer.link.teacherWeb': 'Faculty portal',
+    'footer.link.studentWeb': 'Student portal',
+    'footer.link.elearning': 'E-learning',
+    'footer.link.admission': 'Admissions',
+    'footer.tagline.university':
+      'Founded in 1993 with 100% Japanese investment — a higher-education institution.',
+    'footer.tagline.highSchool':
+      "A specialised senior high school under Soyol Erdem University. Quality education in Japanese language, culture and IT.",
+    'footer.address.university':
+      'Sukhbaatar District, 1st Khoroo, 15a Elchingiin Street, Embassy One Tower — floors 4 & 5',
+    'footer.address.highSchool':
+      'Olympic Street, 1st Khoroo, Sukhbaatar District, Ulaanbaatar',
+
+    // ─── Quick portals (home page strip) ──────────────────────────
+    'portal.studentSystem': 'Student system',
+    'portal.teacherSystem': 'Faculty system',
+    'portal.elearning': 'E-learning',
   },
 
   JP: {
@@ -147,6 +181,23 @@ export const MESSAGES: Record<Language, Messages> = {
     'footer.contact': 'お問い合わせ',
     'footer.copyright': 'All rights reserved.',
     'footer.privacy': 'プライバシーポリシー',
+    'footer.link.teacherWeb': '教員ポータル',
+    'footer.link.studentWeb': '学生ポータル',
+    'footer.link.elearning': 'オンライン学習',
+    'footer.link.admission': '入学案内',
+    'footer.tagline.university':
+      '1993年に日本100%出資のもとで設立された高等教育機関。',
+    'footer.tagline.highSchool':
+      'ソヨル・エルデム大学附属の専門特化型高等学校。日本語・日本文化・ITの分野で質の高い教育を提供。',
+    'footer.address.university':
+      'モンゴル国ウランバートル市スフバートル区第1ホロー、エルチンギーン通り15a、Embassy One Tower 4・5階',
+    'footer.address.highSchool':
+      'モンゴル国ウランバートル市スフバートル区第1ホロー、オリンピック通り',
+
+    // ─── Quick portals (home page strip) ──────────────────────────
+    'portal.studentSystem': '学生システム',
+    'portal.teacherSystem': '教員システム',
+    'portal.elearning': 'オンライン学習',
   },
 };
 

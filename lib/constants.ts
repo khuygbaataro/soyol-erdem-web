@@ -38,25 +38,27 @@ export const NAV_ITEMS = [
  * services / portals; internal links to "Элсэлтийн мэдээлэл" land on
  * the admission page.
  */
+/** Each link's `labelKey` resolves through the i18n translator at
+ *  render-time so the footer always shows the visitor's locale. */
 export const FOOTER_LINKS = {
   important: [
     {
-      label: 'Багшийн веб',
+      labelKey: 'footer.link.teacherWeb' as const,
       href: 'https://tw.xcloud.mn/Account/Login?ReturnUrl=%2F',
       external: true,
     },
     {
-      label: 'Оюутны веб',
+      labelKey: 'footer.link.studentWeb' as const,
       href: 'https://sw-beta.xcloud.mn/Account/Login?ReturnUrl=%2F',
       external: true,
     },
     {
-      label: 'Цахим сургалт',
+      labelKey: 'footer.link.elearning' as const,
       href: '/elearning',
       external: false,
     },
     {
-      label: 'Элсэлтийн мэдээлэл',
+      labelKey: 'footer.link.admission' as const,
       href: '/admission',
       external: false,
     },

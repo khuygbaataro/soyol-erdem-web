@@ -1,7 +1,10 @@
 import { ChevronRight, ExternalLink, Laptop, Monitor, UserSquare } from 'lucide-react';
+import { getServerTranslator } from '@/lib/i18n/server';
+import type { TranslationKey } from '@/lib/i18n/messages';
 
 interface PortalLink {
-  label: string;
+  /** Translation key resolved server-side. */
+  labelKey: TranslationKey;
   href: string;
   icon: typeof Laptop;
   /** External links open in a new tab and show the ExternalLink corner glyph. */
@@ -10,19 +13,19 @@ interface PortalLink {
 
 const PORTALS: PortalLink[] = [
   {
-    label: 'Оюутны систем',
+    labelKey: 'portal.studentSystem',
     href: 'https://sw-beta.xcloud.mn/Account/Login?ReturnUrl=%2F',
     icon: Laptop,
     external: true,
   },
   {
-    label: 'Багшийн систем',
+    labelKey: 'portal.teacherSystem',
     href: 'https://tw.xcloud.mn/Account/Login?ReturnUrl=%2F',
     icon: UserSquare,
     external: true,
   },
   {
-    label: 'Цахим сургалт',
+    labelKey: 'portal.elearning',
     href: '/elearning',
     icon: Monitor,
     external: false,
@@ -31,12 +34,12 @@ const PORTALS: PortalLink[] = [
 
 /**
  * Three-up portal launcher styled after CITI University's home strip:
- * a single dark navy bar split into equal-width buttons (Оюутны систем /
- * Багшийн систем / Цахим сургалт). Hovering a segment fills it gold so
- * it reads as the "active / next" segment, mirroring the editor's
- * mockup. Each segment is an external link that opens in a new tab.
+ * a single dark navy bar split into equal-width buttons (Student system /
+ * Faculty system / E-learning). Labels are localised via the server
+ * translator so MN / EN / JP visitors each see their own copy.
  */
-export function QuickPortals() {
+export async function QuickPortals() {
+  const t = await getServerTranslator();
   return (
     <section className="bg-cream-soft pb-10 pt-2 sm:pb-14">
       <div className="container-custom">
@@ -58,7 +61,7 @@ export function QuickPortals() {
                     <Icon className="h-4 w-4" />
                   </span>
                   <span className="text-[13px] font-bold uppercase tracking-[0.18em]">
-                    {p.label}
+                    {t(p.labelKey)}
                   </span>
                   <CornerGlyph
                     className="absolute right-3 top-3 h-3 w-3 text-white/40 transition-colors duration-200 group-hover:text-navy-900/60"
