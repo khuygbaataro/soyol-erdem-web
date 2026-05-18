@@ -199,6 +199,13 @@ model SiteContent {
   key       String      @unique
   type      ContentType @default(TEXT)
   value     String
+  /// Optional English translation. When the visitor's locale is EN
+  /// and this column is non-empty, it overrides `value` on the
+  /// public page. Falls back to `value` (Mongolian) otherwise so a
+  /// half-filled row never breaks the page.
+  valueEn   String?
+  /// Optional Japanese translation — same fallback chain as valueEn.
+  valueJa   String?
   group     String
   label     String
   hint      String?

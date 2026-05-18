@@ -31,28 +31,18 @@ export default async function HomePage() {
 
   const home = HOME_CONTENT[locale];
 
-  // Mongolian DB rows take priority for the home group (so admin edits
-  // still apply); for non-MN locales we always use the translated
-  // bundle so visitors get a clean translated page.
-  const useSiteContent = locale === 'MN';
-  const heroTitle1 = useSiteContent
-    ? content(siteContent, 'home.hero.title.line1', home.hero.titleLine1)
-    : home.hero.titleLine1;
-  const heroTitle2 = useSiteContent
-    ? content(siteContent, 'home.hero.title.line2', home.hero.titleLine2)
-    : home.hero.titleLine2;
-  const heroItalic = useSiteContent
-    ? content(siteContent, 'home.hero.italic', home.hero.italic)
-    : home.hero.italic;
-  const heroBody = useSiteContent
-    ? content(siteContent, 'home.hero.body', home.hero.body)
-    : home.hero.body;
-  const heroCtaPrimary = useSiteContent
-    ? content(siteContent, 'home.hero.cta_primary', home.hero.ctaPrimary)
-    : home.hero.ctaPrimary;
-  const heroCtaSecondary = useSiteContent
-    ? content(siteContent, 'home.hero.cta_secondary', home.hero.ctaSecondary)
-    : home.hero.ctaSecondary;
+  // SiteContent now resolves locale-aware values (MN: `value`; EN:
+  // `valueEn` or empty; JP: `valueJa` or empty). So we can always read
+  // the admin override via `content()` — it falls back to the
+  // hand-written translation bundle when the admin hasn't filled in
+  // an EN / JP translation, and surfaces the admin EN / JP text when
+  // they have.
+  const heroTitle1 = content(siteContent, 'home.hero.title.line1', home.hero.titleLine1);
+  const heroTitle2 = content(siteContent, 'home.hero.title.line2', home.hero.titleLine2);
+  const heroItalic = content(siteContent, 'home.hero.italic', home.hero.italic);
+  const heroBody = content(siteContent, 'home.hero.body', home.hero.body);
+  const heroCtaPrimary = content(siteContent, 'home.hero.cta_primary', home.hero.ctaPrimary);
+  const heroCtaSecondary = content(siteContent, 'home.hero.cta_secondary', home.hero.ctaSecondary);
   // If admin hasn't uploaded a hero image yet, fall back to the bundled
   // campus building photo in /public (the one Munkhchimeg supplied for
   // the home hero — tall navy glass tower).

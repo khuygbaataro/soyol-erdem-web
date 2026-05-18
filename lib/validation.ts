@@ -173,10 +173,16 @@ export const loginSchema = z.object({
 });
 export type LoginInput = z.infer<typeof loginSchema>;
 
-/* SiteContent — bulk update by key (admin form submits all fields at once) */
+/* SiteContent — bulk update by key (admin form submits all fields at once).
+ * `value` is the canonical Mongolian text (or image URL for IMAGE rows);
+ * `valueEn` / `valueJa` are optional hand-written translations. Empty
+ * strings are normalised to null at the API layer so missing
+ * translations remain explicitly NULL in the DB. */
 export const siteContentItemSchema = z.object({
   key: z.string().min(2).max(120),
   value: z.string().max(5000), // empty allowed (clears optional images)
+  valueEn: z.string().max(5000).optional(),
+  valueJa: z.string().max(5000).optional(),
 });
 export const siteContentBulkSchema = z.object({
   items: z.array(siteContentItemSchema).min(1).max(100),

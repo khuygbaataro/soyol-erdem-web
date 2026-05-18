@@ -163,10 +163,12 @@ export default async function StudentLifePage() {
     getServerLocale(),
   ]);
   const c = STUDENT_LIFE_CONTENT[locale];
-  // Admin-editable overrides only flow through for MN; EN / JP always
-  // resolve from the hand-written translation bundle so language
-  // switches never leak mixed-language strings.
-  const useSiteContent = locale === 'MN';
+  // SiteContent now resolves to valueEn / valueJa automatically for
+  // EN / JP visitors (or returns '' when the admin hasn't filled the
+  // translation, in which case the page falls back to the bundle).
+  // So admin EN / JP edits now flow through for testimonials, hero
+  // copy, etc. — and missing translations still surface the polished
+  // hand-written bundle text.
 
   // Build the translated chapter list by joining STUDENT_LIFE_CHAPTERS
   // (canonical order + the static fallback) with the localised bundle
@@ -215,24 +217,24 @@ export default async function StudentLifePage() {
     photo: string | undefined;
   };
 
-  // Admin-uploaded testimonials (with optional photos) only apply for MN.
-  // For EN / JP we use the hand-written translation bundle directly.
-  const adminTestimonials: Testimonial[] = useSiteContent
-    ? [1, 2, 3]
-        .map((i): Testimonial | null => {
-          const quote = sl.get(`student-life.testimonial.${i}.quote`) || '';
-          const byline = sl.get(`student-life.testimonial.${i}.byline`) || '';
-          const photo = sl.get(`student-life.testimonial.${i}.photo`) || '';
-          return quote && byline
-            ? {
-                quote,
-                ...parseTestimonialByline(byline),
-                photo: photo.trim().length > 0 ? photo : undefined,
-              }
-            : null;
-        })
-        .filter((t): t is Testimonial => t !== null)
-    : [];
+  // Admin-uploaded testimonials. For non-MN visitors the quote / byline
+  // come from `valueEn` / `valueJa` (or empty if untranslated); empty
+  // quotes are filtered out below so the page falls back to the
+  // localised testimonial bundle.
+  const adminTestimonials: Testimonial[] = [1, 2, 3]
+    .map((i): Testimonial | null => {
+      const quote = sl.get(`student-life.testimonial.${i}.quote`) || '';
+      const byline = sl.get(`student-life.testimonial.${i}.byline`) || '';
+      const photo = sl.get(`student-life.testimonial.${i}.photo`) || '';
+      return quote && byline
+        ? {
+            quote,
+            ...parseTestimonialByline(byline),
+            photo: photo.trim().length > 0 ? photo : undefined,
+          }
+        : null;
+    })
+    .filter((t): t is Testimonial => t !== null);
 
   const localisedTestimonials: Testimonial[] = c.testimonials.map((t) => ({
     quote: t.quote,
@@ -245,18 +247,15 @@ export default async function StudentLifePage() {
   const testimonials =
     adminTestimonials.length > 0 ? adminTestimonials : localisedTestimonials;
 
-  // Hero + intro: admin override wins for MN only.
-  const heroTitle =
-    (useSiteContent && sl.get('student-life.hero.title')) || c.heroTitle;
-  const heroSubtitle =
-    (useSiteContent && sl.get('student-life.hero.subtitle')) || c.heroSubtitle;
-  const introBody =
-    (useSiteContent && sl.get('student-life.intro.body')) || c.intro;
-  const annualHeading =
-    (useSiteContent && sl.get('student-life.annual.heading')) || c.annualHeading;
+  // Hero + intro. The map now returns the locale-appropriate value
+  // (or empty when untranslated), so a single fallback chain works
+  // for every locale.
+  const heroTitle = sl.get('student-life.hero.title') || c.heroTitle;
+  const heroSubtitle = sl.get('student-life.hero.subtitle') || c.heroSubtitle;
+  const introBody = sl.get('student-life.intro.body') || c.intro;
+  const annualHeading = sl.get('student-life.annual.heading') || c.annualHeading;
   const testimonialHeading =
-    (useSiteContent && sl.get('student-life.testimonial.heading')) ||
-    c.testimonialHeading;
+    sl.get('student-life.testimonial.heading') || c.testimonialHeading;
 
   return (
     <>

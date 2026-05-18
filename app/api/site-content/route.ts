@@ -15,7 +15,10 @@ export async function GET(req: Request) {
   return NextResponse.json({ data: items });
 }
 
-/** Bulk upsert by key — admin form posts all visible items at once. */
+/** Bulk upsert by key — admin form posts all visible items at once.
+ *  Empty `valueEn` / `valueJa` strings become explicit NULL so a blank
+ *  field reverts the row to its "no translation" state (and EN/JP
+ *  visitors fall through to the static translation bundle). */
 export async function PUT(req: Request) {
   const { error } = await requireApiUser(['ADMIN']);
   if (error) return error;
@@ -32,7 +35,21 @@ export async function PUT(req: Request) {
     parsed.data.items.map((item) =>
       prisma.siteContent.update({
         where: { key: item.key },
-        data: { value: item.value },
+        data: {
+          value: item.value,
+          valueEn:
+            item.valueEn !== undefined
+              ? item.valueEn.length > 0
+                ? item.valueEn
+                : null
+              : undefined,
+          valueJa:
+            item.valueJa !== undefined
+              ? item.valueJa.length > 0
+                ? item.valueJa
+                : null
+              : undefined,
+        },
       }),
     ),
   );

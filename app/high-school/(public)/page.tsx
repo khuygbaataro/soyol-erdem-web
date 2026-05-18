@@ -61,45 +61,33 @@ export default async function HighSchoolHomePage() {
   ]);
 
   const c = HS_HOME_CONTENT[locale];
-  // Admin overrides only flow through for MN; EN / JP always use the
-  // translation bundle so language switches never leak mixed-language
-  // strings. Images and the hero photo stay language-agnostic.
-  const useSiteContent = locale === 'MN';
+  // SiteContent resolves locale-aware values (MN: `value`; EN:
+  // `valueEn` or empty; JP: `valueJa` or empty). Images stay language-
+  // agnostic. Empty translations fall through to the hand-written
+  // bundle, so admin EN / JP edits surface when filled in and the
+  // bundle covers everything else.
 
-  const heroSubtitle =
-    (useSiteContent && site.get('ahlah-home.hero.subtitle')) || c.heroSubtitle;
+  const heroSubtitle = site.get('ahlah-home.hero.subtitle') || c.heroSubtitle;
   const heroImage = site.get('ahlah-home.hero.image') || '';
 
-  const introBadge =
-    (useSiteContent && site.get('ahlah-home.intro.badge')) || c.introBadge;
-  const introTitle =
-    (useSiteContent && site.get('ahlah-home.intro.title')) || c.introTitle;
-  const introBody =
-    (useSiteContent && site.get('ahlah-home.intro.body')) || c.introBody;
-  const introBody2 =
-    (useSiteContent && site.get('ahlah-home.intro.body2')) || c.introBody2;
+  const introBadge = site.get('ahlah-home.intro.badge') || c.introBadge;
+  const introTitle = site.get('ahlah-home.intro.title') || c.introTitle;
+  const introBody = site.get('ahlah-home.intro.body') || c.introBody;
+  const introBody2 = site.get('ahlah-home.intro.body2') || c.introBody2;
   const introImage = site.get('ahlah-home.intro.image') || '/НЕБ_Сургууль.png';
   const overlayEyebrow =
-    (useSiteContent && site.get('ahlah-home.intro.overlay.eyebrow')) ||
-    c.overlayEyebrow;
+    site.get('ahlah-home.intro.overlay.eyebrow') || c.overlayEyebrow;
   const overlayTitle =
-    (useSiteContent && site.get('ahlah-home.intro.overlay.title')) ||
-    c.overlayTitle;
+    site.get('ahlah-home.intro.overlay.title') || c.overlayTitle;
   const overlaySubtitle =
-    (useSiteContent && site.get('ahlah-home.intro.overlay.subtitle')) ||
-    c.overlaySubtitle;
+    site.get('ahlah-home.intro.overlay.subtitle') || c.overlaySubtitle;
 
   const philosophyTitle =
-    (useSiteContent && site.get('ahlah-home.philosophy.title')) ||
-    c.philosophyTitle;
-  const programsTitle =
-    (useSiteContent && site.get('ahlah-home.programs.title')) ||
-    c.programsTitle;
+    site.get('ahlah-home.philosophy.title') || c.philosophyTitle;
+  const programsTitle = site.get('ahlah-home.programs.title') || c.programsTitle;
   const programsSubtitle =
-    (useSiteContent && site.get('ahlah-home.programs.subtitle')) ||
-    c.programsSubtitle;
-  const newsTitle =
-    (useSiteContent && site.get('ahlah-home.news.title')) || c.newsTitle;
+    site.get('ahlah-home.programs.subtitle') || c.programsSubtitle;
+  const newsTitle = site.get('ahlah-home.news.title') || c.newsTitle;
 
   return (
     <>

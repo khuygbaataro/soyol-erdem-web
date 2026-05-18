@@ -33,23 +33,21 @@ export default async function ResearchPage() {
   ]);
 
   const c = RESEARCH_CONTENT[locale];
-  // Admin MN overrides only apply for the Mongolian locale; EN / JP always
-  // resolve from the hand-written translation bundle so language switches
-  // never leak mixed-language strings.
-  const useSiteContent = locale === 'MN';
+  // SiteContent now returns locale-aware values automatically:
+  //   • MN visitor → admin `value` (or empty if unfilled)
+  //   • EN visitor → admin `valueEn` (or empty)
+  //   • JP visitor → admin `valueJa` (or empty)
+  // Empty values fall through to the hand-written translation bundle,
+  // so EN / JP visitors see fluent translations even before the admin
+  // fills in EN / JA columns.
 
   const banner =
     banners.get('page.research.banner') || '/erdem_shinjilgee_banner.png';
 
-  // Department titles + topic lists. MN uses admin-editable site-content
-  // first, then static MN, then translation bundle as a final guarantee.
+  // Department titles + topic lists.
   const departments = [1, 2, 3].map((i) => {
-    const adminTitle = useSiteContent
-      ? researchContent.get(`research.dept.${i}.title`)
-      : '';
-    const adminTopics = useSiteContent
-      ? researchContent.get(`research.dept.${i}.topics`)
-      : '';
+    const adminTitle = researchContent.get(`research.dept.${i}.title`) || '';
+    const adminTopics = researchContent.get(`research.dept.${i}.topics`) || '';
     const title =
       adminTitle ||
       c.departments[i - 1]?.title ||
@@ -65,9 +63,7 @@ export default async function ResearchPage() {
   });
 
   const highlights = [1, 2, 3].map((i) => {
-    const admin = useSiteContent
-      ? researchContent.get(`research.highlight.${i}`)
-      : '';
+    const admin = researchContent.get(`research.highlight.${i}`) || '';
     return admin || c.highlights[i - 1] || '';
   });
 
@@ -91,14 +87,13 @@ export default async function ResearchPage() {
     description: c.areas[idx]?.description ?? a.description,
   }));
 
-  // Section titles. Admin overrides win for MN only; EN / JP always use
-  // the translation bundle.
+  // Section titles. Admin overrides flow through for every locale —
+  // the map already resolves to valueEn / valueJa when filled, and
+  // falls back to '' (then to the bundle) when not.
   const journalsTitle =
-    (useSiteContent && researchContent.get('research.journals.title')) ||
-    c.journalsTitle;
+    researchContent.get('research.journals.title') || c.journalsTitle;
   const journalsSubtitle =
-    (useSiteContent && researchContent.get('research.journals.subtitle')) ||
-    c.journalsSubtitle;
+    researchContent.get('research.journals.subtitle') || c.journalsSubtitle;
 
   // Date formatter aligned to the current locale.
   const dateLocale = locale === 'EN' ? 'en-US' : locale === 'JP' ? 'ja-JP' : 'mn-MN';
