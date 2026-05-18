@@ -2747,3 +2747,341 @@ export const SONIN_CONTENT: Record<Language, SoninBundle> = {
     breadcrumbThis: '広報誌',
   },
 };
+
+/* ───────────────────── High-school home page ─────────────────────── */
+
+interface HsHomeBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbUniversity: string;
+  breadcrumbThis: string;
+  introBadge: string;
+  introTitle: string;
+  introBody: string;
+  introBody2: string;
+  overlayEyebrow: string;
+  overlayTitle: string;
+  overlaySubtitle: string;
+  philosophyTitle: string;
+  philosophy: { label: string; title: string; body: string }[];
+  stats: { value: string; label: string }[];
+  programsTitle: string;
+  programsSubtitle: string;
+  programs: { title: string; description: string }[];
+  highlightsTitle: string;
+  highlights: { title: string; body: string }[];
+  newsTitle: string;
+  newsViewAll: string;
+  contactEyebrow: string;
+  contactTitle: string;
+  phoneLabel: string;
+  emailLabel: string;
+  admissionOpenLabel: string;
+  admissionOpenValue: string;
+  admissionInfoCta: string;
+  otherQuestionsCta: string;
+  bannerTitle: string;
+  bannerSubtitle: string;
+  bannerCta: string;
+  bannerSecondaryCta: string;
+}
+
+export const HS_HOME_CONTENT: Record<Language, HsHomeBundle> = {
+  MN: {
+    heroTitle: 'АХЛАХ СУРГУУЛЬ',
+    heroSubtitle:
+      'Чанартай боловсрол, Япон хэл, соёл, IT-ийн чиглэлээр ирээдүйгээ эндээс эхлүүл.',
+    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbThis: 'Ахлах сургууль',
+    introBadge: 'Японы хөрөнгө оруулалттай · 2023 онд байгуулагдсан',
+    introTitle: 'Хичээнгүй суралцагч,\nЧадварлаг багш, Япон хэл, соёл',
+    introBody:
+      'Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль нь 2023 оны 8-р сарын 30-нд Японы хөрөнгө оруулалттайгаар үүсгэн байгуулагдаж, 2023–2024 оны хичээлийн жилд 10–11 ангитай, нийт мэргэжлийн 11 багш, 2 япон хэлний багштайгаар үйл ажиллагаагаа эхэлсэн.',
+    introBody2:
+      'Манай сургууль нь эх сургууль болох Соёл Эрдэм Дээд Сургуулийн 30+ жилийн япон судлалын баялаг туршлагад тулгуурлан япон хэл, соёл болон мэдээллийн технологид төрөлжсөн ерөнхий боловсролын сургалт явуулдаг.',
+    overlayEyebrow: 'Senior High School',
+    overlayTitle: 'Соёл Эрдэм',
+    overlaySubtitle: 'Япон-Монголын боловсролын гүүр',
+    philosophyTitle: 'БИДНИЙ ЗАМ ЗОРИЛГО',
+    philosophy: [
+      {
+        label: 'Алсын хараа',
+        title: 'Тэргүүлэгч төрөлжсөн ЕБС',
+        body: 'Япон хэл, соёл болон Мэдээллийн технологийн төрөлжсөн ахлах сургуулийн хувьд тэргүүлэгч ЕБС болох.',
+      },
+      {
+        label: 'Эрхэм зорилго',
+        title: 'Чадварлаг багш — Чанартай боловсрол',
+        body: 'Хичээнгүй суралцагч, чадварлаг багш, Япон хэл соёлд тулгуурласан чанартай боловсрол.',
+      },
+      {
+        label: 'Үнэт зүйл',
+        title: 'С · Э · А · С',
+        body: 'С – Соёл уламжлалаа дээдэлсэн · Э – Эрдэм мэдлэгийг эрхэмлэсэн · А – Амьдрах арга ухаанд суралцсан · С – Сурлагын хоцрогдолгүй суралцагч бэлтгэх.',
+      },
+    ],
+    stats: [
+      { value: '2023', label: 'Үүсгэн байгуулагдсан он' },
+      { value: '100%', label: 'Мэргэжлийн багшийн бүрэлдэхүүн' },
+      { value: '2+2', label: 'Япон-Монгол солилцоо' },
+      { value: 'N5–N2', label: 'Япон хэлний түвшин' },
+    ],
+    programsTitle: 'ХӨТӨЛБӨРҮҮД',
+    programsSubtitle:
+      'Япон хэл, төрөлжсөн IT, бүрэн дунд боловсролын зэрэгцээ Япон руу солилцооны 2+2 хөтөлбөрөөр сурагчдыг бэлдэнэ.',
+    programs: [
+      {
+        title: 'Япон хэл, соёл',
+        description:
+          'Эх хэлтэй багш нар JLPT-д тулгуурлан N5–N2 хүртэл түвшинд хүргэж, япон уламжлал, ёс заншил, соёлтой бүрэн танилцуулна.',
+      },
+      {
+        title: 'Төрөлжсөн IT',
+        description:
+          'Алгоритм, хэл, веб болон AI-ийн үндсэн ойлголтыг сурагч төвтэй, оролцооны аргаар заана. AI-Digital-IT мэргэжлийн сургуультай 2+2 солилцоо.',
+      },
+      {
+        title: 'Бүрэн дунд боловсрол',
+        description:
+          '10–11 ангийн ердийн хичээлийн хөтөлбөрийг шинжлэх ухаан, эрэгцүүлэхүйд тулгуурласан аргачлалаар сурагч төвтэй заана.',
+      },
+      {
+        title: '2+2 Солилцооны хөтөлбөр',
+        description:
+          'AI-Digital-IT мэргэжлийн сургуультай хамтарсан 2+2 хөтөлбөрөөр оюутнууд бэлэн мэргэжилтэй болно.',
+      },
+    ],
+    highlightsTitle: 'ОНЦЛОХ АРГА ХЭМЖЭЭ, АМЖИЛТ',
+    highlights: [
+      {
+        title: 'Бүнкёосай — Соёлын наадам',
+        body: 'Япон уламжлалт "Бүнкёосай" наадмыг 26 удаа дараалан амжилттай зохион байгуулсан.',
+      },
+      {
+        title: '"Алтан бүргэд" медаль',
+        body: 'Математикийн багш С. Боозоо "Алтан бүргэд" медалаар шагнагдсан.',
+      },
+      {
+        title: 'Спортын аварга',
+        body: 'Сагсан бөмбөг, гар бөмбөгийн аварга шалгаруулах тэмцээнд эзэн болж байсан.',
+      },
+      {
+        title: 'Эмнэлэгийн дадлага',
+        body: 'Бүс нутгийн эмнэлэгүүдтэй хамтран эрүүл мэндийн чиглэлээр дадлага хийдэг.',
+      },
+    ],
+    newsTitle: 'СҮҮЛИЙН МЭДЭЭ',
+    newsViewAll: 'Бүх мэдээг үзэх',
+    contactEyebrow: 'Холбоо барих',
+    contactTitle: 'Бидэнтэй холбоо барих',
+    phoneLabel: 'Утас',
+    emailLabel: 'И-мэйл',
+    admissionOpenLabel: 'Элсэлт нээлттэй',
+    admissionOpenValue: '10-р анги · 2025–2026 оны хичээлийн жил',
+    admissionInfoCta: 'Элсэлтийн мэдээлэл',
+    otherQuestionsCta: 'Бусад асуулт',
+    bannerTitle: 'Соёл Эрдэм Ахлах Сургууль',
+    bannerSubtitle:
+      'Чанартай боловсрол, Япон хэл, соёл, IT-ийн чиглэлээр ирээдүйгээ эндээс эхлүүл.',
+    bannerCta: 'Элсэлтийн мэдээлэл',
+    bannerSecondaryCta: 'Холбоо барих',
+  },
+  EN: {
+    heroTitle: 'HIGH SCHOOL',
+    heroSubtitle:
+      'Quality education in Japanese language, culture and IT — start your future here.',
+    breadcrumbUniversity: 'University',
+    breadcrumbThis: 'High school',
+    introBadge: 'Japanese-funded · established 2023',
+    introTitle: 'Diligent learners,\nskilled teachers, Japanese language & culture',
+    introBody:
+      'Soyol Erdem Senior High School was founded on 30 August 2023 with Japanese investment and opened its 2023–2024 academic year with grade 10 and 11 classes, 11 subject teachers and 2 Japanese-language teachers.',
+    introBody2:
+      'Building on the 30+ years of Japanese-studies expertise of our parent institution, Soyol Erdem University, our high-school programme specialises in Japanese language, culture and information technology while delivering the full national curriculum.',
+    overlayEyebrow: 'Senior High School',
+    overlayTitle: 'Soyol Erdem',
+    overlaySubtitle: 'A Japan–Mongolia education bridge',
+    philosophyTitle: 'OUR DIRECTION',
+    philosophy: [
+      {
+        label: 'Vision',
+        title: 'A leading specialised high school',
+        body: 'To be the leading senior high school specialised in Japanese language, culture and IT.',
+      },
+      {
+        label: 'Mission',
+        title: 'Skilled teachers — quality education',
+        body: 'Diligent learners and skilled teachers delivering quality education rooted in Japanese language and culture.',
+      },
+      {
+        label: 'Values',
+        title: 'S · E · A · S',
+        body: 'S — Honouring our cultural heritage · E — Esteeming knowledge and learning · A — Apprenticing life skills · S — Studying without falling behind.',
+      },
+    ],
+    stats: [
+      { value: '2023', label: 'Year founded' },
+      { value: '100%', label: 'Qualified faculty' },
+      { value: '2+2', label: 'Japan–Mongolia exchange' },
+      { value: 'N5–N2', label: 'Japanese proficiency' },
+    ],
+    programsTitle: 'PROGRAMMES',
+    programsSubtitle:
+      'Japanese language, specialised IT and the full national curriculum, plus a 2+2 exchange pathway to Japan.',
+    programs: [
+      {
+        title: 'Japanese language & culture',
+        description:
+          'Native-speaker teachers guide students from JLPT N5 to N2 and fully introduce Japanese traditions, customs and culture.',
+      },
+      {
+        title: 'Specialised IT',
+        description:
+          'Algorithms, programming languages, the web and the fundamentals of AI — taught with a student-centred, participatory approach. A 2+2 exchange with the AI-Digital-IT vocational school.',
+      },
+      {
+        title: 'Full national curriculum',
+        description:
+          'Grades 10 and 11 cover the national curriculum, taught student-centred and grounded in scientific reasoning.',
+      },
+      {
+        title: '2+2 exchange programme',
+        description:
+          'Through a 2+2 partnership with the AI-Digital-IT vocational school, students graduate with a ready-to-use professional skill set.',
+      },
+    ],
+    highlightsTitle: 'EVENTS & ACHIEVEMENTS',
+    highlights: [
+      {
+        title: 'Bunkyosai — culture festival',
+        body: 'The traditional Japanese "Bunkyosai" festival has been staged successfully 26 years in a row.',
+      },
+      {
+        title: '"Golden Eagle" medal',
+        body: 'Mathematics teacher S. Boozoo was awarded the "Golden Eagle" medal.',
+      },
+      {
+        title: 'Sports champions',
+        body: 'Past winners of the basketball and volleyball championships.',
+      },
+      {
+        title: 'Medical placements',
+        body: 'Health-track placements organised in partnership with regional hospitals.',
+      },
+    ],
+    newsTitle: 'LATEST NEWS',
+    newsViewAll: 'View all news',
+    contactEyebrow: 'Contact',
+    contactTitle: 'Get in touch with us',
+    phoneLabel: 'Phone',
+    emailLabel: 'Email',
+    admissionOpenLabel: 'Admissions open',
+    admissionOpenValue: 'Grade 10 · 2025–2026 academic year',
+    admissionInfoCta: 'Admission details',
+    otherQuestionsCta: 'Other questions',
+    bannerTitle: 'Soyol Erdem Senior High School',
+    bannerSubtitle:
+      'Quality education in Japanese language, culture and IT — start your future here.',
+    bannerCta: 'Admission details',
+    bannerSecondaryCta: 'Contact',
+  },
+  JP: {
+    heroTitle: '高等学校',
+    heroSubtitle:
+      '日本語・日本文化・ITを軸とした質の高い教育で、未来をここから始めよう。',
+    breadcrumbUniversity: '大学',
+    breadcrumbThis: '高等学校',
+    introBadge: '日本資本 ・ 2023年設立',
+    introTitle: '勤勉な学習者と\n熟練の教員、日本語・日本文化',
+    introBody:
+      'ソヨル・エルデム高等学校は2023年8月30日、日本資本のもとに設立され、2023〜2024年度に10年・11年生クラスを開設、教科専任教員11名、日本語教員2名で活動を開始しました。',
+    introBody2:
+      '母体であるソヨル・エルデム大学が30年以上にわたり培ってきた日本研究の知見を基盤に、日本語・日本文化・情報技術に特化しつつ、国の正規カリキュラムを提供しています。',
+    overlayEyebrow: 'Senior High School',
+    overlayTitle: 'ソヨル・エルデム',
+    overlaySubtitle: '日本とモンゴルを結ぶ教育の架け橋',
+    philosophyTitle: '私たちの方向性',
+    philosophy: [
+      {
+        label: 'ビジョン',
+        title: '専門特化型のリーディング校',
+        body: '日本語・日本文化・ITに特化した高等学校として、リーディング校となることを目指します。',
+      },
+      {
+        label: 'ミッション',
+        title: '熟練の教員 ― 質の高い教育',
+        body: '勤勉な学習者と熟練の教員により、日本語・日本文化に根ざした質の高い教育を提供します。',
+      },
+      {
+        label: '価値観',
+        title: 'С・Э・А・С',
+        body: 'С ― 文化的伝統を重んじる ・ Э ― 学問・知識を尊ぶ ・ А ― 生きる力を身につける ・ С ― 学業に遅れない学習者を育てる。',
+      },
+    ],
+    stats: [
+      { value: '2023', label: '設立年' },
+      { value: '100%', label: '専門教員' },
+      { value: '2+2', label: '日蒙交換' },
+      { value: 'N5–N2', label: '日本語レベル' },
+    ],
+    programsTitle: 'プログラム',
+    programsSubtitle:
+      '日本語、専門IT、国の正規カリキュラムに加え、日本との2+2交換プログラムで生徒を育てます。',
+    programs: [
+      {
+        title: '日本語・日本文化',
+        description:
+          'ネイティブ教員がJLPTに準拠してN5〜N2レベルまで指導し、日本の伝統・習慣・文化を包括的に紹介します。',
+      },
+      {
+        title: '専門IT',
+        description:
+          'アルゴリズム、プログラミング言語、Web、AIの基礎を、生徒中心の参加型授業で教えます。AI-Digital-IT専門学校との2+2交換も実施。',
+      },
+      {
+        title: '正規カリキュラム',
+        description:
+          '10〜11年生の通常カリキュラムを、科学的思考に基づき生徒中心の手法で教えます。',
+      },
+      {
+        title: '2+2 交換プログラム',
+        description:
+          'AI-Digital-IT専門学校との2+2提携により、生徒は即戦力となる専門技能を身につけて卒業します。',
+      },
+    ],
+    highlightsTitle: '特色ある行事・実績',
+    highlights: [
+      {
+        title: '文教祭 ― 文化祭',
+        body: '日本伝統の「文教祭」を26年連続で成功裏に開催してきました。',
+      },
+      {
+        title: '「金の鷲」勲章',
+        body: '数学教員 С.ボーゾー氏が「金の鷲」勲章を受章。',
+      },
+      {
+        title: 'スポーツ優勝',
+        body: 'バスケットボール・バレーボール選手権大会の優勝経験。',
+      },
+      {
+        title: '医療実習',
+        body: '地域の医療機関と連携し、保健分野の実習を実施。',
+      },
+    ],
+    newsTitle: '最新ニュース',
+    newsViewAll: 'すべてのニュース',
+    contactEyebrow: 'お問い合わせ',
+    contactTitle: 'お問い合わせはこちら',
+    phoneLabel: '電話',
+    emailLabel: 'メール',
+    admissionOpenLabel: '入学受付中',
+    admissionOpenValue: '10年生 ・ 2025〜2026年度',
+    admissionInfoCta: '入学案内',
+    otherQuestionsCta: 'その他のお問い合わせ',
+    bannerTitle: 'ソヨル・エルデム高等学校',
+    bannerSubtitle:
+      '日本語・日本文化・ITを軸とした質の高い教育で、未来をここから始めよう。',
+    bannerCta: '入学案内',
+    bannerSecondaryCta: 'お問い合わせ',
+  },
+};

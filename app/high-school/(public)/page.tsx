@@ -25,7 +25,9 @@ import { CtaBanner } from '@/components/sections/CtaBanner';
 import { NewsCard } from '@/components/ui/NewsCard';
 import { prisma } from '@/lib/prisma';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
-import { content, getSiteContentMap } from '@/lib/site-content';
+import { getSiteContentMap } from '@/lib/site-content';
+import { getServerLocale } from '@/lib/i18n/server';
+import { HS_HOME_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,86 +37,18 @@ export const metadata = {
     'Соёл Эрдэм Дээд Сургуулийн харьяа Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль — Япон хэл, соёл, IT-ийн чиглэлээр төрөлжсөн.',
 };
 
-const PHILOSOPHY: { icon: LucideIcon; label: string; title: string; body: string }[] = [
-  {
-    icon: Sparkles,
-    label: 'Алсын хараа',
-    title: 'Тэргүүлэгч төрөлжсөн ЕБС',
-    body: 'Япон хэл, соёл болон Мэдээллийн технологийн төрөлжсөн ахлах сургуулийн хувьд тэргүүлэгч ЕБС болох.',
-  },
-  {
-    icon: GraduationCap,
-    label: 'Эрхэм зорилго',
-    title: 'Чадварлаг багш — Чанартай боловсрол',
-    body: 'Хичээнгүй суралцагч, чадварлаг багш, Япон хэл соёлд тулгуурласан чанартай боловсрол.',
-  },
-  {
-    icon: Award,
-    label: 'Үнэт зүйл',
-    title: 'С · Э · А · С',
-    body: 'С – Соёл уламжлалаа дээдэлсэн · Э – Эрдэм мэдлэгийг эрхэмлэсэн · А – Амьдрах арга ухаанд суралцсан · С – Сурлагын хоцрогдолгүй суралцагч бэлтгэх.',
-  },
-];
+// Icon order for PHILOSOPHY (Vision / Mission / Values) — kept code-side
+// since icons aren't translatable.
+const PHILOSOPHY_ICONS: LucideIcon[] = [Sparkles, GraduationCap, Award];
 
-const PROGRAMS: { icon: LucideIcon; title: string; description: string }[] = [
-  {
-    icon: Languages,
-    title: 'Япон хэл, соёл',
-    description:
-      'Эх хэлтэй багш нар JLPT-д тулгуурлан N5–N2 хүртэл түвшинд хүргэж, япон уламжлал, ёс заншил, соёлтой бүрэн танилцуулна.',
-  },
-  {
-    icon: Code2,
-    title: 'Төрөлжсөн IT',
-    description:
-      'Алгоритм, хэл, веб болон AI-ийн үндсэн ойлголтыг сурагч төвтэй, оролцооны аргаар заана. AI-Digital-IT мэргэжлийн сургуультай 2+2 солилцоо.',
-  },
-  {
-    icon: GraduationCap,
-    title: 'Бүрэн дунд боловсрол',
-    description:
-      '10–11 ангийн ердийн хичээлийн хөтөлбөрийг шинжлэх ухаан, эрэгцүүлэхүйд тулгуурласан аргачлалаар сурагч төвтэй заана.',
-  },
-  {
-    icon: Users,
-    title: '2+2 Солилцооны хөтөлбөр',
-    description:
-      'AI-Digital-IT мэргэжлийн сургуультай хамтарсан 2+2 хөтөлбөрөөр оюутнууд бэлэн мэргэжилтэй болно.',
-  },
-];
+// Icon order for PROGRAMS — Languages / Code2 / GraduationCap / Users.
+const PROGRAM_ICONS: LucideIcon[] = [Languages, Code2, GraduationCap, Users];
 
-const STATS: { value: string; label: string }[] = [
-  { value: '2023', label: 'Үүсгэн байгуулагдсан он' },
-  { value: '100%', label: 'Мэргэжлийн багшийн бүрэлдэхүүн' },
-  { value: '2+2', label: 'Япон-Монгол солилцоо' },
-  { value: 'N5–N2', label: 'Япон хэлний түвшин' },
-];
-
-const HIGHLIGHTS: { icon: LucideIcon; title: string; body: string }[] = [
-  {
-    icon: Trophy,
-    title: 'Бүнкёосай — Соёлын наадам',
-    body: 'Япон уламжлалт "Бүнкёосай" наадмыг 26 удаа дараалан амжилттай зохион байгуулсан.',
-  },
-  {
-    icon: Medal,
-    title: '"Алтан бүргэд" медаль',
-    body: 'Математикийн багш С. Боозоо "Алтан бүргэд" медалаар шагнагдсан.',
-  },
-  {
-    icon: Trophy,
-    title: 'Спортын аварга',
-    body: 'Сагсан бөмбөг, гар бөмбөгийн аварга шалгаруулах тэмцээнд эзэн болж байсан.',
-  },
-  {
-    icon: Building2,
-    title: 'Эмнэлэгийн дадлага',
-    body: 'Бүс нутгийн эмнэлэгүүдтэй хамтран эрүүл мэндийн чиглэлээр дадлага хийдэг.',
-  },
-];
+// Icon order for HIGHLIGHTS — Trophy / Medal / Trophy / Building2.
+const HIGHLIGHT_ICONS: LucideIcon[] = [Trophy, Medal, Trophy, Building2];
 
 export default async function HighSchoolHomePage() {
-  const [latestNews, site] = await Promise.all([
+  const [latestNews, site, locale] = await Promise.all([
     prisma.news
       .findMany({
         where: { status: 'PUBLISHED', site: 'HIGH_SCHOOL' },
@@ -123,76 +57,59 @@ export default async function HighSchoolHomePage() {
       })
       .catch(() => []),
     getSiteContentMap('ahlah-home'),
+    getServerLocale(),
   ]);
 
-  const heroSubtitle = content(
-    site,
-    'ahlah-home.hero.subtitle',
-    'Чанартай боловсрол, Япон хэл, соёл, IT-ийн чиглэлээр ирээдүйгээ эндээс эхлүүл.',
-  );
+  const c = HS_HOME_CONTENT[locale];
+  // Admin overrides only flow through for MN; EN / JP always use the
+  // translation bundle so language switches never leak mixed-language
+  // strings. Images and the hero photo stay language-agnostic.
+  const useSiteContent = locale === 'MN';
+
+  const heroSubtitle =
+    (useSiteContent && site.get('ahlah-home.hero.subtitle')) || c.heroSubtitle;
   const heroImage = site.get('ahlah-home.hero.image') || '';
 
-  const introBadge = content(
-    site,
-    'ahlah-home.intro.badge',
-    'Японы хөрөнгө оруулалттай · 2023 онд байгуулагдсан',
-  );
-  const introTitle = content(
-    site,
-    'ahlah-home.intro.title',
-    'Хичээнгүй суралцагч,\nЧадварлаг багш, Япон хэл, соёл',
-  );
-  const introBody = content(
-    site,
-    'ahlah-home.intro.body',
-    'Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль нь 2023 оны 8-р сарын 30-нд Японы хөрөнгө оруулалттайгаар үүсгэн байгуулагдаж, 2023–2024 оны хичээлийн жилд 10–11 ангитай, нийт мэргэжлийн 11 багш, 2 япон хэлний багштайгаар үйл ажиллагаагаа эхэлсэн.',
-  );
-  const introBody2 = content(
-    site,
-    'ahlah-home.intro.body2',
-    'Манай сургууль нь эх сургууль болох Соёл Эрдэм Дээд Сургуулийн 30+ жилийн япон судлалын баялаг туршлагад тулгуурлан япон хэл, соёл болон мэдээллийн технологид төрөлжсөн ерөнхий боловсролын сургалт явуулдаг.',
-  );
-  const introImage =
-    site.get('ahlah-home.intro.image') || '/НЕБ_Сургууль.png';
-  const overlayEyebrow = content(
-    site,
-    'ahlah-home.intro.overlay.eyebrow',
-    'Senior High School',
-  );
-  const overlayTitle = content(
-    site,
-    'ahlah-home.intro.overlay.title',
-    'Соёл Эрдэм',
-  );
-  const overlaySubtitle = content(
-    site,
-    'ahlah-home.intro.overlay.subtitle',
-    'Япон-Монголын боловсролын гүүр',
-  );
+  const introBadge =
+    (useSiteContent && site.get('ahlah-home.intro.badge')) || c.introBadge;
+  const introTitle =
+    (useSiteContent && site.get('ahlah-home.intro.title')) || c.introTitle;
+  const introBody =
+    (useSiteContent && site.get('ahlah-home.intro.body')) || c.introBody;
+  const introBody2 =
+    (useSiteContent && site.get('ahlah-home.intro.body2')) || c.introBody2;
+  const introImage = site.get('ahlah-home.intro.image') || '/НЕБ_Сургууль.png';
+  const overlayEyebrow =
+    (useSiteContent && site.get('ahlah-home.intro.overlay.eyebrow')) ||
+    c.overlayEyebrow;
+  const overlayTitle =
+    (useSiteContent && site.get('ahlah-home.intro.overlay.title')) ||
+    c.overlayTitle;
+  const overlaySubtitle =
+    (useSiteContent && site.get('ahlah-home.intro.overlay.subtitle')) ||
+    c.overlaySubtitle;
 
-  const philosophyTitle = content(
-    site,
-    'ahlah-home.philosophy.title',
-    'БИДНИЙ ЗАМ ЗОРИЛГО',
-  );
-  const programsTitle = content(
-    site,
-    'ahlah-home.programs.title',
-    'ХӨТӨЛБӨРҮҮД',
-  );
-  const programsSubtitle = content(
-    site,
-    'ahlah-home.programs.subtitle',
-    'Япон хэл, төрөлжсөн IT, бүрэн дунд боловсролын зэрэгцээ Япон руу солилцооны 2+2 хөтөлбөрөөр сурагчдыг бэлдэнэ.',
-  );
-  const newsTitle = content(site, 'ahlah-home.news.title', 'СҮҮЛИЙН МЭДЭЭ');
+  const philosophyTitle =
+    (useSiteContent && site.get('ahlah-home.philosophy.title')) ||
+    c.philosophyTitle;
+  const programsTitle =
+    (useSiteContent && site.get('ahlah-home.programs.title')) ||
+    c.programsTitle;
+  const programsSubtitle =
+    (useSiteContent && site.get('ahlah-home.programs.subtitle')) ||
+    c.programsSubtitle;
+  const newsTitle =
+    (useSiteContent && site.get('ahlah-home.news.title')) || c.newsTitle;
 
   return (
     <>
       <PageHero
-        title="АХЛАХ СУРГУУЛЬ"
+        title={c.heroTitle}
         subtitle={heroSubtitle}
-        breadcrumb={[{ label: 'Их сургууль', href: '/' }, { label: 'Ахлах сургууль' }]}
+        breadcrumb={[
+          { label: c.breadcrumbUniversity, href: '/' },
+          { label: c.breadcrumbThis },
+        ]}
         backgroundImage={heroImage || undefined}
       />
 
@@ -227,7 +144,7 @@ export default async function HighSchoolHomePage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={introImage}
-                  alt={`${overlayTitle || 'Соёл Эрдэм'} Ахлах Сургууль`}
+                  alt={`${overlayTitle || 'Soyol Erdem'} ${c.breadcrumbThis}`}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-900/85 via-navy-900/50 to-transparent p-7 text-white">
@@ -249,8 +166,6 @@ export default async function HighSchoolHomePage() {
                 </div>
               </>
             ) : (
-              // Empty-state placeholder so the layout doesn't collapse before
-              // the admin uploads a photo.
               <div className="flex h-full w-full items-center justify-center text-center text-sm text-text-muted">
                 Admin-аас зургаа оруулна уу.
               </div>
@@ -263,8 +178,8 @@ export default async function HighSchoolHomePage() {
       <Section background="cream-soft" spacing="md">
         <SectionTitle title={philosophyTitle} />
         <div className="grid gap-6 md:grid-cols-3">
-          {PHILOSOPHY.map((p) => {
-            const Icon = p.icon;
+          {c.philosophy.map((p, idx) => {
+            const Icon = PHILOSOPHY_ICONS[idx] ?? Sparkles;
             return (
               <Card key={p.label} className="flex h-full flex-col">
                 <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-gold-400">
@@ -284,7 +199,7 @@ export default async function HighSchoolHomePage() {
       {/* Stats */}
       <Section background="navy" spacing="md">
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {STATS.map((s) => (
+          {c.stats.map((s) => (
             <div key={s.label} className="text-center">
               <p className="font-serif text-4xl font-bold text-gold-400 md:text-5xl">
                 {s.value}
@@ -301,8 +216,8 @@ export default async function HighSchoolHomePage() {
       <Section background="white" spacing="md" id="programs">
         <SectionTitle title={programsTitle} subtitle={programsSubtitle} />
         <div className="grid gap-6 md:grid-cols-2">
-          {PROGRAMS.map((p) => {
-            const Icon = p.icon;
+          {c.programs.map((p, idx) => {
+            const Icon = PROGRAM_ICONS[idx] ?? GraduationCap;
             return (
               <Card key={p.title} className="flex h-full items-start gap-5">
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gold-500/15 text-gold-500">
@@ -322,10 +237,10 @@ export default async function HighSchoolHomePage() {
 
       {/* Highlights / Activities */}
       <Section background="cream-soft" spacing="md">
-        <SectionTitle title="ОНЦЛОХ АРГА ХЭМЖЭЭ, АМЖИЛТ" align="left" />
+        <SectionTitle title={c.highlightsTitle} align="left" />
         <div className="grid gap-5 md:grid-cols-2">
-          {HIGHLIGHTS.map((h) => {
-            const Icon = h.icon;
+          {c.highlights.map((h, idx) => {
+            const Icon = HIGHLIGHT_ICONS[idx] ?? Trophy;
             return (
               <div
                 key={h.title}
@@ -356,7 +271,7 @@ export default async function HighSchoolHomePage() {
               href="/high-school/news"
               className="inline-flex items-center gap-1 text-sm font-semibold text-navy-900 hover:text-gold-500"
             >
-              Бүх мэдээг үзэх
+              {c.newsViewAll}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -385,10 +300,10 @@ export default async function HighSchoolHomePage() {
         <div className="grid gap-8 md:grid-cols-3">
           <div className="md:col-span-1">
             <p className="text-xs font-semibold uppercase tracking-widest text-gold-500">
-              Холбоо барих
+              {c.contactEyebrow}
             </p>
             <h2 className="mt-2 font-serif text-2xl font-bold text-navy-900 md:text-3xl">
-              Бидэнтэй холбоо барих
+              {c.contactTitle}
             </h2>
             <div className="mt-3 h-1 w-12 rounded-full bg-gold-500" />
           </div>
@@ -398,7 +313,7 @@ export default async function HighSchoolHomePage() {
                 <Phone className="h-5 w-5" />
               </span>
               <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-text-muted">
-                Утас
+                {c.phoneLabel}
               </p>
               <a
                 href="tel:+97670118589"
@@ -418,7 +333,7 @@ export default async function HighSchoolHomePage() {
                 <Mail className="h-5 w-5" />
               </span>
               <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-text-muted">
-                И-мэйл
+                {c.emailLabel}
               </p>
               <a
                 href="mailto:info@soyolerdem.edu.mn"
@@ -432,10 +347,10 @@ export default async function HighSchoolHomePage() {
                 <Calendar className="h-5 w-5" />
               </span>
               <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-text-muted">
-                Элсэлт нээлттэй
+                {c.admissionOpenLabel}
               </p>
               <p className="mt-1 text-base font-bold text-navy-900">
-                10-р анги · 2025–2026 оны хичээлийн жил
+                {c.admissionOpenValue}
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Button
@@ -443,10 +358,10 @@ export default async function HighSchoolHomePage() {
                   variant="primary"
                   size="md"
                 >
-                  Элсэлтийн мэдээлэл
+                  {c.admissionInfoCta}
                 </Button>
                 <Button href="/high-school/contact" variant="outline" size="md">
-                  Бусад асуулт
+                  {c.otherQuestionsCta}
                 </Button>
               </div>
             </div>
@@ -455,11 +370,11 @@ export default async function HighSchoolHomePage() {
       </Section>
 
       <CtaBanner
-        title="Соёл Эрдэм Ахлах Сургууль"
-        subtitle="Чанартай боловсрол, Япон хэл, соёл, IT-ийн чиглэлээр ирээдүйгээ эндээс эхлүүл."
-        ctaLabel="Элсэлтийн мэдээлэл"
+        title={c.bannerTitle}
+        subtitle={c.bannerSubtitle}
+        ctaLabel={c.bannerCta}
         ctaHref="/high-school/admission"
-        secondary={{ label: 'Холбоо барих', href: '/high-school/contact' }}
+        secondary={{ label: c.bannerSecondaryCta, href: '/high-school/contact' }}
       />
     </>
   );
