@@ -1,7 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/components/system/LocaleProvider';
 
 interface NewsCardProps {
   image: string;
@@ -59,6 +62,7 @@ export function NewsCard({
   href,
   className,
 }: NewsCardProps) {
+  const t = useTranslation();
   const teaser = buildTeaser(excerpt, body);
   const hasTeaser = teaser.length > 0;
 
@@ -112,7 +116,7 @@ export function NewsCard({
         )}
 
         <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-navy-900">
-          Үргэлжлэлийг унших
+          {t('common.continueReading')}
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
         </span>
       </div>

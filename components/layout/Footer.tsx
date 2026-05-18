@@ -108,12 +108,12 @@ export async function Footer({
                 invert
                 variant="single"
                 src={isHighSchool ? '/ahlal-logo-new.png' : '/logo.png'}
-                alt={
+                alt={t(
                   isHighSchool
-                    ? 'Соёл Эрдэм Ахлах Сургуулийн лого'
-                    : 'Соёл Эрдэм Дээд Сургуулийн лого'
-                }
-                label="Соёл Эрдэм"
+                    ? 'brand.highSchoolLogoAlt'
+                    : 'brand.universityLogoAlt',
+                )}
+                label={t('brand.short')}
               />
             </div>
             <p className="whitespace-pre-line text-sm leading-relaxed text-cream/80">

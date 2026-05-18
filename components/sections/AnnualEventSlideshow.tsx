@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/components/system/LocaleProvider';
 
 interface Props {
   images: string[];
@@ -27,6 +28,7 @@ export function AnnualEventSlideshow({
 }: Props) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const t = useTranslation();
 
   // Keep `active` in sync with the slide most-centered in the viewport.
   useEffect(() => {
@@ -87,7 +89,7 @@ export function AnnualEventSlideshow({
               type="button"
               onClick={() => scrollTo(active - 1)}
               disabled={active === 0}
-              aria-label="Өмнөх зураг"
+              aria-label={t('gallery.previous')}
               className="absolute left-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-navy-900 shadow-card backdrop-blur transition-opacity hover:bg-white disabled:opacity-0"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -96,7 +98,7 @@ export function AnnualEventSlideshow({
               type="button"
               onClick={() => scrollTo(active + 1)}
               disabled={active === images.length - 1}
-              aria-label="Дараагийн зураг"
+              aria-label={t('gallery.next')}
               className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-navy-900 shadow-card backdrop-blur transition-opacity hover:bg-white disabled:opacity-0"
             >
               <ChevronRight className="h-4 w-4" />
@@ -108,7 +110,7 @@ export function AnnualEventSlideshow({
                   key={idx}
                   type="button"
                   onClick={() => scrollTo(idx)}
-                  aria-label={`Зураг ${idx + 1}`}
+                  aria-label={`${t('gallery.image')} ${idx + 1}`}
                   className={cn(
                     'h-1.5 rounded-full transition-all',
                     idx === active ? 'w-4 bg-white' : 'w-1.5 bg-white/60',

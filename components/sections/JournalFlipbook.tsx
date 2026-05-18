@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
+import { useTranslation } from '@/components/system/LocaleProvider';
 
 // PDF.js worker — load from unpkg CDN to avoid bundling.
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -64,6 +65,7 @@ export function JournalFlipbook({
   coverImage,
   coverAlt = '',
 }: JournalFlipbookProps) {
+  const t = useTranslation();
   const [numPages, setNumPages] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -149,13 +151,11 @@ export function JournalFlipbook({
           loading={
             <div className="flex flex-col items-center gap-3 text-white/80">
               <Loader2 className="h-8 w-8 animate-spin" />
-              <p className="text-sm">Сэтгүүлийг ачаалж байна…</p>
+              <p className="text-sm">{t('reader.loading')}</p>
             </div>
           }
           error={
-            <p className="text-sm text-red-300">
-              PDF-ийг ачаалж чадсангүй. Дараа дахин оролдоно уу.
-            </p>
+            <p className="text-sm text-red-300">{t('reader.loadError')}</p>
           }
         >
           {loaded && numPages > 0 && (
@@ -228,7 +228,7 @@ export function JournalFlipbook({
             type="button"
             onClick={() => flip('prev')}
             disabled={currentPage === 0}
-            aria-label="Өмнөх хуудас"
+            aria-label={t('reader.previousPage')}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -249,7 +249,7 @@ export function JournalFlipbook({
             type="button"
             onClick={() => flip('next')}
             disabled={currentPage >= numPages + (coverImage ? 1 : 0) - 1}
-            aria-label="Дараагийн хуудас"
+            aria-label={t('reader.nextPage')}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronRight className="h-5 w-5" />

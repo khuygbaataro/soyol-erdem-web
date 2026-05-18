@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
+import { useTranslation } from '@/components/system/LocaleProvider';
 
 // PDF.js worker — load from unpkg CDN to avoid bundling.
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -67,9 +68,13 @@ export function NewspaperReader({
   issueNumber,
   issueTitle,
   publishedAt,
-  eyebrow = 'Соёл Эрдэм · Сонин хэвлэл',
+  eyebrow,
   showIssueNumber = true,
 }: NewspaperReaderProps) {
+  const t = useTranslation();
+  // Eyebrow defaults to the locale-aware "Soyol Erdem · Newspaper"
+  // string. Callers (regulations etc.) can still override via prop.
+  const resolvedEyebrow = eyebrow ?? t('newspaper.eyebrow');
   const [numPages, setNumPages] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -210,13 +215,13 @@ export function NewspaperReader({
         <div className="flex h-screen w-screen items-center justify-center bg-[#f5efe3] text-navy-900">
           <div className="flex flex-col items-center gap-3">
             <Loader2 className="h-8 w-8 animate-spin" />
-            <p className="text-sm font-semibold">Сонин ачаалж байна…</p>
+            <p className="text-sm font-semibold">{t('reader.loading')}</p>
           </div>
         </div>
       }
       error={
         <div className="flex h-screen w-screen items-center justify-center bg-[#f5efe3] text-navy-900">
-          <p className="text-sm">PDF-ийг ачаалж чадсангүй. Дараа дахин оролдоно уу.</p>
+          <p className="text-sm">{t('reader.loadError')}</p>
         </div>
       }
     >
@@ -226,11 +231,11 @@ export function NewspaperReader({
           <div className="flex items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
             <div className="flex items-center gap-3 min-w-0">
               <div className="hidden sm:flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-navy-900 text-[10px] font-bold tracking-tight text-gold-400">
-                СЭ
+                {t('newspaper.brandShort')}
               </div>
               <div className="min-w-0">
                 <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold-500 sm:text-[10px]">
-                  {eyebrow}
+                  {resolvedEyebrow}
                 </p>
                 <p className="truncate font-serif text-base font-bold leading-tight sm:text-lg">
                   {showIssueNumber && <>№{issueNumber}</>}
@@ -249,17 +254,17 @@ export function NewspaperReader({
               <a
                 href={pdfUrl}
                 download
-                aria-label="Татаж авах"
+                aria-label={t('reader.downloadAria')}
                 className="inline-flex items-center gap-1.5 rounded-full border border-navy-900/15 bg-white px-3 py-1.5 text-xs font-semibold text-navy-900 transition-colors hover:border-gold-500 hover:text-gold-500"
               >
                 <Download className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Татах</span>
+                <span className="hidden sm:inline">{t('reader.download')}</span>
               </a>
               <a
                 href={pdfUrl}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Шинэ табад нээх"
+                aria-label={t('reader.openNewTab')}
                 className="inline-flex items-center gap-1.5 rounded-full border border-navy-900/15 bg-white px-3 py-1.5 text-xs font-semibold text-navy-900 transition-colors hover:border-gold-500 hover:text-gold-500"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
@@ -274,7 +279,7 @@ export function NewspaperReader({
               <button
                 type="button"
                 onClick={() => setThumbsOpen((v) => !v)}
-                aria-label={thumbsOpen ? 'Хуудасны жагсаалт хаах' : 'Хуудасны жагсаалт нээх'}
+                aria-label={thumbsOpen ? t('reader.closeList') : t('reader.openList')}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-navy-900/15 bg-white text-navy-900 hover:border-gold-500 hover:text-gold-500"
               >
                 {thumbsOpen ? (
@@ -290,7 +295,7 @@ export function NewspaperReader({
                 type="button"
                 onClick={() => goTo(currentPage - 1)}
                 disabled={currentPage <= 1}
-                aria-label="Өмнөх хуудас"
+                aria-label={t('reader.previousPage')}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-navy-900/15 bg-white text-navy-900 hover:border-gold-500 hover:text-gold-500 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -304,7 +309,7 @@ export function NewspaperReader({
                   value={pageInput}
                   onChange={(e) => setPageInput(e.target.value.replace(/[^0-9]/g, ''))}
                   onBlur={submitPageInput}
-                  aria-label="Хуудас руу үсрэх"
+                  aria-label={t('reader.jumpTo')}
                   className="h-8 w-12 rounded-md border border-navy-900/15 bg-white text-center text-sm font-semibold tabular-nums text-navy-900 outline-none focus:border-gold-500"
                 />
                 <span className="text-sm text-text-body">/ {numPages || '–'}</span>
@@ -314,7 +319,7 @@ export function NewspaperReader({
                 type="button"
                 onClick={() => goTo(currentPage + 1)}
                 disabled={!numPages || currentPage >= numPages}
-                aria-label="Дараагийн хуудас"
+                aria-label={t('reader.nextPage')}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-navy-900/15 bg-white text-navy-900 hover:border-gold-500 hover:text-gold-500 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -326,7 +331,7 @@ export function NewspaperReader({
                 type="button"
                 onClick={() => setScale((s) => Math.max(MIN_SCALE, +(s - SCALE_STEP).toFixed(2)))}
                 disabled={scale <= MIN_SCALE}
-                aria-label="Жижигрүүлэх"
+                aria-label={t('reader.zoomOut')}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-navy-900/15 bg-white text-navy-900 hover:border-gold-500 hover:text-gold-500 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <Minus className="h-4 w-4" />
@@ -338,7 +343,7 @@ export function NewspaperReader({
                 type="button"
                 onClick={() => setScale((s) => Math.min(MAX_SCALE, +(s + SCALE_STEP).toFixed(2)))}
                 disabled={scale >= MAX_SCALE}
-                aria-label="Томруулах"
+                aria-label={t('reader.zoomIn')}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-navy-900/15 bg-white text-navy-900 hover:border-gold-500 hover:text-gold-500 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <Plus className="h-4 w-4" />
@@ -350,8 +355,8 @@ export function NewspaperReader({
                 type="button"
                 onClick={() => changeFit('page')}
                 aria-pressed={fitMode === 'page'}
-                aria-label="Хуудсанд багтаах"
-                title="Хуудсанд багтаах"
+                aria-label={t('reader.fitPage')}
+                title={t('reader.fitPage')}
                 className={`inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 text-xs font-semibold transition-colors ${
                   fitMode === 'page'
                     ? 'border-gold-500 bg-gold-500/15 text-navy-900'
@@ -359,14 +364,14 @@ export function NewspaperReader({
                 }`}
               >
                 <Maximize2 className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Хуудас</span>
+                <span className="hidden sm:inline">{t('reader.fitPageShort')}</span>
               </button>
               <button
                 type="button"
                 onClick={() => changeFit('width')}
                 aria-pressed={fitMode === 'width'}
-                aria-label="Өргөнд багтаах"
-                title="Өргөнд багтаах"
+                aria-label={t('reader.fitWidth')}
+                title={t('reader.fitWidth')}
                 className={`inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 text-xs font-semibold transition-colors ${
                   fitMode === 'width'
                     ? 'border-gold-500 bg-gold-500/15 text-navy-900'
@@ -374,7 +379,7 @@ export function NewspaperReader({
                 }`}
               >
                 <MoveHorizontal className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Өргөн</span>
+                <span className="hidden sm:inline">{t('reader.fitWidthShort')}</span>
               </button>
             </div>
           </div>
@@ -389,7 +394,7 @@ export function NewspaperReader({
               {isMobile && (
                 <button
                   type="button"
-                  aria-label="Жагсаалт хаах"
+                  aria-label={t('reader.closeList')}
                   onClick={() => setThumbsOpen(false)}
                   className="absolute inset-0 z-10 bg-navy-900/40 md:hidden"
                 />
@@ -404,13 +409,13 @@ export function NewspaperReader({
               >
                 <div className="sticky top-0 z-10 flex items-center justify-between bg-white/95 px-3 py-2 backdrop-blur">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-text-body">
-                    Хуудсууд
+                    {t('reader.pages')}
                   </p>
                   {isMobile && (
                     <button
                       type="button"
                       onClick={() => setThumbsOpen(false)}
-                      aria-label="Хаах"
+                      aria-label={t('common.close')}
                       className="inline-flex h-6 w-6 items-center justify-center rounded-md text-navy-900 hover:bg-navy-900/5"
                     >
                       <X className="h-3.5 w-3.5" />

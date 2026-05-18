@@ -85,11 +85,11 @@ export function HighSchoolHeader() {
             <Link
               href="/high-school"
               className="group flex shrink-0 items-center gap-3 transition-transform duration-300 hover:scale-[1.02]"
-              aria-label="Ахлах сургуулийн нүүр хуудас"
+              aria-label={t('brand.highSchoolHomeAria')}
             >
               <Image
                 src="/ahlal-logo-new.png"
-                alt="Соёл Эрдэм Ахлах Сургуулийн лого"
+                alt={t('brand.highSchoolLogoAlt')}
                 width={76}
                 height={76}
                 priority
@@ -98,10 +98,10 @@ export function HighSchoolHeader() {
               />
               <span className="flex flex-col items-center font-serif font-bold tracking-tight text-white">
                 <span className="text-base leading-tight md:text-lg">
-                  СОЁЛ ЭРДЭМ
+                  {t('brand.short').toUpperCase()}
                 </span>
                 <span className="text-sm leading-tight text-white/95 md:text-base">
-                  Сургууль
+                  {t('brand.highSchoolShort')}
                 </span>
               </span>
             </Link>
@@ -174,7 +174,7 @@ export function HighSchoolHeader() {
           >
             <div className="flex items-center justify-between border-b border-border-light px-4 py-4">
               <span className="font-serif text-base font-bold text-navy-900">
-                Ахлах Сургууль
+                {t('brand.highSchoolMobileSection')}
               </span>
               <button
                 type="button"

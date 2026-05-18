@@ -1,6 +1,9 @@
+'use client';
+
 import { BookOpen } from 'lucide-react';
 import type { Journal } from '@/lib/research-journals';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/components/system/LocaleProvider';
 
 interface ResearchJournalsListProps {
   journals: Journal[];
@@ -23,6 +26,7 @@ export function ResearchJournalsList({
   journals,
   covers,
 }: ResearchJournalsListProps) {
+  const t = useTranslation();
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {journals.map((j) => {
@@ -76,10 +80,10 @@ export function ResearchJournalsList({
 
             <div className="relative z-10 p-5">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-400">
-                Соёл Эрдэм
+                {t('newspaper.cardBrand')}
               </p>
               <p className="mt-1 text-[10px] uppercase tracking-widest text-white/55">
-                Эрдэм шинжилгээний сэтгүүл
+                {t('journal.cardCategory')}
               </p>
             </div>
 
@@ -93,7 +97,7 @@ export function ResearchJournalsList({
               <p className="mt-1 text-xs text-white/80">{j.subtitle}</p>
               <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-gold-400 transition-transform group-hover:translate-x-0.5">
                 <BookOpen className="h-3.5 w-3.5" />
-                Уншиж эхлэх
+                {t('newspaper.startReading')}
               </span>
             </div>
           </a>

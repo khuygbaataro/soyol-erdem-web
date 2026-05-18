@@ -3,32 +3,35 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Award, X, ZoomIn } from 'lucide-react';
+import { useTranslation } from '@/components/system/LocaleProvider';
+import type { TranslationKey } from '@/lib/i18n/messages';
 
 interface Certificate {
   year: number;
   src: string;
-  caption: string;
-  alt: string;
+  /** Translation key resolved per-locale. */
+  captionKey: TranslationKey;
+  altKey: TranslationKey;
 }
 
 const CERTIFICATES: Certificate[] = [
   {
     year: 2003,
     src: '/accreditation/cert-2003.jpg',
-    caption: 'Анхны магадлан итгэмжлэл',
-    alt: 'Соёл Эрдэм Дээд Сургуулийн 2003 оны магадлан итгэмжлэлийн гэрчилгээ',
+    captionKey: 'accreditation.cap1',
+    altKey: 'accreditation.alt1',
   },
   {
     year: 2010,
     src: '/accreditation/cert-2010.jpg',
-    caption: '2 дахь магадлан итгэмжлэл',
-    alt: 'Соёл Эрдэм Дээд Сургуулийн 2010 оны магадлан итгэмжлэлийн гэрчилгээ',
+    captionKey: 'accreditation.cap2',
+    altKey: 'accreditation.alt2',
   },
   {
     year: 2020,
     src: '/accreditation/cert-2020.jpg',
-    caption: '3 дахь магадлан итгэмжлэл',
-    alt: 'Соёл Эрдэм Дээд Сургуулийн 2020 оны магадлан итгэмжлэлийн гэрчилгээ',
+    captionKey: 'accreditation.cap3',
+    altKey: 'accreditation.alt3',
   },
 ];
 
@@ -38,8 +41,14 @@ const CERTIFICATES: Certificate[] = [
  * award and opens a lightbox modal on click for the full-size scan.
  */
 export function AccreditationGallery() {
+  const t = useTranslation();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const active = activeIdx !== null ? CERTIFICATES[activeIdx] : null;
+  // EN locale leaves the year suffix empty so the badge reads "2003"
+  // rather than "2003 он"; MN keeps "он" and JP renders "年".
+  const yearSuffix = t('accreditation.year');
+  const formatYear = (y: number) =>
+    yearSuffix ? `${y} ${yearSuffix}` : String(y);
 
   // ESC + body-scroll lock while modal open
   useEffect(() => {
@@ -72,14 +81,14 @@ export function AccreditationGallery() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={c.src}
-                  alt={c.alt}
+                  alt={t(c.altKey)}
                   className="absolute inset-0 h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                 />
               </div>
               {/* Zoom hint pill on hover */}
               <span className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-navy-900/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white opacity-0 backdrop-blur transition-opacity duration-200 group-hover:opacity-100">
                 <ZoomIn className="h-3 w-3" />
-                Томруулах
+                {t('accreditation.zoom')}
               </span>
             </div>
 
@@ -87,10 +96,10 @@ export function AccreditationGallery() {
             <div className="border-t border-border-light bg-white px-5 py-4 text-left">
               <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-gold-500">
                 <Award className="h-3 w-3" />
-                {c.year} он
+                {formatYear(c.year)}
               </p>
               <p className="mt-1 text-sm font-bold leading-snug text-navy-900">
-                {c.caption}
+                {t(c.captionKey)}
               </p>
             </div>
           </button>
@@ -107,7 +116,7 @@ export function AccreditationGallery() {
             transition={{ duration: 0.2 }}
             role="dialog"
             aria-modal="true"
-            aria-label={active.caption}
+            aria-label={t(active.captionKey)}
             className="fixed inset-0 z-50 flex items-center justify-center bg-navy-900/85 px-4 py-8 backdrop-blur-sm"
             onClick={(e) => {
               if (e.target === e.currentTarget) setActiveIdx(null);
@@ -123,7 +132,7 @@ export function AccreditationGallery() {
               <button
                 type="button"
                 onClick={() => setActiveIdx(null)}
-                aria-label="Хаах"
+                aria-label={t('common.close')}
                 className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-navy-900 shadow-card backdrop-blur transition-colors hover:bg-white"
               >
                 <X className="h-5 w-5" />
@@ -133,17 +142,17 @@ export function AccreditationGallery() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={active.src}
-                  alt={active.alt}
+                  alt={t(active.altKey)}
                   className="mx-auto h-auto max-h-[75vh] w-auto rounded-sm bg-white object-contain shadow-card"
                 />
               </div>
 
               <div className="border-t border-border-light bg-white px-6 py-4">
                 <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-gold-500">
-                  {active.year} он
+                  {formatYear(active.year)}
                 </p>
                 <p className="mt-1 font-serif text-lg font-bold text-navy-900">
-                  {active.caption}
+                  {t(active.captionKey)}
                 </p>
               </div>
             </motion.div>

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GraduationCap, Mail, Phone, School as SchoolIcon, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/components/system/LocaleProvider';
+import type { TranslationKey } from '@/lib/i18n/messages';
 
 /**
  * Соёл Эрдэм Дээд Сургуулийн бүтэц, зохион байгуулалт.
@@ -322,43 +324,43 @@ function UnitTree({
 
 interface Pillar {
   id: string;
-  title: string;
-  units: { id?: string; label: string }[];
+  titleKey: TranslationKey;
+  units: { id?: string; labelKey: TranslationKey }[];
 }
 
 const PILLARS: Pillar[] = [
   {
     id: 'academic-affairs',
-    title: 'Сургалтын алба',
+    titleKey: 'orgchart.pillar.academic',
     units: [
-      { id: 'japanese-dept', label: 'Япон судлалын тэнхим' },
-      { id: 'it-dept', label: 'Мэдээллийн технологийн тэнхим' },
-      { id: 'library', label: '"Хажимэ" номын сан' },
-      { id: 'practice', label: 'Дадлагын бааз' },
+      { id: 'japanese-dept', labelKey: 'orgchart.unit.japaneseDept' },
+      { id: 'it-dept', labelKey: 'orgchart.unit.itDept' },
+      { id: 'library', labelKey: 'orgchart.unit.library' },
+      { id: 'practice', labelKey: 'orgchart.unit.practice' },
     ],
   },
   {
     id: 'scientific-secretary',
-    title: 'Эрдэмтэн нарийн бичгийн дарга',
+    titleKey: 'orgchart.pillar.scientific',
     units: [
-      { id: 'graduate-studies', label: 'Ахисан түвшний сургалтын алба' },
-      { id: 'research-center', label: 'Судалгааны төв' },
+      { id: 'graduate-studies', labelKey: 'orgchart.unit.graduateStudies' },
+      { id: 'research-center', labelKey: 'orgchart.unit.researchCenter' },
     ],
   },
   {
     id: 'admin-finance',
-    title: 'Захиргаа, Санхүү, аж ахуй',
+    titleKey: 'orgchart.pillar.admin',
     units: [
-      { id: 'archive', label: 'Архив' },
-      { id: 'marketing', label: 'Маркетингийн алба' },
+      { id: 'archive', labelKey: 'orgchart.unit.archive' },
+      { id: 'marketing', labelKey: 'orgchart.unit.marketing' },
     ],
   },
   {
     id: 'faculty-development',
-    title: 'Багшийн хөгжлийн төв',
+    titleKey: 'orgchart.pillar.facultyDev',
     units: [
-      { id: 'foreign-relations', label: 'Гадаад харилцааны алба' },
-      { id: 'student-council', label: 'Оюутны зөвлөл' },
+      { id: 'foreign-relations', labelKey: 'orgchart.unit.foreignRelations' },
+      { id: 'student-council', labelKey: 'orgchart.unit.studentCouncil' },
     ],
   },
 ];
@@ -371,6 +373,7 @@ interface OrgChartProps {
 }
 
 export function OrgChart({ staff }: OrgChartProps = {}) {
+  const t = useTranslation();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   // Build a key-indexed map. Admin rows take priority; any position the
@@ -417,13 +420,13 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
         <div className="flex flex-col items-center">
           <div className="flex w-full items-center justify-center gap-0 sm:gap-3">
             <div className="hidden flex-1 sm:block" />
-            <ChartNode label="УДИРДАХ ЗӨВЛӨЛ" level="top" />
+            <ChartNode label={t('orgchart.board')} level="top" />
             <div className="hidden flex-1 items-center sm:flex">
               <SiblingConnector />
               <SiblingNode>
-                Нийслэлийн Ерөнхий Боловсролын
+                {t('orgchart.affiliatedLine1')}
                 <br />
-                Соёл Эрдэм сургууль (ЕБС)
+                {t('orgchart.affiliatedLine2')}
               </SiblingNode>
             </div>
           </div>
@@ -431,9 +434,9 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
           {/* mobile-only sibling card under the parent */}
           <div className="mt-4 flex justify-center sm:hidden">
             <SiblingNode>
-              Нийслэлийн Ерөнхий Боловсролын
+              {t('orgchart.affiliatedLine1')}
               <br />
-              Соёл Эрдэм сургууль (ЕБС)
+              {t('orgchart.affiliatedLine2')}
             </SiblingNode>
           </div>
 
@@ -442,32 +445,32 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
           {/* Row 2 — Эрдмийн Зөвлөл ← ЗАХИРАЛ → Захиргааны Зөвлөл (three siblings) */}
           <div className="flex w-full max-w-4xl items-center justify-center gap-0 sm:gap-3">
             <div className="hidden flex-1 items-center justify-end sm:flex">
-              <ChartNode label="Эрдмийн зөвлөл" level="mid" />
+              <ChartNode label={t('orgchart.academicCouncil')} level="mid" />
               <SiblingConnector />
             </div>
             <ChartNode
               id="rector"
-              label="ЗАХИРАЛ"
+              label={t('orgchart.rector')}
               level="director"
               onSelect={setSelectedId}
               staffMap={staffMap}
             />
             <div className="hidden flex-1 items-center sm:flex">
               <SiblingConnector />
-              <ChartNode label="Захиргааны зөвлөл" level="mid" />
+              <ChartNode label={t('orgchart.adminCouncil')} level="mid" />
             </div>
           </div>
 
           {/* mobile-only sibling stack */}
           <div className="mt-4 flex flex-col items-center gap-2 sm:hidden">
-            <ChartNode label="Эрдмийн зөвлөл" level="mid" />
-            <ChartNode label="Захиргааны зөвлөл" level="mid" />
+            <ChartNode label={t('orgchart.academicCouncil')} level="mid" />
+            <ChartNode label={t('orgchart.adminCouncil')} level="mid" />
           </div>
 
           <Connector height={6} />
 
-          {/* Row 3 — Чанарын үнэлгээний алба */}
-          <ChartNode label="Чанарын үнэлгээний алба" level="mid" />
+          {/* Row 3 — Quality assurance office */}
+          <ChartNode label={t('orgchart.qualityOffice')} level="mid" />
         </div>
 
         {/* Branching connector — Чанарын алба → 4 pillars */}
@@ -480,13 +483,13 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
             <div key={p.id} className="flex flex-col">
               <ChartNode
                 id={p.id}
-                label={p.title}
+                label={t(p.titleKey)}
                 level="pillar"
                 onSelect={setSelectedId}
                 staffMap={staffMap}
               />
               <UnitTree
-                units={p.units}
+                units={p.units.map((u) => ({ id: u.id, label: t(u.labelKey) }))}
                 onSelect={setSelectedId}
                 staffMap={staffMap}
               />
@@ -495,7 +498,7 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
         </div>
 
         <p className="pt-6 text-center text-sm text-text-muted md:text-base">
-          Ажилтны мэдээллийг үзэхийн тулд карт дээр дарна уу.
+          {t('orgchart.tooltip')}
         </p>
       </div>
 
@@ -525,7 +528,7 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
               <button
                 type="button"
                 onClick={() => setSelectedId(null)}
-                aria-label="Хаах"
+                aria-label={t('common.close')}
                 className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-navy-900 backdrop-blur transition-colors hover:bg-white"
               >
                 <X className="h-5 w-5" />

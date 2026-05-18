@@ -4693,3 +4693,284 @@ export const HS_CONTACT_CONTENT: Record<Language, HsContactBundle> = {
     admissionPreviewCta: '入学案内',
   },
 };
+
+/* ───────────────────── Admission register (online) ───────────────── */
+
+interface RegisterBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbAdmission: string;
+  breadcrumbThis: string;
+  steps: string[]; // 8 step labels, indexed 0-7
+  stepLabel: (current: number, total: number) => string;
+  selectPlaceholder: string;
+  educationOptions: string[]; // 5 entries
+  citizenshipMongolian: string;
+  citizenshipForeign: string;
+  bachelor: string;
+  master: string;
+  programLabel: string;
+  programEmpty: string;
+  programEmptyLinkLabel: string;
+  lastNameLabel: string;
+  lastNamePh: string;
+  firstNameLabel: string;
+  firstNamePh: string;
+  educationLevelLabel: string;
+  examScoresIntro: string;
+  examSubjectPh: string;
+  examScorePh: string;
+  addSubject: string;
+  phonesIntro: string;
+  phonePh: string;
+  addPhone: string;
+  emailLabel: string;
+  emailPh: string;
+  removeAria: string;
+  prevBtn: string;
+  nextBtn: string;
+  submitBtn: string;
+  validation: {
+    citizenship: string;
+    degree: string;
+    program: string;
+    lastName: string;
+    firstName: string;
+    education: string;
+    examNone: string;
+    examNumber: (subject: string) => string;
+    phone: string;
+    email: string;
+  };
+  errorSubmit: string;
+  errorNetwork: string;
+  successToast: string;
+  successTitle: string;
+  successBody: string;
+  successAdmissionCta: string;
+  successHomeCta: string;
+}
+
+export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
+  MN: {
+    heroTitle: 'ЭЛСЭЛТИЙН ЦАХИМ БҮРТГЭЛ',
+    heroSubtitle:
+      'Доорх 8 алхамтай анкетыг бөглөнө үү. Бүх асуултанд хариулсны дараа таны бүртгэл бидэнд илгээгдэнэ.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbAdmission: 'Элсэлт',
+    breadcrumbThis: 'Цахим бүртгэл',
+    steps: [
+      'Иргэншил',
+      'Зэрэг',
+      'Хөтөлбөр',
+      'Овог, нэр',
+      'Боловсрол',
+      'ЭЕШ-ын оноо',
+      'Утас',
+      'И-мэйл',
+    ],
+    stepLabel: (c, t) => `Алхам ${c} / ${t}`,
+    selectPlaceholder: '— сонгох —',
+    educationOptions: [
+      'Бүрэн дунд боловсрол',
+      'Тусгай мэргэжлийн дунд (МСҮТ / коллеж)',
+      'Бакалавр',
+      'Магистр',
+      'Доктор',
+    ],
+    citizenshipMongolian: 'Монгол улсын иргэн',
+    citizenshipForeign: 'Гадаадын иргэн',
+    bachelor: 'Бакалавр',
+    master: 'Магистр',
+    programLabel: 'Хөтөлбөр',
+    programEmpty:
+      'Энэ зэрэгт хамаарах хөтөлбөр одоохондоо нийтлэгдээгүй байна. Та {link} уу.',
+    programEmptyLinkLabel: 'бидэнтэй холбогдоно',
+    lastNameLabel: 'Овог',
+    lastNamePh: 'Жишээ: Доржийн',
+    firstNameLabel: 'Нэр',
+    firstNamePh: 'Жишээ: Тэмүүлэн',
+    educationLevelLabel: 'Боловсролын түвшин',
+    examScoresIntro: 'Дээд тал нь 3 хичээлийн оноог оруулна уу.',
+    examSubjectPh: 'Хичээл (Монгол хэл, Математик, …)',
+    examScorePh: 'Оноо',
+    addSubject: 'Хичээл нэмэх',
+    phonesIntro: 'Дээд тал нь 3 утасны дугаар оруулна уу.',
+    phonePh: '9911-2233',
+    addPhone: 'Утас нэмэх',
+    emailLabel: 'И-мэйл хаяг',
+    emailPh: 'example@gmail.com',
+    removeAria: 'Устгах',
+    prevBtn: 'Өмнөх',
+    nextBtn: 'Дараагийн',
+    submitBtn: 'Анкет илгээх',
+    validation: {
+      citizenship: 'Иргэншлээ сонгоно уу.',
+      degree: 'Боловсролын зэргээ сонгоно уу.',
+      program: 'Хөтөлбөр сонгоно уу.',
+      lastName: 'Овог оруулна уу.',
+      firstName: 'Нэр оруулна уу.',
+      education: 'Боловсролын түвшин сонгоно уу.',
+      examNone: 'Дор хаяж нэг хичээлийн оноо оруулна уу.',
+      examNumber: (s) => `"${s}" — оноо тоогоор бичигдсэн байх ёстой.`,
+      phone: 'Дор хаяж нэг утасны дугаар оруулна уу.',
+      email: 'И-мэйл хаяг хүчин төгөлдөр биш байна.',
+    },
+    errorSubmit: 'Илгээхэд алдаа гарлаа.',
+    errorNetwork: 'Сүлжээний алдаа. Дахин оролдоно уу.',
+    successToast: 'Анкет амжилттай илгээгдлээ!',
+    successTitle: 'Анкет амжилттай илгээгдлээ',
+    successBody:
+      'Манай элсэлтийн алба тантай удахгүй холбогдоно. И-мэйл хаягтайгаа танилцаж, спам хавтсыг шалгахаа бүү мартаарай.',
+    successAdmissionCta: 'Элсэлтийн хуудас руу буцах',
+    successHomeCta: 'Нүүр хуудас',
+  },
+  EN: {
+    heroTitle: 'ONLINE ADMISSION FORM',
+    heroSubtitle:
+      'Please complete the 8-step form below. Once you have answered every question, your application will be sent to us.',
+    breadcrumbHome: 'Home',
+    breadcrumbAdmission: 'Admission',
+    breadcrumbThis: 'Online application',
+    steps: [
+      'Citizenship',
+      'Degree',
+      'Programme',
+      'Full name',
+      'Education',
+      'Exam scores',
+      'Phone',
+      'Email',
+    ],
+    stepLabel: (c, t) => `Step ${c} / ${t}`,
+    selectPlaceholder: '— select —',
+    educationOptions: [
+      'Secondary (high school) graduate',
+      'Vocational secondary (vocational college)',
+      "Bachelor's",
+      "Master's",
+      'Doctorate',
+    ],
+    citizenshipMongolian: 'Mongolian citizen',
+    citizenshipForeign: 'International applicant',
+    bachelor: "Bachelor's",
+    master: "Master's",
+    programLabel: 'Programme',
+    programEmpty:
+      "No programmes are currently published at this level. Please {link}.",
+    programEmptyLinkLabel: 'contact us',
+    lastNameLabel: 'Last name',
+    lastNamePh: 'e.g. Dorjiin',
+    firstNameLabel: 'First name',
+    firstNamePh: 'e.g. Temuulen',
+    educationLevelLabel: 'Education level',
+    examScoresIntro: 'Enter up to 3 subjects with their scores.',
+    examSubjectPh: 'Subject (Mongolian, Mathematics, …)',
+    examScorePh: 'Score',
+    addSubject: 'Add subject',
+    phonesIntro: 'Enter up to 3 phone numbers.',
+    phonePh: '+976 9911 2233',
+    addPhone: 'Add phone',
+    emailLabel: 'Email address',
+    emailPh: 'example@gmail.com',
+    removeAria: 'Remove',
+    prevBtn: 'Previous',
+    nextBtn: 'Next',
+    submitBtn: 'Submit application',
+    validation: {
+      citizenship: 'Please select your citizenship.',
+      degree: 'Please select a degree level.',
+      program: 'Please choose a programme.',
+      lastName: 'Please enter your last name.',
+      firstName: 'Please enter your first name.',
+      education: 'Please select your education level.',
+      examNone: 'Please enter at least one subject and score.',
+      examNumber: (s) => `"${s}" — the score must be a number.`,
+      phone: 'Please enter at least one phone number.',
+      email: 'The email address is not valid.',
+    },
+    errorSubmit: 'Submission failed.',
+    errorNetwork: 'Network error. Please try again.',
+    successToast: 'Application submitted successfully!',
+    successTitle: 'Application submitted',
+    successBody:
+      "Our admissions office will be in touch shortly. Please keep an eye on your inbox and don't forget to check your spam folder.",
+    successAdmissionCta: 'Back to admissions',
+    successHomeCta: 'Home',
+  },
+  JP: {
+    heroTitle: 'オンライン入学願書',
+    heroSubtitle:
+      '下記8ステップのフォームをご記入ください。すべての項目に回答後、出願内容が本学に送信されます。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbAdmission: '入学案内',
+    breadcrumbThis: 'オンライン出願',
+    steps: [
+      '国籍',
+      '学位',
+      'プログラム',
+      '氏名',
+      '学歴',
+      '試験成績',
+      '電話',
+      'メール',
+    ],
+    stepLabel: (c, t) => `ステップ ${c} / ${t}`,
+    selectPlaceholder: '— 選択 —',
+    educationOptions: [
+      '中等教育修了（高校卒業）',
+      '専門中等教育（職業専門学校）',
+      '学士',
+      '修士',
+      '博士',
+    ],
+    citizenshipMongolian: 'モンゴル国民',
+    citizenshipForeign: '外国人志願者',
+    bachelor: '学士',
+    master: '修士',
+    programLabel: 'プログラム',
+    programEmpty:
+      'この学位レベルのプログラムは現在公開されておりません。{link}下さい。',
+    programEmptyLinkLabel: 'お問い合わせ',
+    lastNameLabel: '姓',
+    lastNamePh: '例：ドルジ',
+    firstNameLabel: '名',
+    firstNamePh: '例：テムレン',
+    educationLevelLabel: '学歴レベル',
+    examScoresIntro: '最大3科目まで成績をご入力ください。',
+    examSubjectPh: '科目（モンゴル語、数学、…）',
+    examScorePh: '点数',
+    addSubject: '科目を追加',
+    phonesIntro: '最大3件まで電話番号をご入力ください。',
+    phonePh: '+976 9911 2233',
+    addPhone: '電話を追加',
+    emailLabel: 'メールアドレス',
+    emailPh: 'example@gmail.com',
+    removeAria: '削除',
+    prevBtn: '前へ',
+    nextBtn: '次へ',
+    submitBtn: '出願を送信',
+    validation: {
+      citizenship: '国籍を選択してください。',
+      degree: '学位レベルを選択してください。',
+      program: 'プログラムを選択してください。',
+      lastName: '姓をご入力ください。',
+      firstName: '名をご入力ください。',
+      education: '学歴レベルを選択してください。',
+      examNone: '少なくとも1科目とその点数を入力してください。',
+      examNumber: (s) => `「${s}」 ― 点数は数値でご入力ください。`,
+      phone: '少なくとも1件の電話番号をご入力ください。',
+      email: 'メールアドレスの形式が正しくありません。',
+    },
+    errorSubmit: '送信に失敗しました。',
+    errorNetwork: 'ネットワークエラー。もう一度お試しください。',
+    successToast: '出願を送信しました！',
+    successTitle: '出願を受け付けました',
+    successBody:
+      '入学事務局より追ってご連絡いたします。受信トレイをご確認いただき、迷惑メールフォルダもお忘れなくご確認ください。',
+    successAdmissionCta: '入学案内に戻る',
+    successHomeCta: 'ホーム',
+  },
+};
+

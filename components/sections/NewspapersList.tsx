@@ -1,5 +1,8 @@
+'use client';
+
 import { BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLocale, useTranslation } from '@/components/system/LocaleProvider';
 
 export interface NewspaperListItem {
   id: string;
@@ -19,13 +22,17 @@ interface NewspapersListProps {
  * masthead, gold accent rule and the issue number set large.
  */
 export function NewspapersList({ items }: NewspapersListProps) {
+  const t = useTranslation();
+  const { locale } = useLocale();
   if (items.length === 0) {
     return (
       <div className="rounded-card border border-dashed border-border-medium bg-white p-10 text-center text-sm text-text-muted">
-        Одоохондоо сонин хэвлэлийн дугаар нийтлэгдээгүй байна.
+        {t('newspaper.empty')}
       </div>
     );
   }
+  const dateLocale =
+    locale === 'EN' ? 'en-US' : locale === 'JP' ? 'ja-JP' : 'mn-MN';
 
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -45,10 +52,10 @@ export function NewspapersList({ items }: NewspapersListProps) {
           {/* Top masthead — printed-paper feel */}
           <div className="relative bg-navy-900 px-5 py-4 text-white">
             <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
-              Соёл Эрдэм
+              {t('newspaper.cardBrand')}
             </p>
             <p className="mt-0.5 font-serif text-base font-bold tracking-tight">
-              Сонин хэвлэл
+              {t('newspaper.cardCategory')}
             </p>
             <span
               aria-hidden
@@ -64,7 +71,7 @@ export function NewspapersList({ items }: NewspapersListProps) {
               </p>
               {n.publishedAt && (
                 <p className="mt-3 text-xs uppercase tracking-widest text-text-muted">
-                  {new Date(n.publishedAt).toLocaleDateString('mn-MN', {
+                  {new Date(n.publishedAt).toLocaleDateString(dateLocale, {
                     year: 'numeric',
                     month: 'long',
                   })}
@@ -79,7 +86,7 @@ export function NewspapersList({ items }: NewspapersListProps) {
 
             <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-900 transition-transform group-hover:translate-x-0.5">
               <BookOpen className="h-3.5 w-3.5 text-gold-500" />
-              Уншиж эхлэх
+              {t('newspaper.startReading')}
             </span>
           </div>
         </a>

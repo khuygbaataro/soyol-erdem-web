@@ -124,7 +124,7 @@ export function Header() {
             <Link
               href="/"
               className="group flex h-full shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
-              aria-label="Соёл Эрдэм · Нүүр хуудас"
+              aria-label={t('brand.universityHomeAria')}
             >
               <Logo size={76} />
             </Link>

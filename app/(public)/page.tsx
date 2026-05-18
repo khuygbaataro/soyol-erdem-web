@@ -11,13 +11,13 @@ import { QuickPortals } from '@/components/sections/QuickPortals';
 import { prisma } from '@/lib/prisma';
 import { localiseNewsCategory } from '@/lib/admin-helpers';
 import { content, getSiteContentMap } from '@/lib/site-content';
-import { getServerLocale } from '@/lib/i18n/server';
+import { getServerLocale, getServerTranslator } from '@/lib/i18n/server';
 import { HOME_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const [latestNews, siteContent, locale] = await Promise.all([
+  const [latestNews, siteContent, locale, t] = await Promise.all([
     prisma.news
       .findMany({
         where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
@@ -27,6 +27,7 @@ export default async function HomePage() {
       .catch(() => []),
     getSiteContentMap('home'),
     getServerLocale(),
+    getServerTranslator(),
   ]);
 
   const home = HOME_CONTENT[locale];
@@ -120,7 +121,7 @@ export default async function HomePage() {
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-card lg:aspect-auto lg:h-full">
                   <Image
                     src={internshipImage}
-                    alt="Япон улс — интерншип"
+                    alt={t('common.internshipPhotoAlt')}
                     fill
                     sizes="(min-width: 1024px) 50vw, 100vw"
                     className="object-cover"
@@ -128,7 +129,7 @@ export default async function HomePage() {
                 </div>
               ) : (
                 <ImagePlaceholder
-                  label="Япон улс — интерншип"
+                  label={t('common.internshipPhotoAlt')}
                   aspect="aspect-[4/3] lg:aspect-auto lg:h-full"
                 />
               )}
