@@ -3,11 +3,12 @@ import Link from 'next/link';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import {
   ABOUT_4_SECTIONS,
-  HERO,
   MISSION_VISION_VALUES,
   SCHOOL_INFO,
 } from '@/lib/content';
 import { content, getSiteContentMap } from '@/lib/site-content';
+import { getServerLocale } from '@/lib/i18n/server';
+import { ABOUT_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,41 +18,75 @@ export const metadata = {
 };
 
 export default async function AboutPage() {
-  const siteContent = await getSiteContentMap('about');
+  const [siteContent, locale] = await Promise.all([
+    getSiteContentMap('about'),
+    getServerLocale(),
+  ]);
 
-  const heroTitle1 = content(siteContent, 'about.hero.title.line1', 'СОЁЛ ЭРДЭМ');
-  const heroTitle2 = content(siteContent, 'about.hero.title.line2', 'ДЭЭД СУРГУУЛЬ');
-  const heroBody = content(siteContent, 'about.hero.body', HERO.body);
-  const heroCtaLabel = content(siteContent, 'about.hero.cta_label', 'Бидний тухай дэлгэрэнгүй');
+  const about = ABOUT_CONTENT[locale];
+  const isMn = locale === 'MN';
+
+  const heroTitle1 = isMn
+    ? content(siteContent, 'about.hero.title.line1', about.heroTitle1)
+    : about.heroTitle1;
+  const heroTitle2 = isMn
+    ? content(siteContent, 'about.hero.title.line2', about.heroTitle2)
+    : about.heroTitle2;
+  const heroBody = isMn
+    ? content(siteContent, 'about.hero.body', about.heroBody)
+    : about.heroBody;
+  const heroCtaLabel = isMn
+    ? content(siteContent, 'about.hero.cta_label', about.heroCta)
+    : about.heroCta;
   const heroImage = content(
     siteContent,
     'about.hero.image',
     'https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80',
   );
 
-  // Slogan (УРИА) is admin-editable via the site-content panel; the static
-  // entry in `lib/content.ts` is the fallback.
-  const sloganTitle = content(
-    siteContent,
-    'about.slogan.title',
-    MISSION_VISION_VALUES.slogan.title,
-  );
-  const sloganText = content(
-    siteContent,
-    'about.slogan.text',
-    MISSION_VISION_VALUES.slogan.text,
-  );
+  // Slogan + MVV come from the localised bundle; the admin-editable
+  // site-content key only overrides in Mongolian so MN edits still
+  // surface but EN/JP get the curated translations.
+  const sloganTitle = isMn
+    ? content(siteContent, 'about.slogan.title', about.mvv.slogan.title)
+    : about.mvv.slogan.title;
+  const sloganText = isMn
+    ? content(siteContent, 'about.slogan.text', about.mvv.slogan.text)
+    : about.mvv.slogan.text;
 
+  // Build a localised MVV array. We keep the icons from the static
+  // content.ts since icons aren't translatable.
   const mvv = [
-    MISSION_VISION_VALUES.mission,
-    MISSION_VISION_VALUES.vision,
-    MISSION_VISION_VALUES.values,
+    {
+      ...MISSION_VISION_VALUES.mission,
+      title: about.mvv.mission.title,
+      text: about.mvv.mission.text,
+    },
+    {
+      ...MISSION_VISION_VALUES.vision,
+      title: about.mvv.vision.title,
+      text: about.mvv.vision.text,
+    },
+    {
+      ...MISSION_VISION_VALUES.values,
+      title: about.mvv.values.title,
+      text: about.mvv.values.text,
+    },
     {
       ...MISSION_VISION_VALUES.slogan,
       title: sloganTitle,
       text: sloganText,
     },
   ];
+
+  // Localised version of the 4 numbered "Танилцуулга" cards. We borrow
+  // the icon + href from the static array (those aren't translatable)
+  // and substitute the title/text from the active locale bundle.
+  const aboutSections = ABOUT_4_SECTIONS.map((s, i) => ({
+    ...s,
+    title: about.sections[i]?.title ?? s.title,
+    text: about.sections[i]?.text ?? s.text,
+  }));
 
   const dotPatternStyle = {
     backgroundImage:
@@ -83,10 +118,12 @@ export default async function AboutPage() {
                 href="/"
                 className="inline-flex items-center gap-1 transition-colors hover:text-navy-900"
               >
-                <span>Нүүр</span>
+                <span>{about.breadcrumbHome}</span>
               </Link>
               <ChevronRight className="h-4 w-4" aria-hidden />
-              <span className="font-medium text-navy-900">Сургуулийн тухай</span>
+              <span className="font-medium text-navy-900">
+                {about.breadcrumbThis}
+              </span>
             </nav>
 
             <h1 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-navy-900 sm:text-4xl lg:text-5xl">
@@ -130,17 +167,17 @@ export default async function AboutPage() {
             <div className="flex items-center justify-center gap-3">
               <span className="h-px w-10 bg-gold-500" aria-hidden />
               <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">
-                Танилцуулга
+                {about.introEyebrow}
               </span>
               <span className="h-px w-10 bg-gold-500" aria-hidden />
             </div>
             <h2 className="mt-4 text-h2 font-bold text-text-heading">
-              СОЁЛ ЭРДЭМИЙН ЗАМНАЛ
+              {about.introTitle}
             </h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {ABOUT_4_SECTIONS.map((section) => {
+            {aboutSections.map((section) => {
               const Icon = section.icon;
               return (
                 <Link
@@ -195,16 +232,20 @@ export default async function AboutPage() {
             <div className="flex items-center justify-center gap-3">
               <span className="h-px w-10 bg-gold-500" aria-hidden />
               <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">
-                Бидний үнэт зүйлс
+                {about.mvvEyebrow}
               </span>
               <span className="h-px w-10 bg-gold-500" aria-hidden />
             </div>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {mvv.map((item) => {
+            {mvv.map((item, idx) => {
               const Icon = item.icon;
-              const isValues = item.title === 'ҮНЭТ ЗҮЙЛС';
+              // Values card is always position 2 in the MVV array — the
+              // hanging-indent С-Э-Д-С acronym list. Detect by index so
+              // the localised title (VALUES / 価値観) still gets the
+              // same rendering treatment.
+              const isValues = idx === 2;
               return (
                 <article
                   key={item.title}

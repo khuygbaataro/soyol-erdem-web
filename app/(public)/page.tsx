@@ -8,15 +8,16 @@ import { NewsCard } from '@/components/ui/NewsCard';
 import { Badge } from '@/components/ui/Badge';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { QuickPortals } from '@/components/sections/QuickPortals';
-import { HERO } from '@/lib/content';
 import { prisma } from '@/lib/prisma';
 import { NEWS_CATEGORY_LABEL } from '@/lib/admin-helpers';
 import { content, getSiteContentMap } from '@/lib/site-content';
+import { getServerLocale } from '@/lib/i18n/server';
+import { HOME_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const [latestNews, siteContent] = await Promise.all([
+  const [latestNews, siteContent, locale] = await Promise.all([
     prisma.news
       .findMany({
         where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
@@ -25,15 +26,33 @@ export default async function HomePage() {
       })
       .catch(() => []),
     getSiteContentMap('home'),
+    getServerLocale(),
   ]);
 
-  // Fall back to static content.ts when DB row missing/empty.
-  const heroTitle1 = content(siteContent, 'home.hero.title.line1', HERO.titleLine1);
-  const heroTitle2 = content(siteContent, 'home.hero.title.line2', HERO.titleLine2);
-  const heroItalic = content(siteContent, 'home.hero.italic', HERO.italicAccent);
-  const heroBody = content(siteContent, 'home.hero.body', HERO.body);
-  const heroCtaPrimary = content(siteContent, 'home.hero.cta_primary', HERO.ctaPrimary);
-  const heroCtaSecondary = content(siteContent, 'home.hero.cta_secondary', HERO.ctaSecondary);
+  const home = HOME_CONTENT[locale];
+
+  // Mongolian DB rows take priority for the home group (so admin edits
+  // still apply); for non-MN locales we always use the translated
+  // bundle so visitors get a clean translated page.
+  const useSiteContent = locale === 'MN';
+  const heroTitle1 = useSiteContent
+    ? content(siteContent, 'home.hero.title.line1', home.hero.titleLine1)
+    : home.hero.titleLine1;
+  const heroTitle2 = useSiteContent
+    ? content(siteContent, 'home.hero.title.line2', home.hero.titleLine2)
+    : home.hero.titleLine2;
+  const heroItalic = useSiteContent
+    ? content(siteContent, 'home.hero.italic', home.hero.italic)
+    : home.hero.italic;
+  const heroBody = useSiteContent
+    ? content(siteContent, 'home.hero.body', home.hero.body)
+    : home.hero.body;
+  const heroCtaPrimary = useSiteContent
+    ? content(siteContent, 'home.hero.cta_primary', home.hero.ctaPrimary)
+    : home.hero.ctaPrimary;
+  const heroCtaSecondary = useSiteContent
+    ? content(siteContent, 'home.hero.cta_secondary', home.hero.ctaSecondary)
+    : home.hero.ctaSecondary;
   // If admin hasn't uploaded a hero image yet, fall back to the bundled
   // campus building photo in /public (the one Munkhchimeg supplied for
   // the home hero — tall navy glass tower).
@@ -81,7 +100,7 @@ export default async function HomePage() {
             <div className="relative hidden aspect-[4/5] w-full overflow-hidden rounded-image shadow-card-hover lg:block">
               <Image
                 src={heroImage}
-                alt="Соёл Эрдэм Их Сургуулийн зураг"
+                alt={home.hero.heroAlt}
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 className="object-cover"
@@ -90,7 +109,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <ImagePlaceholder
-              label="Барилгын зураг"
+              label={home.hero.heroAlt}
               aspect="aspect-[4/5]"
               className="hidden lg:block"
             />
@@ -126,21 +145,14 @@ export default async function HomePage() {
             </div>
             <div className="p-8 md:p-12">
               <Badge variant="gold" className="mb-4">
-                Онцлох хөтөлбөр
+                {home.internship.badge}
               </Badge>
               <h2 className="text-h2 font-bold text-navy-900">
-                Япон улсад цалинтай дадлага хий
+                {home.internship.title}
               </h2>
-              <p className="mt-4 text-text-body">
-                Сард 150,000 иений (≈2.5 сая төгрөг) цалинтай практик дадлага.
-                2014 оноос Монгол улсад анх удаа нэвтэрсэн интерншип хөтөлбөр.
-              </p>
+              <p className="mt-4 text-text-body">{home.internship.body}</p>
               <ul className="mt-5 space-y-2 text-sm text-text-body">
-                {[
-                  'Япон улсын зочид буудал, ресторан, халуун рашаанд дадлага',
-                  'Япон хэлний дадлага + цалин',
-                  'Япон соёл, ёс заншилтай танилцах боломж',
-                ].map((item) => (
+                {home.internship.bullets.map((item) => (
                   <li key={item} className="flex items-start gap-2">
                     <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
                     {item}
@@ -154,7 +166,7 @@ export default async function HomePage() {
                   size="md"
                   icon={<ArrowRight className="h-4 w-4" />}
                 >
-                  Дэлгэрэнгүй мэдэх
+                  {home.internship.cta}
                 </Button>
               </div>
             </div>
@@ -166,14 +178,16 @@ export default async function HomePage() {
       <Section background="cream-soft">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="text-h2 font-bold text-text-heading">СҮҮЛИЙН МЭДЭЭ</h2>
+            <h2 className="text-h2 font-bold text-text-heading">
+              {home.news.heading}
+            </h2>
             <div className="mt-4 h-1 w-16 rounded-full bg-gold-500" />
           </div>
           <Link
             href="/news"
             className="inline-flex items-center gap-1 text-sm font-semibold text-navy-900 hover:text-gold-500"
           >
-            Бүх мэдээг үзэх
+            {home.news.viewAll}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
