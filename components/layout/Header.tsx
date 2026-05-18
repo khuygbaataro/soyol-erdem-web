@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronRight, Menu, MapPin, Phone } from 'lucide-react';
@@ -11,6 +11,10 @@ import { LanguageSwitch } from '@/components/ui/LanguageSwitch';
 import { Button } from '@/components/ui/Button';
 import { NAV_ITEMS, SITE } from '@/lib/constants';
 import type { Language } from '@/lib/constants';
+import {
+  readGoogleTranslateLang,
+  setGoogleTranslateLang,
+} from '@/lib/google-translate';
 import { cn } from '@/lib/utils';
 
 // Utility-bar links. The high-school card sits first and renders larger
@@ -44,6 +48,21 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [lang, setLang] = useState<Language>('MN');
   const pathname = usePathname();
+
+  // Sync local highlight with whichever language Google Translate is
+  // currently rendering. The cookie persists across navigations, so on
+  // first paint we want the active pill to match what the user actually
+  // sees on the page.
+  useEffect(() => {
+    setLang(readGoogleTranslateLang());
+  }, []);
+
+  function changeLang(next: Language) {
+    setLang(next);
+    // Set the Google cookie + reload so the translation applies to the
+    // whole document, not just the components mounted right now.
+    setGoogleTranslateLang(next);
+  }
 
   return (
     <>
@@ -110,7 +129,7 @@ export function Header() {
 
               <LanguageSwitch
                 currentLang={lang}
-                onChange={setLang}
+                onChange={changeLang}
                 invert
                 className="text-[12.5px]"
               />
@@ -195,7 +214,7 @@ export function Header() {
         isOpen={open}
         onClose={() => setOpen(false)}
         currentLang={lang}
-        onLangChange={setLang}
+        onLangChange={changeLang}
       />
     </>
   );

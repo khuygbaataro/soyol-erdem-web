@@ -1,21 +1,23 @@
 import type { Metadata } from 'next';
 import {
-  Inter,
   Noto_Sans,
   Noto_Sans_Mongolian,
   Playfair_Display,
+  Roboto,
 } from 'next/font/google';
+import { GoogleTranslate } from '@/components/system/GoogleTranslate';
 import { SITE } from '@/lib/constants';
 import './globals.css';
 
 /**
- * Body / UI sans. Inter handles Latin + Cyrillic well; we explicitly
- * pin the weights we use so the browser only ships the styles we need
- * (faster first paint, smaller font payload).
+ * Body / UI sans. Roboto handles Latin + Cyrillic well with consistent
+ * weight rendering across both scripts. Pin the weights we actually use
+ * so the browser only ships those styles (faster first paint, smaller
+ * font payload).
  */
-const inter = Inter({
+const roboto = Roboto({
   subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['400', '500', '700', '900'],
   display: 'swap',
   variable: '--font-sans',
   preload: true,
@@ -91,9 +93,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="mn"
-      className={`${inter.variable} ${notoSans.variable} ${playfair.variable} ${notoMn.variable}`}
+      className={`${roboto.variable} ${notoSans.variable} ${playfair.variable} ${notoMn.variable}`}
     >
-      <body className="bg-white antialiased">{children}</body>
+      <body className="bg-white antialiased">
+        {children}
+        <GoogleTranslate />
+      </body>
     </html>
   );
 }
