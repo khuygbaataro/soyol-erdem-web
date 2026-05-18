@@ -8,13 +8,10 @@ import { ResearchJournalsList } from '@/components/sections/ResearchJournalsList
 import { getSiteContentMap } from '@/lib/site-content';
 import { prisma } from '@/lib/prisma';
 import { RESEARCH_TYPE_LABEL } from '@/lib/admin-helpers';
-import {
-  RESEARCH_AREAS,
-  RESEARCH_DEPARTMENTS,
-  RESEARCH_HIGHLIGHTS,
-  RESEARCH_INTRO,
-} from '@/lib/content';
+import { RESEARCH_AREAS, RESEARCH_DEPARTMENTS } from '@/lib/content';
 import { RESEARCH_JOURNALS } from '@/lib/research-journals';
+import { getServerLocale } from '@/lib/i18n/server';
+import { RESEARCH_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -22,7 +19,7 @@ export const metadata = {
 };
 
 export default async function ResearchPage() {
-  const [banners, researchContent, researchItems] = await Promise.all([
+  const [banners, researchContent, researchItems, locale] = await Promise.all([
     getSiteContentMap('banners'),
     getSiteContentMap('research'),
     prisma.research
@@ -32,42 +29,53 @@ export default async function ResearchPage() {
         take: 9,
       })
       .catch(() => []),
+    getServerLocale(),
   ]);
+
+  const c = RESEARCH_CONTENT[locale];
+  // Admin MN overrides only apply for the Mongolian locale; EN / JP always
+  // resolve from the hand-written translation bundle so language switches
+  // never leak mixed-language strings.
+  const useSiteContent = locale === 'MN';
 
   const banner =
     banners.get('page.research.banner') || '/erdem_shinjilgee_banner.png';
 
-  // Resolve admin-editable departments (3 slots) — fall back to static
-  // content if a key is missing or empty.
+  // Department titles + topic lists. MN uses admin-editable site-content
+  // first, then static MN, then translation bundle as a final guarantee.
   const departments = [1, 2, 3].map((i) => {
+    const adminTitle = useSiteContent
+      ? researchContent.get(`research.dept.${i}.title`)
+      : '';
+    const adminTopics = useSiteContent
+      ? researchContent.get(`research.dept.${i}.topics`)
+      : '';
     const title =
-      researchContent.get(`research.dept.${i}.title`) ||
+      adminTitle ||
+      c.departments[i - 1]?.title ||
       RESEARCH_DEPARTMENTS[i - 1]?.title ||
       '';
-    const topicsRaw =
-      researchContent.get(`research.dept.${i}.topics`) ||
-      RESEARCH_DEPARTMENTS[i - 1]?.topics.join('\n') ||
-      '';
-    return {
-      title,
-      topics: topicsRaw
-        .split('\n')
-        .map((t) => t.trim())
-        .filter(Boolean),
-    };
+    const topics: string[] = adminTopics
+      ? adminTopics
+          .split('\n')
+          .map((t) => t.trim())
+          .filter(Boolean)
+      : c.departments[i - 1]?.topics ?? RESEARCH_DEPARTMENTS[i - 1]?.topics ?? [];
+    return { title, topics };
   });
 
-  const highlights = [1, 2, 3].map(
-    (i) =>
-      researchContent.get(`research.highlight.${i}`) ||
-      RESEARCH_HIGHLIGHTS[i - 1] ||
-      '',
-  );
+  const highlights = [1, 2, 3].map((i) => {
+    const admin = useSiteContent
+      ? researchContent.get(`research.highlight.${i}`)
+      : '';
+    return admin || c.highlights[i - 1] || '';
+  });
 
   // Cover images for each journal — keyed by journal id. Admin upload
   // (research.journal.{id}.cover) takes priority; otherwise we fall back
   // to the static `cover` baked into RESEARCH_JOURNALS, so the shelf
-  // never has empty cards.
+  // never has empty cards. Cover images are language-agnostic so we
+  // always honour the admin upload regardless of locale.
   const journalCovers = new Map(
     RESEARCH_JOURNALS.map((j) => [
       j.id,
@@ -75,32 +83,50 @@ export default async function ResearchPage() {
     ]),
   );
 
+  // Areas — join the static icons with localised title / description by
+  // index. RESEARCH_AREAS keeps the canonical 3-item order.
+  const areas = RESEARCH_AREAS.map((a, idx) => ({
+    icon: a.icon,
+    title: c.areas[idx]?.title ?? a.title,
+    description: c.areas[idx]?.description ?? a.description,
+  }));
+
+  // Section titles. Admin overrides win for MN only; EN / JP always use
+  // the translation bundle.
+  const journalsTitle =
+    (useSiteContent && researchContent.get('research.journals.title')) ||
+    c.journalsTitle;
+  const journalsSubtitle =
+    (useSiteContent && researchContent.get('research.journals.subtitle')) ||
+    c.journalsSubtitle;
+
+  // Date formatter aligned to the current locale.
+  const dateLocale = locale === 'EN' ? 'en-US' : locale === 'JP' ? 'ja-JP' : 'mn-MN';
+
   return (
     <>
       <PageHero
-        title="ЭРДЭМ ШИНЖИЛГЭЭ, СУДАЛГААНЫ АЖИЛ"
-        subtitle="Тэнхимүүдийн судалгааны тэргүүлэх чиглэл, ахисан түвшний судалгаа, олон улсын хамтын ажиллагаа."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Эрдэм шинжилгээ' }]}
+        title={c.heroTitle}
+        subtitle={c.heroSubtitle}
+        breadcrumb={[
+          { label: c.breadcrumbHome, href: '/' },
+          { label: c.breadcrumbThis },
+        ]}
         backgroundImage={banner}
       />
 
       {/* Intro */}
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-base leading-relaxed text-text-body">
-            {RESEARCH_INTRO}
-          </p>
+          <p className="text-base leading-relaxed text-text-body">{c.intro}</p>
         </div>
       </Section>
 
       {/* Top-level priorities — 3 headline cards */}
       <Section background="cream-soft">
-        <SectionTitle
-          title="СЭДС-ИЙН СУДАЛГААНЫ ТЭРГҮҮЛЭХ ЧИГЛЭЛҮҮД"
-          subtitle="Мэргэжлийн тэнхимүүдийн судалгааны үндсэн 3 чиглэл."
-        />
+        <SectionTitle title={c.areasTitle} subtitle={c.areasSubtitle} />
         <div className="grid gap-6 md:grid-cols-3">
-          {RESEARCH_AREAS.map((a) => {
+          {areas.map((a) => {
             const Icon = a.icon;
             return (
               <Card key={a.title} className="flex h-full flex-col">
@@ -122,8 +148,8 @@ export default async function ResearchPage() {
       {/* Per-department research focus — 3 columns of bulleted lists */}
       <Section background="white">
         <SectionTitle
-          title="СУДАЛГААНЫ ЧИГЛЭЛ"
-          subtitle="Тэнхим, ахисан түвшнээр ангилсан судалгааны нарийвчилсан чиглэлүүд."
+          title={c.departmentsTitle}
+          subtitle={c.departmentsSubtitle}
         />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {departments
@@ -155,8 +181,8 @@ export default async function ResearchPage() {
       {/* Highlights — research-professor teams + CISCO + Moodle */}
       <Section background="cream-soft">
         <SectionTitle
-          title="ОНЦЛОХ ҮЙЛ АЖИЛЛАГАА"
-          subtitle="Судалгааны профессорын баг, олон улсын гэрчилгээт сургалт, цахим хэрэглэгдэхүүн."
+          title={c.highlightsTitle}
+          subtitle={c.highlightsSubtitle}
         />
         <div className="grid gap-6 md:grid-cols-3">
           {highlights
@@ -179,10 +205,7 @@ export default async function ResearchPage() {
           new publications + announcements land here automatically. */}
       {researchItems.length > 0 && (
         <Section background="white">
-          <SectionTitle
-            title="ЭРДЭМ ШИНЖИЛГЭЭНИЙ МЭДЭЭ, БҮТЭЭЛҮҮД"
-            subtitle="Манай эрдэмтэн багш нарын шинэ нийтлэл, илтгэл, ном, диссертаци болон төслийн мэдээ."
-          />
+          <SectionTitle title={c.feedTitle} subtitle={c.feedSubtitle} />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {researchItems.map((r) => (
               <Card key={r.id} className="flex h-full flex-col">
@@ -204,7 +227,7 @@ export default async function ResearchPage() {
                 <div className="mt-5 flex items-center justify-between border-t border-border-light pt-4">
                   <span className="text-xs text-text-muted">
                     {r.publishedAt
-                      ? new Date(r.publishedAt).toLocaleDateString('mn-MN', {
+                      ? new Date(r.publishedAt).toLocaleDateString(dateLocale, {
                           year: 'numeric',
                           month: 'short',
                           day: 'numeric',
@@ -219,12 +242,12 @@ export default async function ResearchPage() {
                       className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-900 transition-colors hover:text-gold-500"
                     >
                       <Download className="h-3.5 w-3.5" />
-                      Татах
+                      {c.download}
                     </a>
                   ) : (
                     <span className="inline-flex items-center gap-1.5 text-xs text-text-muted">
                       <FileText className="h-3.5 w-3.5" />
-                      Хэвлэгдэх шатанд
+                      {c.publishing}
                     </span>
                   )}
                 </div>
@@ -236,16 +259,7 @@ export default async function ResearchPage() {
 
       {/* Journals */}
       <Section background="white">
-        <SectionTitle
-          title={
-            researchContent.get('research.journals.title') ||
-            'ЭРДЭМ ШИНЖИЛГЭЭНИЙ СЭТГҮҮЛ'
-          }
-          subtitle={
-            researchContent.get('research.journals.subtitle') ||
-            'Соёл Эрдэм Дээд Сургуулиас гаргадаг боть тус бүрийг номын хуудас эргүүлэн уншиж танилцана уу.'
-          }
-        />
+        <SectionTitle title={journalsTitle} subtitle={journalsSubtitle} />
         <ResearchJournalsList journals={RESEARCH_JOURNALS} covers={journalCovers} />
       </Section>
     </>

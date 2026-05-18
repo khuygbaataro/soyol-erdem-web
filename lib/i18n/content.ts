@@ -630,3 +630,268 @@ export const SECTION_TITLES = {
     elearningTitle: 'オンライン学習',
   },
 };
+
+/* ───────────────────────── Research page ──────────────────────────── */
+
+interface ResearchBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbThis: string;
+  intro: string;
+  areasTitle: string;
+  areasSubtitle: string;
+  /** Order must match RESEARCH_AREAS in lib/content.ts (icons stay there). */
+  areas: { title: string; description: string }[];
+  departmentsTitle: string;
+  departmentsSubtitle: string;
+  /** Three department blocks — order matches RESEARCH_DEPARTMENTS. */
+  departments: { title: string; topics: string[] }[];
+  highlightsTitle: string;
+  highlightsSubtitle: string;
+  /** Three highlight paragraphs — order matches RESEARCH_HIGHLIGHTS. */
+  highlights: string[];
+  feedTitle: string;
+  feedSubtitle: string;
+  journalsTitle: string;
+  journalsSubtitle: string;
+  download: string;
+  publishing: string;
+}
+
+export const RESEARCH_CONTENT: Record<Language, ResearchBundle> = {
+  MN: {
+    heroTitle: 'ЭРДЭМ ШИНЖИЛГЭЭ, СУДАЛГААНЫ АЖИЛ',
+    heroSubtitle:
+      'Тэнхимүүдийн судалгааны тэргүүлэх чиглэл, ахисан түвшний судалгаа, олон улсын хамтын ажиллагаа.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbThis: 'Эрдэм шинжилгээ',
+    intro:
+      'Соёл Эрдэм Дээд Сургуулийн эрдэм шинжилгээ, судалгааны ажил нь мэргэжлийн тэнхимүүдийн тэргүүлэх чиглэлд төвлөрсөн судалгаа, ахисан түвшний эрдэм шинжилгээний бүтээл, олон улсын хамтын ажиллагаатай хослон явагддаг.',
+    areasTitle: 'СЭДС-ИЙН СУДАЛГААНЫ ТЭРГҮҮЛЭХ ЧИГЛЭЛҮҮД',
+    areasSubtitle: 'Мэргэжлийн тэнхимүүдийн судалгааны үндсэн 3 чиглэл.',
+    areas: [
+      {
+        title: 'Япон хэл утга зохиол судлал, орчуулга зүй',
+        description:
+          'Япон судлалын тэнхимийн тэргүүлэх чиглэл: хэл шинжлэл, утга зохиол, орчуулга зүй.',
+      },
+      {
+        title: 'Мэдээлэл харилцааны технологи',
+        description:
+          'Сүлжээний аюулгүй байдал, программ хангамж, автоматжуулалтын чиглэл.',
+      },
+      {
+        title: 'Монгол судлал, Монгол утга зохиол судлал',
+        description:
+          'Монгол утга зохиол, хэл, соёлын судалгаа — ахисан түвшний хөтөлбөртэй.',
+      },
+    ],
+    departmentsTitle: 'СУДАЛГААНЫ ЧИГЛЭЛ',
+    departmentsSubtitle:
+      'Тэнхим, ахисан түвшнээр ангилсан судалгааны нарийвчилсан чиглэлүүд.',
+    departments: [
+      {
+        title: 'Япон судлалын тэнхим',
+        topics: [
+          'Япон хэл утга зохиол судлал',
+          'Япон-монгол, Монгол-япон хэлний орчуулга зүй',
+          'Япон хэл заах арга',
+          'Япон хэл соёл судлал',
+          'Монгол-Япон, Япон-Монгол харилцаа судлал',
+          'Япон орон судлал',
+        ],
+      },
+      {
+        title: 'Мэдээллийн технологийн тэнхим',
+        topics: [
+          'Сүлжээний аюулгүй байдал',
+          'Программ хангамжийн хэрэглээ',
+          'Автоматжуулалт',
+        ],
+      },
+      {
+        title: 'Ахисан түвшний судалгаа',
+        topics: [
+          'Япон хэл утга зохиол судлал',
+          'Япон-монгол, Монгол-япон хэлний орчуулга зүй',
+          'Япон хэл заах арга',
+          'Япон хэл соёл судлал',
+          'Монгол судлал, Монгол утга зохиол судлал',
+        ],
+      },
+    ],
+    highlightsTitle: 'ОНЦЛОХ ҮЙЛ АЖИЛЛАГАА',
+    highlightsSubtitle:
+      'Судалгааны профессорын баг, олон улсын гэрчилгээт сургалт, цахим хэрэглэгдэхүүн.',
+    highlights: [
+      'Тус сургуулийн эрдэмтэн багш нар судалгааны чиглэлээр судалгааны профессорын баг байгуулан үйл ажиллагаагаа явуулдаг.',
+      'Программ хангамжийн мэргэжлийн оюутнуудыг 2023 оноос эхлэн CISCO академийн албан ёсны гэрчилгээтэй төгсдөг болсноор олон улсад IT компаниудад ажиллах боломжийг олгодог. Мөн мэдээллийн аюулгүй байдлын мэргэшүүлэх сургалт, компьютерын сүлжээ, Internet of Things, Программ хангамж, OS & IT, Packet Tracer сургалтуудыг Дээд сургуулийн оюутанд үнэ төлбөргүй зааж сургалт явуулж байна.',
+      'Тус хичээлийн жилээс эхлэн СЭДС нь онлайн болон цахим сургалтандаа MOODLE зайн сургалтын платформыг хэрэглэж эхэллээ. Ингэснээр гадаадаас элсэн суралцаж буй магиструуд болон интерншип хөтөлбөрт хамрагдсан бакалаврын хөтөлбөрийн оюутнууд хугацаа алдалгүй сургалтаа үргэлжлүүлэн суралцах боломж нээгдэж байна.',
+    ],
+    feedTitle: 'ЭРДЭМ ШИНЖИЛГЭЭНИЙ МЭДЭЭ, БҮТЭЭЛҮҮД',
+    feedSubtitle:
+      'Манай эрдэмтэн багш нарын шинэ нийтлэл, илтгэл, ном, диссертаци болон төслийн мэдээ.',
+    journalsTitle: 'ЭРДЭМ ШИНЖИЛГЭЭНИЙ СЭТГҮҮЛ',
+    journalsSubtitle:
+      'Соёл Эрдэм Дээд Сургуулиас гаргадаг боть тус бүрийг номын хуудас эргүүлэн уншиж танилцана уу.',
+    download: 'Татах',
+    publishing: 'Хэвлэгдэх шатанд',
+  },
+  EN: {
+    heroTitle: 'RESEARCH & SCHOLARSHIP',
+    heroSubtitle:
+      'Departmental research priorities, graduate-level studies, and international research partnerships.',
+    breadcrumbHome: 'Home',
+    breadcrumbThis: 'Research',
+    intro:
+      'Research at Soyol Erdem University combines department-led priority studies, graduate-level scholarship and active international cooperation.',
+    areasTitle: 'PRIORITY RESEARCH AREAS',
+    areasSubtitle: 'Three core research directions led by our academic departments.',
+    areas: [
+      {
+        title: 'Japanese linguistics, literature & translation studies',
+        description:
+          'The Department of Japanese Studies focuses on linguistics, literature and translation theory.',
+      },
+      {
+        title: 'Information & communication technology',
+        description:
+          'Network security, software engineering and automation.',
+      },
+      {
+        title: 'Mongolian studies & Mongolian literature',
+        description:
+          'Mongolian literature, language and cultural research — with a graduate-level programme.',
+      },
+    ],
+    departmentsTitle: 'RESEARCH STREAMS',
+    departmentsSubtitle:
+      'Detailed research topics grouped by department and by graduate level.',
+    departments: [
+      {
+        title: 'Department of Japanese Studies',
+        topics: [
+          'Japanese linguistics and literature',
+          'Japanese–Mongolian and Mongolian–Japanese translation studies',
+          'Japanese-language teaching methodology',
+          'Japanese language & cultural studies',
+          'Mongolia–Japan and Japan–Mongolia relations',
+          'Japan area studies',
+        ],
+      },
+      {
+        title: 'Department of Information Technology',
+        topics: [
+          'Network security',
+          'Applied software engineering',
+          'Automation',
+        ],
+      },
+      {
+        title: 'Graduate-level research',
+        topics: [
+          'Japanese linguistics and literature',
+          'Japanese–Mongolian and Mongolian–Japanese translation studies',
+          'Japanese-language teaching methodology',
+          'Japanese language & cultural studies',
+          'Mongolian studies and Mongolian literature',
+        ],
+      },
+    ],
+    highlightsTitle: 'PROGRAMME HIGHLIGHTS',
+    highlightsSubtitle:
+      'Research-professor teams, internationally accredited training and digital learning tools.',
+    highlights: [
+      'Our academic staff form dedicated research-professor teams that pursue work along each priority area.',
+      'Since 2023, students graduating from our software-engineering programme earn an official CISCO Academy certificate, opening the door to IT careers worldwide. We also offer free training to all undergraduates in information-security specialisation, computer networking, Internet of Things, software, OS & IT, and Cisco Packet Tracer.',
+      'Starting this academic year, Soyol Erdem has adopted the MOODLE distance-learning platform for both online and blended courses. This lets international master\'s students and visiting interns continue their studies without losing momentum.',
+    ],
+    feedTitle: 'RESEARCH NEWS & PUBLICATIONS',
+    feedSubtitle:
+      'New articles, talks, books, dissertations and project updates from our faculty.',
+    journalsTitle: 'ACADEMIC JOURNALS',
+    journalsSubtitle:
+      'Browse each volume published by Soyol Erdem University by flipping through the pages.',
+    download: 'Download',
+    publishing: 'In press',
+  },
+  JP: {
+    heroTitle: '研究・学術活動',
+    heroSubtitle:
+      '各学科の重点研究分野、大学院レベルの研究、国際共同研究まで。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbThis: '研究',
+    intro:
+      'ソヨル・エルデム大学の研究活動は、各専門学科の重点課題、大学院レベルの研究成果、そして国際協力を組み合わせて進められています。',
+    areasTitle: '本学の重点研究分野',
+    areasSubtitle: '専門学科が主導する3つの中核研究分野。',
+    areas: [
+      {
+        title: '日本語学・日本文学・翻訳論',
+        description:
+          '日本研究学科の重点分野 — 言語学、文学、翻訳理論を扱います。',
+      },
+      {
+        title: '情報通信技術',
+        description:
+          'ネットワークセキュリティ、ソフトウェア工学、オートメーション。',
+      },
+      {
+        title: 'モンゴル学・モンゴル文学研究',
+        description:
+          'モンゴル文学・言語・文化の研究 — 大学院プログラムを併設。',
+      },
+    ],
+    departmentsTitle: '研究分野',
+    departmentsSubtitle:
+      '学科別および大学院レベル別に整理した詳細な研究テーマ。',
+    departments: [
+      {
+        title: '日本研究学科',
+        topics: [
+          '日本語学・日本文学',
+          '日蒙・蒙日翻訳論',
+          '日本語教授法',
+          '日本語・日本文化研究',
+          '日蒙関係・蒙日関係研究',
+          '日本地域研究',
+        ],
+      },
+      {
+        title: '情報技術学科',
+        topics: [
+          'ネットワークセキュリティ',
+          'ソフトウェア応用',
+          'オートメーション',
+        ],
+      },
+      {
+        title: '大学院レベルの研究',
+        topics: [
+          '日本語学・日本文学',
+          '日蒙・蒙日翻訳論',
+          '日本語教授法',
+          '日本語・日本文化研究',
+          'モンゴル学・モンゴル文学',
+        ],
+      },
+    ],
+    highlightsTitle: '特色ある取り組み',
+    highlightsSubtitle:
+      '研究教授チーム、国際認定研修、デジタル学習環境。',
+    highlights: [
+      '本学の教員は、各重点分野ごとに研究教授チームを編成し、共同で研究活動を進めています。',
+      '2023年度からソフトウェア工学専攻の卒業生はCISCOアカデミーの公式認定証を取得して卒業し、国際的なIT企業で活躍する道が開かれました。さらに学部生全員に対して、情報セキュリティ専門研修、コンピュータネットワーク、IoT、ソフトウェア、OS & IT、Cisco Packet Tracerなどの講習を無償で提供しています。',
+      '本年度よりソヨル・エルデムは、オンライン授業およびハイブリッド授業にMOODLE遠隔学習プラットフォームを導入しました。これにより海外から学ぶ大学院生や、交換留学・インターンシップ参加の学部生が、ブランクを生じることなく学業を継続できる環境が整いました。',
+    ],
+    feedTitle: '研究ニュース・成果',
+    feedSubtitle:
+      '本学教員による最新の論文・発表・書籍・学位論文・プロジェクト情報。',
+    journalsTitle: '学術ジャーナル',
+    journalsSubtitle:
+      'ソヨル・エルデム大学が発行する各号を、ページをめくる感覚でご覧いただけます。',
+    download: 'ダウンロード',
+    publishing: '刊行準備中',
+  },
+};
