@@ -14,6 +14,8 @@ import { Card } from '@/components/ui/Card';
 import { ContactForm } from '@/components/ui/ContactForm';
 import { CONTACT_INFO } from '@/lib/content';
 import { getSiteContentMap } from '@/lib/site-content';
+import { getServerLocale } from '@/lib/i18n/server';
+import { CONTACT_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -28,13 +30,25 @@ const SOCIAL = [
 ];
 
 export default async function ContactPage() {
-  const banners = await getSiteContentMap('banners');
+  const [banners, locale] = await Promise.all([
+    getSiteContentMap('banners'),
+    getServerLocale(),
+  ]);
+  const c = CONTACT_CONTENT[locale];
+
+  // Translate the two CONTACT_INFO phone labels (Үндсэн / Элсэлтийн алба)
+  // using the position in the array, since the labels are stable.
+  const phoneLabels = [c.phoneLabelMain, c.phoneLabelAdmission];
+
   return (
     <>
       <PageHero
-        title="ХОЛБОО БАРИХ"
-        subtitle="Бидэнтэй ямар ч асуудлаар чөлөөтэй холбогдоорой."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Холбоо барих' }]}
+        title={c.heroTitle}
+        subtitle={c.heroSubtitle}
+        breadcrumb={[
+          { label: c.breadcrumbHome, href: '/' },
+          { label: c.breadcrumbThis },
+        ]}
         backgroundImage={banners.get('page.contact.banner') || undefined}
       />
 
@@ -42,9 +56,7 @@ export default async function ContactPage() {
         <div className="grid gap-10 lg:grid-cols-[5fr_7fr]">
           {/* Contact info */}
           <div>
-            <h2 className="text-h2 font-bold text-navy-900">
-              Бидэнтэй холбогдоорой
-            </h2>
+            <h2 className="text-h2 font-bold text-navy-900">{c.reachUs}</h2>
             <div className="mt-4 h-1 w-16 rounded-full bg-gold-500" />
 
             <ul className="mt-8 space-y-5 text-sm">
@@ -54,19 +66,19 @@ export default async function ContactPage() {
                 </span>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
-                    Хаяг
+                    {c.addressLabel}
                   </p>
-                  <p className="mt-1 text-text-body">{CONTACT_INFO.addressFull}</p>
+                  <p className="mt-1 text-text-body">{c.addressFull}</p>
                 </div>
               </li>
-              {CONTACT_INFO.phones.map((p) => (
+              {CONTACT_INFO.phones.map((p, idx) => (
                 <li key={p.number} className="flex items-start gap-4">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
                     <Phone className="h-5 w-5" />
                   </span>
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
-                      {p.type}
+                      {phoneLabels[idx] ?? p.type}
                     </p>
                     <a
                       href={`tel:${p.number.replace('-', '')}`}
@@ -83,7 +95,7 @@ export default async function ContactPage() {
                 </span>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
-                    И-мэйл
+                    {c.emailLabel}
                   </p>
                   <a
                     href={`mailto:${CONTACT_INFO.email}`}
@@ -99,10 +111,10 @@ export default async function ContactPage() {
                 </span>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
-                    Цагийн хуваарь
+                    {c.hoursLabel}
                   </p>
-                  <p className="mt-1 text-text-body">{CONTACT_INFO.weekdays}</p>
-                  <p className="text-text-muted">{CONTACT_INFO.weekend}</p>
+                  <p className="mt-1 text-text-body">{c.weekdays}</p>
+                  <p className="text-text-muted">{c.weekend}</p>
                 </div>
               </li>
             </ul>
@@ -125,12 +137,32 @@ export default async function ContactPage() {
 
           {/* Form */}
           <Card className="p-8" hover={false}>
-            <h2 className="text-h3 font-bold text-navy-900">Зурвас илгээх</h2>
-            <p className="mt-2 text-sm text-text-muted">
-              Бид ажлын 1-2 өдрийн дотор хариу барина.
-            </p>
+            <h2 className="text-h3 font-bold text-navy-900">{c.formTitle}</h2>
+            <p className="mt-2 text-sm text-text-muted">{c.formSubtitle}</p>
             <div className="mt-6">
-              <ContactForm />
+              {/* ContactForm is a client component — pass the localised
+                  labels in as props so it stays locale-agnostic. */}
+              <ContactForm
+                labels={{
+                  nameLabel: c.formNameLabel,
+                  namePlaceholder: c.formNamePlaceholder,
+                  emailLabel: c.formEmailLabel,
+                  emailPlaceholder: c.formEmailPlaceholder,
+                  phoneLabel: c.formPhoneLabel,
+                  phonePlaceholder: c.formPhonePlaceholder,
+                  subjectLabel: c.formSubjectLabel,
+                  subjectPlaceholder: c.formSubjectPlaceholder,
+                  messageLabel: c.formMessageLabel,
+                  messagePlaceholder: c.formMessagePlaceholder,
+                  submit: c.formSubmit,
+                  errorSubmit: c.formError,
+                  errorNetwork: c.formNetworkError,
+                  successTitle: c.formSuccessTitle,
+                  successBody: c.formSuccessBody,
+                  successAgain: c.formSuccessAgain,
+                  subjects: c.subjects,
+                }}
+              />
             </div>
           </Card>
         </div>
@@ -139,7 +171,6 @@ export default async function ContactPage() {
       {/* Map */}
       <Section background="cream-soft" spacing="sm">
         <div className="aspect-[16/7] w-full overflow-hidden rounded-image border border-border-light bg-white">
-          {/* TODO: replace with real Google Maps API key */}
           <iframe
             src={CONTACT_INFO.mapEmbed}
             width="100%"
@@ -147,7 +178,7 @@ export default async function ContactPage() {
             style={{ border: 0 }}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Соёл Эрдэм газрын зураг"
+            title={c.mapTitle}
           />
         </div>
       </Section>

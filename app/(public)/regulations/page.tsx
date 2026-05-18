@@ -6,6 +6,8 @@ import { Section } from '@/components/layout/Section';
 import { Card } from '@/components/ui/Card';
 import { prisma } from '@/lib/prisma';
 import { getSiteContentMap } from '@/lib/site-content';
+import { getServerLocale } from '@/lib/i18n/server';
+import { REGULATIONS_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -15,7 +17,7 @@ export const metadata = {
 };
 
 export default async function RegulationsPage() {
-  const [items, banners] = await Promise.all([
+  const [items, banners, locale] = await Promise.all([
     prisma.regulation
       .findMany({
         where: { status: 'PUBLISHED' },
@@ -23,14 +25,20 @@ export default async function RegulationsPage() {
       })
       .catch(() => []),
     getSiteContentMap('banners'),
+    getServerLocale(),
   ]);
+
+  const c = REGULATIONS_CONTENT[locale];
 
   return (
     <>
       <PageHero
-        title="ДҮРЭМ ЖУРАМ"
-        subtitle="Соёл Эрдэм Дээд Сургуулийн бүх мөрдөгдөж буй журмыг нэг газар. Дугаар бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Дүрэм журам' }]}
+        title={c.heroTitle}
+        subtitle={c.heroSubtitle}
+        breadcrumb={[
+          { label: c.breadcrumbHome, href: '/' },
+          { label: c.breadcrumbThis },
+        ]}
         backgroundImage={banners.get('page.regulations.banner') || undefined}
       />
 
@@ -40,7 +48,7 @@ export default async function RegulationsPage() {
             hover={false}
             className="mx-auto max-w-2xl text-center text-sm text-text-muted"
           >
-            Одоохондоо журам нийтлэгдээгүй байна.
+            {c.empty}
           </Card>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -73,7 +81,7 @@ export default async function RegulationsPage() {
                     className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent"
                   />
                   <span className="absolute left-3 top-3 inline-flex items-center rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-navy-900 shadow-sm">
-                    Журам
+                    {c.badge}
                   </span>
                 </div>
 
@@ -89,7 +97,7 @@ export default async function RegulationsPage() {
                   )}
                   <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-900">
                     <BookOpen className="h-3.5 w-3.5 text-gold-500" />
-                    Уншиж эхлэх
+                    {c.startReading}
                   </span>
                 </div>
               </Link>

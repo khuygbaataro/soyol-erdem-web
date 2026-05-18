@@ -3,6 +3,8 @@ import { Section } from '@/components/layout/Section';
 import { NewspapersList } from '@/components/sections/NewspapersList';
 import { prisma } from '@/lib/prisma';
 import { getSiteContentMap } from '@/lib/site-content';
+import { getServerLocale } from '@/lib/i18n/server';
+import { SONIN_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -12,7 +14,7 @@ export const metadata = {
 };
 
 export default async function SoninHewlelPage() {
-  const [items, banners] = await Promise.all([
+  const [items, banners, locale] = await Promise.all([
     prisma.newspaper
       .findMany({
         where: { status: 'PUBLISHED' },
@@ -26,14 +28,20 @@ export default async function SoninHewlelPage() {
       })
       .catch(() => []),
     getSiteContentMap('banners'),
+    getServerLocale(),
   ]);
+
+  const c = SONIN_CONTENT[locale];
 
   return (
     <>
       <PageHero
-        title="СОНИН ХЭВЛЭЛ"
-        subtitle="Сургуулийн тогтмол хэвлэлийн архив. Дугаар бүрийг номын хуудас эргүүлэн уншиж танилцана уу."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Сонин хэвлэл' }]}
+        title={c.heroTitle}
+        subtitle={c.heroSubtitle}
+        breadcrumb={[
+          { label: c.breadcrumbHome, href: '/' },
+          { label: c.breadcrumbThis },
+        ]}
         backgroundImage={banners.get('page.sonin-hewlel.banner') || undefined}
       />
 

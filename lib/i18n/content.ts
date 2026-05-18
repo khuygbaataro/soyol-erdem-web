@@ -2243,3 +2243,507 @@ export const STUDENT_LIFE_CONTENT: Record<Language, StudentLifeBundle> = {
     ],
   },
 };
+
+/* ───────────────────── Library page ──────────────────────────────── */
+
+interface LibraryBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbThis: string;
+  intro: string;
+  categoriesTitle: string;
+  servicesTitle: string;
+  categories: string[];
+  services: string[];
+  holdings: { label: string; value: string }[];
+}
+
+export const LIBRARY_CONTENT: Record<Language, LibraryBundle> = {
+  MN: {
+    heroTitle: 'НОМЫН САН',
+    heroSubtitle:
+      'Япон, Монгол, Англи хэл дээрх 5,000+ нэр төрлийн ном, эрдэм шинжилгээний нийтлэлтэй.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbThis: 'Номын сан',
+    intro:
+      'Соёл Эрдэм дээд сургуулийн номын сан нь япон, монгол, англи хэлээр 5000+ нэр төрлийн ном, сурах бичиг, эрдэм шинжилгээний нийтлэлтэй. Япон улсын элчин сайдын яамны хандивласан ном, сэтгүүлийн тусгай танхимтай.',
+    categoriesTitle: 'НОМЫН АНГИЛАЛ',
+    servicesTitle: 'ҮЙЛЧИЛГЭЭ',
+    categories: [
+      'Япон хэл, соёл, түүх',
+      'Орчуулга судлал',
+      'Олон улсын харилцаа',
+      'Эдийн засаг, бизнес',
+      'Аялал жуулчлал',
+      'Сурах бичиг (JLPT N5-N1)',
+      'Эрдэм шинжилгээний сэтгүүл',
+      'Уран зохиол (япон, монгол)',
+    ],
+    services: [
+      'Ном зээлэх (1 хүн 3 ном, 14 хоног)',
+      'Уншлагын танхим (8:00-21:00)',
+      'Цахим сан (онлайн ном, нийтлэл)',
+      'Хэвлэх, хувилах үйлчилгээ',
+      'Япон хэлний өөрөө суралцах булан',
+    ],
+    holdings: [
+      { label: 'Цагийн хуваарь', value: '08:00 — 21:00' },
+      { label: 'Уншлагын танхим', value: '120 суудалтай' },
+      { label: 'Холдинг', value: '5,000+ ном' },
+    ],
+  },
+  EN: {
+    heroTitle: 'LIBRARY',
+    heroSubtitle:
+      'A collection of 5,000+ Japanese, Mongolian and English titles and academic publications.',
+    breadcrumbHome: 'Home',
+    breadcrumbThis: 'Library',
+    intro:
+      'The Soyol Erdem University library holds 5,000+ Japanese, Mongolian and English titles — books, textbooks and academic publications — plus a dedicated room of books and journals donated by the Embassy of Japan.',
+    categoriesTitle: 'COLLECTIONS',
+    servicesTitle: 'SERVICES',
+    categories: [
+      'Japanese language, culture, history',
+      'Translation studies',
+      'International relations',
+      'Economics & business',
+      'Tourism',
+      'Textbooks (JLPT N5–N1)',
+      'Academic journals',
+      'Literature (Japanese & Mongolian)',
+    ],
+    services: [
+      'Book loans (3 books per person, 14 days)',
+      'Reading room (08:00–21:00)',
+      'Digital library (online books & articles)',
+      'Printing & photocopying',
+      'Self-study corner for Japanese',
+    ],
+    holdings: [
+      { label: 'Opening hours', value: '08:00 — 21:00' },
+      { label: 'Reading room', value: '120 seats' },
+      { label: 'Holdings', value: '5,000+ books' },
+    ],
+  },
+  JP: {
+    heroTitle: '図書館',
+    heroSubtitle:
+      '日本語・モンゴル語・英語の5,000冊以上の蔵書と学術論文を所蔵。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbThis: '図書館',
+    intro:
+      'ソヨル・エルデム大学の図書館は、日本語・モンゴル語・英語の5,000冊以上の書籍・教科書・学術雑誌を所蔵し、在モンゴル日本国大使館から寄贈された書籍・雑誌の専用閲覧室も併設しています。',
+    categoriesTitle: '蔵書カテゴリー',
+    servicesTitle: 'サービス',
+    categories: [
+      '日本語・日本文化・日本史',
+      '翻訳論',
+      '国際関係',
+      '経済・ビジネス',
+      '観光',
+      '教科書（JLPT N5–N1）',
+      '学術雑誌',
+      '文学（日本語・モンゴル語）',
+    ],
+    services: [
+      '書籍貸出（1名3冊、14日間）',
+      '閲覧室（8:00〜21:00）',
+      'デジタルライブラリ（オンライン書籍・記事）',
+      '印刷・コピーサービス',
+      '日本語の自学自習コーナー',
+    ],
+    holdings: [
+      { label: '開館時間', value: '08:00 — 21:00' },
+      { label: '閲覧室', value: '120席' },
+      { label: '蔵書', value: '5,000冊以上' },
+    ],
+  },
+};
+
+/* ───────────────────── Careers page ──────────────────────────────── */
+
+interface CareersBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbThis: string;
+  intro: string;
+  openingsTitle: string;
+  openingsSubtitle: string;
+  openingsEmpty: string;
+  applyCta: string;
+  requirementsTitle: string;
+  offersTitle: string;
+  requirements: string[];
+  offers: string[];
+  ctaApply: string;
+  ctaViewOpenings: string;
+  ctaJoinUs: string;
+  /** Localised override of the default opening titles — index-matched
+   *  with CAREERS_DEFAULT_OPENINGS in lib/content.ts. */
+  defaultOpenings: string[];
+}
+
+export const CAREERS_CONTENT: Record<Language, CareersBundle> = {
+  MN: {
+    heroTitle: 'НЭЭЛТТЭЙ АЖЛЫН БАЙР',
+    heroSubtitle: 'Манай багт нэгдэх багш, мэргэжилтнүүдийг урьж байна.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbThis: 'Нээлттэй ажлын байр',
+    intro:
+      'Соёл Эрдэм Дээд Сургууль нь сургалт, судалгаа, инновацад суурилсан чанартай боловсрол олгох зорилгоор мэргэжлийн багш, чадварлаг хүний нөөцийг бүрдүүлэн ажиллаж байна. Бид дараах чиглэлээр багш ажилд урьж байна.',
+    openingsTitle: 'НЭЭЛТТЭЙ АЖЛЫН БАЙР',
+    openingsSubtitle: 'Доорх албан тушаалуудаар анкет хүлээн авч байна.',
+    openingsEmpty: 'Одоогоор нээлттэй ажлын байр байхгүй байна.',
+    applyCta: 'Анкет бөглөх',
+    requirementsTitle: 'Тавигдах нийтлэг шаардлага',
+    offersTitle: 'Бид танд санал болгож байна',
+    requirements: [
+      'Тухайн мэргэжлээр бакалавр болон түүнээс дээш зэрэгтэй',
+      'Багшлах, судалгаа хийх сонирхолтой',
+      'Харилцааны соёлтой, багаар ажиллах чадвартай',
+      'Их, дээд сургуульд багшилж байсан туршлагатай бол давуу тал болно',
+      'Сургалтын шинэ арга зүй, дижитал хэрэглэгдэхүүн ашиглах чадвартай',
+    ],
+    offers: [
+      'Тогтвортой ажлын байр',
+      'Мэргэжлийн өсөлт, хөгжлийн боломж',
+      'Найрсаг хамт олон',
+      'Судалгаа, сургалтын орчин',
+      'Уян хатан, бүтээлч ажиллах боломж',
+    ],
+    ctaApply: 'Анкет бөглөх',
+    ctaViewOpenings: 'Нээлттэй ажлын байр харах',
+    ctaJoinUs: 'Бидэнтэй нэгдэх',
+    defaultOpenings: [
+      'Япон хэлний багш',
+      'Программ хангамжийн багш',
+      'Аялал жуулчлалын багш',
+      'Орон судлалын багш',
+    ],
+  },
+  EN: {
+    heroTitle: 'CAREERS',
+    heroSubtitle: 'We are looking for talented faculty and staff to join our team.',
+    breadcrumbHome: 'Home',
+    breadcrumbThis: 'Careers',
+    intro:
+      'Soyol Erdem University is building a faculty and a workforce dedicated to high-quality, research-driven and innovation-led education. We are hiring teaching staff for the positions below.',
+    openingsTitle: 'OPEN POSITIONS',
+    openingsSubtitle: 'We are accepting applications for the roles listed below.',
+    openingsEmpty: 'No open positions at the moment.',
+    applyCta: 'Apply',
+    requirementsTitle: 'General requirements',
+    offersTitle: 'What we offer',
+    requirements: [
+      'Bachelor\'s degree or higher in the relevant field',
+      'Interest in teaching and research',
+      'Strong communication skills and a collaborative mindset',
+      'University-level teaching experience is a plus',
+      'Comfort with modern teaching methods and digital tools',
+    ],
+    offers: [
+      'A stable position',
+      'Career growth and development opportunities',
+      'A supportive community of colleagues',
+      'A research-rich teaching environment',
+      'Flexibility and room for creative work',
+    ],
+    ctaApply: 'Apply',
+    ctaViewOpenings: 'View open positions',
+    ctaJoinUs: 'Get in touch',
+    defaultOpenings: [
+      'Japanese-language instructor',
+      'Software engineering instructor',
+      'Tourism instructor',
+      'Area studies instructor',
+    ],
+  },
+  JP: {
+    heroTitle: '採用情報',
+    heroSubtitle: '私たちのチームに加わる教員・職員を募集しています。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbThis: '採用情報',
+    intro:
+      'ソヨル・エルデム大学は、教育・研究・イノベーションに基づく高品質な教育を提供するため、優れた教員と人材を集めています。下記の職種で教員を募集中です。',
+    openingsTitle: '募集中のポジション',
+    openingsSubtitle: '下記の職種で応募を受け付けています。',
+    openingsEmpty: '現在募集中の職種はありません。',
+    applyCta: '応募する',
+    requirementsTitle: '応募条件',
+    offersTitle: '当大学が提供するもの',
+    requirements: [
+      '当該分野の学士以上の学位',
+      '教育・研究への関心',
+      'コミュニケーション力とチームで働く力',
+      '大学での教育経験があれば尚可',
+      '新しい教育手法・デジタル教材を扱える力',
+    ],
+    offers: [
+      '安定した職場',
+      '専門職としての成長機会',
+      '良好な同僚関係',
+      '研究・教育に適した環境',
+      '柔軟で創造的な働き方',
+    ],
+    ctaApply: '応募する',
+    ctaViewOpenings: '募集職種を見る',
+    ctaJoinUs: 'お問い合わせ',
+    defaultOpenings: [
+      '日本語教員',
+      'ソフトウェア工学教員',
+      '観光学教員',
+      '地域研究教員',
+    ],
+  },
+};
+
+/* ───────────────────── Contact page ──────────────────────────────── */
+
+interface ContactBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbThis: string;
+  /** Left-column sub-heading. */
+  reachUs: string;
+  /** Inline labels for the contact details list. */
+  addressLabel: string;
+  phoneLabelMain: string;
+  phoneLabelAdmission: string;
+  emailLabel: string;
+  hoursLabel: string;
+  /** Localised values for the address + hours. Phone numbers / email
+   *  stay literal so we keep CONTACT_INFO as the source of truth. */
+  addressFull: string;
+  weekdays: string;
+  weekend: string;
+  /** Right-column form card. */
+  formTitle: string;
+  formSubtitle: string;
+  /** Form field labels + placeholders + buttons (used by ContactForm). */
+  formNameLabel: string;
+  formNamePlaceholder: string;
+  formEmailLabel: string;
+  formEmailPlaceholder: string;
+  formPhoneLabel: string;
+  formPhonePlaceholder: string;
+  formSubjectLabel: string;
+  formSubjectPlaceholder: string;
+  formMessageLabel: string;
+  formMessagePlaceholder: string;
+  formSubmit: string;
+  formError: string;
+  formNetworkError: string;
+  formSuccessTitle: string;
+  formSuccessBody: string;
+  formSuccessAgain: string;
+  /** Subject options shown in the dropdown — must keep the same order
+   *  as CONTACT_SUBJECTS in lib/content.ts (the value stored stays MN
+   *  for back-end compatibility). */
+  subjects: string[];
+  /** Map iframe `title`. */
+  mapTitle: string;
+}
+
+export const CONTACT_CONTENT: Record<Language, ContactBundle> = {
+  MN: {
+    heroTitle: 'ХОЛБОО БАРИХ',
+    heroSubtitle: 'Бидэнтэй ямар ч асуудлаар чөлөөтэй холбогдоорой.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbThis: 'Холбоо барих',
+    reachUs: 'Бидэнтэй холбогдоорой',
+    addressLabel: 'Хаяг',
+    phoneLabelMain: 'Үндсэн',
+    phoneLabelAdmission: 'Элсэлтийн алба',
+    emailLabel: 'И-мэйл',
+    hoursLabel: 'Цагийн хуваарь',
+    addressFull:
+      'Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо, Олимпийн гудамж (Өмнөд Солонгосын ЭСЯ-ны хойно)',
+    weekdays: 'Даваа-Баасан: 08:00-17:00',
+    weekend: 'Бямба-Ням: Амарна',
+    formTitle: 'Зурвас илгээх',
+    formSubtitle: 'Бид ажлын 1-2 өдрийн дотор хариу барина.',
+    formNameLabel: 'Бүтэн нэр *',
+    formNamePlaceholder: 'Б.Бат-Эрдэнэ',
+    formEmailLabel: 'И-мэйл *',
+    formEmailPlaceholder: 'email@example.com',
+    formPhoneLabel: 'Утас',
+    formPhonePlaceholder: '9999-9999',
+    formSubjectLabel: 'Сэдэв *',
+    formSubjectPlaceholder: 'Сэдвээ сонгоно уу',
+    formMessageLabel: 'Зурвас *',
+    formMessagePlaceholder: 'Таны асуулт, санаа...',
+    formSubmit: 'Илгээх',
+    formError: 'Илгээхэд алдаа гарлаа. Дахин оролдоно уу.',
+    formNetworkError: 'Сүлжээний алдаа.',
+    formSuccessTitle: 'Таны зурвас амжилттай илгээгдлээ.',
+    formSuccessBody: 'Бид ажлын 1-2 өдрийн дотор хариу барина.',
+    formSuccessAgain: 'Дахин илгээх',
+    subjects: [
+      'Элсэлтийн талаар',
+      'Сургалтын төлбөр',
+      'Тэтгэлэг',
+      'Хамтын ажиллагаа',
+      'Бусад',
+    ],
+    mapTitle: 'Соёл Эрдэм газрын зураг',
+  },
+  EN: {
+    heroTitle: 'CONTACT US',
+    heroSubtitle: 'Reach out — we\'re happy to hear from you.',
+    breadcrumbHome: 'Home',
+    breadcrumbThis: 'Contact',
+    reachUs: 'Get in touch',
+    addressLabel: 'Address',
+    phoneLabelMain: 'Main',
+    phoneLabelAdmission: 'Admissions office',
+    emailLabel: 'Email',
+    hoursLabel: 'Opening hours',
+    addressFull:
+      'Olympic Street, 1st Khoroo, Sukhbaatar District, Ulaanbaatar (behind the South Korean Embassy)',
+    weekdays: 'Mon–Fri: 08:00–17:00',
+    weekend: 'Sat–Sun: Closed',
+    formTitle: 'Send a message',
+    formSubtitle: 'We typically reply within 1–2 working days.',
+    formNameLabel: 'Full name *',
+    formNamePlaceholder: 'John Doe',
+    formEmailLabel: 'Email *',
+    formEmailPlaceholder: 'email@example.com',
+    formPhoneLabel: 'Phone',
+    formPhonePlaceholder: '+976 9999 9999',
+    formSubjectLabel: 'Subject *',
+    formSubjectPlaceholder: 'Choose a subject',
+    formMessageLabel: 'Message *',
+    formMessagePlaceholder: 'Your question or comment…',
+    formSubmit: 'Send',
+    formError: 'Something went wrong. Please try again.',
+    formNetworkError: 'Network error.',
+    formSuccessTitle: 'Your message has been sent.',
+    formSuccessBody: 'We typically reply within 1–2 working days.',
+    formSuccessAgain: 'Send another',
+    subjects: [
+      'Admissions',
+      'Tuition',
+      'Scholarships',
+      'Partnerships',
+      'Other',
+    ],
+    mapTitle: 'Soyol Erdem map',
+  },
+  JP: {
+    heroTitle: 'お問い合わせ',
+    heroSubtitle: 'どんなご質問でもお気軽にご連絡ください。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbThis: 'お問い合わせ',
+    reachUs: 'お問い合わせ',
+    addressLabel: '住所',
+    phoneLabelMain: '代表',
+    phoneLabelAdmission: '入試課',
+    emailLabel: 'メール',
+    hoursLabel: '受付時間',
+    addressFull:
+      'モンゴル国ウランバートル市スフバートル区第1ホロー、オリンピック通り（韓国大使館の裏手）',
+    weekdays: '月〜金：08:00〜17:00',
+    weekend: '土日：休業',
+    formTitle: 'メッセージを送る',
+    formSubtitle: '通常、1〜2営業日以内にご返信いたします。',
+    formNameLabel: 'お名前 *',
+    formNamePlaceholder: '山田 太郎',
+    formEmailLabel: 'メール *',
+    formEmailPlaceholder: 'email@example.com',
+    formPhoneLabel: '電話番号',
+    formPhonePlaceholder: '+976 9999 9999',
+    formSubjectLabel: '件名 *',
+    formSubjectPlaceholder: '件名を選択してください',
+    formMessageLabel: 'メッセージ *',
+    formMessagePlaceholder: 'ご質問やご意見をお書きください…',
+    formSubmit: '送信',
+    formError: '送信に失敗しました。もう一度お試しください。',
+    formNetworkError: 'ネットワークエラー。',
+    formSuccessTitle: 'メッセージを送信しました。',
+    formSuccessBody: '通常、1〜2営業日以内にご返信いたします。',
+    formSuccessAgain: '別のメッセージを送る',
+    subjects: ['入学について', '学費', '奨学金', '連携・提携', 'その他'],
+    mapTitle: 'ソヨル・エルデム 地図',
+  },
+};
+
+/* ───────────────────── Regulations page ──────────────────────────── */
+
+interface RegulationsBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbThis: string;
+  empty: string;
+  badge: string;
+  startReading: string;
+}
+
+export const REGULATIONS_CONTENT: Record<Language, RegulationsBundle> = {
+  MN: {
+    heroTitle: 'ДҮРЭМ ЖУРАМ',
+    heroSubtitle:
+      'Соёл Эрдэм Дээд Сургуулийн бүх мөрдөгдөж буй журмыг нэг газар. Дугаар бүрийг номын хуудас эргүүлэн уншиж танилцана уу.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbThis: 'Дүрэм журам',
+    empty: 'Одоохондоо журам нийтлэгдээгүй байна.',
+    badge: 'Журам',
+    startReading: 'Уншиж эхлэх',
+  },
+  EN: {
+    heroTitle: 'REGULATIONS',
+    heroSubtitle:
+      'All Soyol Erdem University regulations in one place. Each document opens as a flip-through book.',
+    breadcrumbHome: 'Home',
+    breadcrumbThis: 'Regulations',
+    empty: 'No regulations have been published yet.',
+    badge: 'Regulation',
+    startReading: 'Start reading',
+  },
+  JP: {
+    heroTitle: '規則・規程',
+    heroSubtitle:
+      'ソヨル・エルデム大学の各種規則・規程をまとめています。各文書はページをめくる形式でご覧いただけます。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbThis: '規則・規程',
+    empty: '現在公開中の規則はありません。',
+    badge: '規程',
+    startReading: '読み始める',
+  },
+};
+
+/* ───────────────────── Newspapers (sonin hewlel) ──────────────────── */
+
+interface SoninBundle {
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbHome: string;
+  breadcrumbThis: string;
+}
+
+export const SONIN_CONTENT: Record<Language, SoninBundle> = {
+  MN: {
+    heroTitle: 'СОНИН ХЭВЛЭЛ',
+    heroSubtitle:
+      'Сургуулийн тогтмол хэвлэлийн архив. Дугаар бүрийг номын хуудас эргүүлэн уншиж танилцана уу.',
+    breadcrumbHome: 'Нүүр',
+    breadcrumbThis: 'Сонин хэвлэл',
+  },
+  EN: {
+    heroTitle: 'SCHOOL NEWSPAPER',
+    heroSubtitle:
+      'The archive of our regular school newspaper. Each issue opens as a flip-through book.',
+    breadcrumbHome: 'Home',
+    breadcrumbThis: 'Newspaper',
+  },
+  JP: {
+    heroTitle: '広報誌',
+    heroSubtitle:
+      '本学発行の定期広報誌のアーカイブ。各号はページをめくる形式でご覧いただけます。',
+    breadcrumbHome: 'ホーム',
+    breadcrumbThis: '広報誌',
+  },
+};
