@@ -3527,6 +3527,15 @@ interface HsProgramsBundle {
   itTitle: string;
   itBody: string;
   itTopics: { title: string; body: string }[];
+  /** "Ногоон Жэйд" partner programme — international study pathway. */
+  jadeBadge: string;
+  jadeTitle: string;
+  jadeBody: string;
+  jadeStats: { value: string; label: string }[];
+  jadeServicesTitle: string;
+  jadeServices: { title: string; body: string }[];
+  jadeCountriesTitle: string;
+  jadeCountries: string;
   teachersBadge: string;
   teachersTitle: string;
   teachersBody: string;
@@ -3613,6 +3622,50 @@ export const HS_PROGRAMS_CONTENT: Record<Language, HsProgramsBundle> = {
       { title: 'Веб технологи', body: 'HTML, CSS, JavaScript ашиглан төсөл хийж, хэрэглэгчийн интерфейс зохиох.' },
       { title: 'AI болон өгөгдөл', body: 'Хиймэл оюун ухааны үндсэн ойлголт, өгөгдлийн шинжилгээний эхлэн суралцах хичээл.' },
     ],
+    jadeBadge: 'Ногоон Жэйд боловсролын төв',
+    jadeTitle: 'Олон улсад суралцах хувилбар (Ногоон Жэйд)',
+    jadeBody:
+      '"Ногоон Жэйд" боловсролын төв нь 2013 оноос Соёл Эрдэм Ахлах Сургуультай хамтран Англи, АНУ, Австрали, Канад зэрэг 10+ улсын 500+ их, дээд сургуультай зуучлал явуулж байна. Жил бүр 6,000+ оюутан зөвлөгөө авч, бэлдсэн сурагчдын 98% нь хүссэн сургуульдаа элсэн ордог. Манай сурагч ахлах ангиа төгсмөгцөө гадаадад үргэлжлүүлэн суралцах бэлэн замыг санал болгож байна.',
+    jadeStats: [
+      { value: '10+', label: 'жилийн туршлага' },
+      { value: '500+', label: 'хамтрагч сургууль' },
+      { value: '98%', label: 'хүссэн сургуульдаа ордог' },
+      { value: '99%', label: 'визний амжилт' },
+    ],
+    jadeServicesTitle: 'Санал болгож буй үйлчилгээ',
+    jadeServices: [
+      {
+        title: "Kid's English",
+        body: 'Бага насны (5+) хүүхдийн англи хэлний 5 түвшний сургалт — олон улсад хүлээн зөвшөөрөгдсөн хөтөлбөрөөр.',
+      },
+      {
+        title: 'Junior English',
+        body: '11–14 насны өсвөрийн англи хэлний сонирхолтой сургалт — дүрэм, унших, бичих, ярих, сонсох 4 чадварыг зэрэг хөгжүүлнэ.',
+      },
+      {
+        title: 'General English',
+        body: 'Ахлах ангид болон насанд хүрэгчдэд зориулсан 5-шатлалт ерөнхий англи хэлний сургалт — Англи, Монгол багштай.',
+      },
+      {
+        title: 'IELTS бэлтгэл',
+        body: 'IELTS-д өндөр оноо авах системтэй бэлтгэл — цаг хуваарилах, оновчтой хариулах дадал суулгана.',
+      },
+      {
+        title: 'NIFY — Олон улсын суурь хөтөлбөр',
+        body: 'Австралийн Eynesbury College-ийн Navitas International Foundation Year, Австралид үргэлжлүүлэн суралцахад зориулсан албан ёсны хөтөлбөр.',
+      },
+      {
+        title: 'OXFY — Олон улсын суурь хөтөлбөр',
+        body: 'Oxford International Foundation Year — Англид суралцах хүсэлтэй сурагчдад мэргэжлийн багш нар дор их сургуулийн түвшний хичээлийг үзүүлнэ.',
+      },
+      {
+        title: 'Боловсрол зуучлал',
+        body: '500+ их, дээд сургууль, 150–500 мэргэжлээс сонгон тэтгэлэгтэй элсэх зуучлалын үйлчилгээ — материал бүрдүүлэх, өргөдөл явуулах, виз авах хүртэл бүх алхамд дэмжинэ.',
+      },
+    ],
+    jadeCountriesTitle: 'Хамтрагч улсууд',
+    jadeCountries:
+      'Англи · Америк · Австрали · Канад · Швейцар · Хятад · Голланд · Унгар · Сингапур · Япон',
     teachersBadge: 'Багш нар',
     teachersTitle: 'Мэргэжлийн багш нар',
     teachersBody:
@@ -3711,6 +3764,50 @@ export const HS_PROGRAMS_CONTENT: Record<Language, HsProgramsBundle> = {
       { title: 'Web technologies', body: 'Building projects in HTML, CSS and JavaScript and designing user interfaces.' },
       { title: 'AI & data', body: 'An introduction to artificial intelligence and to data-analytics fundamentals.' },
     ],
+    jadeBadge: 'Green Jade Education Centre',
+    jadeTitle: 'International study pathway (Green Jade)',
+    jadeBody:
+      'In partnership with Soyol Erdem Senior High School since 2013, the "Green Jade" education centre places students in 500+ universities across 10+ countries — the UK, USA, Australia, Canada and more. Each year, 6,000+ students consult with Green Jade, and 98% of those who go on to apply are admitted to their first-choice school. The partnership gives our high-school students a ready-made pathway to continue their studies abroad straight after graduation.',
+    jadeStats: [
+      { value: '10+', label: 'years of experience' },
+      { value: '500+', label: 'partner universities' },
+      { value: '98%', label: 'placed at top choice' },
+      { value: '99%', label: 'visa success rate' },
+    ],
+    jadeServicesTitle: 'Services on offer',
+    jadeServices: [
+      {
+        title: "Kid's English",
+        body: 'Five-level English programme for young learners (ages 5+), built on internationally accredited curricula.',
+      },
+      {
+        title: 'Junior English',
+        body: 'Engaging English programme for ages 11–14, developing reading, writing, listening and speaking together with grammar.',
+      },
+      {
+        title: 'General English',
+        body: 'Five-tier general English programme for senior-high students and adults, co-taught by Mongolian and native-speaker faculty.',
+      },
+      {
+        title: 'IELTS preparation',
+        body: 'A systematic IELTS prep course — pacing, exam strategy and the techniques required to score at the top of the band.',
+      },
+      {
+        title: 'NIFY — International foundation programme',
+        body: "Australia's Eynesbury College Navitas International Foundation Year, the official onramp for students continuing to Australian universities.",
+      },
+      {
+        title: 'OXFY — International foundation programme',
+        body: 'Oxford International Foundation Year — a UK-bound preparation programme that takes students through university-level coursework under expert supervision.',
+      },
+      {
+        title: 'University placement',
+        body: 'Placement services covering 500+ universities and 150–500 majors with scholarship opportunities. Support runs end-to-end: document collection, application, visa.',
+      },
+    ],
+    jadeCountriesTitle: 'Partner countries',
+    jadeCountries:
+      'UK · USA · Australia · Canada · Switzerland · China · Netherlands · Hungary · Singapore · Japan',
     teachersBadge: 'Faculty',
     teachersTitle: 'Our subject teachers',
     teachersBody:
@@ -3809,6 +3906,50 @@ export const HS_PROGRAMS_CONTENT: Record<Language, HsProgramsBundle> = {
       { title: 'Web技術', body: 'HTML・CSS・JavaScriptでプロジェクトを制作し、ユーザインタフェースを設計。' },
       { title: 'AIとデータ', body: '人工知能の基礎概念、データ分析の入門授業。' },
     ],
+    jadeBadge: 'グリーン・ジェイド教育センター',
+    jadeTitle: '海外進学パスウェイ（グリーン・ジェイド）',
+    jadeBody:
+      '「グリーン・ジェイド」教育センターは、2013年からソヨル・エルデム高等学校と連携し、英国、米国、オーストラリア、カナダなど10カ国以上の500以上の大学・短大への留学斡旋を行っています。毎年6,000名以上の学生がカウンセリングを受け、出願した生徒の98%が第一志望校に合格しています。本校の生徒には、卒業後そのまま海外進学できる確かなルートを提供します。',
+    jadeStats: [
+      { value: '10+', label: '年の実績' },
+      { value: '500+', label: '提携校' },
+      { value: '98%', label: '第一志望合格率' },
+      { value: '99%', label: 'ビザ取得率' },
+    ],
+    jadeServicesTitle: '提供サービス',
+    jadeServices: [
+      {
+        title: "Kid's English",
+        body: '5歳以上の幼児向け5段階英語プログラム。国際的に認定されたカリキュラムに基づきます。',
+      },
+      {
+        title: 'Junior English',
+        body: '11〜14歳の中学生向け英語プログラム。文法に加え、読む・書く・聞く・話すの4技能を同時に伸ばします。',
+      },
+      {
+        title: 'General English',
+        body: '高校生・大人向けの5段階一般英語プログラム。モンゴル人教員とネイティブ教員が指導します。',
+      },
+      {
+        title: 'IELTS対策',
+        body: 'IELTSで高得点を取るための体系的な対策コース。時間配分、戦略、解答テクニックを習得します。',
+      },
+      {
+        title: 'NIFY ― 国際ファウンデーションコース',
+        body: 'オーストラリアEynesbury Collegeが正式に提供するNavitas International Foundation Year。オーストラリアの大学進学への公式ルートです。',
+      },
+      {
+        title: 'OXFY ― 国際ファウンデーションコース',
+        body: 'Oxford International Foundation Year。英国進学を目指す生徒が、専門教員の指導のもと大学レベルの科目を学習します。',
+      },
+      {
+        title: '進学斡旋',
+        body: '500以上の大学・短大、150〜500の専攻から奨学金付き留学を選択可能。書類準備、出願、ビザ取得まで全工程をサポートします。',
+      },
+    ],
+    jadeCountriesTitle: '提携国',
+    jadeCountries:
+      '英国 · 米国 · オーストラリア · カナダ · スイス · 中国 · オランダ · ハンガリー · シンガポール · 日本',
     teachersBadge: '教員',
     teachersTitle: '専門教員',
     teachersBody:

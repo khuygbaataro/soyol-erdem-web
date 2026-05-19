@@ -1,12 +1,17 @@
 import {
+  Award,
   BookOpen,
+  Briefcase,
   Code2,
   Cpu,
   Database,
+  Globe2,
   GraduationCap,
   Languages,
   Network,
+  Plane,
   Presentation,
+  Sparkles,
   Users,
   type LucideIcon,
 } from 'lucide-react';
@@ -30,6 +35,17 @@ export const metadata = {
 const STRUCTURE_ICONS: LucideIcon[] = [GraduationCap, Languages, Code2];
 const IT_ICONS: LucideIcon[] = [Code2, Database, Network, Cpu];
 const RESOURCE_ICONS: LucideIcon[] = [Cpu, BookOpen, Users];
+// Green Jade — partner programme (7 services). The icon list maps 1:1
+// against the localised `jadeServices` array in HS_PROGRAMS_CONTENT.
+const JADE_ICONS: LucideIcon[] = [
+  Sparkles,      // Kid's English
+  BookOpen,      // Junior English
+  Languages,     // General English
+  Award,         // IELTS
+  GraduationCap, // NIFY (Australia)
+  GraduationCap, // OXFY (UK)
+  Briefcase,     // Placement
+];
 
 export default async function HighSchoolProgramsPage() {
   const locale = await getServerLocale();
@@ -131,6 +147,71 @@ export default async function HighSchoolProgramsPage() {
               </Card>
             );
           })}
+        </div>
+      </Section>
+
+      {/* Green Jade — international study pathway (partner programme) */}
+      <Section background="white" spacing="md" id="green-jade">
+        <div className="mb-10">
+          <Badge variant="gold" className="mb-3">
+            {c.jadeBadge}
+          </Badge>
+          <h2 className="font-serif text-3xl font-bold text-navy-900 md:text-4xl">
+            {c.jadeTitle}
+          </h2>
+          <div className="mt-3 h-1 w-16 rounded-full bg-gold-500" />
+          <p className="mt-5 max-w-3xl text-base leading-relaxed text-text-body">
+            {c.jadeBody}
+          </p>
+        </div>
+
+        {/* Stats strip — same navy panel pattern as the teachers block */}
+        <div className="mb-10 grid grid-cols-2 gap-6 rounded-card bg-navy-900 px-6 py-8 text-white md:grid-cols-4">
+          {c.jadeStats.map((x) => (
+            <div key={x.label} className="text-center">
+              <p className="font-serif text-3xl font-bold text-gold-400 md:text-4xl">
+                {x.value}
+              </p>
+              <p className="mt-1 text-xs uppercase tracking-widest text-white/75">
+                {x.label}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <h3 className="mb-5 text-xs font-bold uppercase tracking-widest text-gold-500">
+          {c.jadeServicesTitle}
+        </h3>
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {c.jadeServices.map((s, idx) => {
+            const Icon = JADE_ICONS[idx] ?? Globe2;
+            return (
+              <Card key={s.title} className="flex h-full flex-col">
+                <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-600">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <h3 className="text-base font-bold text-navy-900">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-text-body">
+                  {s.body}
+                </p>
+              </Card>
+            );
+          })}
+        </div>
+
+        {/* Partner countries strip */}
+        <div className="mt-8 flex flex-col gap-3 rounded-card border border-emerald-500/30 bg-emerald-500/5 p-6 sm:flex-row sm:items-center">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-700">
+            <Plane className="h-5 w-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">
+              {c.jadeCountriesTitle}
+            </p>
+            <p className="mt-1 text-sm font-semibold leading-relaxed text-navy-900">
+              {c.jadeCountries}
+            </p>
+          </div>
         </div>
       </Section>
 
