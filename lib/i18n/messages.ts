@@ -37,7 +37,7 @@ export const MESSAGES: Record<Language, Messages> = {
     'hsNav.admission': 'Элсэлт',
     'hsNav.news': 'Мэдээ',
     'hsNav.contact': 'Холбоо барих',
-    'hsNav.backToUniversity': 'Их сургуульд буцах',
+    'hsNav.backToUniversity': 'Дээд сургуульд буцах',
 
     // ─── Common buttons / labels ──────────────────────────────────
     'common.readMore': 'Дэлгэрэнгүй',
