@@ -27,6 +27,7 @@ import { prisma } from '@/lib/prisma';
 import { localiseNewsCategory } from '@/lib/admin-helpers';
 import { getSiteContentMap } from '@/lib/site-content';
 import { getServerLocale } from '@/lib/i18n/server';
+import { localisedField } from '@/lib/i18n/db';
 import { HS_HOME_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
@@ -273,9 +274,9 @@ export default async function HighSchoolHomePage() {
                 }
                 date={(n.publishedAt ?? n.createdAt).toISOString().slice(0, 10)}
                 category={localiseNewsCategory(n.category, locale)}
-                title={n.title}
-                excerpt={n.excerpt}
-                body={n.body}
+                title={localisedField(n, 'title', locale)}
+                excerpt={localisedField(n, 'excerpt', locale)}
+                body={localisedField(n, 'body', locale)}
                 href={`/high-school/news/${n.slug}`}
               />
             ))}

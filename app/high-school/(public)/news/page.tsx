@@ -2,14 +2,15 @@ import { PageHero } from '@/components/sections/PageHero';
 import { CtaBanner } from '@/components/sections/CtaBanner';
 import { HighSchoolNewsListClient } from './NewsListClient';
 import { prisma } from '@/lib/prisma';
-import { getServerLocale } from '@/lib/i18n/server';
+import { getServerLocale, getServerTranslator } from '@/lib/i18n/server';
 import { localisedField } from '@/lib/i18n/db';
+import { getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Ахлах сургууль · Мэдээ мэдээлэл' };
 
 export default async function HighSchoolNewsPage() {
-  const [news, locale] = await Promise.all([
+  const [news, locale, t, site] = await Promise.all([
     prisma.news
       .findMany({
         where: { status: 'PUBLISHED', site: 'HIGH_SCHOOL' },
@@ -17,7 +18,10 @@ export default async function HighSchoolNewsPage() {
       })
       .catch(() => []),
     getServerLocale(),
+    getServerTranslator(),
+    getSiteContentMap('ahlah-home'),
   ]);
+  const heroImage = site.get('ahlah-news.hero.image') || undefined;
 
   const items = news.map((n) => ({
     id: n.slug,
@@ -33,22 +37,26 @@ export default async function HighSchoolNewsPage() {
   return (
     <>
       <PageHero
-        title="МЭДЭЭ МЭДЭЭЛЭЛ"
-        subtitle="Ахлах сургуулийн сүүлийн мэдээ, үйл явдал, амжилт."
+        title={t('hsNews.heroTitle')}
+        subtitle={t('hsNews.heroSubtitle')}
         breadcrumb={[
-          { label: 'Их сургууль', href: '/' },
-          { label: 'Ахлах сургууль', href: '/high-school' },
-          { label: 'Мэдээ мэдээлэл' },
+          { label: t('brand.short'), href: '/' },
+          { label: t('hsNav.home'), href: '/high-school' },
+          { label: t('hsNews.breadcrumbThis') },
         ]}
+        backgroundImage={heroImage}
       />
 
       <HighSchoolNewsListClient items={items} />
 
       <CtaBanner
-        title="Соёл Эрдэм Ахлах Сургууль"
-        ctaLabel="Элсэлтийн мэдээлэл"
+        title={t('hsNews.bannerTitle')}
+        ctaLabel={t('hsNews.bannerCta')}
         ctaHref="/high-school/admission"
-        secondary={{ label: 'Холбоо барих', href: '/high-school/contact' }}
+        secondary={{
+          label: t('hsNews.bannerSecondary'),
+          href: '/high-school/contact',
+        }}
       />
     </>
   );

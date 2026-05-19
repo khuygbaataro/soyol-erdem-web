@@ -132,6 +132,17 @@ export const MESSAGES: Record<Language, Messages> = {
     'orgchart.unit.foreignRelations': 'Гадаад харилцааны алба',
     'orgchart.unit.studentCouncil': 'Оюутны зөвлөл',
 
+    // ─── News listing pages ───────────────────────────────────────
+    'news.heroTitle': 'МЭДЭЭ',
+    'news.heroSubtitle': 'Сургуулийн сүүлийн мэдээ, үйл явдал, амжилт.',
+    'news.breadcrumbThis': 'Мэдээ',
+    'hsNews.heroTitle': 'МЭДЭЭ МЭДЭЭЛЭЛ',
+    'hsNews.heroSubtitle': 'Ахлах сургуулийн сүүлийн мэдээ, үйл явдал, амжилт.',
+    'hsNews.breadcrumbThis': 'Мэдээ мэдээлэл',
+    'hsNews.bannerTitle': 'Соёл Эрдэм Ахлах Сургууль',
+    'hsNews.bannerCta': 'Элсэлтийн мэдээлэл',
+    'hsNews.bannerSecondary': 'Холбоо барих',
+
     // ─── Footer ───────────────────────────────────────────────────
     'footer.importantLinks': 'ЧУХАЛ ХОЛБООС',
     'footer.contact': 'ХОЛБОО БАРИХ',
@@ -277,6 +288,17 @@ export const MESSAGES: Record<Language, Messages> = {
     'orgchart.unit.foreignRelations': 'International affairs office',
     'orgchart.unit.studentCouncil': 'Student council',
 
+    // ─── News listing pages ───────────────────────────────────────
+    'news.heroTitle': 'NEWS',
+    'news.heroSubtitle': 'The latest news, events and achievements from the university.',
+    'news.breadcrumbThis': 'News',
+    'hsNews.heroTitle': 'NEWS',
+    'hsNews.heroSubtitle': 'The latest news, events and achievements from the high school.',
+    'hsNews.breadcrumbThis': 'News',
+    'hsNews.bannerTitle': 'Soyol Erdem Senior High School',
+    'hsNews.bannerCta': 'Admission details',
+    'hsNews.bannerSecondary': 'Contact',
+
     // ─── Footer ───────────────────────────────────────────────────
     'footer.importantLinks': 'QUICK LINKS',
     'footer.contact': 'CONTACT',
@@ -421,6 +443,17 @@ export const MESSAGES: Record<Language, Messages> = {
     'orgchart.unit.marketing': 'マーケティング室',
     'orgchart.unit.foreignRelations': '国際交流課',
     'orgchart.unit.studentCouncil': '学生会',
+
+    // ─── News listing pages ───────────────────────────────────────
+    'news.heroTitle': 'ニュース',
+    'news.heroSubtitle': '大学の最新ニュース、イベント、実績。',
+    'news.breadcrumbThis': 'ニュース',
+    'hsNews.heroTitle': 'ニュース',
+    'hsNews.heroSubtitle': '高等学校の最新ニュース、イベント、実績。',
+    'hsNews.breadcrumbThis': 'ニュース',
+    'hsNews.bannerTitle': 'ソヨル・エルデム高等学校',
+    'hsNews.bannerCta': '入学案内',
+    'hsNews.bannerSecondary': 'お問い合わせ',
 
     // ─── Footer ───────────────────────────────────────────────────
     'footer.importantLinks': '関連リンク',

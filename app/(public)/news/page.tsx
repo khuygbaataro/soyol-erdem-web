@@ -2,20 +2,21 @@ import { PageHero } from '@/components/sections/PageHero';
 import { NewsListClient } from './NewsListClient';
 import { prisma } from '@/lib/prisma';
 import { getSiteContentMap } from '@/lib/site-content';
-import { getServerLocale } from '@/lib/i18n/server';
+import { getServerLocale, getServerTranslator } from '@/lib/i18n/server';
 import { localisedField } from '@/lib/i18n/db';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Мэдээ' };
 
 export default async function NewsPage() {
-  const [news, banners, locale] = await Promise.all([
+  const [news, banners, locale, t] = await Promise.all([
     prisma.news.findMany({
       where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
       orderBy: { publishedAt: 'desc' },
     }),
     getSiteContentMap('banners'),
     getServerLocale(),
+    getServerTranslator(),
   ]);
 
   const items = news.map((n) => ({
@@ -35,9 +36,12 @@ export default async function NewsPage() {
   return (
     <>
       <PageHero
-        title="МЭДЭЭ"
-        subtitle="Сургуулийн сүүлийн мэдээ, үйл явдал, амжилт."
-        breadcrumb={[{ label: 'Нүүр', href: '/' }, { label: 'Мэдээ' }]}
+        title={t('news.heroTitle')}
+        subtitle={t('news.heroSubtitle')}
+        breadcrumb={[
+          { label: t('nav.home'), href: '/' },
+          { label: t('news.breadcrumbThis') },
+        ]}
         backgroundImage={banner}
       />
 
