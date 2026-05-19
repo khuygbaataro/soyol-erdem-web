@@ -20,6 +20,14 @@ interface ImageUploadProps {
   /** Accept attribute for the file input. Default: image/*. */
   accept?: string;
   className?: string;
+  /**
+   * Fired whenever an upload starts / finishes so the parent form can
+   * disable its Save button while the upload is in flight. Prevents the
+   * race where admin clicks Save before the new Blob URL has streamed
+   * back from Vercel — which would silently persist the OLD URL while
+   * the new file is uploaded but never referenced.
+   */
+  onUploadingChange?: (uploading: boolean) => void;
 }
 
 /**
@@ -32,6 +40,7 @@ export function ImageUpload({
   folder = 'misc',
   accept = 'image/*',
   className,
+  onUploadingChange,
 }: ImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -39,6 +48,7 @@ export function ImageUpload({
   async function handleFile(file: File) {
     if (!file) return;
     setUploading(true);
+    onUploadingChange?.(true);
     try {
       const blob = await upload(`${folder}/${Date.now()}-${file.name}`, file, {
         access: 'public',
@@ -54,6 +64,7 @@ export function ImageUpload({
       );
     } finally {
       setUploading(false);
+      onUploadingChange?.(false);
       if (inputRef.current) inputRef.current.value = '';
     }
   }
@@ -147,6 +158,7 @@ export function FileUpload({
   accept = 'application/pdf',
   className,
   hint = 'PDF файл сонгох (max 50 MB)',
+  onUploadingChange,
 }: Omit<ImageUploadProps, 'folder'> & {
   folder?: 'research' | 'newspapers' | 'regulations' | 'misc';
   hint?: string;
@@ -157,6 +169,7 @@ export function FileUpload({
   async function handleFile(file: File) {
     if (!file) return;
     setUploading(true);
+    onUploadingChange?.(true);
     try {
       const blob = await upload(`${folder}/${Date.now()}-${file.name}`, file, {
         access: 'public',
@@ -168,6 +181,7 @@ export function FileUpload({
       toast.error(err instanceof Error ? err.message : 'Ачаалахад алдаа гарлаа');
     } finally {
       setUploading(false);
+      onUploadingChange?.(false);
       if (inputRef.current) inputRef.current.value = '';
     }
   }

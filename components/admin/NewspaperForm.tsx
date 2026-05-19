@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses } from '@/components/admin/FormField';
 import { FileUpload, ImageUpload } from '@/components/admin/ImageUpload';
+import { useUploadGuard } from '@/lib/use-upload-guard';
 
 interface NewspaperFormProps {
   initial?: {
@@ -26,6 +27,7 @@ interface NewspaperFormProps {
 export function NewspaperForm({ initial = {}, mode }: NewspaperFormProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const { isUploading, onUploadingChange } = useUploadGuard();
 
   const [issueNumber, setIssueNumber] = useState(
     initial.issueNumber ? String(initial.issueNumber) : '',
@@ -120,6 +122,7 @@ export function NewspaperForm({ initial = {}, mode }: NewspaperFormProps) {
               onChange={setFileUrl}
               folder="newspapers"
               hint="Сонин хэвлэлийн PDF файлаа сонгох"
+              onUploadingChange={onUploadingChange}
             />
           </FormField>
           <FormField
@@ -127,7 +130,7 @@ export function NewspaperForm({ initial = {}, mode }: NewspaperFormProps) {
             className="mt-4"
             hint="Заавал биш — байхгүй бол default дизайн харагдана"
           >
-            <ImageUpload value={coverImage} onChange={setCoverImage} folder="misc" />
+            <ImageUpload value={coverImage} onChange={setCoverImage} folder="misc" onUploadingChange={onUploadingChange} />
           </FormField>
         </Card>
       </div>
@@ -171,9 +174,10 @@ export function NewspaperForm({ initial = {}, mode }: NewspaperFormProps) {
               icon={<Save className="h-4 w-4" />}
               iconPosition="left"
               loading={pending}
+              disabled={isUploading}
               className="w-full"
             >
-              Хадгалах
+              {isUploading ? 'Зураг/файл ачаалж байна…' : 'Хадгалах'}
             </Button>
             <Link
               href="/admin/newspapers"

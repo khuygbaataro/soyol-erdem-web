@@ -20,6 +20,9 @@ interface MultiImageUploadProps {
   folder?: 'news' | 'misc';
   /** Hard cap to keep payload reasonable. */
   max?: number;
+  /** Mirror of ImageUpload's prop — fires when uploads start / end so
+   *  the parent form can disable Save until the queue empties. */
+  onUploadingChange?: (uploading: boolean) => void;
 }
 
 /**
@@ -34,6 +37,7 @@ export function MultiImageUpload({
   onChange,
   folder = 'news',
   max = 20,
+  onUploadingChange,
 }: MultiImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -48,8 +52,10 @@ export function MultiImageUpload({
     }
     const accepted = Array.from(files).slice(0, remaining);
     setUploading(true);
+    onUploadingChange?.(true);
+    const uploaded: string[] = [];
+    let errMsg: string | null = null;
     try {
-      const uploaded: string[] = [];
       for (const file of accepted) {
         const blob = await upload(`${folder}/${Date.now()}-${file.name}`, file, {
           access: 'public',
@@ -57,14 +63,19 @@ export function MultiImageUpload({
         });
         uploaded.push(blob.url);
       }
-      onChange([...value, ...uploaded]);
-      toast.success(`${uploaded.length} зураг нэмэгдлээ`);
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : 'Ачаалахад алдаа гарлаа',
-      );
+      // Hold on to the error so we can still commit any files that
+      // *did* succeed before the failure — otherwise those Blobs end
+      // up orphaned in storage and the user would have to re-upload.
+      errMsg = err instanceof Error ? err.message : 'Ачаалахад алдаа гарлаа';
     } finally {
+      if (uploaded.length > 0) {
+        onChange([...value, ...uploaded]);
+        toast.success(`${uploaded.length} зураг нэмэгдлээ`);
+      }
+      if (errMsg) toast.error(errMsg);
       setUploading(false);
+      onUploadingChange?.(false);
       if (inputRef.current) inputRef.current.value = '';
     }
   }

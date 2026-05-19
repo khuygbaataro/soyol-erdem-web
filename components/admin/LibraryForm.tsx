@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { useUploadGuard } from '@/lib/use-upload-guard';
 
 interface LibraryFormProps {
   initial?: any;
@@ -18,6 +19,7 @@ interface LibraryFormProps {
 export function LibraryForm({ initial = {}, mode }: LibraryFormProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const { isUploading, onUploadingChange } = useUploadGuard();
 
   const [title, setTitle] = useState(initial.title ?? '');
   const [author, setAuthor] = useState(initial.author ?? '');
@@ -108,7 +110,7 @@ export function LibraryForm({ initial = {}, mode }: LibraryFormProps) {
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} className={textareaClasses} />
         </FormField>
         <FormField label="Номын зураг" hint="Хавтасны зургийг upload хийнэ үү.">
-          <ImageUpload value={coverImage} onChange={setCoverImage} folder="library" />
+          <ImageUpload value={coverImage} onChange={setCoverImage} folder="library" onUploadingChange={onUploadingChange} />
         </FormField>
       </Card>
 
@@ -155,9 +157,10 @@ export function LibraryForm({ initial = {}, mode }: LibraryFormProps) {
             icon={<Save className="h-4 w-4" />}
             iconPosition="left"
             loading={pending}
+            disabled={isUploading}
             className="w-full"
           >
-            Хадгалах
+            {isUploading ? 'Зураг ачаалж байна…' : 'Хадгалах'}
           </Button>
           <Link href="/admin/library" className="mt-3 block text-center text-sm font-semibold text-text-muted hover:text-navy-900">
             Цуцлах

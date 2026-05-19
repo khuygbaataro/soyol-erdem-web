@@ -10,6 +10,7 @@ import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
 import { FileUpload, ImageUpload } from '@/components/admin/ImageUpload';
 import { slugify } from '@/lib/admin-helpers';
+import { useUploadGuard } from '@/lib/use-upload-guard';
 
 interface RegulationFormProps {
   initial?: {
@@ -30,6 +31,7 @@ const LIST_PATH = '/admin/regulations';
 export function RegulationForm({ initial = {}, mode }: RegulationFormProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const { isUploading, onUploadingChange } = useUploadGuard();
 
   const [title, setTitle] = useState(initial.title ?? '');
   const [slug, setSlug] = useState(initial.slug ?? '');
@@ -134,6 +136,7 @@ export function RegulationForm({ initial = {}, mode }: RegulationFormProps) {
               onChange={setFileUrl}
               folder="regulations"
               hint="Журмын PDF файлаа сонгох"
+              onUploadingChange={onUploadingChange}
             />
           </FormField>
           <FormField
@@ -145,6 +148,7 @@ export function RegulationForm({ initial = {}, mode }: RegulationFormProps) {
               value={coverImage}
               onChange={setCoverImage}
               folder="misc"
+              onUploadingChange={onUploadingChange}
             />
           </FormField>
         </Card>
@@ -198,9 +202,10 @@ export function RegulationForm({ initial = {}, mode }: RegulationFormProps) {
               icon={<Save className="h-4 w-4" />}
               iconPosition="left"
               loading={pending}
+              disabled={isUploading}
               className="w-full"
             >
-              Хадгалах
+              {isUploading ? 'Зураг/файл ачаалж байна…' : 'Хадгалах'}
             </Button>
             <Link
               href={LIST_PATH}

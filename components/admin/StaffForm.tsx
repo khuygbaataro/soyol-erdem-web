@@ -11,6 +11,7 @@ import { FormField, inputClasses, textareaClasses } from '@/components/admin/For
 import { ImageUpload } from '@/components/admin/ImageUpload';
 import { TranslationFields } from '@/components/admin/TranslationFields';
 import { STAFF_POSITION_KEYS } from '@/lib/constants';
+import { useUploadGuard } from '@/lib/use-upload-guard';
 
 interface StaffFormProps {
   initial?: {
@@ -38,6 +39,7 @@ interface StaffFormProps {
 export function StaffForm({ initial = {}, mode }: StaffFormProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const { isUploading, onUploadingChange } = useUploadGuard();
 
   const [positionKey, setPositionKey] = useState(initial.positionKey ?? '');
   const [position, setPosition] = useState(initial.position ?? '');
@@ -168,7 +170,12 @@ export function StaffForm({ initial = {}, mode }: StaffFormProps) {
         </FormField>
 
         <FormField label="Зураг" hint="Profile зураг (1:1 хэмжээтэй тохиромжтой).">
-          <ImageUpload value={photo} onChange={setPhoto} folder="misc" />
+          <ImageUpload
+            value={photo}
+            onChange={setPhoto}
+            folder="misc"
+            onUploadingChange={onUploadingChange}
+          />
         </FormField>
 
         <FormField label="Богино намтар" hint="Modal-ны доод хэсэгт харагдана.">
@@ -245,9 +252,10 @@ export function StaffForm({ initial = {}, mode }: StaffFormProps) {
             icon={<Save className="h-4 w-4" />}
             iconPosition="left"
             loading={pending}
+            disabled={isUploading}
             className="w-full"
           >
-            Хадгалах
+            {isUploading ? 'Зураг ачаалж байна…' : 'Хадгалах'}
           </Button>
           <Link
             href="/admin/staff"

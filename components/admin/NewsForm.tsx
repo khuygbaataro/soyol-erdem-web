@@ -12,6 +12,7 @@ import { ImageUpload } from '@/components/admin/ImageUpload';
 import { MultiImageUpload } from '@/components/admin/MultiImageUpload';
 import { TranslationFields } from '@/components/admin/TranslationFields';
 import { slugify } from '@/lib/admin-helpers';
+import { useUploadGuard } from '@/lib/use-upload-guard';
 
 interface NewsFormProps {
   initial?: {
@@ -69,6 +70,7 @@ export function NewsForm({
 }: NewsFormProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const { isUploading, onUploadingChange } = useUploadGuard();
 
   // Resolve which sub-site we're operating on (initial > prop > UNIVERSITY).
   const resolvedSite: 'UNIVERSITY' | 'HIGH_SCHOOL' =
@@ -193,6 +195,7 @@ export function NewsForm({
               value={coverImage}
               onChange={setCoverImage}
               folder="news"
+              onUploadingChange={onUploadingChange}
             />
           </FormField>
           <FormField
@@ -204,6 +207,7 @@ export function NewsForm({
               value={gallery}
               onChange={setGallery}
               folder="news"
+              onUploadingChange={onUploadingChange}
             />
           </FormField>
         </Card>
@@ -313,9 +317,10 @@ export function NewsForm({
               icon={<Save className="h-4 w-4" />}
               iconPosition="left"
               loading={pending}
+              disabled={isUploading}
               className="w-full"
             >
-              Хадгалах
+              {isUploading ? 'Зураг ачаалж байна…' : 'Хадгалах'}
             </Button>
             <Link
               href={listPath}

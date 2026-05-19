@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { useUploadGuard } from '@/lib/use-upload-guard';
 
 export interface SiteContentItem {
   id: string;
@@ -40,6 +41,7 @@ interface RowState {
 export function SiteContentForm({ items, groupLabel }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const { isUploading, onUploadingChange } = useUploadGuard();
   const [values, setValues] = useState<Record<string, RowState>>(() =>
     Object.fromEntries(
       items.map((i) => [
@@ -117,6 +119,7 @@ export function SiteContentForm({ items, groupLabel }: Props) {
                     value={row.value}
                     onChange={(url) => update(item.key, 'value', url)}
                     folder="misc"
+                    onUploadingChange={onUploadingChange}
                   />
                 ) : (
                   <div className="space-y-3">
@@ -231,8 +234,9 @@ export function SiteContentForm({ items, groupLabel }: Props) {
         icon={<Save className="h-4 w-4" />}
         iconPosition="left"
         loading={pending}
+        disabled={isUploading}
       >
-        Хадгалах
+        {isUploading ? 'Зураг ачаалж байна…' : 'Хадгалах'}
       </Button>
     </form>
   );
