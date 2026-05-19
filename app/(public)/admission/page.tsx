@@ -1,10 +1,16 @@
 import {
   ArrowRight,
   Check,
+  ClipboardCheck,
+  FileCheck,
   FileText,
   Globe,
+  Home,
   MonitorSmartphone,
+  Phone,
+  Plane,
   Wallet,
+  type LucideIcon,
 } from 'lucide-react';
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
@@ -31,6 +37,41 @@ const SUB_NAV_ICONS = {
   foreign: Globe,
   payment: Wallet,
 } as const;
+
+// Icons for the three permit steps (Visa → Residence → Registration).
+// Order matches DB rows admission.permit.1..3.
+const PERMIT_ICONS: LucideIcon[] = [Plane, Home, ClipboardCheck];
+
+// Localised eyebrow text shown on the international-applicants intro
+// band. Three short strings — adding to the full content bundle would
+// be overkill so we keep them inline.
+const FOREIGN_EYEBROW: Record<'MN' | 'EN' | 'JP', string> = {
+  MN: 'Гадаад иргэн',
+  EN: 'International applicants',
+  JP: '外国人志願者',
+};
+
+/**
+ * Strip back-to-back duplicate paragraphs from admin-entered text.
+ * The admission.permit.1.body row in the DB happens to repeat the same
+ * paragraph three times — likely a copy-paste mishap from the editor.
+ * Dropping the duplicates at render time keeps the card readable
+ * without forcing a content edit; if the editor intentionally repeats
+ * paragraphs in the future, they only need to vary the text slightly.
+ */
+function dedupeParagraphs(text: string): string {
+  const seen = new Set<string>();
+  return text
+    .split(/\n\s*\n+/)
+    .map((p) => p.trim())
+    .filter((p) => {
+      if (p.length === 0) return false;
+      if (seen.has(p)) return false;
+      seen.add(p);
+      return true;
+    })
+    .join('\n\n');
+}
 
 // Localised label for the "Read more →" link on each scholarship card.
 const SCHOLARSHIP_READ_MORE: Record<'MN' | 'EN' | 'JP', string> = {
@@ -276,51 +317,132 @@ export default async function AdmissionPage() {
       {/* Section 2 — Гадаад оюутан элсэх */}
       <Section background="white" id="foreign">
         <SectionTitle title={c.foreignTitle} />
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Main intro card — left column on lg */}
-          <Card hover={false} className="flex h-full flex-col lg:col-span-1">
-            <p className="flex-1 whitespace-pre-line text-sm leading-relaxed text-text-body">
-              {foreignIntro}
-            </p>
-            <div className="mt-6">
-              <Button
-                href={foreignCtaHref}
-                variant="primary"
-                size="md"
-                icon={<ArrowRight className="h-4 w-4" />}
-              >
-                {foreignCtaLabel}
-              </Button>
-            </div>
-          </Card>
 
-          {/* Permit cards — right two columns on lg */}
-          <div className="grid gap-4 lg:col-span-2 lg:grid-cols-1 xl:grid-cols-3">
-            {permits.map((p, idx) => (
-              <article
-                key={`${p.title}-${idx}`}
-                className="flex h-full flex-col rounded-card border border-border-light bg-cream-soft/40 p-5 shadow-sm"
-              >
-                <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
-                  <Globe className="h-4 w-4" />
+        {/* Intro band — full-width navy gradient hero with a decorative
+            "plane + globe" cluster on the right. Reads as a section
+            opener rather than a thin card to the left of the permits. */}
+        <div className="relative mb-10 overflow-hidden rounded-card bg-gradient-to-br from-navy-900 via-[#1a2a4a] to-navy-900 text-white shadow-card-hover">
+          {/* Decorative gold circles top-right */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-gold-500/15 blur-3xl"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-8 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-gold-500/10 blur-2xl"
+          />
+
+          <div className="relative grid gap-8 p-8 md:grid-cols-[2fr_1fr] md:p-12 lg:gap-12">
+            <div className="min-w-0">
+              <span className="inline-flex items-center gap-2 rounded-full bg-gold-500/20 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-gold-300">
+                <Plane className="h-3 w-3" />
+                {FOREIGN_EYEBROW[locale]}
+              </span>
+              <p className="mt-5 whitespace-pre-line text-base leading-relaxed text-white/90 md:text-lg">
+                {foreignIntro}
+              </p>
+              <div className="mt-7 flex flex-wrap items-center gap-3">
+                <Button
+                  href={foreignCtaHref}
+                  variant="accent"
+                  size="md"
+                  icon={<ArrowRight className="h-4 w-4" />}
+                >
+                  {foreignCtaLabel}
+                </Button>
+                <span className="inline-flex items-center gap-2 text-xs font-semibold text-white/70">
+                  <Phone className="h-3.5 w-3.5 text-gold-400" />
+                  +976 7011-8584
                 </span>
-                <h3 className="text-sm font-bold leading-snug text-navy-900">
-                  {p.title}
-                </h3>
-                {p.body && (
-                  <p className="mt-2 whitespace-pre-line text-xs leading-relaxed text-text-body">
-                    {p.body}
-                  </p>
-                )}
-                {p.contact && (
-                  <p className="mt-3 whitespace-pre-line border-t border-border-light pt-3 text-[11px] leading-relaxed text-text-muted">
-                    {p.contact}
-                  </p>
-                )}
-              </article>
-            ))}
+              </div>
+            </div>
+
+            {/* Decorative icon cluster — only on desktop so mobile stays
+                content-focused */}
+            <div className="hidden items-center justify-center md:flex">
+              <div className="relative h-44 w-44">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full border border-gold-500/40"
+                />
+                <span
+                  aria-hidden
+                  className="absolute inset-4 rounded-full border border-gold-500/30"
+                />
+                <span
+                  aria-hidden
+                  className="absolute inset-8 rounded-full bg-gold-500/10"
+                />
+                <Globe
+                  className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 text-gold-400"
+                  aria-hidden
+                />
+                <span className="absolute -right-1 -top-1 flex h-12 w-12 items-center justify-center rounded-full bg-gold-500 text-navy-900 shadow-lg">
+                  <Plane className="h-5 w-5" />
+                </span>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* 3-step permit guide — numbered, with distinct icons per step
+            and a connecting timeline rail on desktop. Reads sequentially
+            (Visa → Residence → Registration) like an applicant journey. */}
+        {permits.length > 0 && (
+          <div className="relative">
+            {/* Horizontal rail on desktop, dotted line between step numbers */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute left-0 right-0 top-7 hidden h-px md:block"
+              style={{
+                background:
+                  'repeating-linear-gradient(to right, rgba(212,162,76,0.4) 0 6px, transparent 6px 14px)',
+              }}
+            />
+            <div className="relative grid gap-6 md:grid-cols-3">
+              {permits.map((p, idx) => {
+                const Icon = PERMIT_ICONS[idx] ?? FileCheck;
+                return (
+                  <article
+                    key={`${p.title}-${idx}`}
+                    className="group relative flex h-full flex-col rounded-card border border-border-light bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-card-hover"
+                  >
+                    {/* Numbered step badge sitting on the rail */}
+                    <span className="absolute -top-4 left-6 flex h-9 w-9 items-center justify-center rounded-full bg-navy-900 text-sm font-bold text-gold-400 ring-4 ring-white">
+                      {idx + 1}
+                    </span>
+
+                    <span className="mb-4 mt-3 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-500/15 text-gold-500 transition-colors duration-300 group-hover:bg-gold-500 group-hover:text-white">
+                      <Icon className="h-6 w-6" />
+                    </span>
+
+                    <h3 className="font-serif text-lg font-bold leading-snug text-navy-900">
+                      {p.title}
+                    </h3>
+
+                    {p.body && (
+                      <p className="mt-3 flex-1 whitespace-pre-line text-sm leading-relaxed text-text-body">
+                        {dedupeParagraphs(p.body)}
+                      </p>
+                    )}
+
+                    {p.contact && (
+                      <div className="mt-5 rounded-button bg-cream-soft/80 p-3">
+                        <p className="flex items-start gap-2 whitespace-pre-line text-[11px] leading-relaxed text-text-body">
+                          <Phone
+                            className="mt-0.5 h-3 w-3 shrink-0 text-gold-500"
+                            aria-hidden
+                          />
+                          <span>{p.contact}</span>
+                        </p>
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </Section>
 
       {/* Section 3 — Төлбөр, хөнгөлөлт */}
