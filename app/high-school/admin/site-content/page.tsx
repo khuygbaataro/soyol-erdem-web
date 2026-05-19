@@ -16,6 +16,7 @@ const GROUP_LABELS: Record<string, string> = {
   'ahlah-about': 'Танилцуулга',
   'ahlah-admission': 'Элсэлт',
   'ahlah-programs': 'Хөтөлбөр',
+  'ahlah-news': 'Мэдээ',
   'ahlah-contact': 'Холбоо барих',
 };
 const ALLOWED_GROUPS = Object.keys(GROUP_LABELS);
