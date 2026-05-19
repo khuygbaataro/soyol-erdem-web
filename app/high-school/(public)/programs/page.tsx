@@ -22,6 +22,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { CtaBanner } from '@/components/sections/CtaBanner';
 import { getServerLocale } from '@/lib/i18n/server';
+import { getSiteContentMap } from '@/lib/site-content';
 import { HS_PROGRAMS_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
@@ -48,8 +49,12 @@ const JADE_ICONS: LucideIcon[] = [
 ];
 
 export default async function HighSchoolProgramsPage() {
-  const locale = await getServerLocale();
+  const [locale, site] = await Promise.all([
+    getServerLocale(),
+    getSiteContentMap('ahlah-programs'),
+  ]);
   const c = HS_PROGRAMS_CONTENT[locale];
+  const heroImage = site.get('ahlah-programs.hero.image') || undefined;
 
   return (
     <>
@@ -61,6 +66,7 @@ export default async function HighSchoolProgramsPage() {
           { label: c.breadcrumbHs, href: '/high-school' },
           { label: c.breadcrumbThis },
         ]}
+        backgroundImage={heroImage}
       />
 
       {/* Structure */}

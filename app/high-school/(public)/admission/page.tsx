@@ -21,6 +21,7 @@ import { CtaBanner } from '@/components/sections/CtaBanner';
 import { HighSchoolAdmissionForm } from '@/components/ui/HighSchoolAdmissionForm';
 import { HIGH_SCHOOL } from '@/lib/constants';
 import { getServerLocale } from '@/lib/i18n/server';
+import { getSiteContentMap } from '@/lib/site-content';
 import { HS_ADMISSION_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
@@ -38,8 +39,12 @@ const STEP_ICONS: LucideIcon[] = [
 ];
 
 export default async function HighSchoolAdmissionPage() {
-  const locale = await getServerLocale();
+  const [locale, site] = await Promise.all([
+    getServerLocale(),
+    getSiteContentMap('ahlah-admission'),
+  ]);
   const c = HS_ADMISSION_CONTENT[locale];
+  const heroImage = site.get('ahlah-admission.hero.image') || undefined;
 
   return (
     <>
@@ -51,6 +56,7 @@ export default async function HighSchoolAdmissionPage() {
           { label: c.breadcrumbHs, href: '/high-school' },
           { label: c.breadcrumbThis },
         ]}
+        backgroundImage={heroImage}
       />
 
       {/* Intro / quick info */}

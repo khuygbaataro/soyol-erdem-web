@@ -5,6 +5,7 @@ import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Button } from '@/components/ui/Button';
 import { HIGH_SCHOOL } from '@/lib/constants';
 import { getServerLocale } from '@/lib/i18n/server';
+import { getSiteContentMap } from '@/lib/site-content';
 import { HS_CONTACT_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
@@ -14,8 +15,12 @@ export const metadata = {
 };
 
 export default async function HighSchoolContactPage() {
-  const locale = await getServerLocale();
+  const [locale, site] = await Promise.all([
+    getServerLocale(),
+    getSiteContentMap('ahlah-contact'),
+  ]);
   const c = HS_CONTACT_CONTENT[locale];
+  const heroImage = site.get('ahlah-contact.hero.image') || undefined;
 
   return (
     <>
@@ -27,6 +32,7 @@ export default async function HighSchoolContactPage() {
           { label: c.breadcrumbHs, href: '/high-school' },
           { label: c.breadcrumbThis },
         ]}
+        backgroundImage={heroImage}
       />
 
       <Section background="white" spacing="md">

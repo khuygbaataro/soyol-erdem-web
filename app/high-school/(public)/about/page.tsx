@@ -17,6 +17,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { CtaBanner } from '@/components/sections/CtaBanner';
 import { getServerLocale } from '@/lib/i18n/server';
+import { getSiteContentMap } from '@/lib/site-content';
 import { HS_ABOUT_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
@@ -31,8 +32,14 @@ const PHILOSOPHY_ICONS: LucideIcon[] = [Sparkles, GraduationCap, Award];
 const HIGHLIGHT_ICONS: LucideIcon[] = [Trophy, Award, Globe2, Users];
 
 export default async function HighSchoolAboutPage() {
-  const locale = await getServerLocale();
+  const [locale, site] = await Promise.all([
+    getServerLocale(),
+    getSiteContentMap('ahlah-about'),
+  ]);
   const c = HS_ABOUT_CONTENT[locale];
+  // Banner image is admin-managed via /high-school/admin/site-content
+  // → group "ahlah-about" → key "ahlah-about.hero.image".
+  const heroImage = site.get('ahlah-about.hero.image') || undefined;
 
   // The intro paragraph carries an inline date that should bold inside
   // the surrounding sentence. Split on the {date} placeholder so we can
@@ -49,6 +56,7 @@ export default async function HighSchoolAboutPage() {
           { label: c.breadcrumbHs, href: '/high-school' },
           { label: c.breadcrumbThis },
         ]}
+        backgroundImage={heroImage}
       />
 
       {/* Intro */}
