@@ -19,7 +19,11 @@ export default async function HighSchoolNewsPage() {
       .catch(() => []),
     getServerLocale(),
     getServerTranslator(),
-    getSiteContentMap('ahlah-home'),
+    // Bug fix: previously fetched 'ahlah-home' — but the banner key
+    // lives in the 'ahlah-news' group, so `site.get('ahlah-news.hero
+    // .image')` always returned undefined and the admin upload had no
+    // visible effect.
+    getSiteContentMap('ahlah-news'),
   ]);
   const heroImage = site.get('ahlah-news.hero.image') || undefined;
 
