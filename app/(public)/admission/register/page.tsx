@@ -2,7 +2,7 @@ import Link from 'next/link';
 import {
   ArrowLeft,
   Calendar,
-  CheckCircle2,
+  Check,
   FileText,
   Mail,
   Phone,
@@ -143,7 +143,7 @@ export default async function AdmissionRegisterPage() {
               <ul className="mt-3 space-y-2 text-xs leading-relaxed text-text-body">
                 {adm.requirements.slice(0, 4).map((r) => (
                   <li key={r} className="flex items-start gap-2">
-                    <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-gold-500" />
+                    <Check className="mt-0.5 h-3 w-3 shrink-0 text-gold-500" />
                     <span>{r}</span>
                   </li>
                 ))}
