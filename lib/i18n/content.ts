@@ -931,8 +931,10 @@ interface InternationalBundle {
    *  INTERNATIONAL_BLOCKS in lib/content.ts. */
   blocks: { heading: string; body: string }[];
   japanPartnersTitle: string;
-  /** "{n} partner universities..." — `count` is substituted at render. */
-  japanPartnersSubtitle: (count: number) => string;
+  /** Template with `{count}` placeholder substituted at render time.
+   *  Kept as a string (not a function) so the value can serialise
+   *  cleanly when passed through a server→client boundary. */
+  japanPartnersSubtitle: string;
   highSchoolsTitle: string;
   highSchoolsSubtitle: string;
   domesticTitle: string;
@@ -978,8 +980,8 @@ export const INTERNATIONAL_CONTENT: Record<Language, InternationalBundle> = {
       },
     ],
     japanPartnersTitle: 'ХАМТРАГЧ ЯПОН СУРГУУЛИУДЫН ТАНИЛЦУУЛГА',
-    japanPartnersSubtitle: (n) =>
-      `${n} их, дээд сургууль. Карт дээр дарж дэлгэрэнгүй танилцуулга, мэргэжил, тэтгэлгийн нөхцөлийг харна уу.`,
+    japanPartnersSubtitle:
+      '{count} их, дээд сургууль. Карт дээр дарж дэлгэрэнгүй танилцуулга, мэргэжил, тэтгэлгийн нөхцөлийг харна уу.',
     highSchoolsTitle: 'ХАМТРАГЧ ЯПОН АХЛАХ СУРГУУЛИУД',
     highSchoolsSubtitle:
       'НЕБ-ын Соёл Эрдэм сургуулийн сурагчдад нээлттэй хамтрагч сургуулиуд.',
@@ -1227,8 +1229,8 @@ export const INTERNATIONAL_CONTENT: Record<Language, InternationalBundle> = {
       },
     ],
     japanPartnersTitle: 'JAPANESE PARTNER UNIVERSITIES',
-    japanPartnersSubtitle: (n) =>
-      `${n} universities and colleges. Tap a card for the full profile, available majors and scholarship terms.`,
+    japanPartnersSubtitle:
+      '{count} universities and colleges. Tap a card for the full profile, available majors and scholarship terms.',
     highSchoolsTitle: 'JAPANESE PARTNER HIGH SCHOOLS',
     highSchoolsSubtitle:
       'Schools open to students of our affiliated Soyol Erdem Secondary School.',
@@ -1476,8 +1478,8 @@ export const INTERNATIONAL_CONTENT: Record<Language, InternationalBundle> = {
       },
     ],
     japanPartnersTitle: '日本の提携大学',
-    japanPartnersSubtitle: (n) =>
-      `${n}校の大学・短大。カードをクリックすると詳細なプロフィール、専攻、奨学金条件をご覧いただけます。`,
+    japanPartnersSubtitle:
+      '{count}校の大学・短大。カードをクリックすると詳細なプロフィール、専攻、奨学金条件をご覧いただけます。',
     highSchoolsTitle: '日本の提携高等学校',
     highSchoolsSubtitle:
       '本学附属ソヨル・エルデム高等学校の生徒が進学できる提携校。',
@@ -4844,7 +4846,10 @@ interface RegisterBundle {
   breadcrumbAdmission: string;
   breadcrumbThis: string;
   steps: string[]; // 8 step labels, indexed 0-7
-  stepLabel: (current: number, total: number) => string;
+  /** Template with {current} and {total} placeholders — kept as a
+   *  plain string (not a function) so the server can serialise it
+   *  across the client-component boundary. */
+  stepLabel: string;
   selectPlaceholder: string;
   educationOptions: string[]; // 5 entries
   citizenshipMongolian: string;
@@ -4880,7 +4885,8 @@ interface RegisterBundle {
     firstName: string;
     education: string;
     examNone: string;
-    examNumber: (subject: string) => string;
+    /** Template with {subject} placeholder. */
+    examNumber: string;
     phone: string;
     email: string;
   };
@@ -4911,7 +4917,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       'Утас',
       'И-мэйл',
     ],
-    stepLabel: (c, t) => `Алхам ${c} / ${t}`,
+    stepLabel: 'Алхам {current} / {total}',
     selectPlaceholder: '— сонгох —',
     educationOptions: [
       'Бүрэн дунд боловсрол',
@@ -4954,7 +4960,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       firstName: 'Нэр оруулна уу.',
       education: 'Боловсролын түвшин сонгоно уу.',
       examNone: 'Дор хаяж нэг хичээлийн оноо оруулна уу.',
-      examNumber: (s) => `"${s}" — оноо тоогоор бичигдсэн байх ёстой.`,
+      examNumber: '"{subject}" — оноо тоогоор бичигдсэн байх ёстой.',
       phone: 'Дор хаяж нэг утасны дугаар оруулна уу.',
       email: 'И-мэйл хаяг хүчин төгөлдөр биш байна.',
     },
@@ -4984,7 +4990,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       'Phone',
       'Email',
     ],
-    stepLabel: (c, t) => `Step ${c} / ${t}`,
+    stepLabel: 'Step {current} / {total}',
     selectPlaceholder: '— select —',
     educationOptions: [
       'Secondary (high school) graduate',
@@ -5027,7 +5033,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       firstName: 'Please enter your first name.',
       education: 'Please select your education level.',
       examNone: 'Please enter at least one subject and score.',
-      examNumber: (s) => `"${s}" — the score must be a number.`,
+      examNumber: '"{subject}" — the score must be a number.',
       phone: 'Please enter at least one phone number.',
       email: 'The email address is not valid.',
     },
@@ -5057,7 +5063,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       '電話',
       'メール',
     ],
-    stepLabel: (c, t) => `ステップ ${c} / ${t}`,
+    stepLabel: 'ステップ {current} / {total}',
     selectPlaceholder: '— 選択 —',
     educationOptions: [
       '中等教育修了（高校卒業）',
@@ -5100,7 +5106,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       firstName: '名をご入力ください。',
       education: '学歴レベルを選択してください。',
       examNone: '少なくとも1科目とその点数を入力してください。',
-      examNumber: (s) => `「${s}」 ― 点数は数値でご入力ください。`,
+      examNumber: '「{subject}」 ― 点数は数値でご入力ください。',
       phone: '少なくとも1件の電話番号をご入力ください。',
       email: 'メールアドレスの形式が正しくありません。',
     },

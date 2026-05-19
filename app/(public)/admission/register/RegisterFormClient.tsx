@@ -21,7 +21,12 @@ interface ProgramOption {
 
 interface RegisterFormLabels {
   steps: string[];
-  stepLabel: (current: number, total: number) => string;
+  /** Template with `{current}` and `{total}` placeholders — kept as
+   *  a string so the server can serialise it across the
+   *  server→client component boundary. The previous shape (a
+   *  function value) tripped Next.js's "Functions cannot be passed
+   *  directly to Client Components" RSC rule and crashed the page. */
+  stepLabel: string;
   selectPlaceholder: string;
   educationOptions: string[];
   citizenshipMongolian: string;
@@ -57,7 +62,9 @@ interface RegisterFormLabels {
     firstName: string;
     education: string;
     examNone: string;
-    examNumber: (subject: string) => string;
+    /** Template with `{subject}` placeholder — same string-not-function
+     *  pattern as `stepLabel` above. */
+    examNumber: string;
     phone: string;
     email: string;
   };
@@ -156,7 +163,7 @@ export function RegisterFormClient({ programs, labels }: Props) {
         if (valid.length === 0) return labels.validation.examNone;
         for (const s of valid) {
           if (!/^\d{1,4}([.,]\d{1,2})?$/.test(s.score.trim()))
-            return labels.validation.examNumber(s.subject);
+            return labels.validation.examNumber.replace('{subject}', s.subject);
         }
         return null;
       }
@@ -316,7 +323,9 @@ export function RegisterFormClient({ programs, labels }: Props) {
       {/* Body */}
       <div className="px-6 py-7 sm:px-10 sm:py-10">
         <p className="text-[11px] font-semibold uppercase tracking-widest text-gold-500">
-          {labels.stepLabel(step, totalSteps)}
+          {labels.stepLabel
+            .replace('{current}', String(step))
+            .replace('{total}', String(totalSteps))}
         </p>
         <h2 className="mt-1 text-h3 font-bold text-navy-900">
           {labels.steps[step - 1]}
