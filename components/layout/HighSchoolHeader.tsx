@@ -46,6 +46,12 @@ export function HighSchoolHeader() {
     return pathname?.startsWith(path);
   };
 
+  // "Элсэлт" already lives on the right-side gold CTA button, so we
+  // skip it inside the main nav list to avoid a duplicate label.
+  const visibleNavItems = HIGH_SCHOOL_NAV_ITEMS.filter(
+    (item) => item.href !== '/high-school/admission',
+  );
+
   return (
     <>
       <header className="sticky top-0 z-40 w-full">
@@ -107,7 +113,7 @@ export function HighSchoolHeader() {
             </Link>
 
             <nav className="hidden min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-1 xl:flex">
-              {HIGH_SCHOOL_NAV_ITEMS.map((item) => {
+              {visibleNavItems.map((item) => {
                 const active = isActive(item.href);
                 const tKey = HS_NAV_KEYS[item.href];
                 const label = tKey ? t(tKey) : item.label;
@@ -187,7 +193,7 @@ export function HighSchoolHeader() {
             </div>
             <nav className="flex-1 overflow-y-auto px-6 py-6">
               <ul className="space-y-1">
-                {HIGH_SCHOOL_NAV_ITEMS.map((item) => {
+                {visibleNavItems.map((item) => {
                   const tKey = HS_NAV_KEYS[item.href];
                   const label = tKey ? t(tKey) : item.label;
                   return (
@@ -221,7 +227,7 @@ export function HighSchoolHeader() {
                 icon={<ChevronRight className="h-5 w-5" />}
                 className="w-full"
               >
-                Элсэлт
+                {t('hsNav.admission')}
               </Button>
             </div>
           </motion.div>
