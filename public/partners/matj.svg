@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Mongolian Association of Japanese Language Teachers">
+  <rect width="128" height="128" fill="#1e3a5f"/>
+  <rect x="10" y="10" width="108" height="108" fill="none" stroke="#d4a24c" stroke-width="2"/>
+  <text x="64" y="68" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="30" font-weight="800" fill="#d4a24c" letter-spacing="3">MATJ</text>
+  <text x="64" y="92" text-anchor="middle" font-family="'Noto Serif JP', serif" font-size="11" font-weight="500" fill="#ffffff" letter-spacing="2">日本語教師会</text>
+  <text x="64" y="108" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="7" font-weight="600" fill="#ffffff" letter-spacing="1">MONGOLIA</text>
+</svg>

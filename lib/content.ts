@@ -1193,7 +1193,7 @@ export const JAPAN_HIGH_SCHOOLS: PartnerDetailed[] = [
     partnerSince: '2025 оны 5 сар',
     detail:
       'Нийслэлийн Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн эмэгтэй сурагчдыг 50%-ийн хөнгөлөлттэй элсүүлэн суралцуулах боломжтой.',
-    logo: favicon('komajo.ed.jp'),
+    logo: '/partners/komazawa-hs.svg',
   },
   {
     name: 'Нихон Вэлнэс ахлах сургууль',
@@ -1227,7 +1227,7 @@ export const DOMESTIC_PARTNERS: DomesticPartner[] = [
       '"Япон киноны өдөрлөг"',
       '"Японд суралцах талаар танилцуулах сургалт"',
     ],
-    logo: favicon('mn.emb-japan.go.jp'),
+    logo: '/partners/jp-embassy.svg',
   },
   {
     name: 'Монгол-Японы Хүний Нөөцийн Хөгжлийн Төв',
@@ -1252,7 +1252,7 @@ export const DOMESTIC_PARTNERS: DomesticPartner[] = [
       'Жилд 2 удаа зохион байгуулагддаг "Япон хэлний түвшин тогтоох шалгалт — JLPT"-ийн зохион байгуулалт',
       '"Япон хэлний боловсролын симпозиум"',
     ],
-    logo: favicon('matj.mn'),
+    logo: '/partners/matj.svg',
   },
 ];
 
