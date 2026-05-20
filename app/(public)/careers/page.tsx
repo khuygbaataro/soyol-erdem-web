@@ -1,4 +1,4 @@
-import { ArrowRight, Briefcase, Check, Mail, Sparkles } from 'lucide-react';
+import { ArrowRight, Briefcase, Check, Download, FileText, Mail, Sparkles } from 'lucide-react';
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -140,6 +140,68 @@ export default async function CareersPage() {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+      </Section>
+
+      {/*
+        Анкетийн загвар татаж авах хэсэг — Munkhchimeg нэмэхийг
+        хүссэн. 2 хувилбартай: монгол хэлээр .doc + япон хэлээр .docx.
+        Файлууд /public/careers/anket-{mn,jp}.{doc,docx} замд хадгалагдсан.
+        Зөвхөн татах товч — формыг шууд нь нь сайт дотор бөглөх систем
+        нь /careers/apply хуудсаар хийгдэнэ.
+      */}
+      <Section background="white" id="template">
+        <div className="mx-auto max-w-4xl">
+          <div className="overflow-hidden rounded-card border border-border-light bg-gradient-to-br from-cream-soft to-white shadow-card">
+            <div className="grid gap-6 p-7 md:grid-cols-[1fr_auto] md:items-center md:gap-10 md:p-10">
+              <div className="min-w-0">
+                <span className="inline-flex items-center gap-2 rounded-full bg-gold-500/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.22em] text-gold-500 ring-1 ring-gold-500/30">
+                  <FileText className="h-3.5 w-3.5" />
+                  Анкет / 履歴書
+                </span>
+                <h2 className="mt-4 font-serif text-2xl font-bold leading-tight text-navy-900 md:text-3xl">
+                  {c.templateTitle}
+                </h2>
+                <div className="mt-3 h-1 w-12 rounded-full bg-gold-500" />
+                <p className="mt-4 max-w-prose text-sm leading-relaxed text-text-body md:text-base">
+                  {c.templateSubtitle}
+                </p>
+              </div>
+
+              {/* Two language picks — labelled MN / JP and each with
+                  its file format so the user knows what they're
+                  downloading before they click. Native <a download>
+                  triggers a browser download instead of in-tab open. */}
+              <div className="flex flex-col gap-3 md:min-w-[240px]">
+                <a
+                  href="/careers/anket-mn.doc"
+                  download="Багш ажилтны анкет (MN).doc"
+                  className="group inline-flex items-center justify-between gap-3 rounded-button bg-navy-900 px-5 py-3.5 text-sm font-bold text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-navy-900"
+                >
+                  <span className="flex flex-col items-start leading-tight">
+                    <span>{c.templateMnLabel}</span>
+                    <span className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-white/70 group-hover:text-navy-900/60">
+                      .doc · {c.templateDownloadCta}
+                    </span>
+                  </span>
+                  <Download className="h-4 w-4 shrink-0" />
+                </a>
+                <a
+                  href="/careers/anket-jp.docx"
+                  download="履歴書 文化教育大学 (JP).docx"
+                  className="group inline-flex items-center justify-between gap-3 rounded-button border border-navy-900 bg-white px-5 py-3.5 text-sm font-bold text-navy-900 shadow-card transition-all hover:-translate-y-0.5 hover:border-gold-500 hover:bg-gold-500"
+                >
+                  <span className="flex flex-col items-start leading-tight">
+                    <span>{c.templateJpLabel}</span>
+                    <span className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-text-muted">
+                      .docx · {c.templateDownloadCta}
+                    </span>
+                  </span>
+                  <Download className="h-4 w-4 shrink-0" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </Section>

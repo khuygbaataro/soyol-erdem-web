@@ -2385,6 +2385,12 @@ interface CareersBundle {
   /** Localised override of the default opening titles — index-matched
    *  with CAREERS_DEFAULT_OPENINGS in lib/content.ts. */
   defaultOpenings: string[];
+  /** Downloadable anket templates section. */
+  templateTitle: string;
+  templateSubtitle: string;
+  templateMnLabel: string;
+  templateJpLabel: string;
+  templateDownloadCta: string;
 }
 
 export const CAREERS_CONTENT: Record<Language, CareersBundle> = {
@@ -2424,6 +2430,12 @@ export const CAREERS_CONTENT: Record<Language, CareersBundle> = {
       'Аялал жуулчлалын багш',
       'Орон судлалын багш',
     ],
+    templateTitle: 'Анкетийн загвар татаж авах',
+    templateSubtitle:
+      'Багш / ажилтнаар хүсэлт гаргах анкетийн загвар хоёр хэлээр бэлэн. Дараах хувилбараас сонгож татаад бөглөж илгээнэ үү.',
+    templateMnLabel: 'Монгол хэлээр',
+    templateJpLabel: 'Япон хэлээр (日本語)',
+    templateDownloadCta: 'Татаж авах',
   },
   EN: {
     heroTitle: 'CAREERS',
@@ -2461,6 +2473,12 @@ export const CAREERS_CONTENT: Record<Language, CareersBundle> = {
       'Tourism instructor',
       'Area studies instructor',
     ],
+    templateTitle: 'Download the application form',
+    templateSubtitle:
+      'The faculty / staff application form is available in two languages. Choose a version, fill it in, and send it back to us.',
+    templateMnLabel: 'Mongolian',
+    templateJpLabel: 'Japanese (日本語)',
+    templateDownloadCta: 'Download',
   },
   JP: {
     heroTitle: '採用情報',
@@ -2498,6 +2516,12 @@ export const CAREERS_CONTENT: Record<Language, CareersBundle> = {
       '観光学教員',
       '地域研究教員',
     ],
+    templateTitle: '応募書類（履歴書）ダウンロード',
+    templateSubtitle:
+      '教員・職員応募用の履歴書テンプレートを2言語でご用意しています。お好きな方をダウンロードし、ご記入の上ご返送ください。',
+    templateMnLabel: 'モンゴル語',
+    templateJpLabel: '日本語',
+    templateDownloadCta: 'ダウンロード',
   },
 };
 
