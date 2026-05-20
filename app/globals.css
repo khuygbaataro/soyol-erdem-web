@@ -73,6 +73,24 @@
   .font-serif {
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
   }
+
+  /* Long-form body paragraphs get justified alignment by default so
+     prose reads like a printed page (Munkhchimeg's request — match
+     the home-hero body block, every multi-line paragraph across the
+     site). Heuristic: any `<p>` tagged with `leading-relaxed` (the
+     codebase convention for prose) is justified, EXCEPT when:
+       • the paragraph is line-clamped — last visible line truncated
+         mid-justification looks awful
+       • the paragraph is centered or right-aligned — those override
+         via Tailwind utility specificity already; this rule simply
+         provides the default for the common left-aligned case.
+     Tailwind utility classes (`text-center`, `text-right`, etc.) still
+     win because utilities have higher cascade priority than @layer
+     base. */
+  p.leading-relaxed:not([class*="line-clamp"]) {
+    text-align: justify;
+    text-justify: inter-word;
+  }
 }
 
 @layer components {
