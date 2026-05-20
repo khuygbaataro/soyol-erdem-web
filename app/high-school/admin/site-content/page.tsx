@@ -16,6 +16,7 @@ const GROUP_LABELS: Record<string, string> = {
   'ahlah-about': 'Танилцуулга',
   'ahlah-admission': 'Элсэлт',
   'ahlah-programs': 'Сургалт',
+  'ahlah-cooperation': 'Хамтын ажиллагаа',
   'ahlah-news': 'Мэдээ',
   'ahlah-contact': 'Холбоо барих',
 };

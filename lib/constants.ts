@@ -117,6 +117,7 @@ export const HIGH_SCHOOL_NAV_ITEMS = [
   { label: 'Нүүр', href: '/high-school' },
   { label: 'Танилцуулга', href: '/high-school/about' },
   { label: 'Сургалт', href: '/high-school/programs' },
+  { label: 'Хамтын ажиллагаа', href: '/high-school/cooperation' },
   { label: 'Элсэлт', href: '/high-school/admission' },
   { label: 'Мэдээ', href: '/high-school/news' },
   { label: 'Холбоо барих', href: '/high-school/contact' },

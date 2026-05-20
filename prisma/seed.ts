@@ -377,6 +377,18 @@ async function main() {
     { key: 'ahlah-contact.hero.image', group: 'ahlah-contact', type: 'IMAGE' as const, label: 'Hero — баннер зураг', value: '', order: 1 },
     { key: 'ahlah-contact.hero.subtitle', group: 'ahlah-contact', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Соёл Эрдэм Ахлах сургуультай холбогдох.', multiline: true, order: 2 },
 
+    // ahlah-cooperation (Хамтын ажиллагаа). Partner directory itself
+    // is shared with /international (lib/content.ts), only the HS-specific
+    // hero / intro / "Сурагч солилцооны хөтөлбөр" блок-уудыг админд
+    // нээсэн. scripts/add-hs-cooperation.ts мөн эдгээрийг идэмпотент
+    // upsert хийнэ.
+    { key: 'ahlah-cooperation.hero.image', group: 'ahlah-cooperation', type: 'IMAGE' as const, label: 'Hero — баннер зураг', hint: 'Дээд талын баннер.', value: '', order: 1 },
+    { key: 'ahlah-cooperation.hero.subtitle', group: 'ahlah-cooperation', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Япон болон дотоодын түнш байгууллагууд, сурагч солилцооны хөтөлбөр.', multiline: true, order: 2 },
+    { key: 'ahlah-cooperation.intro.body', group: 'ahlah-cooperation', type: 'TEXT' as const, label: 'Танилцуулга — нэг параграф', hint: 'Хамтын ажиллагааны товч танилцуулга.', value: 'Манай ахлах сургууль эх сургууль болох Соёл Эрдэм Дээд Сургуулийн олон жилийн япон болон дотоодын түнш байгууллагуудтай хамтран ажилладаг. Энэхүү сүлжээ нь сурагчид болон багш нарт олон улсын боловсролын баялаг боломжийг нээж өгдөг.', multiline: true, order: 3 },
+    { key: 'ahlah-cooperation.exchange.title', group: 'ahlah-cooperation', type: 'TEXT' as const, label: 'Сурагч солилцооны хөтөлбөр — гарчиг', value: 'Сурагч солилцооны хөтөлбөр', order: 10 },
+    { key: 'ahlah-cooperation.exchange.body', group: 'ahlah-cooperation', type: 'TEXT' as const, label: 'Сурагч солилцооны хөтөлбөр — тайлбар', value: 'Соёл Эрдэм сургууль нь хамтран ажилладаг япон ахлах сургуулиудтайгаа жил бүр сурагч солилцооны хөтөлбөр зохион байгуулдаг. Хөтөлбөрт хамрагдсан сурагчид Япон улсад 1 долоо хоног — 1 жилийн хугацаатай суралцаж, япон хэл соёлыг шууд танин мэдэх боломжтой.', multiline: true, order: 11 },
+    { key: 'ahlah-cooperation.exchange.highlights', group: 'ahlah-cooperation', type: 'TEXT' as const, label: 'Сурагч солилцооны хөтөлбөр — онцлог цэг (мөр бүр шинэ цэг)', hint: 'Шинэ мөр бүрд нэг онцлог бичнэ. Жагсаалт болж харагдана.', value: '1 долоо хоног – 1 жилийн солилцоо\nЯпон хэл, соёлын нэвтрэлт\nХүлээн авах гэр бүлийн зохион байгуулалт\nСургуулийн хяналт ба харилцаа', multiline: true, order: 12 },
+
     // Founder (/about/founder) — admin-editable portrait + message.
     { key: 'about.founder.name', group: 'about', type: 'TEXT' as const, label: 'Үүсгэн байгуулагч — нэр', value: 'Макихара Соичи', order: 10 },
     { key: 'about.founder.title', group: 'about', type: 'TEXT' as const, label: 'Үүсгэн байгуулагч — албан тушаал', value: 'Үүсгэн байгуулагч, Удирдах зөвлөлийн дарга', order: 11 },

@@ -17,6 +17,7 @@ const HS_NAV_KEYS: Record<string, TranslationKey> = {
   '/high-school': 'hsNav.home',
   '/high-school/about': 'hsNav.about',
   '/high-school/programs': 'hsNav.programs',
+  '/high-school/cooperation': 'hsNav.cooperation',
   '/high-school/admission': 'hsNav.admission',
   '/high-school/news': 'hsNav.news',
   '/high-school/contact': 'hsNav.contact',
