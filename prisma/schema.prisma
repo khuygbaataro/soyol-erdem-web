@@ -303,6 +303,15 @@ model JobOpening {
   title       String
   /// Optional short blurb for the position-detail line.
   description String?
+  /// Optional EN / JA translations — same convention as News.titleEn etc.
+  /// When the visitor's locale is EN / JP and the column is non-empty,
+  /// it overrides the canonical Mongolian field on the public page;
+  /// otherwise we fall back to the MN value so a partly-translated
+  /// listing still reads cleanly.
+  titleEn       String?
+  titleJa       String?
+  descriptionEn String?
+  descriptionJa String?
   active      Boolean  @default(true)
   order       Int      @default(0)
   createdAt   DateTime @default(now())

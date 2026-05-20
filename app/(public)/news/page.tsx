@@ -53,18 +53,33 @@ export default async function NewsPage() {
   // "Анкет татах" + "Анкет бөглөх" buttons live.
   const jobBanner =
     banners.get('page.careers.banner') || JOB_DEFAULT_IMAGE;
-  const jobItems = jobs.map((j) => ({
-    id: `job-${j.id}`,
-    title: j.title,
-    excerpt:
-      j.description?.trim() ||
-      `Бид ${j.title.trim()} мэргэжлийн ажилтан хүлээн авч байна. Дэлгэрэнгүй мэдээллийг харах, анкет татаж / бөглөж илгээх боломжтой.`,
-    body: null as string | null,
-    image: jobBanner,
-    date: (j.updatedAt ?? j.createdAt).toISOString().slice(0, 10),
-    category: 'EVENT',
-    href: `/careers#openings`,
-  }));
+  // Локалчилсан гарчиг / тайлбар — localisedField нь EN / JP
+  // багана нь хоосон бол МN-руу автоматаар буцдаг тул, орчуулга нь
+  // дутуу тохиолдолд ч карт хоосон харагдахгүй.
+  const localeFallbackByLocale: Record<typeof locale, (title: string) => string> = {
+    MN: (title) =>
+      `Бид ${title.trim()} мэргэжлийн ажилтан хүлээн авч байна. Дэлгэрэнгүй мэдээллийг харах, анкет татаж / бөглөж илгээх боломжтой.`,
+    EN: (title) =>
+      `We are hiring for ${title.trim()}. See the details, download the form or apply online.`,
+    JP: (title) =>
+      `${title.trim()} を募集しています。詳細を確認し、応募書類をダウンロードまたはオンラインで応募できます。`,
+  };
+  const jobItems = jobs.map((j) => {
+    const tTitle = localisedField(j, 'title', locale);
+    const tDesc = j.description
+      ? localisedField(j, 'description', locale)
+      : '';
+    return {
+      id: `job-${j.id}`,
+      title: tTitle,
+      excerpt: tDesc.trim() || localeFallbackByLocale[locale](tTitle),
+      body: null as string | null,
+      image: jobBanner,
+      date: (j.updatedAt ?? j.createdAt).toISOString().slice(0, 10),
+      category: 'EVENT',
+      href: `/careers#openings`,
+    };
+  });
 
   // Combine and sort by date (descending). Job cards keep parity
   // with news cards: the most recently posted opening sits next to

@@ -16,6 +16,10 @@ interface JobOpeningFormProps {
     slug?: string;
     title?: string;
     description?: string | null;
+    titleEn?: string | null;
+    titleJa?: string | null;
+    descriptionEn?: string | null;
+    descriptionJa?: string | null;
     active?: boolean;
     order?: number;
   };
@@ -31,6 +35,10 @@ export function JobOpeningForm({ initial = {}, mode }: JobOpeningFormProps) {
   const [title, setTitle] = useState(initial.title ?? '');
   const [slug, setSlug] = useState(initial.slug ?? '');
   const [description, setDescription] = useState(initial.description ?? '');
+  const [titleEn, setTitleEn] = useState(initial.titleEn ?? '');
+  const [titleJa, setTitleJa] = useState(initial.titleJa ?? '');
+  const [descriptionEn, setDescriptionEn] = useState(initial.descriptionEn ?? '');
+  const [descriptionJa, setDescriptionJa] = useState(initial.descriptionJa ?? '');
   const [active, setActive] = useState(initial.active ?? true);
   const [order, setOrder] = useState<number>(initial.order ?? 0);
 
@@ -48,6 +56,10 @@ export function JobOpeningForm({ initial = {}, mode }: JobOpeningFormProps) {
         slug,
         title,
         description: description || undefined,
+        titleEn: titleEn || undefined,
+        titleJa: titleJa || undefined,
+        descriptionEn: descriptionEn || undefined,
+        descriptionJa: descriptionJa || undefined,
         active,
         order,
       };
@@ -112,6 +124,70 @@ export function JobOpeningForm({ initial = {}, mode }: JobOpeningFormProps) {
               className={textareaClasses}
               rows={4}
               maxLength={500}
+            />
+          </FormField>
+        </Card>
+
+        {/*
+          Орчуулгын блок (EN / JP) — News-ийн админ форм-ын адил
+          сонгомол. Хоосон үлдэхэд public хуудас МN-аас fallback хийнэ.
+          Хэрэглэгчийн locale-ийг солих үед энд бичсэн утга яг тэр
+          хэлээр харагдана.
+        */}
+        <Card hover={false}>
+          <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-navy-900">
+            Орчуулга — Англи (English)
+          </h3>
+          <p className="mb-4 text-xs text-text-muted">
+            Сонгомол. Хоосон бол EN locale дээр МN утга харагдана.
+          </p>
+          <FormField label="Албан тушаал — EN">
+            <input
+              type="text"
+              value={titleEn}
+              onChange={(e) => setTitleEn(e.target.value)}
+              className={inputClasses}
+              placeholder="e.g. Japanese-language instructor"
+              maxLength={160}
+            />
+          </FormField>
+          <FormField label="Тайлбар — EN" className="mt-4">
+            <textarea
+              value={descriptionEn}
+              onChange={(e) => setDescriptionEn(e.target.value)}
+              className={textareaClasses}
+              rows={4}
+              maxLength={500}
+              placeholder="Optional 1-2 sentence summary in English."
+            />
+          </FormField>
+        </Card>
+
+        <Card hover={false}>
+          <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-navy-900">
+            Орчуулга — Япон (日本語)
+          </h3>
+          <p className="mb-4 text-xs text-text-muted">
+            Сонгомол. Хоосон бол JP locale дээр МN утга харагдана.
+          </p>
+          <FormField label="Албан тушаал — JP (日本語)">
+            <input
+              type="text"
+              value={titleJa}
+              onChange={(e) => setTitleJa(e.target.value)}
+              className={inputClasses}
+              placeholder="例: 日本語教員"
+              maxLength={160}
+            />
+          </FormField>
+          <FormField label="Тайлбар — JP (日本語)" className="mt-4">
+            <textarea
+              value={descriptionJa}
+              onChange={(e) => setDescriptionJa(e.target.value)}
+              className={textareaClasses}
+              rows={4}
+              maxLength={500}
+              placeholder="任意：1〜2文の要約（日本語）"
             />
           </FormField>
         </Card>

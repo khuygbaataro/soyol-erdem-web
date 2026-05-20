@@ -34,6 +34,10 @@ export default async function EditJobOpeningPage({ params }: PageProps) {
           slug: item.slug,
           title: item.title,
           description: item.description,
+          titleEn: item.titleEn,
+          titleJa: item.titleJa,
+          descriptionEn: item.descriptionEn,
+          descriptionJa: item.descriptionJa,
           active: item.active,
           order: item.order,
         }}

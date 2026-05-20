@@ -226,6 +226,11 @@ export const jobOpeningSchema = z.object({
     .max(80),
   title: z.string().min(2).max(160),
   description: z.string().max(500).optional().or(z.literal('')),
+  /** Optional translations — same MN/EN/JP convention as News.titleEn. */
+  titleEn: z.string().max(160).optional().or(z.literal('')),
+  titleJa: z.string().max(160).optional().or(z.literal('')),
+  descriptionEn: z.string().max(500).optional().or(z.literal('')),
+  descriptionJa: z.string().max(500).optional().or(z.literal('')),
   active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
   order: z.coerce.number().int().min(0).max(999),
 });

@@ -3,6 +3,7 @@ import { Section } from '@/components/layout/Section';
 import { prisma } from '@/lib/prisma';
 import { getSiteContentMap } from '@/lib/site-content';
 import { getServerLocale } from '@/lib/i18n/server';
+import { localisedField } from '@/lib/i18n/db';
 import { CAREERS_APPLY_CONTENT } from '@/lib/i18n/content';
 import { JobApplyClient } from './JobApplyClient';
 
@@ -22,7 +23,12 @@ export default async function JobApplyPage({ searchParams }: PageProps) {
       .findMany({
         where: { active: true },
         orderBy: [{ order: 'asc' }, { title: 'asc' }],
-        select: { slug: true, title: true },
+        select: {
+          slug: true,
+          title: true,
+          titleEn: true,
+          titleJa: true,
+        },
       })
       .catch(() => null),
     getSiteContentMap('banners'),
@@ -32,10 +38,12 @@ export default async function JobApplyPage({ searchParams }: PageProps) {
   const c = CAREERS_APPLY_CONTENT[locale];
 
   // Single source of truth: /admin/careers → JobOpening DB table.
-  // (Same change as /careers/page.tsx — removed the
-  // CAREERS_DEFAULT_OPENINGS fallback so the dropdown always
-  // reflects what's actually in admin.)
-  const positions = (dbOpenings ?? []).map((o) => o.title);
+  // Titles are locale-resolved so the dropdown labels switch when the
+  // visitor changes the UI language (falls back to MN when EN / JP
+  // columns are empty).
+  const positions = (dbOpenings ?? []).map((o) =>
+    localisedField(o, 'title', locale),
+  );
 
   // Always offer "Other" so applicants without a matching listing
   // aren't dead-ended.

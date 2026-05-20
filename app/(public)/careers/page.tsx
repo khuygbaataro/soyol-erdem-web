@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { prisma } from '@/lib/prisma';
 import { getSiteContentMap } from '@/lib/site-content';
 import { getServerLocale } from '@/lib/i18n/server';
+import { localisedField } from '@/lib/i18n/db';
 import { CAREERS_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,16 @@ export default async function CareersPage() {
       .findMany({
         where: { active: true },
         orderBy: [{ order: 'asc' }, { title: 'asc' }],
-        select: { slug: true, title: true, description: true },
+        // Pull translation columns too so we can localise per visitor.
+        select: {
+          slug: true,
+          title: true,
+          description: true,
+          titleEn: true,
+          titleJa: true,
+          descriptionEn: true,
+          descriptionJa: true,
+        },
       })
       .catch(() => null),
     getSiteContentMap('banners'),
@@ -31,14 +41,18 @@ export default async function CareersPage() {
 
   const c = CAREERS_CONTENT[locale];
 
-  // Single source of truth: /admin/careers → JobOpening table. The
-  // hard-coded `CAREERS_DEFAULT_OPENINGS` fallback was confusing
-  // editors because admin-removed openings would silently come back
-  // as defaults. Per Munkhchimeg's request, the public page now reads
-  // *only* from the DB and renders the empty state when no rows
-  // exist — so what the admin sees at /admin/careers is exactly what
-  // shows here.
-  const openings = dbOpenings ?? [];
+  // Single source of truth: /admin/careers → JobOpening table. Each
+  // row's title / description is locale-resolved via `localisedField`
+  // so EN / JP visitors see the admin-supplied translation (falling
+  // back to the MN canonical value when a translation column is
+  // empty).
+  const openings = (dbOpenings ?? []).map((o) => ({
+    slug: o.slug,
+    title: localisedField(o, 'title', locale),
+    description: o.description
+      ? localisedField(o, 'description', locale)
+      : null,
+  }));
 
   return (
     <>
