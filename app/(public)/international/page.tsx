@@ -316,8 +316,11 @@ export default async function InternationalPage() {
         </div>
       </Section>
 
-      {/* Compact directory for the remaining partners */}
-      {otherPartners.length > 0 && (
+      {/* "БУСАД ХАМТРАГЧ БАЙГУУЛЛАГУУД" хэсэг — Munkhchimeg-ийн
+          хүсэлтээр түр далдалж байна. Логог нь нэмж бэлэн болгосны
+          дараа эргэн идэвхжүүлнэ. Доорх блок-ийг устгаагүй, зөвхөн
+          `false &&` чагнаар render-аас гадуурлуулсан. */}
+      {false && otherPartners.length > 0 && (
         <Section background="cream-soft">
           <SectionTitle
             title={c.otherPartnersTitle}
