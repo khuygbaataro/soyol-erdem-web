@@ -1,4 +1,4 @@
-import { Calendar, Clock, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { Calendar, Clock, ExternalLink, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -169,6 +169,45 @@ export default async function HighSchoolContactPage() {
               </div>
             </div>
           </div>
+        </div>
+      </Section>
+
+      {/*
+        Google Maps embed — Munkhchimeg shared the exact location via a
+        share link (https://maps.app.goo.gl/zHwH8HPEn72Hpe1W7). The iframe
+        below uses the address query in `maps.google.com/maps?q=…&output=embed`
+        which works without an API key. The "Open in Google Maps" button
+        underneath points to the share link itself so the precise pin is
+        always one tap away (and so the route-and-directions flow works
+        on mobile devices).
+      */}
+      <Section background="cream-soft" spacing="md">
+        <SectionTitle title={c.mapTitle} subtitle={c.mapSubtitle} />
+        <div className="overflow-hidden rounded-card border border-border-light shadow-card">
+          <iframe
+            title={c.mapTitle}
+            src="https://www.google.com/maps?q=Соёл+Эрдэм+Сургууль,+Сүхбаатар+дүүрэг,+Улаанбаатар&t=&z=16&ie=UTF8&iwloc=&output=embed"
+            width="100%"
+            height={420}
+            style={{ border: 0 }}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            className="block aspect-[16/9] h-[60vh] max-h-[520px] w-full md:aspect-auto md:h-[420px]"
+          />
+        </div>
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+          <Button
+            href="https://maps.app.goo.gl/zHwH8HPEn72Hpe1W7"
+            variant="accent"
+            size="md"
+            icon={<ExternalLink className="h-4 w-4" />}
+            iconPosition="right"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {c.mapOpenCta}
+          </Button>
         </div>
       </Section>
     </>

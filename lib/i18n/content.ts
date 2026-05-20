@@ -4751,6 +4751,9 @@ interface HsContactBundle {
   admissionPreviewTitle: string;
   admissionPreviewBody: string;
   admissionPreviewCta: string;
+  mapTitle: string;
+  mapSubtitle: string;
+  mapOpenCta: string;
 }
 
 export const HS_CONTACT_CONTENT: Record<Language, HsContactBundle> = {
@@ -4780,6 +4783,10 @@ export const HS_CONTACT_CONTENT: Record<Language, HsContactBundle> = {
     admissionPreviewBody:
       '2026-2027 оны хичээлийн жилийн элсэлт нээлттэй. Шаардлага, бүрдүүлэх материал, хугацааны мэдээллийг элсэлтийн хуудаснаас үзнэ үү.',
     admissionPreviewCta: 'Элсэлтийн мэдээлэл',
+    mapTitle: 'БАЙРШИЛ',
+    mapSubtitle:
+      'Сүхбаатар дүүрэг, 1-р хороо, Олимпийн гудамж. Зураг дээр чиглэсэн товчийг дарж Google Maps-аас зам заавар авна уу.',
+    mapOpenCta: 'Google Maps дээр нээх',
   },
   EN: {
     heroTitle: 'CONTACT',
@@ -4807,6 +4814,10 @@ export const HS_CONTACT_CONTENT: Record<Language, HsContactBundle> = {
     admissionPreviewBody:
       'Admissions for the 2026–2027 academic year are open. See requirements, documents and timeline on the admissions page.',
     admissionPreviewCta: 'Admission details',
+    mapTitle: 'LOCATION',
+    mapSubtitle:
+      'Olympic Street, 1st Khoroo, Sukhbaatar District. Tap the button below the map for turn-by-turn directions in Google Maps.',
+    mapOpenCta: 'Open in Google Maps',
   },
   JP: {
     heroTitle: 'お問い合わせ',
@@ -4834,6 +4845,10 @@ export const HS_CONTACT_CONTENT: Record<Language, HsContactBundle> = {
     admissionPreviewBody:
       '2026〜2027年度の入学受付中。条件・必要書類・スケジュールは入学案内ページをご覧ください。',
     admissionPreviewCta: '入学案内',
+    mapTitle: 'アクセス',
+    mapSubtitle:
+      'スフバートル区 第1ホロー、オリンピック通り。下のボタンから Google マップで経路を確認できます。',
+    mapOpenCta: 'Google マップで開く',
   },
 };
 
