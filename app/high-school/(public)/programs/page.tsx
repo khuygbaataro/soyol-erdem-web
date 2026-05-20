@@ -221,8 +221,14 @@ export default async function HighSchoolProgramsPage() {
                       </span>
                     </div>
 
-                    {/* Level name */}
-                    <h3 className="relative mt-6 font-serif text-2xl font-extrabold leading-tight md:text-[1.6rem]">
+                    {/*
+                      Level name. `text-white` is set explicitly because
+                      globals.css applies `color: var(--text-heading)` to
+                      every `h1`–`h6`, which overrides the parent
+                      `<header className="text-white">` and would
+                      otherwise render this dark-on-navy.
+                    */}
+                    <h3 className="relative mt-6 font-serif text-2xl font-extrabold leading-tight text-white md:text-[1.6rem]">
                       {l.name}
                     </h3>
 
