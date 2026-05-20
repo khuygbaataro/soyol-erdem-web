@@ -102,16 +102,19 @@ export function HighSchoolHeader() {
                 className="shrink-0 object-contain"
                 style={{ width: 76, height: 76 }}
               />
-              {/* Single-line wordmark per Munkhchimeg's latest request:
-                  eyebrow + institutional name now sit inline on one
-                  row (light eyebrow + bold wordmark separated by a
-                  hair-space). `whitespace-nowrap` keeps them together
-                  on a single line even on narrower desktop widths. */}
-              <span className="hidden items-baseline gap-2 whitespace-nowrap leading-tight text-white sm:flex">
-                <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-white/85 md:text-[11px]">
+              {/* Two-line wordmark — eyebrow above institutional name.
+                  Both lines tuned to land at the same visual width:
+                  the long eyebrow ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН",
+                  ~30 chars at 12px / 0.04em ≈ 215 px) and the bolder
+                  but shorter wordmark ("СОЁЛ ЭРДЭМ СУРГУУЛЬ", ~20 chars
+                  at 18px extrabold / 0.18em ≈ 215 px) come out roughly
+                  even, so the block reads as a single tight title
+                  rather than a long top + short bottom. */}
+              <span className="hidden flex-col items-center whitespace-nowrap leading-tight text-white sm:flex">
+                <span className="text-[11px] font-medium uppercase tracking-[0.04em] text-white/85 md:text-xs">
                   {t('brand.highSchoolEyebrow')}
                 </span>
-                <span className="font-serif text-sm font-extrabold uppercase tracking-[0.04em] text-white md:text-base md:tracking-[0.06em]">
+                <span className="mt-0.5 font-serif text-base font-extrabold uppercase tracking-[0.14em] text-white md:text-lg md:tracking-[0.18em]">
                   {t('brand.highSchoolWordmark')}
                 </span>
               </span>
