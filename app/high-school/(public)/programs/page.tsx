@@ -1,5 +1,4 @@
 import {
-  Activity,
   Award,
   BookMarked,
   BookOpen,
@@ -90,6 +89,21 @@ const CATEGORY_HEADINGS: Record<
   },
 };
 
+// Каталоговгийн нэр доогуурх жижиг caption ("1-5 анги" г.м.) —
+// сурагчдын дамжаа нь Монголын ердийн 12 жилийн систем дээр
+// тогтсон тул админд бичүүлэхгүй inline байрлуулсан.
+const GRADE_RANGE: Record<'MN' | 'EN' | 'JP', Record<LevelKey, string>> = {
+  MN: { elementary: '1–5 анги', middle: '6–9 анги', high: '10–12 анги' },
+  EN: { elementary: 'Grades 1–5', middle: 'Grades 6–9', high: 'Grades 10–12' },
+  JP: { elementary: '1〜5年生', middle: '6〜9年生', high: '10〜12年生' },
+};
+
+const STEP_LABEL: Record<'MN' | 'EN' | 'JP', string> = {
+  MN: 'Шат',
+  EN: 'Stage',
+  JP: 'ステージ',
+};
+
 export default async function HighSchoolProgramsPage() {
   const [locale, site] = await Promise.all([
     getServerLocale(),
@@ -122,11 +136,6 @@ export default async function HighSchoolProgramsPage() {
     middle: Lightbulb,
     high: GraduationCap,
   };
-  const CATEGORY_ICONS = {
-    education: Sparkles,
-    curriculum: BookOpen,
-    extracurricular: Activity,
-  } as const;
 
   return (
     <>
@@ -162,75 +171,97 @@ export default async function HighSchoolProgramsPage() {
         </div>
       </Section>
 
-      {/* "Бага / Дунд / Ахлах сургуулийн онцлог" — Admin-editable
-          comparison block. Renders one card per level (only those
-          with content) and 3 sub-blocks per level: Боловсролын
-          онцлог / Сургалтын хөтөлбөрүүд / Хичээлээс гадуурх үйл
-          ажиллагаа. The whole block is suppressed if no level has
-          a `.name` value yet, so the page never shows an empty
-          shell when SiteContent is unseeded. */}
+      {/* "Бага / Дунд / Ахлах сургуулийн онцлог" — admin-editable
+          comparison block. Editorial card design per Munkhchimeg's
+          design-eye request:
+            • Header: navy gradient with a faded watermark number
+              (01/02/03), gold-ringed icon, eyebrow "Шат N", level
+              name in serif, gold accent bar, grade-range caption.
+            • Body: warm cream surface with hairline dividers between
+              the three categories, gold-dot indicators preceding each
+              uppercase category label.
+            • Subtle lift on hover for tactility.
+          Only renders levels whose `.name` row is non-empty and skips
+          per-category blocks whose body is empty, so partial admin
+          data still presents cleanly. */}
       {levels.length > 0 && (
         <Section background="cream-soft" spacing="md" id="angiud">
           <SectionTitle title={levelsTitle} subtitle={levelsSubtitle} />
-          <div className="grid gap-6 lg:grid-cols-3">
-            {levels.map((l) => {
+          <div className="grid gap-6 lg:grid-cols-3 lg:gap-7">
+            {levels.map((l, idx) => {
               const LevelIcon = LEVEL_ICONS[l.key];
-              const blocks: Array<{
-                heading: string;
-                body: string;
-                Icon: LucideIcon;
-              }> = [
-                {
-                  heading: catH.education,
-                  body: l.education,
-                  Icon: CATEGORY_ICONS.education,
-                },
-                {
-                  heading: catH.curriculum,
-                  body: l.curriculum,
-                  Icon: CATEGORY_ICONS.curriculum,
-                },
-                {
-                  heading: catH.extracurricular,
-                  body: l.extracurricular,
-                  Icon: CATEGORY_ICONS.extracurricular,
-                },
+              const stepNumber = String(idx + 1).padStart(2, '0');
+              const blocks: Array<{ heading: string; body: string }> = [
+                { heading: catH.education, body: l.education },
+                { heading: catH.curriculum, body: l.curriculum },
+                { heading: catH.extracurricular, body: l.extracurricular },
               ];
               return (
                 <article
                   key={l.key}
-                  className="flex h-full flex-col overflow-hidden rounded-card border border-border-light bg-white shadow-card transition-shadow hover:shadow-card-hover"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-card bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
                 >
-                  {/* Header band — navy with gold icon */}
-                  <header className="flex items-center gap-3 bg-navy-900 px-6 py-5 text-white">
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/30">
-                      <LevelIcon className="h-5 w-5" />
+                  {/* Editorial header — navy gradient + watermark */}
+                  <header className="relative overflow-hidden bg-gradient-to-br from-navy-900 via-[#172a4a] to-[#0f1f3a] px-7 pb-7 pt-7 text-white">
+                    {/* Big faded number watermark in the corner */}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute -right-2 -top-4 select-none font-serif text-[112px] font-black leading-none text-white/[0.06]"
+                    >
+                      {stepNumber}
                     </span>
-                    <h3 className="font-serif text-xl font-bold leading-tight">
+
+                    {/* Eyebrow row: icon + stage label */}
+                    <div className="relative flex items-center gap-3">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-400 ring-2 ring-gold-500/30 transition-transform duration-300 group-hover:scale-105">
+                        <LevelIcon className="h-5 w-5" />
+                      </span>
+                      <span className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-gold-400">
+                        {STEP_LABEL[locale]} {idx + 1}
+                      </span>
+                    </div>
+
+                    {/* Level name */}
+                    <h3 className="relative mt-6 font-serif text-2xl font-extrabold leading-tight md:text-[1.6rem]">
                       {l.name}
                     </h3>
+
+                    {/* Gold accent bar */}
+                    <div className="relative mt-4 h-[3px] w-12 rounded-full bg-gold-500" />
+
+                    {/* Grade-range caption */}
+                    <p className="relative mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
+                      {GRADE_RANGE[locale][l.key]}
+                    </p>
                   </header>
 
-                  {/* 3 categorised blocks; skip block when its body
-                      is empty so partial admin data renders cleanly. */}
-                  <div className="flex flex-1 flex-col gap-5 p-6">
-                    {blocks.map((b) =>
-                      b.body.length > 0 ? (
-                        <div key={b.heading}>
-                          <div className="mb-2 flex items-center gap-2">
-                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
-                              <b.Icon className="h-3.5 w-3.5" />
-                            </span>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-gold-500">
+                  {/* Body — warm surface, hairline-separated categories */}
+                  <div className="flex flex-1 flex-col bg-cream-soft/30 px-7 py-6">
+                    {blocks
+                      .filter((b) => b.body.length > 0)
+                      .map((b, i) => (
+                        <div
+                          key={b.heading}
+                          className={
+                            i > 0
+                              ? 'mt-5 border-t border-border-light/70 pt-5'
+                              : ''
+                          }
+                        >
+                          <div className="mb-2.5 flex items-center gap-2.5">
+                            <span
+                              aria-hidden
+                              className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500"
+                            />
+                            <p className="text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-navy-900/85">
                               {b.heading}
                             </p>
                           </div>
-                          <p className="whitespace-pre-line text-sm leading-relaxed text-text-body">
+                          <p className="whitespace-pre-line text-[14.5px] leading-[1.65] text-text-body">
                             {b.body}
                           </p>
                         </div>
-                      ) : null,
-                    )}
+                      ))}
                   </div>
                 </article>
               );
