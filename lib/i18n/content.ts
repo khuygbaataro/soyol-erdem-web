@@ -2793,7 +2793,7 @@ export const HS_HOME_CONTENT: Record<Language, HsHomeBundle> = {
     heroTitle: 'АХЛАХ СУРГУУЛЬ',
     heroSubtitle:
       'Чанартай боловсрол, Япон хэл, соёл, IT-ийн чиглэлээр ирээдүйгээ эндээс эхлүүл.',
-    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbUniversity: 'Дээд сургууль',
     breadcrumbThis: 'Ахлах сургууль',
     introBadge: 'Японы хөрөнгө оруулалттай · 2023 онд байгуулагдсан',
     introTitle: 'Хичээнгүй суралцагч,\nЧадварлаг багш, Япон хэл, соёл',
@@ -3131,7 +3131,7 @@ export const HS_ABOUT_CONTENT: Record<Language, HsAboutBundle> = {
     heroTitle: 'ТАНИЛЦУУЛГА',
     heroSubtitle:
       'Нийслэлийн Ерөнхий боловсролын Соёл Эрдэм сургууль — япон хэл, соёл, мэдээллийн технологийн чиглэлээр төрөлжсөн ахлах сургууль.',
-    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbUniversity: 'Дээд сургууль',
     breadcrumbHs: 'Ахлах сургууль',
     breadcrumbThis: 'Танилцуулга',
     introBadge: 'Японы хөрөнгө оруулалттай · 2023 онд байгуулагдсан',
@@ -3555,7 +3555,7 @@ export const HS_PROGRAMS_CONTENT: Record<Language, HsProgramsBundle> = {
   MN: {
     heroTitle: 'СУРГАЛТ',
     heroSubtitle: 'Ерөнхий боловсролын суурь + Япон хэл, соёл + Төрөлжсөн мэдээллийн технологи.',
-    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbUniversity: 'Дээд сургууль',
     breadcrumbHs: 'Ахлах сургууль',
     breadcrumbThis: 'Сургалт',
     structureTitle: 'СУРГАЛТЫН БҮТЭЦ',
@@ -4067,7 +4067,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
   MN: {
     heroTitle: 'ЭЛСЭЛТ',
     heroSubtitle: 'Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн 10-р ангид элсэх журам, шаардлага.',
-    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbUniversity: 'Дээд сургууль',
     breadcrumbHs: 'Ахлах сургууль',
     breadcrumbThis: 'Элсэлт',
     introBadge: '2026-2027 оны хичээлийн жил',
@@ -4758,7 +4758,7 @@ export const HS_CONTACT_CONTENT: Record<Language, HsContactBundle> = {
     heroTitle: 'ХОЛБОО БАРИХ',
     heroSubtitle:
       'Лавлах, элсэлт, хамтын ажиллагааны санал — бидэнтэй чөлөөтэй холбоо барина уу.',
-    breadcrumbUniversity: 'Их сургууль',
+    breadcrumbUniversity: 'Дээд сургууль',
     breadcrumbHs: 'Ахлах сургууль',
     breadcrumbThis: 'Холбоо барих',
     contactsTitle: 'ТАНТАЙ ХОЛБОГДОХ',

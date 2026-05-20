@@ -80,7 +80,7 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
       <PageHero
         title={title}
         breadcrumb={[
-          { label: 'Их сургууль', href: '/' },
+          { label: 'Дээд сургууль', href: '/' },
           { label: 'Ахлах сургууль', href: '/high-school' },
           { label: 'Мэдээ', href: '/high-school/news' },
           {
