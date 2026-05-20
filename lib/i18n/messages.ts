@@ -60,6 +60,8 @@ export const MESSAGES: Record<Language, Messages> = {
     'brand.highSchoolHomeAria': 'Ахлах сургуулийн нүүр хуудас',
     'brand.short': 'Соёл Эрдэм',
     'brand.highSchoolShort': 'Сургууль',
+    'brand.highSchoolEyebrow': 'НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН',
+    'brand.highSchoolWordmark': 'СОЁЛ ЭРДЭМ СУРГУУЛЬ',
     'brand.highSchoolMobileSection': 'Ахлах Сургууль',
 
     // ─── Slideshow / gallery aria labels ──────────────────────────
@@ -216,6 +218,8 @@ export const MESSAGES: Record<Language, Messages> = {
     'brand.highSchoolHomeAria': 'High school home',
     'brand.short': 'Soyol Erdem',
     'brand.highSchoolShort': 'High School',
+    'brand.highSchoolEyebrow': 'MUNICIPAL GENERAL EDUCATION',
+    'brand.highSchoolWordmark': 'SOYOL ERDEM SCHOOL',
     'brand.highSchoolMobileSection': 'High School',
 
     // ─── Slideshow / gallery aria labels ──────────────────────────
@@ -372,6 +376,8 @@ export const MESSAGES: Record<Language, Messages> = {
     'brand.highSchoolHomeAria': '高等学校ホーム',
     'brand.short': 'ソヨル・エルデム',
     'brand.highSchoolShort': '高等学校',
+    'brand.highSchoolEyebrow': '市立 普通教育',
+    'brand.highSchoolWordmark': 'ソヨル・エルデム学校',
     'brand.highSchoolMobileSection': '高等学校',
 
     // ─── Slideshow / gallery aria labels ──────────────────────────

@@ -102,12 +102,18 @@ export function HighSchoolHeader() {
                 className="shrink-0 object-contain"
                 style={{ width: 76, height: 76 }}
               />
-              <span className="flex flex-col items-center font-serif font-bold tracking-tight text-white">
-                <span className="text-base leading-tight md:text-lg">
-                  {t('brand.short').toUpperCase()}
+              {/* Two-line wordmark per Munkhchimeg's reference: a slim
+                  eyebrow line ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН") sits
+                  above the bold institutional name ("СОЁЛ ЭРДЭМ
+                  СУРГУУЛЬ") so the high-school identity reads as a
+                  full title rather than a stacked "Соёл Эрдэм /
+                  Сургууль" pair. */}
+              <span className="hidden flex-col leading-tight text-white sm:flex">
+                <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/85 md:text-[12px]">
+                  {t('brand.highSchoolEyebrow')}
                 </span>
-                <span className="text-sm leading-tight text-white/95 md:text-base">
-                  {t('brand.highSchoolShort')}
+                <span className="mt-1 font-serif text-base font-extrabold uppercase tracking-[0.18em] text-white md:text-lg md:tracking-[0.22em]">
+                  {t('brand.highSchoolWordmark')}
                 </span>
               </span>
             </Link>
