@@ -103,30 +103,21 @@ export function HighSchoolHeader() {
                 className="shrink-0 object-contain"
                 style={{ width: 76, height: 76 }}
               />
-              {/* Two-line wordmark — eyebrow above institutional name.
-                  The eyebrow ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН") is the
-                  naturally wider line so we let it determine the
-                  container width (`inline-block` shrinks to its widest
-                  child). The shorter wordmark below then uses CSS
-                  `text-align: justify; text-align-last: justify;
-                  text-justify: inter-character;` to *stretch* across
-                  the same width — distributing extra space between
-                  every character so the first `С` and the last `Ь` of
-                  "СОЁЛ ЭРДЭМ СУРГУУЛЬ" line up exactly with the first
-                  `Н` and the last `Н` of the eyebrow above. */}
-              <span className="hidden leading-tight text-white sm:inline-block">
-                <span className="block whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.04em] text-white/85 md:text-xs">
-                  {t('brand.highSchoolEyebrow')}
+              {/* Compact two-line wordmark — original "СОЁЛ ЭРДЭМ /
+                  Сургууль" stack. The expanded "НИЙСЛЭЛИЙН ЕРӨНХИЙ
+                  БОЛОВСРОЛЫН / СОЁЛ ЭРДЭМ СУРГУУЛЬ" variant was
+                  visually too large and overlapped the navigation
+                  menu (НҮҮР, ХОЛБОО БАРИХ, the gold ЭЛСЭЛТ pill).
+                  Munkhchimeg reverted us to this slimmer layout.
+                  The expanded brand strings stay in messages.ts
+                  (brand.highSchoolEyebrow / brand.highSchoolWordmark)
+                  in case we surface them in future hero artwork. */}
+              <span className="flex flex-col items-center font-serif font-bold tracking-tight text-white">
+                <span className="text-base leading-tight md:text-lg">
+                  {t('brand.short').toUpperCase()}
                 </span>
-                <span
-                  className="mt-0.5 block font-serif text-base font-extrabold uppercase text-white md:text-lg"
-                  style={{
-                    textAlign: 'justify',
-                    textAlignLast: 'justify',
-                    textJustify: 'inter-character',
-                  } as React.CSSProperties}
-                >
-                  {t('brand.highSchoolWordmark')}
+                <span className="text-sm leading-tight text-white/95 md:text-base">
+                  {t('brand.highSchoolShort')}
                 </span>
               </span>
             </Link>
