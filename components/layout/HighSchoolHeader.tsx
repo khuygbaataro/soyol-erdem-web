@@ -102,17 +102,16 @@ export function HighSchoolHeader() {
                 className="shrink-0 object-contain"
                 style={{ width: 76, height: 76 }}
               />
-              {/* Two-line wordmark per Munkhchimeg's reference: a slim
-                  eyebrow line ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН") sits
-                  above the bold institutional name ("СОЁЛ ЭРДЭМ
-                  СУРГУУЛЬ"). Letter-spacing kept tight so the full
-                  title fits beside the nav without crowding — earlier
-                  0.18–0.22em pushed it past the navigation column. */}
-              <span className="hidden flex-col leading-tight text-white sm:flex">
+              {/* Single-line wordmark per Munkhchimeg's latest request:
+                  eyebrow + institutional name now sit inline on one
+                  row (light eyebrow + bold wordmark separated by a
+                  hair-space). `whitespace-nowrap` keeps them together
+                  on a single line even on narrower desktop widths. */}
+              <span className="hidden items-baseline gap-2 whitespace-nowrap leading-tight text-white sm:flex">
                 <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-white/85 md:text-[11px]">
                   {t('brand.highSchoolEyebrow')}
                 </span>
-                <span className="mt-0.5 font-serif text-sm font-extrabold uppercase tracking-[0.04em] text-white md:text-base md:tracking-[0.06em]">
+                <span className="font-serif text-sm font-extrabold uppercase tracking-[0.04em] text-white md:text-base md:tracking-[0.06em]">
                   {t('brand.highSchoolWordmark')}
                 </span>
               </span>
