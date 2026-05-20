@@ -24,6 +24,11 @@ export default async function SoninHewlelPage() {
           issueNumber: true,
           title: true,
           publishedAt: true,
+          // Admin can attach a cover thumbnail in /admin/newspapers/[id]/edit;
+          // when present the card renders the image as its hero. Falls back
+          // to the printed-masthead design (navy header + large issue number)
+          // when the column is null/empty.
+          coverImage: true,
         },
       })
       .catch(() => []),
