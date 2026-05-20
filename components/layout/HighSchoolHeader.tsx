@@ -105,14 +105,14 @@ export function HighSchoolHeader() {
               {/* Two-line wordmark per Munkhchimeg's reference: a slim
                   eyebrow line ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН") sits
                   above the bold institutional name ("СОЁЛ ЭРДЭМ
-                  СУРГУУЛЬ") so the high-school identity reads as a
-                  full title rather than a stacked "Соёл Эрдэм /
-                  Сургууль" pair. */}
+                  СУРГУУЛЬ"). Letter-spacing kept tight so the full
+                  title fits beside the nav without crowding — earlier
+                  0.18–0.22em pushed it past the navigation column. */}
               <span className="hidden flex-col leading-tight text-white sm:flex">
-                <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/85 md:text-[12px]">
+                <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-white/85 md:text-[11px]">
                   {t('brand.highSchoolEyebrow')}
                 </span>
-                <span className="mt-1 font-serif text-base font-extrabold uppercase tracking-[0.18em] text-white md:text-lg md:tracking-[0.22em]">
+                <span className="mt-0.5 font-serif text-sm font-extrabold uppercase tracking-[0.04em] text-white md:text-base md:tracking-[0.06em]">
                   {t('brand.highSchoolWordmark')}
                 </span>
               </span>
