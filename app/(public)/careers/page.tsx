@@ -93,10 +93,34 @@ export default async function CareersPage() {
                     )}
                   </div>
                 </div>
-                <div className="mt-5 pt-2">
+                {/*
+                  Two-action footer — appears on every opening card
+                  by virtue of being inside the `.map(o => …)` loop,
+                  so any new opening posted from /admin/careers
+                  inherits the same Download + Apply layout
+                  automatically.
+                    • Анкет татах — native <a download> on the MN
+                      anket template (.doc), kicks off a real file
+                      download.
+                    • Анкет бөглөх — links to /careers/apply with
+                      the position pre-selected. Submissions land in
+                      /admin/careers/applications (already wired).
+                  Layout: `mt-auto` pins the action row to the
+                  bottom of the card so cards with longer
+                  descriptions still align their CTAs in a row.
+                */}
+                <div className="mt-auto flex flex-wrap items-center gap-2.5 pt-5">
+                  <a
+                    href="/careers/anket-mn.doc"
+                    download="Багш ажилтны анкет.doc"
+                    className="inline-flex h-9 items-center justify-center gap-2 rounded-button border border-navy-900 bg-white px-4 text-sm font-semibold text-navy-900 transition-all hover:border-gold-500 hover:bg-gold-500 hover:text-navy-900"
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                    {c.downloadAnketCta}
+                  </a>
                   <Button
                     href={`/careers/apply?position=${encodeURIComponent(o.title)}`}
-                    variant="outline"
+                    variant="primary"
                     size="sm"
                     icon={<ArrowRight className="h-3.5 w-3.5" />}
                   >

@@ -2375,6 +2375,9 @@ interface CareersBundle {
   openingsSubtitle: string;
   openingsEmpty: string;
   applyCta: string;
+  /** Compact label shown on every opening card next to "Apply" so
+   *  candidates can grab the empty form template directly. */
+  downloadAnketCta: string;
   requirementsTitle: string;
   offersTitle: string;
   requirements: string[];
@@ -2405,6 +2408,7 @@ export const CAREERS_CONTENT: Record<Language, CareersBundle> = {
     openingsSubtitle: 'Доорх албан тушаалуудаар анкет хүлээн авч байна.',
     openingsEmpty: 'Одоогоор нээлттэй ажлын байр байхгүй байна.',
     applyCta: 'Анкет бөглөх',
+    downloadAnketCta: 'Анкет татах',
     requirementsTitle: 'Тавигдах нийтлэг шаардлага',
     offersTitle: 'Бид танд санал болгож байна',
     requirements: [
@@ -2448,6 +2452,7 @@ export const CAREERS_CONTENT: Record<Language, CareersBundle> = {
     openingsSubtitle: 'We are accepting applications for the roles listed below.',
     openingsEmpty: 'No open positions at the moment.',
     applyCta: 'Apply',
+    downloadAnketCta: 'Download form',
     requirementsTitle: 'General requirements',
     offersTitle: 'What we offer',
     requirements: [
@@ -2491,6 +2496,7 @@ export const CAREERS_CONTENT: Record<Language, CareersBundle> = {
     openingsSubtitle: '下記の職種で応募を受け付けています。',
     openingsEmpty: '現在募集中の職種はありません。',
     applyCta: '応募する',
+    downloadAnketCta: '履歴書ダウンロード',
     requirementsTitle: '応募条件',
     offersTitle: '当大学が提供するもの',
     requirements: [
