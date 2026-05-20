@@ -17,6 +17,12 @@ interface Item {
   image: string;
   date: string;
   category: string;
+  /** Optional per-item override of the detail-page link. When set, the
+   *  card links here instead of `${hrefBase}/${id}`. Used to merge
+   *  /admin/careers job openings into the /news listing — those cards
+   *  point straight to /careers#openings rather than a nonexistent
+   *  /news/<slug> detail page. */
+  href?: string;
 }
 
 interface NewsListClientProps {
@@ -80,7 +86,7 @@ export function NewsListClient({ items, hrefBase = '/news' }: NewsListClientProp
                 title={n.title}
                 excerpt={n.excerpt}
                 body={n.body}
-                href={`${hrefBase}/${n.id}`}
+                href={n.href ?? `${hrefBase}/${n.id}`}
               />
             ))}
           </div>
