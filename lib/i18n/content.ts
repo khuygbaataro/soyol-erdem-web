@@ -2790,7 +2790,7 @@ interface HsHomeBundle {
 
 export const HS_HOME_CONTENT: Record<Language, HsHomeBundle> = {
   MN: {
-    heroTitle: 'АХЛАХ СУРГУУЛЬ',
+    heroTitle: 'СОЁЛ ЭРДЭМ СУРГУУЛЬ',
     heroSubtitle:
       'Чанартай боловсрол, Япон хэл, соёл, IT-ийн чиглэлээр ирээдүйгээ эндээс эхлүүл.',
     breadcrumbUniversity: 'Дээд сургууль',
