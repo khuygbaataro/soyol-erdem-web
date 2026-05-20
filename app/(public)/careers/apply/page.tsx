@@ -1,10 +1,9 @@
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
-import { CAREERS_DEFAULT_OPENINGS } from '@/lib/content';
 import { prisma } from '@/lib/prisma';
 import { getSiteContentMap } from '@/lib/site-content';
 import { getServerLocale } from '@/lib/i18n/server';
-import { CAREERS_CONTENT, CAREERS_APPLY_CONTENT } from '@/lib/i18n/content';
+import { CAREERS_APPLY_CONTENT } from '@/lib/i18n/content';
 import { JobApplyClient } from './JobApplyClient';
 
 export const dynamic = 'force-dynamic';
@@ -31,16 +30,12 @@ export default async function JobApplyPage({ searchParams }: PageProps) {
   ]);
 
   const c = CAREERS_APPLY_CONTENT[locale];
-  const careers = CAREERS_CONTENT[locale];
 
-  // DB rows are admin-managed and authored verbatim; the seeded
-  // defaults flip to the locale-specific titles.
-  const positions =
-    dbOpenings && dbOpenings.length > 0
-      ? dbOpenings.map((o) => o.title)
-      : CAREERS_DEFAULT_OPENINGS.map(
-          (o, idx) => careers.defaultOpenings[idx] ?? o.title,
-        );
+  // Single source of truth: /admin/careers → JobOpening DB table.
+  // (Same change as /careers/page.tsx — removed the
+  // CAREERS_DEFAULT_OPENINGS fallback so the dropdown always
+  // reflects what's actually in admin.)
+  const positions = (dbOpenings ?? []).map((o) => o.title);
 
   // Always offer "Other" so applicants without a matching listing
   // aren't dead-ended.

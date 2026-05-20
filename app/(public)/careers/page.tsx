@@ -4,7 +4,6 @@ import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { CAREERS_DEFAULT_OPENINGS } from '@/lib/content';
 import { prisma } from '@/lib/prisma';
 import { getSiteContentMap } from '@/lib/site-content';
 import { getServerLocale } from '@/lib/i18n/server';
@@ -32,18 +31,14 @@ export default async function CareersPage() {
 
   const c = CAREERS_CONTENT[locale];
 
-  // DB rows (admin-managed) win when populated; otherwise fall back to
-  // the localised default titles. DB openings stay literal because the
-  // admin author controls their language; the seeded defaults map to
-  // the locale-specific list.
-  const openings =
-    dbOpenings && dbOpenings.length > 0
-      ? dbOpenings
-      : CAREERS_DEFAULT_OPENINGS.map((o, idx) => ({
-          slug: o.slug,
-          title: c.defaultOpenings[idx] ?? o.title,
-          description: null as string | null,
-        }));
+  // Single source of truth: /admin/careers → JobOpening table. The
+  // hard-coded `CAREERS_DEFAULT_OPENINGS` fallback was confusing
+  // editors because admin-removed openings would silently come back
+  // as defaults. Per Munkhchimeg's request, the public page now reads
+  // *only* from the DB and renders the empty state when no rows
+  // exist — so what the admin sees at /admin/careers is exactly what
+  // shows here.
+  const openings = dbOpenings ?? [];
 
   return (
     <>
