@@ -103,21 +103,33 @@ export function HighSchoolHeader() {
                 className="shrink-0 object-contain"
                 style={{ width: 76, height: 76 }}
               />
-              {/* Compact two-line wordmark — original "СОЁЛ ЭРДЭМ /
-                  Сургууль" stack. The expanded "НИЙСЛЭЛИЙН ЕРӨНХИЙ
-                  БОЛОВСРОЛЫН / СОЁЛ ЭРДЭМ СУРГУУЛЬ" variant was
-                  visually too large and overlapped the navigation
-                  menu (НҮҮР, ХОЛБОО БАРИХ, the gold ЭЛСЭЛТ pill).
-                  Munkhchimeg reverted us to this slimmer layout.
-                  The expanded brand strings stay in messages.ts
-                  (brand.highSchoolEyebrow / brand.highSchoolWordmark)
-                  in case we surface them in future hero artwork. */}
-              <span className="flex flex-col items-center font-serif font-bold tracking-tight text-white">
-                <span className="text-base leading-tight md:text-lg">
-                  {t('brand.short').toUpperCase()}
+              {/* Edge-aligned two-line wordmark per Munkhchimeg's
+                  request. Eyebrow ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН")
+                  is the naturally wider line so we let it size the
+                  container (`inline-block` shrinks to widest child).
+                  The shorter wordmark below uses CSS
+                  `text-align: justify; text-align-last: justify;
+                  text-justify: inter-character;` to *stretch* across
+                  the same width — distributing extra space between
+                  every character so the first `С` and the last `Ь`
+                  of "СОЁЛ ЭРДЭМ СУРГУУЛЬ" line up exactly with the
+                  first `Н` and the last `Н` of the eyebrow above.
+                  Hidden on the smallest screens (where nav collapses
+                  into the hamburger anyway) so the logo isn't
+                  crowded. */}
+              <span className="hidden leading-tight text-white sm:inline-block">
+                <span className="block whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.04em] text-white/85 md:text-xs">
+                  {t('brand.highSchoolEyebrow')}
                 </span>
-                <span className="text-sm leading-tight text-white/95 md:text-base">
-                  {t('brand.highSchoolShort')}
+                <span
+                  className="mt-0.5 block font-serif text-base font-extrabold uppercase text-white md:text-lg"
+                  style={{
+                    textAlign: 'justify',
+                    textAlignLast: 'justify',
+                    textJustify: 'inter-character',
+                  } as React.CSSProperties}
+                >
+                  {t('brand.highSchoolWordmark')}
                 </span>
               </span>
             </Link>
