@@ -59,6 +59,14 @@ export function NewspapersList({ items }: NewspapersListProps) {
 
         if (n.coverImage) {
           // ───── Variant A: photographic cover ─────
+          // Long-format newspapers (a real broadsheet PDF is much
+          // taller than the 3:4 card) get cropped at the *bottom*
+          // via `object-top` so the masthead + headline area always
+          // stays visible. The lower ~55 % of the card is a deep navy
+          // gradient that softly fades into whatever the bottom of
+          // the cover happened to be, making the crop feel
+          // intentional rather than abrupt. Issue №, date, title and
+          // CTA all sit on that gradient.
           return (
             <a
               key={n.id}
@@ -67,29 +75,39 @@ export function NewspapersList({ items }: NewspapersListProps) {
               rel="noopener"
               className={cn(
                 'group relative flex aspect-[3/4] flex-col overflow-hidden rounded-card text-left transition-all',
+                'bg-navy-900', // visible at the bottom under the gradient
                 'shadow-card hover:-translate-y-1 hover:shadow-card-hover',
                 'ring-1 ring-border-light hover:ring-gold-500/60',
               )}
             >
-              {/* Cover image fills the whole card */}
+              {/* Cover image — anchored to the top of its own canvas
+                  so tall newspapers display the masthead first.
+                  Hover zooms it slightly while staying anchored. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={n.coverImage}
                 alt={n.title ?? `№${n.issueNumber}`}
                 loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
               />
 
-              {/* Top-left brand pill */}
-              <div className="relative z-10 m-3 inline-flex w-fit items-center gap-2 rounded-full bg-navy-900/85 px-3 py-1.5 backdrop-blur">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-gold-400">
-                  {t('newspaper.cardBrand')}
-                </p>
-              </div>
+              {/* Tall multi-stop navy gradient at the bottom — masks
+                  any crop edge softly and acts as the metadata
+                  surface. Three colour stops give a smooth fade-in
+                  rather than a hard line. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-navy-900 from-30% via-navy-900/80 via-65% to-transparent"
+              />
 
-              {/* Bottom gradient with issue number + date + CTA */}
-              <div className="relative z-10 mt-auto bg-gradient-to-t from-navy-900/95 via-navy-900/70 to-transparent px-4 pb-4 pt-12 text-white">
-                <p className="font-serif text-3xl font-extrabold leading-none text-white">
+              {/* Metadata block sits on top of the gradient. Pushed
+                  to the bottom with `mt-auto` on the flex column so
+                  the image fills everything above. */}
+              <div className="relative z-10 mt-auto px-4 pb-4 pt-12 text-white">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold-400">
+                  {t('newspaper.cardBrand')} · {t('newspaper.cardCategory')}
+                </p>
+                <p className="mt-1 font-serif text-[2.25rem] font-extrabold leading-none text-white">
                   №{n.issueNumber}
                 </p>
                 {dateLabel && (
