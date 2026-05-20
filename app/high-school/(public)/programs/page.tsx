@@ -1,5 +1,7 @@
 import {
+  Activity,
   Award,
+  BookMarked,
   BookOpen,
   Briefcase,
   Code2,
@@ -8,6 +10,7 @@ import {
   Globe2,
   GraduationCap,
   Languages,
+  Lightbulb,
   Network,
   Plane,
   Presentation,
@@ -48,6 +51,45 @@ const JADE_ICONS: LucideIcon[] = [
   Briefcase,     // Placement
 ];
 
+/**
+ * "Бага / Дунд / Ахлах сургуулийн онцлог" admin-managed section.
+ * SiteContent rows live under group `ahlah-programs` with keys
+ * `ahlah-programs.levels.<level>.<field>`. Per level we read 4 strings
+ * (name + 3 categories). Falls back to empty + the section renders
+ * only when the level's `.name` is non-empty.
+ */
+type LevelKey = 'elementary' | 'middle' | 'high';
+type LevelView = {
+  key: LevelKey;
+  name: string;
+  education: string;
+  curriculum: string;
+  extracurricular: string;
+};
+
+// Localised category headings (per UI locale) so the labels render
+// in EN / JP without the admin needing to maintain that.
+const CATEGORY_HEADINGS: Record<
+  'MN' | 'EN' | 'JP',
+  { education: string; curriculum: string; extracurricular: string }
+> = {
+  MN: {
+    education: 'Боловсролын онцлог',
+    curriculum: 'Сургалтын хөтөлбөрүүд',
+    extracurricular: 'Хичээлээс гадуурх үйл ажиллагаа',
+  },
+  EN: {
+    education: 'Educational focus',
+    curriculum: 'Curriculum',
+    extracurricular: 'Extracurriculars',
+  },
+  JP: {
+    education: '教育の特色',
+    curriculum: 'カリキュラム',
+    extracurricular: '課外活動',
+  },
+};
+
 export default async function HighSchoolProgramsPage() {
   const [locale, site] = await Promise.all([
     getServerLocale(),
@@ -55,6 +97,36 @@ export default async function HighSchoolProgramsPage() {
   ]);
   const c = HS_PROGRAMS_CONTENT[locale];
   const heroImage = site.get('ahlah-programs.hero.image') || undefined;
+
+  // Build the level cards from SiteContent. Each level slot only
+  // renders when its `.name` row is present, so partial data never
+  // produces an empty card.
+  const levelOrder: LevelKey[] = ['elementary', 'middle', 'high'];
+  const levels: LevelView[] = levelOrder
+    .map((lv) => ({
+      key: lv,
+      name: site.get(`ahlah-programs.levels.${lv}.name`) || '',
+      education: site.get(`ahlah-programs.levels.${lv}.education`) || '',
+      curriculum: site.get(`ahlah-programs.levels.${lv}.curriculum`) || '',
+      extracurricular:
+        site.get(`ahlah-programs.levels.${lv}.extracurricular`) || '',
+    }))
+    .filter((l) => l.name.length > 0);
+  const levelsTitle = site.get('ahlah-programs.levels.title') || '';
+  const levelsSubtitle = site.get('ahlah-programs.levels.subtitle') || '';
+  const catH = CATEGORY_HEADINGS[locale];
+  // Icon per level — kept code-side because lucide JSX can't cross
+  // the RSC boundary as data.
+  const LEVEL_ICONS: Record<LevelKey, LucideIcon> = {
+    elementary: BookMarked,
+    middle: Lightbulb,
+    high: GraduationCap,
+  };
+  const CATEGORY_ICONS = {
+    education: Sparkles,
+    curriculum: BookOpen,
+    extracurricular: Activity,
+  } as const;
 
   return (
     <>
@@ -89,6 +161,83 @@ export default async function HighSchoolProgramsPage() {
           })}
         </div>
       </Section>
+
+      {/* "Бага / Дунд / Ахлах сургуулийн онцлог" — Admin-editable
+          comparison block. Renders one card per level (only those
+          with content) and 3 sub-blocks per level: Боловсролын
+          онцлог / Сургалтын хөтөлбөрүүд / Хичээлээс гадуурх үйл
+          ажиллагаа. The whole block is suppressed if no level has
+          a `.name` value yet, so the page never shows an empty
+          shell when SiteContent is unseeded. */}
+      {levels.length > 0 && (
+        <Section background="cream-soft" spacing="md" id="angiud">
+          <SectionTitle title={levelsTitle} subtitle={levelsSubtitle} />
+          <div className="grid gap-6 lg:grid-cols-3">
+            {levels.map((l) => {
+              const LevelIcon = LEVEL_ICONS[l.key];
+              const blocks: Array<{
+                heading: string;
+                body: string;
+                Icon: LucideIcon;
+              }> = [
+                {
+                  heading: catH.education,
+                  body: l.education,
+                  Icon: CATEGORY_ICONS.education,
+                },
+                {
+                  heading: catH.curriculum,
+                  body: l.curriculum,
+                  Icon: CATEGORY_ICONS.curriculum,
+                },
+                {
+                  heading: catH.extracurricular,
+                  body: l.extracurricular,
+                  Icon: CATEGORY_ICONS.extracurricular,
+                },
+              ];
+              return (
+                <article
+                  key={l.key}
+                  className="flex h-full flex-col overflow-hidden rounded-card border border-border-light bg-white shadow-card transition-shadow hover:shadow-card-hover"
+                >
+                  {/* Header band — navy with gold icon */}
+                  <header className="flex items-center gap-3 bg-navy-900 px-6 py-5 text-white">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/30">
+                      <LevelIcon className="h-5 w-5" />
+                    </span>
+                    <h3 className="font-serif text-xl font-bold leading-tight">
+                      {l.name}
+                    </h3>
+                  </header>
+
+                  {/* 3 categorised blocks; skip block when its body
+                      is empty so partial admin data renders cleanly. */}
+                  <div className="flex flex-1 flex-col gap-5 p-6">
+                    {blocks.map((b) =>
+                      b.body.length > 0 ? (
+                        <div key={b.heading}>
+                          <div className="mb-2 flex items-center gap-2">
+                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
+                              <b.Icon className="h-3.5 w-3.5" />
+                            </span>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-gold-500">
+                              {b.heading}
+                            </p>
+                          </div>
+                          <p className="whitespace-pre-line text-sm leading-relaxed text-text-body">
+                            {b.body}
+                          </p>
+                        </div>
+                      ) : null,
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </Section>
+      )}
 
       {/* Japanese language detail */}
       <Section background="cream-soft" spacing="md" id="yapon-hel">

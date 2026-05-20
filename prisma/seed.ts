@@ -353,6 +353,25 @@ async function main() {
     // ahlah-programs
     { key: 'ahlah-programs.hero.image', group: 'ahlah-programs', type: 'IMAGE' as const, label: 'Hero — баннер зураг', value: '', order: 1 },
     { key: 'ahlah-programs.hero.subtitle', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Ахлах сургуулийн сургалтын хөтөлбөрүүд.', multiline: true, order: 2 },
+    // "Бага / Дунд / Ахлах сургуулийн онцлог" харьцуулалт хэсэг
+    // (admin-editable). Анги бүрд 4 мөр: name + 3 категори
+    // (Боловсролын онцлог / Сургалтын хөтөлбөрүүд / Хичээлээс гадуурх
+    // үйл ажиллагаа). scripts/add-hs-program-levels.ts ч эдгээр
+    // мөрүүдийг идэмпотентаар production DB-д бичих боломжтой.
+    { key: 'ahlah-programs.levels.title', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Ангиудын онцлог — гарчиг', value: 'Бага, Дунд, Ахлах сургуулийн онцлог', order: 50 },
+    { key: 'ahlah-programs.levels.subtitle', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Ангиудын онцлог — дэд гарчиг', value: 'Ангийн түвшин бүрд хэрхэн чанартай боловсрол олгож, хүүхдийн чадварыг нээж байгаа товч танилцуулга.', multiline: true, order: 51 },
+    { key: 'ahlah-programs.levels.elementary.name', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Бага сургууль — нэр', value: 'Бага сургууль', order: 60 },
+    { key: 'ahlah-programs.levels.elementary.education', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Бага сургууль — Боловсролын онцлог', hint: 'Энэ түвшний боловсролын гол онцлог, чиглэл.', value: 'Уншиж, бичих, тоо бодох суурь чадварыг япон-монгол хосолсон хэлний орчинд бат суулгана. Анги бүрд багш + туслах багштай.', multiline: true, order: 61 },
+    { key: 'ahlah-programs.levels.elementary.curriculum', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Бага сургууль — Сургалтын хөтөлбөрүүд', hint: 'Боломжтой сургалтын хөтөлбөрийн тойм.', value: 'Монгол хэл, математик, япон хэл (анхан шат), байгалийн судлал, нийгмийн ухаан, урлаг, хөгжим, биеийн тамир.', multiline: true, order: 62 },
+    { key: 'ahlah-programs.levels.elementary.extracurricular', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Бага сургууль — Хичээлээс гадуурх үйл ажиллагаа', hint: 'Дугуйлан, клуб, аялал зэрэг.', value: 'Япон хэлний клуб, уран зураг, шатар, бүжиг, оригами, спорт-тоглоомын дугуйлан. Жилд 2-3 удаа танилцах аялал.', multiline: true, order: 63 },
+    { key: 'ahlah-programs.levels.middle.name', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Дунд сургууль — нэр', value: 'Дунд сургууль', order: 70 },
+    { key: 'ahlah-programs.levels.middle.education', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Дунд сургууль — Боловсролын онцлог', value: 'Япон хэлний түвшинг N5–N4-д хүргэх, эерэг сэтгэлгээ, шинжлэх ухааны үндэс суурийг тогтоох. STEM-н чиглэлд анхаарна.', multiline: true, order: 71 },
+    { key: 'ahlah-programs.levels.middle.curriculum', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Дунд сургууль — Сургалтын хөтөлбөрүүд', value: 'Монгол хэл, математик, япон хэл, англи хэл, физик, хими, биологи, газарзүй, түүх, мэдээллийн технологийн үндэс.', multiline: true, order: 72 },
+    { key: 'ahlah-programs.levels.middle.extracurricular', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Дунд сургууль — Хичээлээс гадуурх үйл ажиллагаа', value: 'JLPT бэлтгэл клуб, робототехникийн дугуйлан, бичил-судалгааны төсөл, спорт (карате, волейбол), уран илтгэлийн клуб.', multiline: true, order: 73 },
+    { key: 'ahlah-programs.levels.high.name', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Ахлах сургууль — нэр', value: 'Ахлах сургууль', order: 80 },
+    { key: 'ahlah-programs.levels.high.education', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Ахлах сургууль — Боловсролын онцлог', value: 'Япон хэл (N3–N2), мэдээллийн технологид төрөлжсөн ерөнхий боловсрол. 2+2 солилцооны хөтөлбөр, японд үргэлжлүүлэн суралцах боломж.', multiline: true, order: 81 },
+    { key: 'ahlah-programs.levels.high.curriculum', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Ахлах сургууль — Сургалтын хөтөлбөрүүд', value: 'Гүнзгийрүүлсэн япон хэл, IT (програмчлал, веб, мэдээллийн сан), математик, физик, хими, англи хэл, нийгмийн ухаан.', multiline: true, order: 82 },
+    { key: 'ahlah-programs.levels.high.extracurricular', group: 'ahlah-programs', type: 'TEXT' as const, label: 'Ахлах сургууль — Хичээлээс гадуурх үйл ажиллагаа', value: 'Япон судлалын клуб, IT хакатон, JLPT бэлтгэл, оюутны зөвлөл, спорт (баскетбол, ширээний теннис), Япон-руу солилцоо.', multiline: true, order: 83 },
 
     // ahlah-contact
     { key: 'ahlah-contact.hero.image', group: 'ahlah-contact', type: 'IMAGE' as const, label: 'Hero — баннер зураг', value: '', order: 1 },
