@@ -103,18 +103,28 @@ export function HighSchoolHeader() {
                 style={{ width: 76, height: 76 }}
               />
               {/* Two-line wordmark — eyebrow above institutional name.
-                  Both lines tuned to land at the same visual width:
-                  the long eyebrow ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН",
-                  ~30 chars at 12px / 0.04em ≈ 215 px) and the bolder
-                  but shorter wordmark ("СОЁЛ ЭРДЭМ СУРГУУЛЬ", ~20 chars
-                  at 18px extrabold / 0.18em ≈ 215 px) come out roughly
-                  even, so the block reads as a single tight title
-                  rather than a long top + short bottom. */}
-              <span className="hidden flex-col items-center whitespace-nowrap leading-tight text-white sm:flex">
-                <span className="text-[11px] font-medium uppercase tracking-[0.04em] text-white/85 md:text-xs">
+                  The eyebrow ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН") is the
+                  naturally wider line so we let it determine the
+                  container width (`inline-block` shrinks to its widest
+                  child). The shorter wordmark below then uses CSS
+                  `text-align: justify; text-align-last: justify;
+                  text-justify: inter-character;` to *stretch* across
+                  the same width — distributing extra space between
+                  every character so the first `С` and the last `Ь` of
+                  "СОЁЛ ЭРДЭМ СУРГУУЛЬ" line up exactly with the first
+                  `Н` and the last `Н` of the eyebrow above. */}
+              <span className="hidden leading-tight text-white sm:inline-block">
+                <span className="block whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.04em] text-white/85 md:text-xs">
                   {t('brand.highSchoolEyebrow')}
                 </span>
-                <span className="mt-0.5 font-serif text-base font-extrabold uppercase tracking-[0.14em] text-white md:text-lg md:tracking-[0.18em]">
+                <span
+                  className="mt-0.5 block font-serif text-base font-extrabold uppercase text-white md:text-lg"
+                  style={{
+                    textAlign: 'justify',
+                    textAlignLast: 'justify',
+                    textJustify: 'inter-character',
+                  } as React.CSSProperties}
+                >
                   {t('brand.highSchoolWordmark')}
                 </span>
               </span>
