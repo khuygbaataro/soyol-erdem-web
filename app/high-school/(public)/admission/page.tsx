@@ -26,7 +26,7 @@ import { HS_ADMISSION_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
-  title: 'Соёл Эрдэм сургуулийн элсэлт',
+  title: 'Ахлах сургуулийн элсэлт',
   description:
     'Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн 10-р ангид элсэх журам, шаардлага, хугацаа, холбоо барих.',
 };

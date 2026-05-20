@@ -55,12 +55,12 @@ export const MESSAGES: Record<Language, Messages> = {
 
     // ─── Brand alts / aria labels ─────────────────────────────────
     'brand.universityLogoAlt': 'Соёл Эрдэм Дээд Сургуулийн лого',
-    'brand.highSchoolLogoAlt': 'Соёл Эрдэм Сургуулийн лого',
+    'brand.highSchoolLogoAlt': 'Соёл Эрдэм Ахлах Сургуулийн лого',
     'brand.universityHomeAria': 'Соёл Эрдэм · Нүүр хуудас',
-    'brand.highSchoolHomeAria': 'Соёл Эрдэм сургуулийн нүүр хуудас',
+    'brand.highSchoolHomeAria': 'Ахлах сургуулийн нүүр хуудас',
     'brand.short': 'Соёл Эрдэм',
-    'brand.highSchoolShort': 'сургууль',
-    'brand.highSchoolMobileSection': 'Соёл Эрдэм сургууль',
+    'brand.highSchoolShort': 'Сургууль',
+    'brand.highSchoolMobileSection': 'Ахлах Сургууль',
 
     // ─── Slideshow / gallery aria labels ──────────────────────────
     'gallery.previous': 'Өмнөх зураг',
@@ -137,9 +137,9 @@ export const MESSAGES: Record<Language, Messages> = {
     'news.heroSubtitle': 'Сургуулийн сүүлийн мэдээ, үйл явдал, амжилт.',
     'news.breadcrumbThis': 'Мэдээ',
     'hsNews.heroTitle': 'МЭДЭЭ МЭДЭЭЛЭЛ',
-    'hsNews.heroSubtitle': 'Соёл Эрдэм сургуулийн сүүлийн мэдээ, үйл явдал, амжилт.',
+    'hsNews.heroSubtitle': 'Ахлах сургуулийн сүүлийн мэдээ, үйл явдал, амжилт.',
     'hsNews.breadcrumbThis': 'Мэдээ мэдээлэл',
-    'hsNews.bannerTitle': 'Соёл Эрдэм Сургууль',
+    'hsNews.bannerTitle': 'Соёл Эрдэм Ахлах Сургууль',
     'hsNews.bannerCta': 'Элсэлтийн мэдээлэл',
     'hsNews.bannerSecondary': 'Холбоо барих',
 

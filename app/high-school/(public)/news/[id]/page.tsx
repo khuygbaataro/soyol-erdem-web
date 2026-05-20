@@ -24,7 +24,7 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: PageProps) {
   const n = await prisma.news.findUnique({ where: { slug: params.id } });
   return n && n.site === 'HIGH_SCHOOL'
-    ? { title: `${n.title} · Соёл Эрдэм сургууль`, description: n.excerpt }
+    ? { title: `${n.title} · Ахлах сургууль`, description: n.excerpt }
     : { title: 'Мэдээ' };
 }
 
@@ -67,7 +67,7 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
       ? '← Back to high-school news'
       : locale === 'JP'
         ? '← 高校ニュース一覧に戻る'
-        : '← Соёл Эрдэм сургуулийн мэдээ рүү буцах';
+        : '← Ахлах сургуулийн мэдээ рүү буцах';
   const relatedHeading =
     locale === 'EN'
       ? 'Related news'
@@ -80,8 +80,8 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
       <PageHero
         title={title}
         breadcrumb={[
-          { label: 'Дээд сургууль', href: '/' },
-          { label: 'Соёл Эрдэм сургууль', href: '/high-school' },
+          { label: 'Их сургууль', href: '/' },
+          { label: 'Ахлах сургууль', href: '/high-school' },
           { label: 'Мэдээ', href: '/high-school/news' },
           {
             label: title.slice(0, 40) + (title.length > 40 ? '…' : ''),
@@ -170,10 +170,10 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
       )}
 
       <CtaBanner
-        title="Соёл Эрдэм Сургууль"
+        title="Соёл Эрдэм Ахлах Сургууль"
         ctaLabel="Элсэлтийн мэдээлэл"
         ctaHref="https://soyolerdem.edu.mn/high-school/elselt/"
-        secondary={{ label: 'Соёл Эрдэм сургуулийн нүүр', href: '/high-school' }}
+        secondary={{ label: 'Ахлах сургуулийн нүүр', href: '/high-school' }}
       />
     </>
   );

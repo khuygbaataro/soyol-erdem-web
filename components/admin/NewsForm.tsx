@@ -260,7 +260,7 @@ export function NewsForm({
                 : 'mb-4 rounded-button border border-border-light bg-cream-soft px-3 py-2 text-xs font-semibold text-text-body'
             }
           >
-            {isHighSchool ? 'Соёл Эрдэм сургуулийн мэдээ' : 'Дээд сургуулийн мэдээ'}
+            {isHighSchool ? 'Ахлах сургуулийн мэдээ' : 'Их сургуулийн мэдээ'}
           </div>
           <FormField label="Статус">
             <div className="flex flex-col gap-2">

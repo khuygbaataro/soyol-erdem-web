@@ -18,7 +18,7 @@ const HS_NEWS_TABS: { id: string; label: string; matches: string[] }[] = [
   },
   {
     id: 'school-info',
-    label: 'Соёл Эрдэм сургуулийн мэдээлэл',
+    label: 'Ахлах сургуулийн мэдээлэл',
     matches: ['NEWS', 'ANNOUNCEMENT'],
   },
   {
@@ -45,8 +45,8 @@ const HS_NEWS_TABS: { id: string; label: string; matches: string[] }[] = [
 
 /** Reverse lookup: enum value → visible tab label. */
 const CATEGORY_BADGE: Record<string, string> = {
-  NEWS: 'Соёл Эрдэм сургуулийн мэдээлэл',
-  ANNOUNCEMENT: 'Соёл Эрдэм сургуулийн мэдээлэл',
+  NEWS: 'Ахлах сургуулийн мэдээлэл',
+  ANNOUNCEMENT: 'Ахлах сургуулийн мэдээлэл',
   EVENT: 'Хичээлээс гадуур ажил',
   PROGRAM: 'Сурагч солилцоо',
   RESEARCH: 'Номын сан',

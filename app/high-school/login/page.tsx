@@ -61,7 +61,7 @@ function LoginInner() {
               Соёл Эрдэм
             </p>
             <p className="font-serif text-lg font-bold leading-tight">
-              Соёл Эрдэм сургууль · Хянах самбар
+              Ахлах сургууль · Хянах самбар
             </p>
           </div>
         </div>
@@ -69,7 +69,7 @@ function LoginInner() {
         <div className="rounded-card border border-white/10 bg-white p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)]">
           <h1 className="text-h3 font-bold text-navy-900">Нэвтрэх</h1>
           <p className="mt-1 text-sm text-text-muted">
-            Соёл Эрдэм сургуулийн редактор, ажилтан нар нэвтэрнэ.
+            Ахлах сургуулийн редактор, ажилтан нар нэвтэрнэ.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -128,7 +128,7 @@ function LoginInner() {
               href="/high-school"
               className="font-semibold text-navy-900 hover:text-gold-500"
             >
-              ← Соёл Эрдэм сургуулийн сайт руу буцах
+              ← Ахлах сургуулийн сайт руу буцах
             </Link>
           </div>
         </div>

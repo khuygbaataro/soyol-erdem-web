@@ -10,8 +10,8 @@ import { HS_CONTACT_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
-  title: 'Соёл Эрдэм сургуультай холбоо барих',
-  description: 'Соёл Эрдэм сургуулийн утас, и-мэйл, хаяг, ажиллах цаг.',
+  title: 'Ахлах сургуультай холбоо барих',
+  description: 'Соёл Эрдэм ахлах сургуулийн утас, и-мэйл, хаяг, ажиллах цаг.',
 };
 
 export default async function HighSchoolContactPage() {

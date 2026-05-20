@@ -152,7 +152,7 @@ export default async function HighSchoolApplicationDetailPage({
             {item.email && (
               <Button
                 href={`mailto:${item.email}?subject=${encodeURIComponent(
-                  'Соёл Эрдэм сургуулийн элсэлт — ' + item.studentName,
+                  'Соёл Эрдэм Ахлах сургуулийн элсэлт — ' + item.studentName,
                 )}`}
                 variant="outline"
                 size="md"
