@@ -27,9 +27,9 @@ import { HS_PROGRAMS_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
-  title: 'Ахлах сургуулийн сургалт',
+  title: 'Соёл Эрдэм сургуулийн сургалт',
   description:
-    'Соёл Эрдэм ахлах сургуулийн ерөнхий боловсролын зэрэгцээ Япон хэл, Төрөлжсөн IT мэргэжлийн хөтөлбөрүүд.',
+    'Соёл Эрдэм сургуулийн ерөнхий боловсролын зэрэгцээ Япон хэл, Төрөлжсөн IT мэргэжлийн хөтөлбөрүүд.',
 };
 
 // Icon orders kept code-side — joined by index with the localised arrays.

@@ -48,7 +48,7 @@ const NAV: readonly NavGroup[] = [
     ],
   },
   {
-    label: 'Их сургууль',
+    label: 'Дээд сургууль',
     items: [
       { label: 'Мэдээ', href: '/admin/news', icon: FileText, roles: ['ADMIN', 'EDITOR'] },
       { label: 'Сонин хэвлэл', href: '/admin/newspapers', icon: Newspaper, roles: ['ADMIN', 'EDITOR'] },

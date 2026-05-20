@@ -6,8 +6,8 @@ import { auth } from '@/lib/auth';
 
 export const metadata = {
   title: {
-    default: 'Хянах самбар | Соёл Эрдэм Ахлах сургууль',
-    template: '%s — Ахлах сургуулийн админ',
+    default: 'Хянах самбар | Соёл Эрдэм сургууль',
+    template: '%s — Соёл Эрдэм сургуулийн админ',
   },
 };
 

@@ -29,7 +29,7 @@ const NAV: { label: string; href: string; icon: typeof LayoutDashboard }[] = [
 /**
  * Sidebar for the standalone high-school admin shell. Same layout language
  * as the main admin sidebar, but visually marked as a separate product:
- * the masthead reads "Ахлах сургууль · Хянах самбар" and only the
+ * the masthead reads "Соёл Эрдэм сургууль · Хянах самбар" and only the
  * high-school nav entries are exposed -- the editor never sees the main
  * university admin items.
  */
@@ -53,7 +53,7 @@ export function HighSchoolAdminSidebar({ userName, role }: HighSchoolAdminSideba
             <span className="leading-tight">
               Соёл Эрдэм
               <span className="block text-[10px] font-medium text-gold-400/80">
-                Ахлах сургууль
+                Сургууль
               </span>
             </span>
           </Link>

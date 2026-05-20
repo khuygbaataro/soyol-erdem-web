@@ -7,7 +7,7 @@ import { localisedField } from '@/lib/i18n/db';
 import { getSiteContentMap } from '@/lib/site-content';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Ахлах сургууль · Мэдээ мэдээлэл' };
+export const metadata = { title: 'Соёл Эрдэм сургууль · Мэдээ мэдээлэл' };
 
 export default async function HighSchoolNewsPage() {
   const [news, locale, t, site] = await Promise.all([

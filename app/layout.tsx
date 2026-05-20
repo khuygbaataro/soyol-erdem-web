@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import {
+  Montserrat,
   Noto_Sans,
   Noto_Sans_Mongolian,
-  Playfair_Display,
-  Roboto,
+  Open_Sans,
 } from 'next/font/google';
 import { LocaleProvider } from '@/components/system/LocaleProvider';
 import { normaliseLocale, LOCALE_COOKIE } from '@/lib/i18n/locale';
@@ -12,30 +12,32 @@ import { SITE } from '@/lib/constants';
 import './globals.css';
 
 /**
- * Body / UI sans. Roboto handles Latin + Cyrillic well with consistent
- * weight rendering across both scripts. Pin the weights we actually use
- * so the browser only ships those styles (faster first paint, smaller
- * font payload).
+ * Body / UI sans. Open Sans is the requested body face: it has full
+ * Latin + Cyrillic coverage (including the Mongolian letters Ү / Ө),
+ * renders consistently across desktop & mobile, and pairs well with
+ * Montserrat for headings. We pin the weights actually used so the
+ * browser only ships those styles (smaller font payload, faster first
+ * paint).
  */
-const roboto = Roboto({
+const openSans = Open_Sans({
   subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
-  weight: ['400', '500', '700', '900'],
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
   variable: '--font-sans',
   preload: true,
 });
 
 /**
- * Display serif used for hero titles, section headings and brand
- * wordmarks. The previous setup only loaded the Latin subset, so any
- * Mongolian-Cyrillic headline (СУРГАЛТ, ЭРДЭМ ШИНЖИЛГЭЭ …) fell back to
- * the platform default serif and looked off-brand. Adding `cyrillic`
- * + `cyrillic-ext` makes Playfair render Cyrillic in the same family
- * as Latin, and the curated weight list keeps the bundle small.
+ * Display "serif"-slot face used for hero titles, section headings and
+ * brand wordmarks. Even though the slot is named `--font-serif` for
+ * historical reasons, the requested face is Montserrat — a geometric
+ * sans that pairs cleanly with Open Sans and carries Cyrillic
+ * (including СУРГАЛТ, ЭРДЭМ ШИНЖИЛГЭЭ …) at consistent weight without
+ * the uneven Ү / Ө rendering Inter used to show.
  */
-const playfair = Playfair_Display({
-  subsets: ['latin', 'latin-ext', 'cyrillic'],
-  weight: ['500', '600', '700', '800'],
+const montserrat = Montserrat({
+  subsets: ['latin', 'latin-ext', 'cyrillic', 'cyrillic-ext'],
+  weight: ['500', '600', '700', '800', '900'],
   display: 'swap',
   variable: '--font-serif',
   preload: true,
@@ -105,7 +107,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale.toLowerCase()}
-      className={`${roboto.variable} ${notoSans.variable} ${playfair.variable} ${notoMn.variable}`}
+      className={`${openSans.variable} ${notoSans.variable} ${montserrat.variable} ${notoMn.variable}`}
     >
       <body className="bg-white antialiased">
         <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>

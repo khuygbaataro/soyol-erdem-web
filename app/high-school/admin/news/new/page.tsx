@@ -8,7 +8,7 @@ export default function NewHighSchoolAdminNewsPage() {
     <>
       <PageHeader
         title="Шинэ мэдээ"
-        subtitle="Ахлах сургуулийн мэдээ"
+        subtitle="Соёл Эрдэм сургуулийн мэдээ"
         breadcrumb={[
           { label: 'Самбар', href: '/high-school/admin/dashboard' },
           { label: 'Мэдээ', href: '/high-school/admin/news' },

@@ -25,15 +25,13 @@ const HS_NAV_KEYS: Record<string, TranslationKey> = {
 /**
  * Sticky header for the /high-school sub-site.
  *
- * Visually distinct from the main university Header:
- *  • Two-row layout (utility bar + main row) but uses a slightly warmer
- *    palette and shows a "← Дээд сургуульд буцах" link in the utility bar so
- *    visitors always know they're inside a sibling sub-site.
- *  • The main row carries a 高 kanji crest beside the school name to mark
- *    the high-school identity.
- *  • Sub-nav lists only the high-school sections (Нүүр, Танилцуулга,
- *    Хөтөлбөр, Мэдээ, Холбоо).
- *  • Below xl the nav collapses into a slide-in mobile drawer.
+ * Mirrors the redesigned main university Header: a slim navy utility
+ * strip on top (← back-to-university + contact info) and a bright main
+ * row carrying the high-school identity (logo + wordmark), sub-nav and
+ * the gold admission CTA. The bright surface differentiates it from the
+ * earlier all-navy bar and lets the gold "Элсэлт" button pull focus.
+ *
+ * Below xl the nav collapses into a slide-in mobile drawer.
  */
 export function HighSchoolHeader() {
   const [open, setOpen] = useState(false);
@@ -55,9 +53,9 @@ export function HighSchoolHeader() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full">
-        {/* Utility bar — back-to-university link + contact */}
-        <div className="border-b border-white/5 bg-navy-900 text-[12.5px] text-white/85">
-          <Container className="flex h-[40px] flex-nowrap items-center justify-between gap-4">
+        {/* Slim navy utility strip — back-link + contact */}
+        <div className="bg-navy-900 text-[12px] text-white/85">
+          <Container className="flex h-[36px] flex-nowrap items-center justify-between gap-4">
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 transition-colors hover:text-[#f5b06b]"
@@ -85,9 +83,9 @@ export function HighSchoolHeader() {
           </Container>
         </div>
 
-        {/* Main row — high-school identity + sub-nav */}
-        <div className="bg-[#142a47]/95 shadow-[0_2px_24px_rgba(13,21,48,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#142a47]/92">
-          <Container className="flex h-[80px] flex-nowrap items-center justify-between gap-8">
+        {/* Bright main row — high-school identity + sub-nav */}
+        <div className="border-b border-border-light bg-white/95 shadow-[0_1px_0_rgba(0,0,0,0.04)] backdrop-blur supports-[backdrop-filter]:bg-white/90">
+          <Container className="flex h-[84px] flex-nowrap items-center justify-between gap-8">
             <Link
               href="/high-school"
               className="group flex shrink-0 items-center gap-3 transition-transform duration-300 hover:scale-[1.02]"
@@ -96,17 +94,17 @@ export function HighSchoolHeader() {
               <Image
                 src="/ahlal-logo-new.png"
                 alt={t('brand.highSchoolLogoAlt')}
-                width={76}
-                height={76}
+                width={64}
+                height={64}
                 priority
                 className="shrink-0 object-contain"
-                style={{ width: 76, height: 76 }}
+                style={{ width: 64, height: 64 }}
               />
-              <span className="flex flex-col items-center font-serif font-bold tracking-tight text-white">
-                <span className="text-base leading-tight md:text-lg">
-                  {t('brand.short').toUpperCase()}
+              <span className="hidden flex-col leading-tight md:flex">
+                <span className="font-serif text-[15px] font-extrabold uppercase tracking-[0.14em] text-navy-900">
+                  {t('brand.short')}
                 </span>
-                <span className="text-sm leading-tight text-white/95 md:text-base">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-500">
                   {t('brand.highSchoolShort')}
                 </span>
               </span>
@@ -122,9 +120,9 @@ export function HighSchoolHeader() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'group/nav flex items-center whitespace-nowrap rounded-md px-3 text-sm font-bold uppercase tracking-[0.06em] transition-colors duration-200 2xl:px-4 2xl:text-[15px]',
-                      'hover:bg-white/[0.06]',
-                      active ? 'text-white' : 'text-white/85 hover:text-white',
+                      'group/nav flex items-center whitespace-nowrap rounded-md px-3 text-[12.5px] font-bold uppercase tracking-[0.06em] transition-colors duration-200 2xl:px-4 2xl:text-[13px]',
+                      'hover:bg-navy-900/[0.04]',
+                      active ? 'text-navy-900' : 'text-text-heading/80 hover:text-navy-900',
                     )}
                   >
                     <span className="relative inline-block py-1.5">
@@ -160,7 +158,7 @@ export function HighSchoolHeader() {
               type="button"
               onClick={() => setOpen(true)}
               aria-label={t('common.openMenu')}
-              className="flex h-12 w-12 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 xl:hidden"
+              className="flex h-12 w-12 items-center justify-center rounded-full text-navy-900 transition-colors hover:bg-navy-900/5 xl:hidden"
             >
               <Menu className="h-6 w-6" />
             </button>

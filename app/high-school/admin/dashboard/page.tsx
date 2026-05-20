@@ -47,8 +47,8 @@ export default async function HighSchoolAdminDashboardPage() {
   return (
     <>
       <PageHeader
-        title="Ахлах сургууль"
-        subtitle="Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн контент"
+        title="Соёл Эрдэм сургууль"
+        subtitle="Соёл Эрдэм сургуулийн контент"
         breadcrumb={[{ label: 'Самбар' }]}
         action={
           <Button

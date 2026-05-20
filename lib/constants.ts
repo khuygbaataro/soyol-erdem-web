@@ -99,8 +99,8 @@ export const STAFF_POSITION_KEYS = [
  * ─────────────────────────────────────────────────────────────────────── */
 
 export const HIGH_SCHOOL = {
-  name: 'Соёл Эрдэм Ахлах Сургууль',
-  shortName: 'Ахлах сургууль',
+  name: 'Соёл Эрдэм Сургууль',
+  shortName: 'Соёл Эрдэм сургууль',
   fullName: 'Нийслэлийн Ерөнхий боловсролын Соёл Эрдэм Сургууль',
   tagline: 'Хичээнгүй суралцагч · Чадварлаг багш · Япон хэл, соёл',
   founded: 2023,
@@ -128,7 +128,7 @@ export const HIGH_SCHOOL_NAV_ITEMS = [
  * the filter UI on /high-school/news can present a stable set of tabs.
  */
 export const HIGH_SCHOOL_NEWS_CATEGORIES = [
-  { id: 'school-info', label: 'Ахлах сургуулийн мэдээлэл' },
+  { id: 'school-info', label: 'Соёл Эрдэм сургуулийн мэдээлэл' },
   { id: 'extra', label: 'Хичээлээс гадуур ажил' },
   { id: 'exchange', label: 'Сурагч солилцоо' },
   { id: 'library', label: 'Номын сан' },

@@ -113,7 +113,7 @@ export default async function HighSchoolAdminNewsListPage() {
       <DataTable
         data={news}
         columns={columns}
-        empty="Ахлах сургуулийн мэдээ байхгүй байна. Шинэ мэдээ нэмнэ үү."
+        empty="Соёл Эрдэм сургуулийн мэдээ байхгүй байна. Шинэ мэдээ нэмнэ үү."
       />
     </>
   );

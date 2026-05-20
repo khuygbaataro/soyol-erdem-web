@@ -4,8 +4,8 @@
 
 :root {
   /* Fonts injected by next/font in layout.tsx — these are fallbacks */
-  --font-sans: 'Roboto', sans-serif;
-  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Open Sans', sans-serif;
+  --font-serif: 'Montserrat', sans-serif;
   --font-mn: 'Noto Sans Mongolian', sans-serif;
 
   /* Primary — Navy */
@@ -61,16 +61,17 @@
   h5,
   h6 {
     color: var(--text-heading);
-    @apply font-semibold;
+    @apply font-serif font-bold;
     /* Tighter tracking on headlines reads more confident for display
-       sizes and matches the proportions Playfair was designed for. */
+       sizes and matches the proportions Montserrat was designed for. */
     letter-spacing: -0.01em;
     line-height: 1.2;
   }
-  /* Serif headlines get an extra rendering hint — Playfair has classy
-     old-style figures and discretionary ligatures we may as well use. */
+  /* Montserrat is a geometric sans with strong kerning needs — enable
+     standard ligatures + contextual alternates so Cyrillic and Latin
+     pairs read evenly at heading sizes. */
   .font-serif {
-    font-feature-settings: 'kern' 1, 'liga' 1, 'dlig' 1, 'onum' 0;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
   }
 }
 

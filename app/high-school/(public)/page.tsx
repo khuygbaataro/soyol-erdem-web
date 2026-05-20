@@ -33,7 +33,7 @@ import { HS_HOME_CONTENT } from '@/lib/i18n/content';
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Ахлах сургууль',
+  title: 'Соёл Эрдэм сургууль',
   description:
     'Соёл Эрдэм Дээд Сургуулийн харьяа Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль — Япон хэл, соёл, IT-ийн чиглэлээр төрөлжсөн.',
 };

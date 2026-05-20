@@ -88,7 +88,7 @@ export default async function HighSchoolSiteContentPage({
     <>
       <PageHeader
         title="Хуудасны агуулга"
-        subtitle="Ахлах сургуулийн нийтийн талын текст, зургийг засна"
+        subtitle="Соёл Эрдэм сургуулийн нийтийн талын текст, зургийг засна"
         breadcrumb={[
           { label: 'Самбар', href: '/high-school/admin/dashboard' },
           { label: 'Хуудасны агуулга' },
