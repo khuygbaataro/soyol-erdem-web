@@ -139,7 +139,7 @@ export function ImageUpload({
                 <Upload className="h-5 w-5" />
               </span>
               <span className="text-sm font-semibold">Зураг сонгох</span>
-              <span className="text-xs text-text-muted">PNG, JPG, WebP — max 5 MB</span>
+              <span className="text-xs text-text-muted">PNG, JPG, WebP</span>
             </>
           )}
         </button>

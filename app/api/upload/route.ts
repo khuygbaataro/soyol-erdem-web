@@ -4,7 +4,11 @@ import { auth } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+// Munkhchimeg-ийн хүсэлтээр зурагны 5 MB-ийн хязгаарыг хассан —
+// одоо Vercel Blob-ийн платформын дотоод хязгаар (нэг файл 500 MB
+// хүртэл) л үлдсэн. Хэрэглэгчийн талаас үндсэндээ "хязгааргүй"
+// үйлчилнэ. PDF-д урьдын адил 50 MB хэвээр (newspapers/journals).
+const MAX_IMAGE_BYTES = 500 * 1024 * 1024; // 500 MB (Vercel Blob max)
 const MAX_PDF_BYTES = 50 * 1024 * 1024; // 50 MB — newspapers can be large
 
 const ALLOWED_IMAGE = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
