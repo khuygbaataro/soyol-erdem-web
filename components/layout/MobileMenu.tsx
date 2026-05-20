@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronRight, X } from 'lucide-react';
+import { BookOpen, ChevronRight, Newspaper, School, Scroll, X } from 'lucide-react';
 import { Logo } from '@/components/icons/Logo';
 import { LanguageSwitch } from '@/components/ui/LanguageSwitch';
 import { Button } from '@/components/ui/Button';
@@ -21,6 +21,27 @@ const NAV_KEYS: Record<string, TranslationKey> = {
   '/international': 'nav.international',
   '/news': 'nav.news',
 };
+
+// Mirror of the desktop utility-bar items so mobile visitors can also
+// jump to the high-school sub-site, library, newspaper and regulations
+// from the drawer. The featured high-school link gets a gold-accented
+// pill treatment to keep parity with the desktop bar.
+const UTILITY_LINKS: Array<{
+  key: TranslationKey;
+  href: string;
+  icon: typeof BookOpen;
+  featured?: boolean;
+}> = [
+  {
+    key: 'header.utility.highSchool',
+    href: '/high-school',
+    icon: School,
+    featured: true,
+  },
+  { key: 'header.utility.library', href: '/library', icon: BookOpen },
+  { key: 'header.utility.newspaper', href: '/sonin-hewlel', icon: Newspaper },
+  { key: 'header.utility.regulations', href: '/regulations', icon: Scroll },
+];
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -91,6 +112,41 @@ export function MobileMenu({
                 );
               })}
             </ul>
+
+            {/* Mirror of the desktop utility bar — high-school sibling
+                site + library / newspaper / regulations quick portals.
+                Sits below the primary nav with a thin separator so it
+                reads as a distinct section. The featured high-school
+                link gets a gold pill to match the desktop treatment. */}
+            <div className="mt-6 border-t border-border-light pt-5">
+              <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                {t('footer.importantLinks')}
+              </p>
+              <ul className="space-y-1.5">
+                {UTILITY_LINKS.map((u) => {
+                  const Icon = u.icon;
+                  return (
+                    <li key={u.key}>
+                      <Link
+                        href={u.href}
+                        onClick={onClose}
+                        className={
+                          u.featured
+                            ? 'flex items-center justify-between rounded-lg bg-gold-500/15 px-3 py-3 text-sm font-bold uppercase tracking-[0.04em] text-navy-900 ring-1 ring-gold-500/40 transition-colors hover:bg-gold-500 hover:text-navy-900'
+                            : 'flex items-center justify-between rounded-lg px-3 py-3 text-base font-semibold text-navy-900 transition-colors hover:bg-cream-soft'
+                        }
+                      >
+                        <span className="inline-flex items-center gap-2.5">
+                          <Icon className={u.featured ? 'h-4 w-4 text-gold-500' : 'h-4 w-4 text-text-muted'} />
+                          {t(u.key)}
+                        </span>
+                        <ChevronRight className="h-4 w-4 text-text-muted" />
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </nav>
 
           <div className="space-y-4 border-t border-border-light px-6 py-5">
