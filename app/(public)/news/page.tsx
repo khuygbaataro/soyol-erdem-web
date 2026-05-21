@@ -77,7 +77,10 @@ export default async function NewsPage() {
       image: jobBanner,
       date: (j.updatedAt ?? j.createdAt).toISOString().slice(0, 10),
       category: 'EVENT',
-      href: `/careers#openings`,
+      // Job card click → /careers/<slug> detail page where the full
+      // requirements / materials / deadline / contact info live
+      // alongside Download + Apply CTAs.
+      href: `/careers/${j.slug}`,
     };
   });
 
