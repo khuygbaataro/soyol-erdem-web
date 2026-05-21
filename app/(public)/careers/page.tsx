@@ -1,4 +1,15 @@
-import { ArrowRight, Briefcase, Check, Download, FileText, Mail, Sparkles } from 'lucide-react';
+import {
+  ArrowRight,
+  Briefcase,
+  CalendarClock,
+  Check,
+  ClipboardList,
+  Download,
+  FileText,
+  Mail,
+  Phone,
+  Sparkles,
+} from 'lucide-react';
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -18,7 +29,7 @@ export const metadata = {
 };
 
 export default async function CareersPage() {
-  const [dbOpenings, banners, locale] = await Promise.all([
+  const [dbOpenings, banners, careersInfo, locale] = await Promise.all([
     prisma.jobOpening
       .findMany({
         where: { active: true },
@@ -36,6 +47,11 @@ export default async function CareersPage() {
       })
       .catch(() => null),
     getSiteContentMap('banners'),
+    // SiteContent group `careers` carries the shared application info
+    // (required documents, deadline, contact email + phone) — admin
+    // editable at /admin/site-content → "Нээлттэй ажлын байр" tab.
+    // Seeded by scripts/add-careers-info.ts.
+    getSiteContentMap('careers'),
     getServerLocale(),
   ]);
 
@@ -53,6 +69,32 @@ export default async function CareersPage() {
       ? localisedField(o, 'description', locale)
       : null,
   }));
+
+  // Build the application-info card payload from SiteContent. Empty
+  // strings → field is hidden so admin can blank out a row to
+  // suppress it. `materials` is one-per-line; split + trim here so
+  // the renderer just iterates a string[].
+  const infoTitle = careersInfo.get('careers.info.title') || '';
+  const infoSubtitle = careersInfo.get('careers.info.subtitle') || '';
+  const infoMaterials = (careersInfo.get('careers.info.materials') || '')
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const infoDeadlineLabel = careersInfo.get('careers.info.deadlineLabel') || '';
+  const infoDeadlineValue = careersInfo.get('careers.info.deadlineValue') || '';
+  const infoEmailLabel = careersInfo.get('careers.info.emailLabel') || '';
+  const infoEmails = (careersInfo.get('careers.info.emails') || '')
+    .split(/[;,]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const infoPhoneLabel = careersInfo.get('careers.info.phoneLabel') || '';
+  const infoPhone = careersInfo.get('careers.info.phone') || '';
+  const showInfoCard =
+    infoTitle.length > 0 &&
+    (infoMaterials.length > 0 ||
+      infoDeadlineValue.length > 0 ||
+      infoEmails.length > 0 ||
+      infoPhone.length > 0);
 
   return (
     <>
@@ -141,6 +183,125 @@ export default async function CareersPage() {
           </div>
         )}
       </Section>
+
+      {/* "Бүртгэлийн мэдээлэл" хэсэг — SiteContent-аас уншсан
+          материалууд, хугацаа, имэйл, утас. Бүх opening карт-д ижил
+          хэрэгтэй ерөнхий мэдээлэл нэг газар хадгалагдаж, админ
+          /admin/site-content → "Нээлттэй ажлын байр" tab-аас засна.
+          Хэсэг бүхэлдээ далдална үнэлгээ хийгдээгүй тохиолдолд
+          (`showInfoCard` false). */}
+      {showInfoCard && (
+        <Section background="white" id="info">
+          <div className="mx-auto max-w-5xl">
+            <div className="overflow-hidden rounded-card border border-border-light bg-gradient-to-br from-cream-soft to-white shadow-card">
+              <div className="border-b border-border-light bg-navy-900 px-7 py-5 text-white">
+                <span className="inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-gold-400">
+                  <ClipboardList className="h-3.5 w-3.5" />
+                  {infoTitle}
+                </span>
+                {infoSubtitle && (
+                  <p className="mt-2 max-w-prose text-sm leading-relaxed text-white/85">
+                    {infoSubtitle}
+                  </p>
+                )}
+              </div>
+
+              <div className="grid gap-6 p-7 md:grid-cols-[1.4fr_1fr] md:gap-10 md:p-10">
+                {/* Шаардлагатай материалууд — гол блок */}
+                {infoMaterials.length > 0 && (
+                  <div>
+                    <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-gold-500">
+                      Шаардлагатай материал
+                    </p>
+                    <ol className="mt-4 space-y-3">
+                      {infoMaterials.map((m, i) => (
+                        <li
+                          key={`${i}-${m.slice(0, 24)}`}
+                          className="flex items-start gap-3 text-sm leading-relaxed text-text-body"
+                        >
+                          <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-navy-900 text-[11px] font-extrabold text-gold-400">
+                            {i + 1}
+                          </span>
+                          <span>{m}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+
+                {/* Хугацаа + холбоо барих */}
+                <div className="space-y-4">
+                  {infoDeadlineValue && (
+                    <div className="rounded-card border border-border-light bg-white p-5 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
+                          <CalendarClock className="h-5 w-5" />
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                            {infoDeadlineLabel}
+                          </p>
+                          <p className="mt-1 font-serif text-base font-bold text-navy-900">
+                            {infoDeadlineValue}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {infoEmails.length > 0 && (
+                    <div className="rounded-card border border-border-light bg-white p-5 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
+                          <Mail className="h-5 w-5" />
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                            {infoEmailLabel}
+                          </p>
+                          <ul className="mt-1 space-y-1">
+                            {infoEmails.map((e) => (
+                              <li key={e}>
+                                <a
+                                  href={`mailto:${e}`}
+                                  className="break-all text-sm font-semibold text-navy-900 hover:text-gold-500"
+                                >
+                                  {e}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {infoPhone && (
+                    <div className="rounded-card border border-border-light bg-white p-5 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
+                          <Phone className="h-5 w-5" />
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                            {infoPhoneLabel}
+                          </p>
+                          <a
+                            href={`tel:${infoPhone.replace(/\s+/g, '')}`}
+                            className="mt-1 block font-serif text-base font-bold text-navy-900 hover:text-gold-500"
+                          >
+                            {infoPhone}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </Section>
+      )}
 
       {/* Requirements + offers */}
       <Section background="white">

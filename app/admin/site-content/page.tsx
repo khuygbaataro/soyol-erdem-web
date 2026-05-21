@@ -16,6 +16,7 @@ const GROUP_LABELS: Record<string, string> = {
   research: 'Эрдэм шинжилгээ',
   elearning: 'elearning',
   'student-life': 'Оюутны амьдрал',
+  careers: 'Нээлттэй ажлын байр',
 };
 const ALLOWED_GROUPS = Object.keys(GROUP_LABELS);
 
