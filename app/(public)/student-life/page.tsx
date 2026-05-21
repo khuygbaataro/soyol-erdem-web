@@ -3,6 +3,8 @@ import {
   BookOpen,
   Briefcase,
   Check,
+  Download,
+  FileText,
   Footprints,
   GraduationCap,
   HandHeart,
@@ -275,6 +277,42 @@ export default async function StudentLifePage() {
           <p className="whitespace-pre-line text-base leading-relaxed text-text-body">
             {introBody}
           </p>
+        </div>
+      </Section>
+
+      {/*
+        Оюутны гарын авлага татах хэсэг — Munkhchimeg-ийн хүсэлтээр.
+        Файл нь public/handbooks/student-handbook.docx-д хадгалагдсан;
+        татаж авах нэр нь "Оюутны гарын авлага.docx" болж браузер
+        дотор гарна. PDF-руу хөрвүүлэх бол ирээдүйд админ нь
+        student-handbook.pdf нэрээр solbino, button-ы href-г сольж
+        өгсний дараа.
+      */}
+      <Section background="cream-soft" spacing="sm">
+        <div className="mx-auto max-w-4xl">
+          <div className="overflow-hidden rounded-card border border-border-light bg-gradient-to-br from-white to-cream-soft shadow-card">
+            <div className="grid gap-6 p-7 md:grid-cols-[auto_1fr_auto] md:items-center md:gap-8 md:p-8">
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-400 ring-2 ring-gold-500/30">
+                <FileText className="h-6 w-6" />
+              </span>
+              <div className="min-w-0">
+                <h2 className="font-serif text-xl font-bold text-navy-900 md:text-2xl">
+                  {c.handbookTitle}
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-text-body md:text-[15px]">
+                  {c.handbookSubtitle}
+                </p>
+              </div>
+              <a
+                href="/handbooks/student-handbook.docx"
+                download="Оюутны гарын авлага.docx"
+                className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-button bg-navy-900 px-6 text-sm font-bold uppercase tracking-[0.06em] text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-navy-900 md:h-14 md:px-8"
+              >
+                <Download className="h-4 w-4 transition-transform group-hover:scale-110" />
+                {c.handbookCta}
+              </a>
+            </div>
+          </div>
         </div>
       </Section>
 

@@ -1749,6 +1749,10 @@ interface StudentLifeBundle {
   annualHeading: string;
   testimonialHeading: string;
   testimonials: LocalisedTestimonial[];
+  /** Downloadable student handbook (Оюутны гарын авлага). */
+  handbookTitle: string;
+  handbookSubtitle: string;
+  handbookCta: string;
 }
 
 export const STUDENT_LIFE_CONTENT: Record<Language, StudentLifeBundle> = {
@@ -1915,6 +1919,10 @@ export const STUDENT_LIFE_CONTENT: Record<Language, StudentLifeBundle> = {
         program: 'Программ хангамж — төгсөгч',
       },
     ],
+    handbookTitle: 'Оюутны гарын авлага',
+    handbookSubtitle:
+      'Сургалтын дэг журам, шалгалтын дүрэм, тэтгэлэг, дотуур байр болон оюутны бүх боломжийг нэгтгэсэн албан ёсны гарын авлага.',
+    handbookCta: 'Оюутны гарын авлага татах',
   },
   EN: {
     heroTitle: 'STUDENT LIFE',
@@ -2079,6 +2087,10 @@ export const STUDENT_LIFE_CONTENT: Record<Language, StudentLifeBundle> = {
         program: 'Software Engineering — alumnus',
       },
     ],
+    handbookTitle: 'Student handbook',
+    handbookSubtitle:
+      'The official guide gathering academic regulations, exam rules, scholarships, dorm life and everything else a Soyol Erdem student needs.',
+    handbookCta: 'Download the student handbook',
   },
   JP: {
     heroTitle: '学生生活',
@@ -2243,6 +2255,10 @@ export const STUDENT_LIFE_CONTENT: Record<Language, StudentLifeBundle> = {
         program: 'ソフトウェア工学 ― 卒業生',
       },
     ],
+    handbookTitle: '学生ハンドブック',
+    handbookSubtitle:
+      '学則・試験規則・奨学金・寮生活など、ソヨル・エルデム生に必要な情報をまとめた公式ガイド。',
+    handbookCta: '学生ハンドブックをダウンロード',
   },
 };
 
