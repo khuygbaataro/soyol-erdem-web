@@ -26,17 +26,8 @@ export async function PUT(req: Request, { params }: Ctx) {
     );
   }
 
-  // Block clashes if the positionKey moves to a value already used by
-  // another row.
-  const clash = await prisma.staff.findFirst({
-    where: { positionKey: parsed.data.positionKey, NOT: { id: params.id } },
-  });
-  if (clash) {
-    return NextResponse.json(
-      { error: 'Энэ албан тушаалын мэдээлэл өөр бичлэгт орсон байна' },
-      { status: 409 },
-    );
-  }
+  // positionKey can repeat freely now (multi-staff per node) — no
+  // duplicate guard needed.
 
   const item = await prisma.staff.update({
     where: { id: params.id },

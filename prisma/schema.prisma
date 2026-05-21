@@ -249,7 +249,10 @@ model Newspaper {
 model Staff {
   id          String   @id @default(cuid())
   /// Chart-node identifier — matches the id used in the OrgChart component.
-  positionKey String   @unique
+  /// Multiple rows may share the same key when a single node (e.g. board,
+  /// council, department) houses 2-3 people; the OrgChart renders them as
+  /// a list inside the modal in `order` ascending.
+  positionKey String
   /// "Захирал", "Сургалтын албаны эрхлэгч" — title shown above the name.
   position    String
   /// "Т. Дорждагва" — display name.
@@ -276,6 +279,8 @@ model Staff {
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([positionKey, order])
 }
 
 /// Numeric stats shown on the navy band (Hero/About) — editable list.

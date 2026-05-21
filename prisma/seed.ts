@@ -668,16 +668,17 @@ async function main() {
     { positionKey: 'student-council', position: 'Оюутны зөвлөл', name: 'Сонгогдсон тэргүүн', degree: 'Оюутан удирдагч', order: 14 },
   ];
   for (const s of staff) {
-    await prisma.staff.upsert({
+    // positionKey is no longer unique — multiple rows may share a key.
+    // Seed strategy: if at least one row with that key already exists,
+    // leave it alone (admin may have added their own people); only
+    // insert the seed row when the key is empty.
+    const existing = await prisma.staff.findFirst({
       where: { positionKey: s.positionKey },
-      update: {
-        // Re-seed only updates structural metadata — leave admin-edited
-        // photo / bio / email / phone alone once they've been touched.
-        position: s.position,
-        order: s.order,
-      },
-      create: { ...s, active: true },
+      select: { id: true },
     });
+    if (!existing) {
+      await prisma.staff.create({ data: { ...s, active: true } });
+    }
   }
   console.log(`✓ Staff (${staff.length})`);
 

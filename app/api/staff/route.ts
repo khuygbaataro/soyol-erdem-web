@@ -23,15 +23,9 @@ export async function POST(req: Request) {
     );
   }
 
-  const exists = await prisma.staff.findUnique({
-    where: { positionKey: parsed.data.positionKey },
-  });
-  if (exists) {
-    return NextResponse.json(
-      { error: `Энэ албан тушаалын мэдээлэл аль хэдийн орсон байна` },
-      { status: 409 },
-    );
-  }
+  // Multiple Staff rows may share the same positionKey now (a single
+  // chart node can host 2-3 people). The old "duplicate" guard was
+  // dropped together with the @unique constraint on positionKey.
 
   const item = await prisma.staff.create({
     data: {
