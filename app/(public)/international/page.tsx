@@ -28,7 +28,7 @@ import { INTERNATIONAL_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
-  title: 'Хамтын ажиллагаа',
+  title: 'Гадаад харилцаа',
 };
 
 const BLOCK_ICONS = [Users, Briefcase, Globe2, Leaf] as const;

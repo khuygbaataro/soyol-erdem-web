@@ -29,7 +29,7 @@ export const NAV_ITEMS = [
   { label: 'Сургалт', href: '/programs' },
   { label: 'Эрдэм шинжилгээ', href: '/research' },
   { label: 'Оюутан', href: '/student-life' },
-  { label: 'Хамтын ажиллагаа', href: '/international' },
+  { label: 'Гадаад харилцаа', href: '/international' },
   { label: 'Мэдээ', href: '/news' },
 ];
 

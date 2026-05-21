@@ -25,7 +25,7 @@ export const MESSAGES: Record<Language, Messages> = {
     'nav.programs': 'Сургалт',
     'nav.research': 'Эрдэм шинжилгээ',
     'nav.studentLife': 'Оюутан',
-    'nav.international': 'Хамтын ажиллагаа',
+    'nav.international': 'Гадаад харилцаа',
     'nav.news': 'Мэдээ',
     'nav.contact': 'Холбоо барих',
     'nav.admission': 'Элсэлт',
