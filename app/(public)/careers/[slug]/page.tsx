@@ -3,12 +3,9 @@ import Link from 'next/link';
 import {
   ArrowRight,
   Briefcase,
-  CalendarClock,
   Check,
   ClipboardList,
   Download,
-  Mail,
-  Phone,
 } from 'lucide-react';
 import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
@@ -88,23 +85,15 @@ export default async function JobOpeningDetailPage({ params }: PageProps) {
     .split('\n')
     .map((s) => s.trim())
     .filter(Boolean);
-  const infoTitle =
-    careersInfo.get('careers.info.title') || 'Бүртгэлийн мэдээлэл';
   const infoSubtitle = careersInfo.get('careers.info.subtitle') || '';
   const materials = (careersInfo.get('careers.info.materials') || '')
     .split('\n')
     .map((s) => s.trim())
     .filter(Boolean);
-  const deadlineLabel =
-    careersInfo.get('careers.info.deadlineLabel') || 'Хүлээн авах хугацаа';
-  const deadlineValue = careersInfo.get('careers.info.deadlineValue') || '';
-  const emailLabel = careersInfo.get('careers.info.emailLabel') || 'Имэйл';
-  const emails = (careersInfo.get('careers.info.emails') || '')
-    .split(/[;,]/)
-    .map((s) => s.trim())
-    .filter(Boolean);
-  const phoneLabel = careersInfo.get('careers.info.phoneLabel') || 'Утас';
-  const phone = careersInfo.get('careers.info.phone') || '';
+  // careers.info.title / deadline / emails / phone мөрүүд DB-д
+  // үлдсэн (admin /admin/site-content-аас засагдсаар), гэхдээ detail
+  // page-аас render-эээс хасагдсан — Munkhchimeg-ийн хүсэлтээр
+  // тэдгээр блокийг анкет татах 2 хэлний сонголтоор сольсон.
 
   return (
     <>
@@ -226,105 +215,54 @@ export default async function JobOpeningDetailPage({ params }: PageProps) {
         </Section>
       )}
 
-      {/* Хугацаа + холбоо */}
-      {(deadlineValue || emails.length > 0 || phone) && (
-        <Section background="white" spacing="md">
-          <div className="mx-auto max-w-5xl">
-            <h2 className="font-serif text-xl font-bold text-navy-900 md:text-2xl">
-              {infoTitle}
-            </h2>
-            <div className="mt-3 h-1 w-12 rounded-full bg-gold-500" />
+      {/*
+        Анкетийн загвар татах — 2 хэлээр (Монгол .doc + Япон .docx).
+        Урьдын "Бүртгэлийн мэдээлэл" блок (хугацаа / имэйл / утас) +
+        давтан CTAs нь Munkhchimeg-ийн хүсэлтээр хасагдсан — бөглөж
+        илгээх товч нь дээд section-д үлдсэн, харин энэ хэсэгт зөвхөн
+        2 хэлээрх анкет загвар татах боломжийг өгсөн. Тус 2 файл нь
+        public/careers/anket-{mn.doc,jp.docx}-д хадгалагдсан.
+      */}
+      <Section background="white" spacing="md">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="font-serif text-xl font-bold text-navy-900 md:text-2xl">
+            {c.templateTitle}
+          </h2>
+          <div className="mt-3 h-1 w-12 rounded-full bg-gold-500" />
+          <p className="mt-4 max-w-prose text-sm leading-relaxed text-text-body md:text-base">
+            {c.templateSubtitle}
+          </p>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {deadlineValue && (
-                <div className="rounded-card border border-border-light bg-white p-5 shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
-                      <CalendarClock className="h-5 w-5" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                        {deadlineLabel}
-                      </p>
-                      <p className="mt-1 font-serif text-base font-bold text-navy-900">
-                        {deadlineValue}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {emails.length > 0 && (
-                <div className="rounded-card border border-border-light bg-white p-5 shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
-                      <Mail className="h-5 w-5" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                        {emailLabel}
-                      </p>
-                      <ul className="mt-1 space-y-1">
-                        {emails.map((e) => (
-                          <li key={e}>
-                            <a
-                              href={`mailto:${e}`}
-                              className="break-all text-sm font-semibold text-navy-900 hover:text-gold-500"
-                            >
-                              {e}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {phone && (
-                <div className="rounded-card border border-border-light bg-white p-5 shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
-                      <Phone className="h-5 w-5" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                        {phoneLabel}
-                      </p>
-                      <a
-                        href={`tel:${phone.replace(/\s+/g, '')}`}
-                        className="mt-1 block font-serif text-base font-bold text-navy-900 hover:text-gold-500"
-                      >
-                        {phone}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Secondary CTA — давтан action бар. */}
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Button
-                href={`/careers/apply?position=${encodeURIComponent(title)}`}
-                variant="primary"
-                size="md"
-                icon={<ArrowRight className="h-4 w-4" />}
-              >
-                {c.applyCta}
-              </Button>
-              <a
-                href="/careers/anket-mn.doc"
-                download="Багш ажилтны анкет.doc"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-button border border-navy-900 bg-white px-6 text-base font-semibold text-navy-900 transition-all hover:border-gold-500 hover:bg-gold-500"
-              >
-                <Download className="h-3.5 w-3.5" />
-                {c.downloadAnketCta}
-              </a>
-            </div>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <a
+              href="/careers/anket-mn.doc"
+              download="Багш ажилтны анкет (MN).doc"
+              className="group inline-flex items-center justify-between gap-3 rounded-button bg-navy-900 px-5 py-4 text-sm font-bold text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-navy-900"
+            >
+              <span className="flex flex-col items-start leading-tight">
+                <span>{c.templateMnLabel}</span>
+                <span className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-white/70 group-hover:text-navy-900/60">
+                  .doc · {c.templateDownloadCta}
+                </span>
+              </span>
+              <Download className="h-4 w-4 shrink-0" />
+            </a>
+            <a
+              href="/careers/anket-jp.docx"
+              download="履歴書 文化教育大学 (JP).docx"
+              className="group inline-flex items-center justify-between gap-3 rounded-button border border-navy-900 bg-white px-5 py-4 text-sm font-bold text-navy-900 shadow-card transition-all hover:-translate-y-0.5 hover:border-gold-500 hover:bg-gold-500"
+            >
+              <span className="flex flex-col items-start leading-tight">
+                <span>{c.templateJpLabel}</span>
+                <span className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-text-muted">
+                  .docx · {c.templateDownloadCta}
+                </span>
+              </span>
+              <Download className="h-4 w-4 shrink-0" />
+            </a>
           </div>
-        </Section>
-      )}
+        </div>
+      </Section>
 
       {/* Бусад нээлттэй ажлын байр */}
       {others.length > 0 && (
