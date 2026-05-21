@@ -12,8 +12,12 @@ export const metadata = { title: 'Мэдээ' };
 const JOB_DEFAULT_IMAGE =
   'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=60';
 
+/** Default cover used for research cards when no research banner is set. */
+const RESEARCH_DEFAULT_IMAGE =
+  'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=1200&q=60';
+
 export default async function NewsPage() {
-  const [news, jobs, banners, locale, t] = await Promise.all([
+  const [news, jobs, researchItems, banners, locale, t] = await Promise.all([
     prisma.news.findMany({
       where: { status: 'PUBLISHED', site: 'UNIVERSITY' },
       orderBy: { publishedAt: 'desc' },
@@ -26,6 +30,17 @@ export default async function NewsPage() {
       .findMany({
         where: { active: true },
         orderBy: [{ order: 'asc' }, { updatedAt: 'desc' }],
+      })
+      .catch(() => [] as never[]),
+    // Same idea for /admin/research — promote the Research feed into
+    // this listing under the RESEARCH category (label "Эрдэм
+    // шинжилгээ"). Visitors see the same item in /research AND /news
+    // so research publications get a second display surface without
+    // any duplicate admin work.
+    prisma.research
+      .findMany({
+        where: { status: 'PUBLISHED' },
+        orderBy: [{ publishedAt: 'desc' }, { createdAt: 'desc' }],
       })
       .catch(() => [] as never[]),
     getSiteContentMap('banners'),
@@ -84,11 +99,34 @@ export default async function NewsPage() {
     };
   });
 
-  // Combine and sort by date (descending). Job cards keep parity
-  // with news cards: the most recently posted opening sits next to
-  // the most recent news article in the unfiltered grid.
-  const items = [...newsItems, ...jobItems].sort((a, b) =>
-    a.date < b.date ? 1 : a.date > b.date ? -1 : 0,
+  // Promote /admin/research entries into virtual news cards under
+  // category=RESEARCH (the enum value that maps to the "Эрдэм
+  // шинжилгээ" filter chip on this page). Clicking one of these
+  // cards routes to /research#feed where the full publication
+  // cards live (with PDF download links).
+  const researchBanner =
+    banners.get('page.research.banner') || RESEARCH_DEFAULT_IMAGE;
+  const researchItemsForNews = researchItems.map((r) => ({
+    id: `research-${r.id}`,
+    title: r.title,
+    // abstract is the natural lead; if missing we fall back to the
+    // type/area tags so the card never renders empty.
+    excerpt: r.abstract?.trim() || `${r.type} · ${r.area}`,
+    body: null as string | null,
+    image: researchBanner,
+    date: (r.publishedAt ?? r.createdAt).toISOString().slice(0, 10),
+    category: 'RESEARCH',
+    // Research items don't have their own detail page yet — link to
+    // the feed anchor on /research where the full card (with PDF
+    // download) is rendered.
+    href: r.fileUrl ? r.fileUrl : `/research#feed`,
+  }));
+
+  // Combine and sort by date (descending). News + job + research
+  // cards keep parity so the most recent activity surfaces first
+  // regardless of source.
+  const items = [...newsItems, ...jobItems, ...researchItemsForNews].sort(
+    (a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0),
   );
 
   const banner = banners.get('page.news.banner') || '/medee_banner.png';
