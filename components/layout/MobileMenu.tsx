@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BookOpen, ChevronRight, Newspaper, School, Scroll, X } from 'lucide-react';
+import { BookOpen, ChevronRight, Mountain, Newspaper, School, Scroll, X } from 'lucide-react';
 import { Logo } from '@/components/icons/Logo';
 import { LanguageSwitch } from '@/components/ui/LanguageSwitch';
 import { Button } from '@/components/ui/Button';
@@ -41,6 +41,7 @@ const UTILITY_LINKS: Array<{
   { key: 'header.utility.library', href: '/library', icon: BookOpen },
   { key: 'header.utility.newspaper', href: '/sonin-hewlel', icon: Newspaper },
   { key: 'header.utility.regulations', href: '/regulations', icon: Scroll },
+  { key: 'header.utility.shiliinBulag', href: '/shiliin-bulag', icon: Mountain },
 ];
 
 interface MobileMenuProps {

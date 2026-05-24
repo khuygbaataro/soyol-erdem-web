@@ -29,6 +29,7 @@ const UTILITY_LINKS = [
   { key: 'header.utility.library' as TranslationKey, href: '/library', external: false, featured: false },
   { key: 'header.utility.newspaper' as TranslationKey, href: '/sonin-hewlel', external: false, featured: false },
   { key: 'header.utility.regulations' as TranslationKey, href: '/regulations', external: false, featured: false },
+  { key: 'header.utility.shiliinBulag' as TranslationKey, href: '/shiliin-bulag', external: false, featured: false },
 ] as const;
 
 // Main nav labels are looked up at render time so they translate with

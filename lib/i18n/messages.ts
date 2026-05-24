@@ -18,6 +18,7 @@ export const MESSAGES: Record<Language, Messages> = {
     'header.utility.library': 'Номын сан',
     'header.utility.newspaper': 'Сонин хэвлэл',
     'header.utility.regulations': 'Дүрэм журам',
+    'header.utility.shiliinBulag': 'Шилийн булаг',
 
     // ─── Main nav (university) ────────────────────────────────────
     'nav.home': 'Нүүр',
@@ -178,6 +179,7 @@ export const MESSAGES: Record<Language, Messages> = {
     'header.utility.library': 'Library',
     'header.utility.newspaper': 'Newspaper',
     'header.utility.regulations': 'Regulations',
+    'header.utility.shiliinBulag': 'Shiliin Bulag camp',
 
     // ─── Main nav (university) ────────────────────────────────────
     'nav.home': 'Home',
@@ -338,6 +340,7 @@ export const MESSAGES: Record<Language, Messages> = {
     'header.utility.library': '図書館',
     'header.utility.newspaper': '広報誌',
     'header.utility.regulations': '規則・規程',
+    'header.utility.shiliinBulag': 'シリンボラグ乗馬キャンプ',
 
     // ─── Main nav (university) ────────────────────────────────────
     'nav.home': 'ホーム',
