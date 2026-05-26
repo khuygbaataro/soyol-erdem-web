@@ -34,12 +34,26 @@ interface StaffFormProps {
     order?: number;
   };
   mode: 'create' | 'edit';
+  /** Optional override of the position-key dropdown options. Defaults to
+   *  the university `STAFF_POSITION_KEYS`. Used by the HS admin shell to
+   *  show only `hs-*` entries. */
+  positionKeys?: readonly { readonly key: string; readonly label: string }[];
+  /** Where to redirect after submit + cancel link target.
+   *  Defaults to '/admin/staff'. */
+  listPath?: string;
 }
 
-export function StaffForm({ initial = {}, mode }: StaffFormProps) {
+export function StaffForm({
+  initial = {},
+  mode,
+  positionKeys,
+  listPath = '/admin/staff',
+}: StaffFormProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const { isUploading, onUploadingChange } = useUploadGuard();
+
+  const keys = positionKeys ?? STAFF_POSITION_KEYS;
 
   const [positionKey, setPositionKey] = useState(initial.positionKey ?? '');
   const [position, setPosition] = useState(initial.position ?? '');
@@ -62,8 +76,8 @@ export function StaffForm({ initial = {}, mode }: StaffFormProps) {
     setPositionKey(v);
     // Auto-fill `position` from the predefined label if it's blank or
     // matches the previous key's label (so admin doesn't have to retype).
-    const match = STAFF_POSITION_KEYS.find((k) => k.key === v);
-    if (match && (!position || STAFF_POSITION_KEYS.some((k) => k.label === position))) {
+    const match = keys.find((k) => k.key === v);
+    if (match && (!position || keys.some((k) => k.label === position))) {
       setPosition(match.label);
     }
   }
@@ -105,7 +119,7 @@ export function StaffForm({ initial = {}, mode }: StaffFormProps) {
         return;
       }
       toast.success(mode === 'create' ? 'Ажилтны мэдээлэл нэмэгдлээ' : 'Хадгалагдлаа');
-      router.push('/admin/staff');
+      router.push(listPath);
       router.refresh();
     });
   }
@@ -125,7 +139,7 @@ export function StaffForm({ initial = {}, mode }: StaffFormProps) {
             className={inputClasses}
           >
             <option value="">-- Сонгоно уу --</option>
-            {STAFF_POSITION_KEYS.map((k) => (
+            {keys.map((k) => (
               <option key={k.key} value={k.key}>
                 {k.label}
               </option>
@@ -258,7 +272,7 @@ export function StaffForm({ initial = {}, mode }: StaffFormProps) {
             {isUploading ? 'Зураг ачаалж байна…' : 'Хадгалах'}
           </Button>
           <Link
-            href="/admin/staff"
+            href={listPath}
             className="mt-3 block text-center text-sm font-semibold text-text-muted hover:text-navy-900"
           >
             Цуцлах

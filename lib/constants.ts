@@ -92,6 +92,32 @@ export const STAFF_POSITION_KEYS = [
   { key: 'student-council', label: 'Оюутны зөвлөл' },
 ] as const;
 
+/**
+ * High-school side's chart-node identifiers. Listed separately so the
+ * /high-school/admin/structure dropdown shows only HS positions, while
+ * the main /admin/staff dropdown shows the university ones. Both feed
+ * the same Staff table — uniqueness is by row id, not positionKey.
+ */
+export const HS_STAFF_POSITION_KEYS = [
+  { key: 'hs-board', label: 'Удирдах зөвлөл' },
+  { key: 'hs-foreign-relations', label: 'Гадаад харилцаа' },
+  { key: 'hs-director', label: 'Захирал' },
+  { key: 'hs-training-manager', label: 'Сургалтын менежер' },
+  { key: 'hs-social-worker', label: 'Нийгмийн ажилтан' },
+  { key: 'hs-admin-finance', label: 'Захиргаа санхүү аж ахуй' },
+  { key: 'hs-archive', label: 'Архив, бичиг хэрэг' },
+  { key: 'hs-pro-teachers', label: 'Мэргэжлийн багш нарын бүлэг' },
+  { key: 'hs-training-office', label: 'Сургалтын алба' },
+  { key: 'hs-grade-1-5', label: 'I–V анги' },
+  { key: 'hs-grade-6-9', label: 'VI–IX анги' },
+  { key: 'hs-grade-10-12', label: 'X–XII анги' },
+  { key: 'hs-subjects', label: 'Хичээлийн чиглэлүүд (бүлгийн ахлагч)' },
+  { key: 'hs-subj-aesthetics', label: 'Гоо зүй' },
+  { key: 'hs-subj-primary', label: 'Бага' },
+  { key: 'hs-subj-social', label: 'НУ (Нийгмийн ухаан)' },
+  { key: 'hs-subj-natural', label: 'БУ (Байгалийн ухаан)' },
+] as const;
+
 /* ─────────────────────────────────────────────────────────────────────────
  * High-school sub-site
  * Lives at /high-school behind its own route group + header so it reads as

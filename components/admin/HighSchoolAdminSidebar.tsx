@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   LayoutTemplate,
   LogOut,
+  Network,
   School,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -23,6 +24,7 @@ const NAV: { label: string; href: string; icon: typeof LayoutDashboard }[] = [
   { label: 'Хянах самбар', href: '/high-school/admin/dashboard', icon: LayoutDashboard },
   { label: 'Элсэлтийн хүсэлт', href: '/high-school/admin/applications', icon: GraduationCap },
   { label: 'Мэдээ', href: '/high-school/admin/news', icon: FileText },
+  { label: 'Бүтэц зохион байгуулалт', href: '/high-school/admin/structure', icon: Network },
   { label: 'Хуудасны агуулга', href: '/high-school/admin/site-content', icon: LayoutTemplate },
 ];
 
