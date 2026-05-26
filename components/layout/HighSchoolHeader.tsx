@@ -103,19 +103,24 @@ export function HighSchoolHeader() {
                 className="shrink-0 object-contain"
                 style={{ width: 76, height: 76 }}
               />
-              {/* Left-aligned two-line wordmark — eyebrow above the
-                  institutional name. Both lines flush to the LEFT
-                  edge (no edge-to-edge character-justify) so the
-                  cluster stays compact and won't crowd the nav.
-                  Width is determined by the naturally longer eyebrow
-                  string. Visible from sm+ (640px+) — below that the
-                  nav collapses into the hamburger drawer and the
-                  logo alone reads cleanly. */}
-              <span className="hidden flex-col items-start whitespace-nowrap leading-tight text-white sm:flex">
-                <span className="text-[10px] font-medium uppercase tracking-[0.04em] text-white/85 md:text-[11px]">
+              {/* Edge-aligned two-line wordmark per Munkhchimeg's
+                  request. Eyebrow ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН")
+                  is the naturally wider line; CSS justify spreads the
+                  shorter "СОЁЛ ЭРДЭМ СУРГУУЛЬ" beneath it so first /
+                  last letters line up exactly. Visible from sm+
+                  (below that the nav collapses into the hamburger). */}
+              <span className="hidden leading-tight text-white sm:inline-block">
+                <span className="block whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.04em] text-white/85 md:text-[11px]">
                   {t('brand.highSchoolEyebrow')}
                 </span>
-                <span className="mt-0.5 font-serif text-sm font-extrabold uppercase tracking-[0.02em] text-white md:text-base">
+                <span
+                  className="mt-0.5 block font-serif text-sm font-extrabold uppercase text-white md:text-base"
+                  style={{
+                    textAlign: 'justify',
+                    textAlignLast: 'justify',
+                    textJustify: 'inter-character',
+                  } as React.CSSProperties}
+                >
                   {t('brand.highSchoolWordmark')}
                 </span>
               </span>
@@ -131,7 +136,10 @@ export function HighSchoolHeader() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'group/nav flex items-center whitespace-nowrap rounded-md px-3 text-sm font-bold uppercase tracking-[0.06em] transition-colors duration-200 2xl:px-4 2xl:text-[15px]',
+                      // Main site Header.tsx-тэй яг ижил text-size +
+                      // padding-тэй болгож тааруулсан — нав цэс
+                      // илүү компакт болж wordmark-тай ширсэхгүй.
+                      'group/nav flex items-center whitespace-nowrap rounded-md px-3 text-[12.5px] font-bold uppercase tracking-[0.06em] transition-colors duration-200 2xl:px-4 2xl:text-[13px]',
                       'hover:bg-white/[0.06]',
                       active ? 'text-white' : 'text-white/85 hover:text-white',
                     )}
