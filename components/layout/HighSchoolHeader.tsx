@@ -103,52 +103,19 @@ export function HighSchoolHeader() {
                 className="shrink-0 object-contain"
                 style={{ width: 76, height: 76 }}
               />
-              {/* Edge-aligned two-line wordmark per Munkhchimeg's
-                  request. Eyebrow ("НИЙСЛЭЛИЙН ЕРӨНХИЙ БОЛОВСРОЛЫН")
-                  is the naturally wider line so we let it size the
-                  container (`inline-block` shrinks to widest child).
-                  The shorter wordmark below uses CSS
-                  `text-align: justify; text-align-last: justify;
-                  text-justify: inter-character;` to *stretch* across
-                  the same width — distributing extra space between
-                  every character so the first `С` and the last `Ь`
-                  of "СОЁЛ ЭРДЭМ СУРГУУЛЬ" line up exactly with the
-                  first `Н` and the last `Н` of the eyebrow above.
-                  Visible breakpoints:
-                    • below sm — hidden (логог л үлдэнэ, hamburger
-                      drawer-аар нав явна)
-                    • sm ≤ width < 2xl — compact wordmark (just
-                      "СОЁЛ ЭРДЭМ" stacked over a short subtitle, no
-                      eyebrow). This avoids the wordmark + 5 nav
-                      items + ЭЛСЭЛТ pill crashing into each other
-                      at xl (1280px) where the nav becomes visible.
-                    • 2xl (1536px+) — full edge-aligned eyebrow +
-                      institutional name as designed. */}
-              {/* Compact wordmark for sm – xl (nav-collapsed AND
-                  nav-visible-but-narrow viewports) */}
-              <span className="hidden flex-col items-center leading-tight text-white sm:flex 2xl:hidden">
-                <span className="font-serif text-base font-bold tracking-tight md:text-lg">
-                  {t('brand.short').toUpperCase()}
-                </span>
-                <span className="text-sm font-bold tracking-tight text-white/95 md:text-base">
-                  {t('brand.highSchoolShort')}
-                </span>
-              </span>
-
-              {/* Full edge-aligned wordmark — only on 2xl+ where the
-                  nav has enough breathing room not to collide. */}
-              <span className="hidden leading-tight text-white 2xl:inline-block">
-                <span className="block whitespace-nowrap text-xs font-medium uppercase tracking-[0.04em] text-white/85">
+              {/* Left-aligned two-line wordmark — eyebrow above the
+                  institutional name. Both lines flush to the LEFT
+                  edge (no edge-to-edge character-justify) so the
+                  cluster stays compact and won't crowd the nav.
+                  Width is determined by the naturally longer eyebrow
+                  string. Visible from sm+ (640px+) — below that the
+                  nav collapses into the hamburger drawer and the
+                  logo alone reads cleanly. */}
+              <span className="hidden flex-col items-start whitespace-nowrap leading-tight text-white sm:flex">
+                <span className="text-[10px] font-medium uppercase tracking-[0.04em] text-white/85 md:text-[11px]">
                   {t('brand.highSchoolEyebrow')}
                 </span>
-                <span
-                  className="mt-0.5 block font-serif text-lg font-extrabold uppercase text-white"
-                  style={{
-                    textAlign: 'justify',
-                    textAlignLast: 'justify',
-                    textJustify: 'inter-character',
-                  } as React.CSSProperties}
-                >
+                <span className="mt-0.5 font-serif text-sm font-extrabold uppercase tracking-[0.02em] text-white md:text-base">
                   {t('brand.highSchoolWordmark')}
                 </span>
               </span>
