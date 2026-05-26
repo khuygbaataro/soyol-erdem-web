@@ -59,6 +59,47 @@ export default async function HighSchoolAdmissionPage() {
         backgroundImage={heroImage}
       />
 
+      {/*
+        Элсэлтийн нэг хуудсан зар (Munkhchimeg-ийн зураг). Постер
+        өөрөө бүрэн дизайнтай тул хүрээний хувьд зөвхөн алтан
+        хүрээ + decorative dot-grid + soft cream фон-руу шингээж
+        framing хийсэн. Гар утсан дээр sticky-fit, lg+ дээр
+        max-w-5xl-аас илүү томрохгүй.
+      */}
+      <Section background="cream-soft" spacing="md">
+        <div className="relative mx-auto max-w-5xl">
+          {/* Decorative gold corner accents */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -left-3 -top-3 h-16 w-16 rounded-tl-card border-l-4 border-t-4 border-gold-500 md:-left-4 md:-top-4 md:h-20 md:w-20"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -bottom-3 -right-3 h-16 w-16 rounded-br-card border-b-4 border-r-4 border-gold-500 md:-bottom-4 md:-right-4 md:h-20 md:w-20"
+          />
+
+          {/* Subtle gold→navy gradient backdrop */}
+          <div className="relative overflow-hidden rounded-card bg-white p-2 shadow-card-hover ring-1 ring-border-light md:p-3">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-gold-500/5 via-transparent to-navy-900/5"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/ahlah/admission-poster.jpg"
+              alt="Соёл Эрдэм сургуулийн элсэлт I–XII анги"
+              loading="lazy"
+              className="block h-auto w-full rounded-[8px]"
+            />
+          </div>
+
+          {/* Caption under poster */}
+          <p className="mt-6 text-center text-xs font-semibold uppercase tracking-[0.18em] text-text-muted md:text-sm">
+            ЭЛСЭЛТ I–XII АНГИ · 2026–2027 ОНЫ ХИЧЭЭЛИЙН ЖИЛ
+          </p>
+        </div>
+      </Section>
+
       {/* Intro / quick info */}
       <Section background="white" spacing="md">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-start">
