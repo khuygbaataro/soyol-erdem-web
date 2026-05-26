@@ -365,9 +365,16 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
         {/* Branching connector → 3 top pillars */}
         <BranchConnector count={3} />
 
-        {/* Row 3 — 3 шууд багана (Сургалтын менежер / Нийгмийн ажилтан /
-            Захиргаа санхүү аж ахуй) */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/*
+          3-багана grid. Эхний 2 багана (Сургалтын менежер +
+          Нийгмийн ажилтан) доороо "Мэргэжлийн багш нарын бүлэг"-
+          ийг хуваалцана (col-span-2). Захиргаа санхүү аж ахуй
+          (3-р багана) бие даасан, доороо Архив unit-ыг л өвлөнө.
+          Энэ нь Munkhchimeg-ийн зурганд: МБНБ нь зөвхөн 2-ын
+          доор сууж, 3 дахь pillar-ийн доор биш гэсэн дүрсний дагуу.
+        */}
+        <div className="grid gap-x-6 gap-y-8 lg:grid-cols-3">
+          {/* Top row: 3 pillars in 3 columns */}
           {TOP_PILLARS.map((p) => (
             <div key={p.id} className="flex flex-col">
               <ChartNode
@@ -384,43 +391,44 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
               />
             </div>
           ))}
-        </div>
 
-        {/* Бие даасан "Мэргэжлийн багш нарын бүлэг" блок —
-            докс-д тус блок өргөн нэг хайрцаг бөгөөд доор нь
-            хоёр sub-pillar (Сургалтын алба + Хичээлийн чиглэл)
-            суудаг. Дэлгэрэнгүй нь бус хэсгээс ялгарч харагдах
-            тул өмнөх грид-ээс доош цэвэр зайтай тавьсан. */}
-        <div className="mt-10 space-y-6 border-t border-border-light pt-10">
-          <div className="mx-auto max-w-3xl">
-            <ChartNode
-              id="hs-pro-teachers"
-              label="Мэргэжлийн багш нарын бүлэг"
-              level="pillar"
-              onSelect={setSelectedId}
-              hasStaff={hasStaff('hs-pro-teachers')}
-            />
-          </div>
+          {/*
+            2-р мөр — col-span-2-аар зүүн 2 баганыг хүлээлгэж,
+            МБНБ + 2 sub-pillar-ыг доорх зорилттой газар нь
+            байрлуулна. 3-р багана хоосон үлдэх тул Захиргаа санхүү
+            аж ахуй нь дээрх мөрөнд бие даан үлдэнэ.
+          */}
+          <div className="space-y-6 border-t border-border-light pt-8 lg:col-span-2">
+            <div className="mx-auto max-w-2xl">
+              <ChartNode
+                id="hs-pro-teachers"
+                label="Мэргэжлийн багш нарын бүлэг"
+                level="pillar"
+                onSelect={setSelectedId}
+                hasStaff={hasStaff('hs-pro-teachers')}
+              />
+            </div>
 
-          <BranchConnector count={PRO_SUB_PILLARS.length} />
+            <BranchConnector count={PRO_SUB_PILLARS.length} />
 
-          <div className="grid gap-6 md:grid-cols-2">
-            {PRO_SUB_PILLARS.map((p) => (
-              <div key={p.id} className="flex flex-col">
-                <ChartNode
-                  id={p.id}
-                  label={p.title}
-                  level="pillar"
-                  onSelect={setSelectedId}
-                  hasStaff={hasStaff(p.id)}
-                />
-                <UnitTree
-                  units={p.units}
-                  onSelect={setSelectedId}
-                  staffByKey={staffByKey}
-                />
-              </div>
-            ))}
+            <div className="grid gap-6 md:grid-cols-2">
+              {PRO_SUB_PILLARS.map((p) => (
+                <div key={p.id} className="flex flex-col">
+                  <ChartNode
+                    id={p.id}
+                    label={p.title}
+                    level="pillar"
+                    onSelect={setSelectedId}
+                    hasStaff={hasStaff(p.id)}
+                  />
+                  <UnitTree
+                    units={p.units}
+                    onSelect={setSelectedId}
+                    staffByKey={staffByKey}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
