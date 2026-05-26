@@ -16,8 +16,11 @@ import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { CtaBanner } from '@/components/sections/CtaBanner';
+import { HsOrgChart, type HsStaff } from '@/components/sections/HsOrgChart';
+import { prisma } from '@/lib/prisma';
 import { getServerLocale } from '@/lib/i18n/server';
 import { getSiteContentMap } from '@/lib/site-content';
+import { localisedField, localisedFieldOptional } from '@/lib/i18n/db';
 import { HS_ABOUT_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
@@ -32,11 +35,36 @@ const PHILOSOPHY_ICONS: LucideIcon[] = [Sparkles, GraduationCap, Award];
 const HIGHLIGHT_ICONS: LucideIcon[] = [Trophy, Award, Globe2, Users];
 
 export default async function HighSchoolAboutPage() {
-  const [locale, site] = await Promise.all([
+  const [locale, site, staffRows] = await Promise.all([
     getServerLocale(),
     getSiteContentMap('ahlah-about'),
+    // Staff DB-аас HS-ийн positionKey-тэй мөрүүдийг л татна. HsOrgChart
+    // мөн админ нэмсэн staff байхгүй positionKey-руу хатуу кодлогдсон
+    // fallback ашиглах тул графикт хоосон node гарахгүй.
+    prisma.staff
+      .findMany({
+        where: {
+          active: true,
+          positionKey: { startsWith: 'hs-' },
+        },
+        orderBy: [{ order: 'asc' }, { position: 'asc' }],
+      })
+      .catch(() => []),
   ]);
   const c = HS_ABOUT_CONTENT[locale];
+
+  // Локалчилсан staff (position / degree / bio EN/JA-ийн дагуу резол)
+  const localisedStaff: HsStaff[] = staffRows.map((s) => ({
+    positionKey: s.positionKey,
+    name: s.name,
+    position: localisedField(s, 'position', locale),
+    degree: localisedFieldOptional(s, 'degree', locale),
+    bio: localisedFieldOptional(s, 'bio', locale),
+    photo: s.photo,
+    email: s.email,
+    phone: s.phone,
+    active: s.active,
+  }));
   // Banner image is admin-managed via /high-school/admin/site-content
   // → group "ahlah-about" → key "ahlah-about.hero.image".
   const heroImage = site.get('ahlah-about.hero.image') || undefined;
@@ -197,38 +225,16 @@ export default async function HighSchoolAboutPage() {
         </div>
       </Section>
 
-      {/* Organizational structure */}
+      {/*
+        Бүтэц зохион байгуулалт — Munkhchimeg-ийн docx загвараар
+        интерактив OrgChart (үндсэн сайтын хэв маягтай адил).
+        Бүх node clickable; нэг node-д олон ажилтан хадгалагдах
+        боломжтой. Staff DB-ээс `positionKey LIKE 'hs-%'` мөрүүдийг
+        татаж, modal дотор олон хүн харагдана.
+      */}
       <Section background="cream-soft" spacing="md">
         <SectionTitle title={c.orgTitle} subtitle={c.orgSubtitle} />
-        <div className="grid gap-5 md:grid-cols-2">
-          {c.org.map((g) => (
-            <div
-              key={g.heading}
-              className="rounded-card border border-border-light bg-white p-6 shadow-card"
-            >
-              <h3 className="text-xs font-bold uppercase tracking-widest text-gold-500">
-                {g.heading}
-              </h3>
-              <ul className="mt-4 space-y-3">
-                {g.nodes.map((n) => (
-                  <li key={n.title} className="flex flex-col">
-                    <span className="text-sm font-semibold text-navy-900">
-                      {n.title}
-                    </span>
-                    {n.subtitle && (
-                      <span className="text-xs text-text-muted">{n.subtitle}</span>
-                    )}
-                    {n.people && n.people.length > 0 && (
-                      <span className="mt-0.5 text-xs text-text-body">
-                        {n.people.join(', ')}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <HsOrgChart staff={localisedStaff} />
       </Section>
 
       {/* Highlights */}
