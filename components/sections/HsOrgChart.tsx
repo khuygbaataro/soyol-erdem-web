@@ -138,22 +138,22 @@ function Connector({ height = 6 }: { height?: number }) {
   return (
     <span
       aria-hidden
-      className="mx-auto block w-[1.5px] bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.7)_0_4px,transparent_4px_8px)]"
+      className="mx-auto block w-px bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.7)_0_4px,transparent_4px_8px)]"
       style={{ height: `${height * 4}px` }}
     />
   );
 }
 
 function SiblingConnector() {
-  return <span aria-hidden className="block h-[1.5px] flex-1 bg-navy-900/70" />;
+  return <span aria-hidden className="block h-px flex-1 bg-navy-900" />;
 }
 
 function BranchConnector({ count }: { count: number }) {
   return (
-    <div aria-hidden className="relative mx-auto mb-2 w-full" style={{ height: '32px' }}>
-      <span className="absolute left-1/2 top-0 h-3 w-[1.5px] -translate-x-1/2 bg-navy-900/70" />
+    <div aria-hidden className="relative mx-auto w-full" style={{ height: '24px' }}>
+      <span className="absolute left-1/2 top-0 h-2 w-px -translate-x-1/2 bg-navy-900" />
       <span
-        className="absolute top-3 h-[1.5px] bg-navy-900/70"
+        className="absolute top-2 h-px bg-navy-900"
         style={{
           left: `calc(${100 / (count * 2)}% )`,
           right: `calc(${100 / (count * 2)}% )`,
@@ -162,7 +162,7 @@ function BranchConnector({ count }: { count: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <span
           key={i}
-          className="absolute top-3 h-5 w-[1.5px] bg-navy-900/70"
+          className="absolute top-2 h-4 w-px bg-navy-900"
           style={{ left: `calc(${(100 / count) * (i + 0.5)}%)` }}
         />
       ))}
@@ -180,25 +180,25 @@ function BranchConnector({ count }: { count: number }) {
  */
 function JoinConnector({ count }: { count: number }) {
   return (
-    <div aria-hidden className="relative mx-auto w-full" style={{ height: '36px' }}>
+    <div aria-hidden className="relative mx-auto w-full" style={{ height: '24px' }}>
       {/* Top — N parent-аас гарах богино босоо */}
       {Array.from({ length: count }).map((_, i) => (
         <span
           key={i}
-          className="absolute top-0 h-5 w-[1.5px] bg-navy-900/70"
+          className="absolute top-0 h-3 w-px bg-navy-900"
           style={{ left: `calc(${(100 / count) * (i + 0.5)}%)` }}
         />
       ))}
       {/* Нэгтгэх хэвтээ шугам */}
       <span
-        className="absolute top-5 h-[1.5px] bg-navy-900/70"
+        className="absolute top-3 h-px bg-navy-900"
         style={{
           left: `calc(${100 / (count * 2)}% )`,
           right: `calc(${100 / (count * 2)}% )`,
         }}
       />
       {/* Доорх child-руу нэг л босоо */}
-      <span className="absolute left-1/2 top-5 h-4 w-[1.5px] -translate-x-1/2 bg-navy-900/70" />
+      <span className="absolute left-1/2 top-3 h-3 w-px -translate-x-1/2 bg-navy-900" />
     </div>
   );
 }
@@ -348,7 +348,7 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
 
   return (
     <>
-      <div className="space-y-6">
+      <div className="space-y-3">
         {/* Row 1 — Удирдах зөвлөл */}
         <div className="flex flex-col items-center">
           <ChartNode
@@ -359,7 +359,7 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
             hasStaff={hasStaff('hs-board')}
           />
 
-          <Connector height={6} />
+          <Connector height={3} />
 
           {/* Row 2 — Гадаад харилцаа ← ЗАХИРАЛ */}
           <div className="flex w-full max-w-4xl items-center justify-center gap-0 sm:gap-3">
@@ -484,7 +484,7 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
             transition={{ duration: 0.2 }}
             role="dialog"
             aria-modal="true"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-navy-900/70 px-4 py-6 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-navy-900 px-4 py-6 backdrop-blur-sm"
             onClick={(e) => {
               if (e.target === e.currentTarget) setSelectedId(null);
             }}
