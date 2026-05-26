@@ -3,16 +3,23 @@ import {
   BookMarked,
   BookOpen,
   Briefcase,
+  Clock,
   Code2,
   Cpu,
   Database,
   Globe2,
   GraduationCap,
+  Handshake,
+  Heart,
+  HeartPulse,
   Languages,
   Lightbulb,
   Network,
   Plane,
   Presentation,
+  Recycle,
+  Shirt,
+  Smartphone,
   Sparkles,
   Users,
   type LucideIcon,
@@ -128,6 +135,33 @@ export default async function HighSchoolProgramsPage() {
     .filter((l) => l.name.length > 0);
   const levelsTitle = site.get('ahlah-programs.levels.title') || '';
   const levelsSubtitle = site.get('ahlah-programs.levels.subtitle') || '';
+
+  // "Бидний 10 соёл" хэсэг — SiteContent-ээс админд засагдсан гарчиг
+  // + жагсаалт. Icon-ыг код талаас тогтмол дарааллаар (доорх
+  // CULTURE_ICONS-ийн дарааллаар) холбож өгдөг тул админ жагсаалтыг
+  // өөрчилбөл icon ч мөн адил байр шилжиж очно.
+  const cultureTitle = site.get('ahlah-programs.culture.title') || '';
+  const cultureSubtitle = site.get('ahlah-programs.culture.subtitle') || '';
+  const cultureItems = (site.get('ahlah-programs.culture.items') || '')
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  // Lucide icons лавлагаа зурагтай ойролцоо: greeting (Handshake),
+  // uniform (Shirt), nutrition/health (HeartPulse), idea/cleanliness
+  // (Lightbulb), time (Clock), honesty (Heart), tidy (Sparkles),
+  // public manners (Users), phone (Smartphone), no littering (Recycle).
+  const CULTURE_ICONS: LucideIcon[] = [
+    Handshake,
+    Shirt,
+    HeartPulse,
+    Lightbulb,
+    Clock,
+    Heart,
+    Sparkles,
+    Users,
+    Smartphone,
+    Recycle,
+  ];
   const catH = CATEGORY_HEADINGS[locale];
   // Icon per level — kept code-side because lucide JSX can't cross
   // the RSC boundary as data.
@@ -272,6 +306,52 @@ export default async function HighSchoolProgramsPage() {
                 </article>
               );
             })}
+          </div>
+        </Section>
+      )}
+
+      {/*
+        "Бидний 10 соёл" хэсэг — Munkhchimeg-ийн хүсэлтээр Бага/Дунд/
+        Ахлах сургуулийн онцлог-ийн доор шинээр нэмсэн. Картууд 5-аар
+        2 эгнээ (lg-ээс дээш) болж байрлана; мобайлд 2 баганаар автомат
+        wrap. Icon-ууд тогтмол дарааллаар (Handshake, Shirt, HeartPulse,
+        ...) кодтой, label-уудыг админ SiteContent-аас засна.
+      */}
+      {cultureItems.length > 0 && (
+        <Section background="white" spacing="md" id="culture">
+          <div className="mx-auto max-w-6xl">
+            {cultureTitle && (
+              <div className="mb-10 text-center">
+                <h2 className="font-serif text-3xl font-bold leading-tight text-navy-900 md:text-4xl">
+                  {cultureTitle}
+                </h2>
+                <div className="mx-auto mt-4 h-1 w-14 rounded-full bg-gold-500" />
+                {cultureSubtitle && (
+                  <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-text-body md:text-base">
+                    {cultureSubtitle}
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-5 lg:grid-cols-5">
+              {cultureItems.map((label, idx) => {
+                const Icon = CULTURE_ICONS[idx] ?? Sparkles;
+                return (
+                  <div
+                    key={`${idx}-${label.slice(0, 24)}`}
+                    className="group flex flex-col items-center gap-3 rounded-card border border-border-light bg-white p-5 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-card-hover"
+                  >
+                    <span className="flex h-14 w-14 items-center justify-center rounded-full bg-navy-900/5 text-[#2563eb] transition-colors group-hover:bg-gold-500/15 group-hover:text-gold-500">
+                      <Icon className="h-7 w-7" strokeWidth={2} />
+                    </span>
+                    <p className="text-[13px] font-semibold leading-snug text-text-body">
+                      {label}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </Section>
       )}
