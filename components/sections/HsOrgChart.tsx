@@ -170,6 +170,39 @@ function BranchConnector({ count }: { count: number }) {
   );
 }
 
+/**
+ * Урвуу холбогч — N parent → 1 child. БУЦАХ V хэлбэртэй:
+ *   • Дээд талд N parent тус бүрээс богино босоо мөр доош
+ *   • Хэвтээ нэгтгэх шугам
+ *   • Доош нэг л мөр child-руу заана.
+ *
+ * BranchConnector-тэй адил CSS-аар хийсэн, эсрэг чиглэлтэй.
+ */
+function JoinConnector({ count }: { count: number }) {
+  return (
+    <div aria-hidden className="relative mx-auto w-full" style={{ height: '36px' }}>
+      {/* Top — N parent-аас гарах богино босоо */}
+      {Array.from({ length: count }).map((_, i) => (
+        <span
+          key={i}
+          className="absolute top-0 h-5 w-[1.5px] bg-navy-900/70"
+          style={{ left: `calc(${(100 / count) * (i + 0.5)}%)` }}
+        />
+      ))}
+      {/* Нэгтгэх хэвтээ шугам */}
+      <span
+        className="absolute top-5 h-[1.5px] bg-navy-900/70"
+        style={{
+          left: `calc(${100 / (count * 2)}% )`,
+          right: `calc(${100 / (count * 2)}% )`,
+        }}
+      />
+      {/* Доорх child-руу нэг л босоо */}
+      <span className="absolute left-1/2 top-5 h-4 w-[1.5px] -translate-x-1/2 bg-navy-900/70" />
+    </div>
+  );
+}
+
 function UnitTree({
   units,
   onSelect,
@@ -373,7 +406,7 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
           Энэ нь Munkhchimeg-ийн зурганд: МБНБ нь зөвхөн 2-ын
           доор сууж, 3 дахь pillar-ийн доор биш гэсэн дүрсний дагуу.
         */}
-        <div className="grid gap-x-6 gap-y-8 lg:grid-cols-3">
+        <div className="grid gap-x-6 gap-y-1 lg:grid-cols-3">
           {/* Top row: 3 pillars in 3 columns */}
           {TOP_PILLARS.map((p) => (
             <div key={p.id} className="flex flex-col">
@@ -393,12 +426,16 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
           ))}
 
           {/*
-            2-р мөр — col-span-2-аар зүүн 2 баганыг хүлээлгэж,
-            МБНБ + 2 sub-pillar-ыг доорх зорилттой газар нь
-            байрлуулна. 3-р багана хоосон үлдэх тул Захиргаа санхүү
-            аж ахуй нь дээрх мөрөнд бие даан үлдэнэ.
+            2-р мөр — col-span-2 зүүн 2 баганыг хүлээдэг. МБНБ-ийн
+            дээр JoinConnector тавьж "Сургалтын менежер + Нийгмийн
+            ажилтан" хоёроос доош нэгтгэн МБНБ-руу заах сум зурна.
+            3-р багана автоматаар хоосон үлдэх тул Захиргаа санхүү
+            аж ахуй pillar бие даан үлдэнэ.
           */}
-          <div className="space-y-6 border-t border-border-light pt-8 lg:col-span-2">
+          <div className="lg:col-span-2">
+            {/* Сум — Сургалтын менежер + Нийгмийн ажилтан → МБНБ */}
+            <JoinConnector count={2} />
+
             <div className="mx-auto max-w-2xl">
               <ChartNode
                 id="hs-pro-teachers"
