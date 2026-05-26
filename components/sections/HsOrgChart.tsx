@@ -76,6 +76,10 @@ const FALLBACK: Record<string, Omit<HsStaff, 'positionKey'>> = {
     name: 'Мэргэжлийн багш нарын бүлэг',
     position: 'Бүлгийн ахлагч',
   },
+  'hs-subjects': {
+    name: 'Хичээлийн чиглэлүүд',
+    position: 'Мэргэжлийн чиглэлийн ахлагч нар',
+  },
   'hs-admin-finance': {
     name: 'Захиргаа санхүү аж ахуй',
     position: 'Захиргаа санхүү аж ахуйн эрхлэгч',
@@ -210,7 +214,30 @@ interface Pillar {
   units: { id: string; label: string }[];
 }
 
-const PILLARS: Pillar[] = [
+// Захиралын доорхи 3 шууд багана (Munkhchimeg-ийн зурганд: Сургалтын
+// менежер / Нийгмийн ажилтан / Захиргаа санхүү аж ахуй).
+const TOP_PILLARS: Pillar[] = [
+  {
+    id: 'hs-training-manager',
+    title: 'Сургалтын менежер',
+    units: [],
+  },
+  {
+    id: 'hs-social-worker',
+    title: 'Нийгмийн ажилтан',
+    units: [],
+  },
+  {
+    id: 'hs-admin-finance',
+    title: 'Захиргаа санхүү аж ахуй',
+    units: [{ id: 'hs-archive', label: 'Архив, бичиг хэрэг' }],
+  },
+];
+
+// "Мэргэжлийн багш нарын бүлэг"-ийн доор 2 sub-pillar:
+//   • Сургалтын алба (3 анги нэгж: I-V, VI-IX, X-XII)
+//   • Хичээлийн чиглэл (4 мэргэжил: Гоо зүй, Бага, НУ, БУ)
+const PRO_SUB_PILLARS: Pillar[] = [
   {
     id: 'hs-training-office',
     title: 'Сургалтын алба',
@@ -218,30 +245,16 @@ const PILLARS: Pillar[] = [
       { id: 'hs-grade-1-5', label: 'I–V анги' },
       { id: 'hs-grade-6-9', label: 'VI–IX анги' },
       { id: 'hs-grade-10-12', label: 'X–XII анги' },
-      { id: 'hs-class-groups', label: 'Анги бүлэг' },
     ],
   },
   {
-    id: 'hs-training-manager',
-    title: 'Сургалтын менежер',
-    units: [],
-  },
-  {
-    id: 'hs-pro-teachers',
-    title: 'Мэргэжлийн багш нарын бүлэг',
+    id: 'hs-subjects',
+    title: 'Хичээлийн чиглэлүүд',
     units: [
       { id: 'hs-subj-aesthetics', label: 'Гоо зүй' },
       { id: 'hs-subj-primary', label: 'Бага' },
       { id: 'hs-subj-social', label: 'НУ (Нийгмийн ухаан)' },
       { id: 'hs-subj-natural', label: 'БУ (Байгалийн ухаан)' },
-    ],
-  },
-  {
-    id: 'hs-admin-finance',
-    title: 'Захиргаа санхүү аж ахуй',
-    units: [
-      { id: 'hs-archive', label: 'Архив, бичиг хэрэг' },
-      { id: 'hs-social-worker', label: 'Нийгмийн ажилтан' },
     ],
   },
 ];
@@ -349,12 +362,13 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
           </div>
         </div>
 
-        {/* Branching connector → 4 pillars */}
-        <BranchConnector count={4} />
+        {/* Branching connector → 3 top pillars */}
+        <BranchConnector count={3} />
 
-        {/* Row 3 — 4 pillars with unit trees */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {PILLARS.map((p) => (
+        {/* Row 3 — 3 шууд багана (Сургалтын менежер / Нийгмийн ажилтан /
+            Захиргаа санхүү аж ахуй) */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {TOP_PILLARS.map((p) => (
             <div key={p.id} className="flex flex-col">
               <ChartNode
                 id={p.id}
@@ -370,6 +384,44 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
               />
             </div>
           ))}
+        </div>
+
+        {/* Бие даасан "Мэргэжлийн багш нарын бүлэг" блок —
+            докс-д тус блок өргөн нэг хайрцаг бөгөөд доор нь
+            хоёр sub-pillar (Сургалтын алба + Хичээлийн чиглэл)
+            суудаг. Дэлгэрэнгүй нь бус хэсгээс ялгарч харагдах
+            тул өмнөх грид-ээс доош цэвэр зайтай тавьсан. */}
+        <div className="mt-10 space-y-6 border-t border-border-light pt-10">
+          <div className="mx-auto max-w-3xl">
+            <ChartNode
+              id="hs-pro-teachers"
+              label="Мэргэжлийн багш нарын бүлэг"
+              level="pillar"
+              onSelect={setSelectedId}
+              hasStaff={hasStaff('hs-pro-teachers')}
+            />
+          </div>
+
+          <BranchConnector count={PRO_SUB_PILLARS.length} />
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {PRO_SUB_PILLARS.map((p) => (
+              <div key={p.id} className="flex flex-col">
+                <ChartNode
+                  id={p.id}
+                  label={p.title}
+                  level="pillar"
+                  onSelect={setSelectedId}
+                  hasStaff={hasStaff(p.id)}
+                />
+                <UnitTree
+                  units={p.units}
+                  onSelect={setSelectedId}
+                  staffByKey={staffByKey}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         <p className="pt-6 text-center text-sm text-text-muted md:text-base">
