@@ -408,8 +408,16 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
           Энэ нь Munkhchimeg-ийн зурганд: МБНБ нь зөвхөн 2-ын
           доор сууж, 3 дахь pillar-ийн доор биш гэсэн дүрсний дагуу.
         */}
-        <div className="grid gap-x-6 gap-y-0 lg:grid-cols-3">
-          {/* Top row: 3 pillars in 3 columns */}
+        {/*
+          ХОЁР тусдаа grid — нэг row дотор pillar 3 (Архив бүхий)
+          урт болохдоо pillars 1+2-ын өндрийг сунгадаг грид-ийн
+          үндсэн алдаанаас сэргийлсэн. Хоёр грид нь grid-cols-3
+          ижил бүтэцтэй тул багана яг адил тэгшилгээтэй үлдэнэ;
+          хооронд нь ~4px л зай л үлдэнэ.
+        */}
+
+        {/* Row 1 — 3 шууд pillars */}
+        <div className="grid gap-x-6 lg:grid-cols-3">
           {TOP_PILLARS.map((p) => (
             <div key={p.id} className="flex flex-col">
               <ChartNode
@@ -426,14 +434,10 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
               />
             </div>
           ))}
+        </div>
 
-          {/*
-            2-р мөр — col-span-2 зүүн 2 баганыг хүлээдэг. МБНБ-ийн
-            дээр JoinConnector тавьж "Сургалтын менежер + Нийгмийн
-            ажилтан" хоёроос доош нэгтгэн МБНБ-руу заах сум зурна.
-            3-р багана автоматаар хоосон үлдэх тул Захиргаа санхүү
-            аж ахуй pillar бие даан үлдэнэ.
-          */}
+        {/* Row 2 — МБНБ + sub-pillars зүүн 2 баганыг хүлээнэ */}
+        <div className="grid gap-x-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             {/* Сум — Сургалтын менежер + Нийгмийн ажилтан → МБНБ */}
             <JoinConnector count={2} />
