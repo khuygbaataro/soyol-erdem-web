@@ -179,26 +179,28 @@ function BranchConnector({ count }: { count: number }) {
  * BranchConnector-тэй адил CSS-аар хийсэн, эсрэг чиглэлтэй.
  */
 function JoinConnector({ count }: { count: number }) {
+  // Маш бага зайтай (бараг хүрэлцэхүйц) холбогч — нийт 8px:
+  //   4px parent-side босоо → 1px horizontal merge bar → 4px child босоо.
   return (
-    <div aria-hidden className="relative mx-auto w-full" style={{ height: '24px' }}>
-      {/* Top — N parent-аас гарах богино босоо */}
+    <div aria-hidden className="relative mx-auto w-full" style={{ height: '8px' }}>
+      {/* Top — N parent-аас гарах ширхэг богино босоо */}
       {Array.from({ length: count }).map((_, i) => (
         <span
           key={i}
-          className="absolute top-0 h-3 w-px bg-navy-900"
+          className="absolute top-0 h-1 w-px bg-navy-900"
           style={{ left: `calc(${(100 / count) * (i + 0.5)}%)` }}
         />
       ))}
       {/* Нэгтгэх хэвтээ шугам */}
       <span
-        className="absolute top-3 h-px bg-navy-900"
+        className="absolute top-1 h-px bg-navy-900"
         style={{
           left: `calc(${100 / (count * 2)}% )`,
           right: `calc(${100 / (count * 2)}% )`,
         }}
       />
-      {/* Доорх child-руу нэг л босоо */}
-      <span className="absolute left-1/2 top-3 h-3 w-px -translate-x-1/2 bg-navy-900" />
+      {/* Доорх child-руу нэг л богино босоо */}
+      <span className="absolute left-1/2 top-1 h-1 w-px -translate-x-1/2 bg-navy-900" />
     </div>
   );
 }
@@ -406,7 +408,7 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
           Энэ нь Munkhchimeg-ийн зурганд: МБНБ нь зөвхөн 2-ын
           доор сууж, 3 дахь pillar-ийн доор биш гэсэн дүрсний дагуу.
         */}
-        <div className="grid gap-x-6 gap-y-1 lg:grid-cols-3">
+        <div className="grid gap-x-6 gap-y-0 lg:grid-cols-3">
           {/* Top row: 3 pillars in 3 columns */}
           {TOP_PILLARS.map((p) => (
             <div key={p.id} className="flex flex-col">
