@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     },
   });
 
-  sendTelegram(
+  await sendTelegram(
     `💼 <b>Шинэ ажлын анкет</b>\n` +
     `👤 ${a.fullName}\n` +
     `📋 Албан тушаал: ${a.position}\n` +

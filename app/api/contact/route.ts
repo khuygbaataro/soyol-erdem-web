@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     },
   });
 
-  sendTelegram(
+  await sendTelegram(
     `📩 <b>Шинэ зурвас</b>\n` +
     `👤 ${d.name}\n` +
     `📌 ${d.subject}\n` +

@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     other: 'Бусад / Хосолсон',
   };
 
-  sendTelegram(
+  await sendTelegram(
     `🎓 <b>Шинэ элсэлтийн хүсэлт</b>\n` +
     `👤 Сурагч: ${d.studentName}\n` +
     `🏫 Сургууль: ${d.currentSchool || '—'}\n` +
