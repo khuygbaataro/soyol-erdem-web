@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { jobApplicationSchema } from '@/lib/validation';
+import { sendTelegram } from '@/lib/telegram';
 
 /**
  * Public — receives a finished 7-section job-application form and stores
@@ -32,6 +33,15 @@ export async function POST(req: Request) {
       diplomaUrl: a.diplomaUrl || null,
     },
   });
+
+  sendTelegram(
+    `💼 <b>Шинэ ажлын анкет</b>\n` +
+    `👤 ${a.fullName}\n` +
+    `📋 Албан тушаал: ${a.position}\n` +
+    `📞 Утас: ${a.phone}\n` +
+    `✉️ И-мэйл: ${a.email}\n` +
+    (a.address ? `📍 Хаяг: ${a.address}` : ''),
+  );
 
   return NextResponse.json({ ok: true }, { status: 201 });
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { highSchoolApplicationSchema } from '@/lib/validation';
+import { sendTelegram } from '@/lib/telegram';
 
 export async function POST(req: Request) {
   const json = await req.json().catch(() => null);
@@ -29,10 +30,25 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     console.error('[high-school applications POST]', err);
-    return NextResponse.json(
-      { error: 'Server error' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
+
+  const trackLabel: Record<string, string> = {
+    japan: 'Япон хэл, соёл',
+    it: 'Мэдээллийн технологи',
+    other: 'Бусад / Хосолсон',
+  };
+
+  sendTelegram(
+    `🎓 <b>Шинэ элсэлтийн хүсэлт</b>\n` +
+    `👤 Сурагч: ${d.studentName}\n` +
+    `🏫 Сургууль: ${d.currentSchool || '—'}\n` +
+    `📚 Чиглэл: ${d.track ? (trackLabel[d.track] ?? d.track) : '—'}\n` +
+    `👨‍👩‍👧 Эцэг эх: ${d.guardianName}\n` +
+    `📞 Утас: ${d.phone}\n` +
+    (d.email ? `✉️ И-мэйл: ${d.email}\n` : '') +
+    (d.message ? `\n💬 ${d.message}` : ''),
+  );
+
   return NextResponse.json({ ok: true }, { status: 201 });
 }
