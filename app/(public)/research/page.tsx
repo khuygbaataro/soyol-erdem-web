@@ -33,45 +33,58 @@ export default async function ResearchPage() {
   ]);
 
   const c = RESEARCH_CONTENT[locale];
-  // SiteContent now returns locale-aware values automatically:
-  //   • MN visitor → admin `value` (or empty if unfilled)
-  //   • EN visitor → admin `valueEn` (or empty)
-  //   • JP visitor → admin `valueJa` (or empty)
-  // Empty values fall through to the hand-written translation bundle,
-  // so EN / JP visitors see fluent translations even before the admin
-  // fills in EN / JA columns.
+
+  const get = (key: string, fallback: string) =>
+    researchContent.get(key) || fallback;
 
   const banner =
     banners.get('page.research.banner') || '/erdem_shinjilgee_banner.png';
 
+  // Hero + intro — DB overrides fallback to translation bundle.
+  const heroTitle    = get('research.hero.title',    c.heroTitle);
+  const heroSubtitle = get('research.hero.subtitle', c.heroSubtitle);
+  const intro        = get('research.intro',         c.intro);
+
+  // Areas section titles.
+  const areasTitle    = get('research.areas.title',    c.areasTitle);
+  const areasSubtitle = get('research.areas.subtitle', c.areasSubtitle);
+
+  // Areas — DB title/description take priority; icons stay static.
+  const areas = RESEARCH_AREAS.map((a, idx) => ({
+    icon: a.icon,
+    title:       get(`research.area.${idx + 1}.title`,       c.areas[idx]?.title ?? a.title),
+    description: get(`research.area.${idx + 1}.description`, c.areas[idx]?.description ?? a.description),
+  }));
+
+  // Departments section titles.
+  const departmentsTitle    = get('research.departments.title',    c.departmentsTitle);
+  const departmentsSubtitle = get('research.departments.subtitle', c.departmentsSubtitle);
+
   // Department titles + topic lists.
   const departments = [1, 2, 3].map((i) => {
-    const adminTitle = researchContent.get(`research.dept.${i}.title`) || '';
+    const adminTitle  = researchContent.get(`research.dept.${i}.title`)  || '';
     const adminTopics = researchContent.get(`research.dept.${i}.topics`) || '';
-    const title =
-      adminTitle ||
-      c.departments[i - 1]?.title ||
-      RESEARCH_DEPARTMENTS[i - 1]?.title ||
-      '';
+    const title = adminTitle || c.departments[i - 1]?.title || RESEARCH_DEPARTMENTS[i - 1]?.title || '';
     const topics: string[] = adminTopics
-      ? adminTopics
-          .split('\n')
-          .map((t) => t.trim())
-          .filter(Boolean)
+      ? adminTopics.split('\n').map((t) => t.trim()).filter(Boolean)
       : c.departments[i - 1]?.topics ?? RESEARCH_DEPARTMENTS[i - 1]?.topics ?? [];
     return { title, topics };
   });
+
+  // Highlights section titles.
+  const highlightsTitle    = get('research.highlights.title',    c.highlightsTitle);
+  const highlightsSubtitle = get('research.highlights.subtitle', c.highlightsSubtitle);
 
   const highlights = [1, 2, 3].map((i) => {
     const admin = researchContent.get(`research.highlight.${i}`) || '';
     return admin || c.highlights[i - 1] || '';
   });
 
-  // Cover images for each journal — keyed by journal id. Admin upload
-  // (research.journal.{id}.cover) takes priority; otherwise we fall back
-  // to the static `cover` baked into RESEARCH_JOURNALS, so the shelf
-  // never has empty cards. Cover images are language-agnostic so we
-  // always honour the admin upload regardless of locale.
+  // Feed section titles.
+  const feedTitle    = get('research.feed.title',    c.feedTitle);
+  const feedSubtitle = get('research.feed.subtitle', c.feedSubtitle);
+
+  // Journal covers — language-agnostic image uploads.
   const journalCovers = new Map(
     RESEARCH_JOURNALS.map((j) => [
       j.id,
@@ -79,21 +92,9 @@ export default async function ResearchPage() {
     ]),
   );
 
-  // Areas — join the static icons with localised title / description by
-  // index. RESEARCH_AREAS keeps the canonical 3-item order.
-  const areas = RESEARCH_AREAS.map((a, idx) => ({
-    icon: a.icon,
-    title: c.areas[idx]?.title ?? a.title,
-    description: c.areas[idx]?.description ?? a.description,
-  }));
-
-  // Section titles. Admin overrides flow through for every locale —
-  // the map already resolves to valueEn / valueJa when filled, and
-  // falls back to '' (then to the bundle) when not.
-  const journalsTitle =
-    researchContent.get('research.journals.title') || c.journalsTitle;
-  const journalsSubtitle =
-    researchContent.get('research.journals.subtitle') || c.journalsSubtitle;
+  // Journal section titles.
+  const journalsTitle    = get('research.journals.title',    c.journalsTitle);
+  const journalsSubtitle = get('research.journals.subtitle', c.journalsSubtitle);
 
   // Date formatter aligned to the current locale.
   const dateLocale = locale === 'EN' ? 'en-US' : locale === 'JP' ? 'ja-JP' : 'mn-MN';
@@ -101,8 +102,8 @@ export default async function ResearchPage() {
   return (
     <>
       <PageHero
-        title={c.heroTitle}
-        subtitle={c.heroSubtitle}
+        title={heroTitle}
+        subtitle={heroSubtitle}
         breadcrumb={[
           { label: c.breadcrumbHome, href: '/' },
           { label: c.breadcrumbThis },
@@ -113,13 +114,13 @@ export default async function ResearchPage() {
       {/* Intro */}
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-base leading-relaxed text-text-body">{c.intro}</p>
+          <p className="text-base leading-relaxed text-text-body">{intro}</p>
         </div>
       </Section>
 
       {/* Top-level priorities — 3 headline cards */}
       <Section background="cream-soft">
-        <SectionTitle title={c.areasTitle} subtitle={c.areasSubtitle} />
+        <SectionTitle title={areasTitle} subtitle={areasSubtitle} />
         <div className="grid gap-6 md:grid-cols-3">
           {areas.map((a) => {
             const Icon = a.icon;
@@ -143,8 +144,8 @@ export default async function ResearchPage() {
       {/* Per-department research focus — 3 columns of bulleted lists */}
       <Section background="white">
         <SectionTitle
-          title={c.departmentsTitle}
-          subtitle={c.departmentsSubtitle}
+          title={departmentsTitle}
+          subtitle={departmentsSubtitle}
         />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {departments
@@ -176,8 +177,8 @@ export default async function ResearchPage() {
       {/* Highlights — research-professor teams + CISCO + Moodle */}
       <Section background="cream-soft">
         <SectionTitle
-          title={c.highlightsTitle}
-          subtitle={c.highlightsSubtitle}
+          title={highlightsTitle}
+          subtitle={highlightsSubtitle}
         />
         <div className="grid gap-6 md:grid-cols-3">
           {highlights
@@ -200,7 +201,7 @@ export default async function ResearchPage() {
           new publications + announcements land here automatically. */}
       {researchItems.length > 0 && (
         <Section background="white">
-          <SectionTitle title={c.feedTitle} subtitle={c.feedSubtitle} />
+          <SectionTitle title={feedTitle} subtitle={feedSubtitle} />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {researchItems.map((r) => (
               <Card key={r.id} className="flex h-full flex-col">
