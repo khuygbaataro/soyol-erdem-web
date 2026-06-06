@@ -55,7 +55,7 @@ const NAV: readonly NavGroup[] = [
       { label: 'Дүрэм журам', href: '/admin/regulations', icon: Scroll, roles: ['ADMIN', 'EDITOR'] },
       { label: 'Номын сан', href: '/admin/library', icon: BookOpen, roles: ['ADMIN', 'LIBRARIAN'] },
       { label: 'Эрдэм шинжилгээ', href: '/admin/research', icon: Microscope, roles: ['ADMIN', 'RESEARCHER'] },
-      { label: 'Мэргэжил', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
+      { label: 'Сургалт', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
       { label: 'Ажилтнууд', href: '/admin/staff', icon: Users, roles: ['ADMIN'] },
     ],
   },

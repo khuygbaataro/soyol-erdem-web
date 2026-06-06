@@ -75,9 +75,9 @@ export default async function AdminProgramsListPage() {
   return (
     <>
       <PageHeader
-        title="Мэргэжлүүд"
-        subtitle={`Нийт ${items.length} мэргэжил`}
-        breadcrumb={[{ label: 'Хянах самбар', href: '/admin/dashboard' }, { label: 'Мэргэжил' }]}
+        title="Сургалтууд"
+        subtitle={`Нийт ${items.length} сургалт`}
+        breadcrumb={[{ label: 'Хянах самбар', href: '/admin/dashboard' }, { label: 'Сургалт' }]}
         action={
           <Button
             href="/admin/programs/new"
@@ -86,11 +86,11 @@ export default async function AdminProgramsListPage() {
             icon={<Plus className="h-4 w-4" />}
             iconPosition="left"
           >
-            Шинэ мэргэжил
+            Шинэ сургалт
           </Button>
         }
       />
-      <DataTable data={items} columns={columns} empty="Мэргэжил байхгүй байна." />
+      <DataTable data={items} columns={columns} empty="Сургалт байхгүй байна." />
     </>
   );
 }

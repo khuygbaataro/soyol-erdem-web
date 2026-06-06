@@ -87,7 +87,7 @@ export function ProgramForm({ initial = {}, mode }: Props) {
         toast.error(data?.error ?? 'Хадгалахад алдаа гарлаа');
         return;
       }
-      toast.success(mode === 'create' ? 'Мэргэжил нэмэгдлээ' : 'Хадгалагдлаа');
+      toast.success(mode === 'create' ? 'Сургалт нэмэгдлээ' : 'Хадгалагдлаа');
       router.push('/admin/programs');
       router.refresh();
     });

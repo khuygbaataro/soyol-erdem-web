@@ -12,11 +12,11 @@ export default async function EditProgramPage({ params }: { params: { id: string
   return (
     <>
       <PageHeader
-        title="Мэргэжил засах"
+        title="Сургалт засах"
         subtitle={p.name}
         breadcrumb={[
           { label: 'Хянах самбар', href: '/admin/dashboard' },
-          { label: 'Мэргэжил', href: '/admin/programs' },
+          { label: 'Сургалт', href: '/admin/programs' },
           { label: 'Засах' },
         ]}
         action={
