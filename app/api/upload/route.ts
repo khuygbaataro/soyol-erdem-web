@@ -14,7 +14,7 @@ const MAX_PDF_BYTES = 50 * 1024 * 1024; // 50 MB — newspapers can be large
 const ALLOWED_IMAGE = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
 const ALLOWED_FILE = [...ALLOWED_IMAGE, 'application/pdf'];
 /** Folder prefixes that may upload PDFs (everything else is image-only). */
-const PDF_FOLDERS = ['research/', 'newspapers/', 'journals/', 'regulations/'];
+const PDF_FOLDERS = ['research/', 'newspapers/', 'journals/', 'regulations/', 'handbooks/'];
 
 /**
  * Vercel Blob client-direct upload endpoint.

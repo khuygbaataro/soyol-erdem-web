@@ -280,41 +280,52 @@ export default async function StudentLifePage() {
         </div>
       </Section>
 
-      {/*
-        Оюутны гарын авлага татах хэсэг — Munkhchimeg-ийн хүсэлтээр.
-        Файл нь public/handbooks/student-handbook.docx-д хадгалагдсан;
-        татаж авах нэр нь "Оюутны гарын авлага.docx" болж браузер
-        дотор гарна. PDF-руу хөрвүүлэх бол ирээдүйд админ нь
-        student-handbook.pdf нэрээр solbino, button-ы href-г сольж
-        өгсний дараа.
-      */}
-      <Section background="cream-soft" spacing="sm">
-        <div className="mx-auto max-w-4xl">
-          <div className="overflow-hidden rounded-card border border-border-light bg-gradient-to-br from-white to-cream-soft shadow-card">
-            <div className="grid gap-6 p-7 md:grid-cols-[auto_1fr_auto] md:items-center md:gap-8 md:p-8">
-              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-400 ring-2 ring-gold-500/30">
-                <FileText className="h-6 w-6" />
-              </span>
-              <div className="min-w-0">
-                <h2 className="font-serif text-xl font-bold text-navy-900 md:text-2xl">
-                  {c.handbookTitle}
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-text-body md:text-[15px]">
-                  {c.handbookSubtitle}
-                </p>
+      {/* Оюутны гарын авлага — PDF flipbook reader */}
+      {(() => {
+        const pdfUrl = sl.get('student-life.handbook.fileUrl') || '';
+        return (
+          <Section background="cream-soft" spacing="sm">
+            <div className="mx-auto max-w-4xl">
+              <div className="overflow-hidden rounded-card border border-border-light bg-gradient-to-br from-white to-cream-soft shadow-card">
+                <div className="grid gap-6 p-7 md:grid-cols-[auto_1fr_auto] md:items-center md:gap-8 md:p-8">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-400 ring-2 ring-gold-500/30">
+                    <FileText className="h-6 w-6" />
+                  </span>
+                  <div className="min-w-0">
+                    <h2 className="font-serif text-xl font-bold text-navy-900 md:text-2xl">
+                      {c.handbookTitle}
+                    </h2>
+                    <p className="mt-2 text-sm leading-relaxed text-text-body md:text-[15px]">
+                      {c.handbookSubtitle}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                    {pdfUrl && (
+                      <a
+                        href="/student-handbook"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group inline-flex h-12 items-center justify-center gap-2 rounded-button bg-navy-900 px-6 text-sm font-bold uppercase tracking-[0.06em] text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-navy-900 md:h-14 md:px-8"
+                      >
+                        <BookOpen className="h-4 w-4 transition-transform group-hover:scale-110" />
+                        Нээж унших
+                      </a>
+                    )}
+                    <a
+                      href={pdfUrl || '/handbooks/student-handbook.docx'}
+                      download={pdfUrl ? 'Оюутны гарын авлага.pdf' : 'Оюутны гарын авлага.docx'}
+                      className="group inline-flex h-12 items-center justify-center gap-2 rounded-button border border-navy-900/30 bg-white px-6 text-sm font-bold uppercase tracking-[0.06em] text-navy-900 shadow-card transition-all hover:-translate-y-0.5 hover:bg-cream-soft md:h-14 md:px-8"
+                    >
+                      <Download className="h-4 w-4 transition-transform group-hover:scale-110" />
+                      {c.handbookCta}
+                    </a>
+                  </div>
+                </div>
               </div>
-              <a
-                href="/handbooks/student-handbook.docx"
-                download="Оюутны гарын авлага.docx"
-                className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-button bg-navy-900 px-6 text-sm font-bold uppercase tracking-[0.06em] text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-navy-900 md:h-14 md:px-8"
-              >
-                <Download className="h-4 w-4 transition-transform group-hover:scale-110" />
-                {c.handbookCta}
-              </a>
             </div>
-          </div>
-        </div>
-      </Section>
+          </Section>
+        );
+      })()}
 
       {/* Sub-nav — sticky chip strip with quick anchors */}
       <div className="sticky top-20 z-30 border-y border-border-light bg-white/95 backdrop-blur">

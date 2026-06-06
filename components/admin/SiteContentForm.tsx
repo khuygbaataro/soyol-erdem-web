@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
-import { ImageUpload } from '@/components/admin/ImageUpload';
+import { FileUpload, ImageUpload } from '@/components/admin/ImageUpload';
 import { useUploadGuard } from '@/lib/use-upload-guard';
 
 export interface SiteContentItem {
@@ -115,12 +115,24 @@ export function SiteContentForm({ items, groupLabel }: Props) {
                 hint={item.hint ?? undefined}
               >
                 {item.type === 'IMAGE' ? (
-                  <ImageUpload
-                    value={row.value}
-                    onChange={(url) => update(item.key, 'value', url)}
-                    folder="misc"
-                    onUploadingChange={onUploadingChange}
-                  />
+                  // Keys ending in `.fileUrl` store a PDF (e.g. handbook).
+                  item.key.endsWith('.fileUrl') ? (
+                    <FileUpload
+                      value={row.value}
+                      onChange={(url) => update(item.key, 'value', url)}
+                      folder="handbooks"
+                      hint="PDF файл сонгох (Гарын авлага)"
+                      onUploadingChange={onUploadingChange}
+                    />
+                  ) : (
+                    <ImageUpload
+                      value={row.value}
+                      onChange={(url) => update(item.key, 'value', url)}
+                      folder="misc"
+                      onUploadingChange={onUploadingChange}
+                    />
+                  )
+                )
                 ) : (
                   <div className="space-y-3">
                     {/* Canonical Mongolian — always shown */}
