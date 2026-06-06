@@ -75,7 +75,7 @@ function LoginInner() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={inputClasses}
-                placeholder="admin@soyolerdem.edu.mn"
+                placeholder=""
                 autoComplete="email"
               />
             </div>
@@ -93,7 +93,7 @@ function LoginInner() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={inputClasses}
-                placeholder="••••••••"
+                placeholder=""
                 autoComplete="current-password"
               />
             </div>
