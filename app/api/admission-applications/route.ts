@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { admissionApplicationSchema } from '@/lib/validation';
+import { sendTelegram } from '@/lib/telegram';
 
 const CITIZENSHIP_LABEL: Record<string, string> = {
   MN: 'Монгол',
@@ -68,6 +69,15 @@ export async function POST(req: Request) {
       message,
     },
   });
+
+  await sendTelegram(
+    `📋 Шинэ элсэлтийн анкет\n` +
+    `👤 ${fullName}\n` +
+    `🎓 ${DEGREE_LABEL[a.degree] ?? a.degree} — ${a.programName}\n` +
+    `🌐 ${CITIZENSHIP_LABEL[a.citizenship] ?? a.citizenship}\n` +
+    `📞 ${a.phones[0] ?? '—'}\n` +
+    `✉️ ${a.email}`,
+  );
 
   return NextResponse.json({ ok: true }, { status: 201 });
 }
