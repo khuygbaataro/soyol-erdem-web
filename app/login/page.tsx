@@ -111,15 +111,6 @@ function LoginInner() {
             </Button>
           </form>
 
-          <div className="mt-5 rounded-button bg-cream-soft p-3 text-xs text-text-muted">
-            <p className="font-semibold text-navy-900">Жишээ нэвтрэх (dev):</p>
-            <p className="mt-1">
-              <code className="rounded bg-white px-1.5 py-0.5">admin@soyolerdem.edu.mn</code>
-              {' / '}
-              <code className="rounded bg-white px-1.5 py-0.5">admin123</code>
-            </p>
-          </div>
-
           <div className="mt-6 text-center text-xs text-text-muted">
             <Link href="/" className="font-semibold text-navy-900 hover:text-gold-500">
               ← Нийтийн сайт руу буцах
