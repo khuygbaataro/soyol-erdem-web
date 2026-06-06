@@ -38,52 +38,82 @@ const BLOCK_ICONS = [Users, Briefcase, Globe2, Leaf] as const;
 // the shared partner list.
 
 export default async function InternationalPage() {
-  const [banners, locale] = await Promise.all([
+  const [banners, intlContent, locale] = await Promise.all([
     getSiteContentMap('banners'),
+    getSiteContentMap('international'),
     getServerLocale(),
   ]);
   const c = INTERNATIONAL_CONTENT[locale];
 
-  // Join the canonical (Mongolian) lists in lib/content.ts — which carry
-  // structural fields like logos and the original Japanese name — with
-  // the locale-specific strings keyed by index. The Japanese display
-  // name (`nameJp`) is intentionally suppressed in JP locale because
-  // the main `name` is already the kanji rendering.
+  const get = (key: string, fallback: string) =>
+    intlContent.get(key) || fallback;
+
+  // Hero + intro
+  const heroTitle    = get('international.hero.title',    c.heroTitle);
+  const heroSubtitle = get('international.hero.subtitle', c.heroSubtitle);
+  const intro        = get('international.intro',         c.intro);
+
+  // Callout blocks (up to 4)
+  const blocks = c.blocks.map((b, i) => ({
+    heading: get(`international.block.${i + 1}.heading`, b.heading),
+    body:    get(`international.block.${i + 1}.body`,    b.body),
+  }));
+
+  // Section titles
+  const japanPartnersTitle    = get('international.japanPartners.title',    c.japanPartnersTitle);
+  const japanPartnersSubtitle = get('international.japanPartners.subtitle', c.japanPartnersSubtitle);
+  const highSchoolsTitle      = get('international.highSchools.title',      c.highSchoolsTitle);
+  const highSchoolsSubtitle   = get('international.highSchools.subtitle',   c.highSchoolsSubtitle);
+  const domesticTitle         = get('international.domestic.title',         c.domesticTitle);
+  const domesticSubtitle      = get('international.domestic.subtitle',      c.domesticSubtitle);
+
+  // Japan partners — DB overrides individual fields; falls back to
+  // INTERNATIONAL_CONTENT bundle, then to the raw Mongolian canonical.
   const japanPartners: PartnerDetailed[] = JAPAN_PARTNERS_DETAILED.map(
     (p, idx) => {
+      const i = idx + 1;
       const tr = c.japanPartners[idx];
-      if (!tr) return p;
       return {
         ...p,
-        name: tr.name,
-        nameJp: locale === 'JP' ? undefined : p.nameJp,
-        location: tr.location,
-        partnerSince: tr.partnerSince,
-        detail: tr.detail,
-        headline: tr.headline,
+        name:         get(`international.japan.${i}.name`,         tr?.name         ?? p.name),
+        nameJp:       locale === 'JP' ? undefined : p.nameJp,
+        location:     get(`international.japan.${i}.location`,     tr?.location     ?? p.location ?? ''),
+        partnerSince: get(`international.japan.${i}.partnerSince`, tr?.partnerSince ?? p.partnerSince ?? ''),
+        headline:     get(`international.japan.${i}.headline`,     tr?.headline     ?? p.headline ?? ''),
+        detail:       get(`international.japan.${i}.detail`,       tr?.detail       ?? p.detail ?? ''),
       };
     },
   );
 
+  // High-school partners
   const highSchools: PartnerDetailed[] = JAPAN_HIGH_SCHOOLS.map((p, idx) => {
+    const i = idx + 1;
     const tr = c.highSchools[idx];
-    if (!tr) return p;
     return {
       ...p,
-      name: tr.name,
-      nameJp: locale === 'JP' ? undefined : p.nameJp,
-      location: tr.location,
-      partnerSince: tr.partnerSince,
-      detail: tr.detail,
-      headline: tr.headline,
+      name:         get(`international.hs.${i}.name`,         tr?.name         ?? p.name),
+      nameJp:       locale === 'JP' ? undefined : p.nameJp,
+      location:     get(`international.hs.${i}.location`,     tr?.location     ?? p.location ?? ''),
+      partnerSince: get(`international.hs.${i}.partnerSince`, tr?.partnerSince ?? p.partnerSince ?? ''),
+      headline:     get(`international.hs.${i}.headline`,     tr?.headline     ?? p.headline ?? ''),
+      detail:       get(`international.hs.${i}.detail`,       tr?.detail       ?? p.detail ?? ''),
     };
   });
 
+  // Domestic partners
   const domestic = DOMESTIC_PARTNERS.map((d, idx) => {
+    const i = idx + 1;
     const tr = c.domestic[idx];
-    return tr
-      ? { ...d, name: tr.name, detail: tr.detail, activities: tr.activities }
-      : d;
+    const activitiesRaw = intlContent.get(`international.dom.${i}.activities`) || '';
+    const activities = activitiesRaw
+      ? activitiesRaw.split('\n').map((a) => a.trim()).filter(Boolean)
+      : tr?.activities ?? d.activities;
+    return {
+      ...d,
+      name:       get(`international.dom.${i}.name`,   tr?.name   ?? d.name),
+      detail:     get(`international.dom.${i}.detail`, tr?.detail ?? d.detail ?? ''),
+      activities,
+    };
   });
 
   const otherPartners = PARTNER_UNIVERSITIES.map((u, idx) => {
@@ -94,8 +124,8 @@ export default async function InternationalPage() {
   return (
     <>
       <PageHero
-        title={c.heroTitle}
-        subtitle={c.heroSubtitle}
+        title={heroTitle}
+        subtitle={heroSubtitle}
         breadcrumb={[
           { label: c.breadcrumbHome, href: '/' },
           { label: c.breadcrumbThis },
@@ -106,14 +136,14 @@ export default async function InternationalPage() {
       {/* Intro */}
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-base leading-relaxed text-text-body">{c.intro}</p>
+          <p className="text-base leading-relaxed text-text-body">{intro}</p>
         </div>
       </Section>
 
       {/* Four themed callout blocks */}
       <Section background="cream-soft">
         <div className="space-y-6">
-          {c.blocks.map((b, i) => {
+          {blocks.map((b, i) => {
             const Icon = BLOCK_ICONS[i] ?? Globe2;
             return (
               <article
@@ -142,8 +172,8 @@ export default async function InternationalPage() {
       {/* Detailed Japan partner profiles */}
       <Section background="white">
         <SectionTitle
-          title={c.japanPartnersTitle}
-          subtitle={c.japanPartnersSubtitle.replace(
+          title={japanPartnersTitle}
+          subtitle={japanPartnersSubtitle.replace(
             '{count}',
             String(japanPartners.length),
           )}
@@ -164,8 +194,8 @@ export default async function InternationalPage() {
       {/* High-school partners */}
       <Section background="cream-soft">
         <SectionTitle
-          title={c.highSchoolsTitle}
-          subtitle={c.highSchoolsSubtitle}
+          title={highSchoolsTitle}
+          subtitle={highSchoolsSubtitle}
         />
         <div className="grid gap-4 md:grid-cols-2">
           {highSchools.map((p) => (
@@ -182,7 +212,7 @@ export default async function InternationalPage() {
 
       {/* Domestic Mongolia partners */}
       <Section background="white">
-        <SectionTitle title={c.domesticTitle} subtitle={c.domesticSubtitle} />
+        <SectionTitle title={domesticTitle} subtitle={domesticSubtitle} />
         <div className="grid gap-5 md:grid-cols-3">
           {domestic.map((d) => (
             <article

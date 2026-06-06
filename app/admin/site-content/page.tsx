@@ -14,6 +14,7 @@ const GROUP_LABELS: Record<string, string> = {
   admission: 'Элсэлт',
   banners: 'Banner зургууд',
   research: 'Эрдэм шинжилгээ',
+  international: 'Гадаад харилцаа',
   elearning: 'elearning',
   'student-life': 'Оюутны амьдрал',
   careers: 'Нээлттэй ажлын байр',
