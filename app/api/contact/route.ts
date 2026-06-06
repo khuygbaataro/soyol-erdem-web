@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   });
 
   await sendTelegram(
-    `📩 <b>Шинэ зурвас</b>\n` +
+    `📩 Шинэ зурвас\n` +
     `👤 ${d.name}\n` +
     `📌 ${d.subject}\n` +
     `📞 ${d.phone || '—'}\n` +

@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   };
 
   await sendTelegram(
-    `🎓 <b>Шинэ элсэлтийн хүсэлт</b>\n` +
+    `🎓 Шинэ элсэлтийн хүсэлт\n` +
     `👤 Сурагч: ${d.studentName}\n` +
     `🏫 Сургууль: ${d.currentSchool || '—'}\n` +
     `📚 Чиглэл: ${d.track ? (trackLabel[d.track] ?? d.track) : '—'}\n` +
