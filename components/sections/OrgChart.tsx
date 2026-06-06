@@ -10,19 +10,19 @@ import type { TranslationKey } from '@/lib/i18n/messages';
 /**
  * Соёл Эрдэм Дээд Сургуулийн бүтэц, зохион байгуулалт.
  *
- * Layout (Munkhchimeg's latest reference):
+ * Layout (reference):
  *
  *                       [Удирдах зөвлөл]
  *                              │
- *                      [Эрдмийн зөвлөл]
+ *   [Эрдмийн зөвлөл] ────── [Захирал] ────── [Захиргааны зөвлөл]
  *                              │
- *   [Захиргааны зөвлөл] ─── [Захирал] ─── [Чанарын үнэлгээний алба]
+ *                  [Чанарын үнэлгээний алба]
  *                              │
  *      ┌──────────────┬────────┴────────┬──────────────┐
- *   [Сургалт]  [Эрдэмтэн нар.б.]   [Захиргаа]   [Багшийн хөгжил]
- *      ├ Япон судлал    ├ Ахисан түвш.    ├ Санхүү аж ахуй     ├ Гадаад харилц.
- *      ├ МТ танхим      ├ Судалгааны төв  ├ Маркетинг          └ Оюутны зөвлөл
- *      ├ "Хажимэ" ном.
+ *   [Сургалт]  [Эрдэмтэн нар.б.]   [Захиргаа,       [Багшийн хөгжил]
+ *      ├ Япон судлал    ├ Ахисан түвш.   санхүү аж ахуй]  ├ Гадаад харилц.
+ *      ├ МТ танхим      └ Судалгааны төв ├ Архив           └ Оюутны зөвлөл
+ *      ├ "Хажимэ" ном.                   └ Маркетинг
  *      └ Дадлагын бааз
  *
  * Every node is clickable — including the councils and headers — and
@@ -350,9 +350,7 @@ const PILLARS: Pillar[] = [
     id: 'admin-finance',
     titleKey: 'orgchart.pillar.admin',
     units: [
-      // Munkhchimeg-ийн зурганд "Захиргаа" багана дотор Архив биш —
-      // "Санхүү аж ахуй" + "Маркетингийн алба" хоёр л үлдсэн.
-      { id: 'finance', labelKey: 'orgchart.unit.finance' },
+      { id: 'archive', labelKey: 'orgchart.unit.archive' },
       { id: 'marketing', labelKey: 'orgchart.unit.marketing' },
     ],
   },
@@ -451,26 +449,15 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
 
           <Connector height={6} />
 
-          {/* Row 2 — Эрдмийн зөвлөл (single, centered under Board) */}
-          <ChartNode
-            id="academic-council"
-            label={t('orgchart.academicCouncil')}
-            level="mid"
-            onSelect={setSelectedId}
-            hasStaff={hasStaff('academic-council')}
-          />
-
-          <Connector height={6} />
-
-          {/* Row 3 — Захиргааны зөвлөл ← ЗАХИРАЛ → Чанарын үнэлгээний алба */}
+          {/* Row 2 — Эрдмийн зөвлөл ← ЗАХИРАЛ → Захиргааны зөвлөл */}
           <div className="flex w-full max-w-4xl items-center justify-center gap-0 sm:gap-3">
             <div className="hidden flex-1 items-center justify-end sm:flex">
               <ChartNode
-                id="admin-council"
-                label={t('orgchart.adminCouncil')}
+                id="academic-council"
+                label={t('orgchart.academicCouncil')}
                 level="mid"
                 onSelect={setSelectedId}
-                hasStaff={hasStaff('admin-council')}
+                hasStaff={hasStaff('academic-council')}
               />
               <SiblingConnector />
             </div>
@@ -484,11 +471,11 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
             <div className="hidden flex-1 items-center sm:flex">
               <SiblingConnector />
               <ChartNode
-                id="quality-office"
-                label={t('orgchart.qualityOffice')}
+                id="admin-council"
+                label={t('orgchart.adminCouncil')}
                 level="mid"
                 onSelect={setSelectedId}
-                hasStaff={hasStaff('quality-office')}
+                hasStaff={hasStaff('admin-council')}
               />
             </div>
           </div>
@@ -496,20 +483,31 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
           {/* mobile-only sibling stack */}
           <div className="mt-4 flex flex-col items-center gap-2 sm:hidden">
             <ChartNode
+              id="academic-council"
+              label={t('orgchart.academicCouncil')}
+              level="mid"
+              onSelect={setSelectedId}
+              hasStaff={hasStaff('academic-council')}
+            />
+            <ChartNode
               id="admin-council"
               label={t('orgchart.adminCouncil')}
               level="mid"
               onSelect={setSelectedId}
               hasStaff={hasStaff('admin-council')}
             />
-            <ChartNode
-              id="quality-office"
-              label={t('orgchart.qualityOffice')}
-              level="mid"
-              onSelect={setSelectedId}
-              hasStaff={hasStaff('quality-office')}
-            />
           </div>
+
+          <Connector height={6} />
+
+          {/* Row 3 — Чанарын үнэлгээний алба (centered, directly under rector) */}
+          <ChartNode
+            id="quality-office"
+            label={t('orgchart.qualityOffice')}
+            level="mid"
+            onSelect={setSelectedId}
+            hasStaff={hasStaff('quality-office')}
+          />
         </div>
 
         {/* Branching connector — 3-row → 4 pillars */}
