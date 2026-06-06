@@ -8,6 +8,7 @@ import {
   Users as UsersIcon,
 } from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
+import { formatMNDate } from '@/lib/utils';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { StatusBadge } from '@/components/admin/StatusBadge';
@@ -220,7 +221,7 @@ export default async function DashboardPage() {
                       </p>
                       <p className="truncate text-xs text-text-muted">
                         {c.subject} ·{' '}
-                        {new Date(c.createdAt).toLocaleString('mn-MN', {
+                        {formatMNDate(c.createdAt, {
                           month: 'short',
                           day: 'numeric',
                           hour: '2-digit',

@@ -5,6 +5,7 @@ import { DataTable, type Column } from '@/components/admin/DataTable';
 import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
 import { prisma } from '@/lib/prisma';
+import { formatMNDate } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Зурвас' };
@@ -99,7 +100,7 @@ export default async function AdminMessagesPage() {
       header: 'Огноо',
       cell: (m) => (
         <span className="text-xs text-text-muted">
-          {new Date(m.createdAt).toLocaleString('mn-MN', {
+          {formatMNDate(m.createdAt, {
             year: 'numeric',
             month: 'short',
             day: 'numeric',

@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
 import { MarkReadToggle } from './MarkReadToggle';
 import { prisma } from '@/lib/prisma';
+import { formatMNDate } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Зурвас' };
@@ -35,7 +36,7 @@ export default async function MessageDetailPage({
     <>
       <PageHeader
         title={item.subject}
-        subtitle={`${item.name} · ${date.toLocaleString('mn-MN', {
+        subtitle={`${item.name} · ${formatMNDate(date, {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
@@ -178,7 +179,7 @@ export default async function MessageDetailPage({
                   Хүлээж авсан
                 </dt>
                 <dd className="mt-0.5 text-text-body">
-                  {date.toLocaleString('mn-MN', {
+                  {formatMNDate(date, {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',

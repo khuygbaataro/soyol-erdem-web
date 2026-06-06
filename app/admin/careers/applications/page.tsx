@@ -1,4 +1,5 @@
 import { PageHeader } from '@/components/admin/PageHeader';
+import { formatMNDate } from '@/lib/utils';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { prisma } from '@/lib/prisma';
@@ -63,7 +64,13 @@ export default async function JobApplicationsPage() {
                   <div className="flex items-center gap-2">
                     <Badge variant="gold">{a.position}</Badge>
                     <span className="text-xs text-text-muted">
-                      {new Date(a.createdAt).toLocaleString('mn-MN')}
+                      {formatMNDate(a.createdAt, {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
                     </span>
                   </div>
                 </div>

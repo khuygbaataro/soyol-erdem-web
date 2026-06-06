@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
 import { prisma } from '@/lib/prisma';
+import { formatMNDate } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Элсэлтийн хүсэлт' };
@@ -53,7 +54,7 @@ export default async function HighSchoolApplicationDetailPage({
     <>
       <PageHeader
         title={item.studentName}
-        subtitle={`Хүсэлт хүлээж авсан · ${date.toLocaleString('mn-MN', {
+        subtitle={`Хүсэлт хүлээж авсан · ${formatMNDate(date, {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
@@ -206,7 +207,7 @@ export default async function HighSchoolApplicationDetailPage({
             <SidebarField
               icon={Calendar}
               label="Хүлээж авсан"
-              value={date.toLocaleString('mn-MN', {
+              value={formatMNDate(date, {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
