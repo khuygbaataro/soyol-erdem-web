@@ -55,6 +55,13 @@ export function StaffForm({
 
   const keys = positionKeys ?? STAFF_POSITION_KEYS;
 
+  // Determine if the initial positionKey is a custom (not-in-list) key.
+  const isInitialCustom =
+    !!initial.positionKey && !keys.some((k) => k.key === initial.positionKey);
+
+  const [dropdownVal, setDropdownVal] = useState(
+    isInitialCustom ? '__custom__' : (initial.positionKey ?? ''),
+  );
   const [positionKey, setPositionKey] = useState(initial.positionKey ?? '');
   const [position, setPosition] = useState(initial.position ?? '');
   const [name, setName] = useState(initial.name ?? '');
@@ -72,20 +79,24 @@ export function StaffForm({
   const [active, setActive] = useState(initial.active ?? true);
   const [order, setOrder] = useState<string>(initial.order?.toString() ?? '0');
 
-  function handleKeyChange(v: string) {
-    setPositionKey(v);
-    // Auto-fill `position` from the predefined label if it's blank or
-    // matches the previous key's label (so admin doesn't have to retype).
-    const match = keys.find((k) => k.key === v);
-    if (match && (!position || keys.some((k) => k.label === position))) {
-      setPosition(match.label);
+  function handleDropdownChange(v: string) {
+    setDropdownVal(v);
+    if (v === '__custom__') {
+      setPositionKey('');
+    } else {
+      setPositionKey(v);
+      // Auto-fill `position` label when a predefined key is selected.
+      const match = keys.find((k) => k.key === v);
+      if (match && (!position || keys.some((k) => k.label === position))) {
+        setPosition(match.label);
+      }
     }
   }
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!positionKey) {
-      toast.error('Албан тушаал сонгоно уу');
+      toast.error(dropdownVal === '__custom__' ? 'Chart node key оруулна уу' : 'Албан тушаал сонгоно уу');
       return;
     }
     startTransition(async () => {
@@ -133,9 +144,9 @@ export function StaffForm({
           hint="Бүтэц зураг дээрх алин нод дээр энэ ажилтны мэдээлэл харагдахыг сонго."
         >
           <select
-            required
-            value={positionKey}
-            onChange={(e) => handleKeyChange(e.target.value)}
+            required={dropdownVal !== '__custom__'}
+            value={dropdownVal}
+            onChange={(e) => handleDropdownChange(e.target.value)}
             className={inputClasses}
           >
             <option value="">-- Сонгоно уу --</option>
@@ -144,7 +155,17 @@ export function StaffForm({
                 {k.label}
               </option>
             ))}
+            <option value="__custom__">＋ Шинэ нэмэх…</option>
           </select>
+          {dropdownVal === '__custom__' && (
+            <input
+              required
+              value={positionKey}
+              onChange={(e) => setPositionKey(e.target.value.trim().toLowerCase().replace(/\s+/g, '-'))}
+              className={`${inputClasses} mt-2`}
+              placeholder="Жишээ: quality-dept  (латин үсэг, зураас)"
+            />
+          )}
         </FormField>
 
         <FormField
