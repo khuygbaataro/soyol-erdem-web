@@ -44,39 +44,25 @@ export default async function AboutPage() {
     'https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?auto=format&fit=crop&w=1600&q=80',
   );
 
-  // Slogan + MVV come from the localised bundle; the admin-editable
-  // site-content key only overrides in Mongolian so MN edits still
-  // surface but EN/JP get the curated translations.
-  const sloganTitle = isMn
-    ? content(siteContent, 'about.slogan.title', about.mvv.slogan.title)
-    : about.mvv.slogan.title;
-  const sloganText = isMn
-    ? content(siteContent, 'about.slogan.text', about.mvv.slogan.text)
-    : about.mvv.slogan.text;
+  // MVV cards — admin-editable for MN locale; EN/JP fall back to bundle.
+  const c = (key: string, fallback: string) =>
+    isMn ? content(siteContent, key, fallback) : fallback;
 
-  // Build a localised MVV array. We keep the icons from the static
-  // content.ts since icons aren't translatable.
+  const missionTitle = c('about.mission.title', about.mvv.mission.title);
+  const missionText  = c('about.mission.text',  about.mvv.mission.text);
+  const visionTitle  = c('about.vision.title',  about.mvv.vision.title);
+  const visionText   = c('about.vision.text',   about.mvv.vision.text);
+  const valuesTitle  = c('about.values.title',  about.mvv.values.title);
+  const valuesText   = c('about.values.text',   about.mvv.values.text);
+  const sloganTitle  = c('about.slogan.title',  about.mvv.slogan.title);
+  const sloganText   = c('about.slogan.text',   about.mvv.slogan.text);
+
+  // Build a localised MVV array. Icons stay static (not translatable).
   const mvv = [
-    {
-      ...MISSION_VISION_VALUES.mission,
-      title: about.mvv.mission.title,
-      text: about.mvv.mission.text,
-    },
-    {
-      ...MISSION_VISION_VALUES.vision,
-      title: about.mvv.vision.title,
-      text: about.mvv.vision.text,
-    },
-    {
-      ...MISSION_VISION_VALUES.values,
-      title: about.mvv.values.title,
-      text: about.mvv.values.text,
-    },
-    {
-      ...MISSION_VISION_VALUES.slogan,
-      title: sloganTitle,
-      text: sloganText,
-    },
+    { ...MISSION_VISION_VALUES.mission, title: missionTitle, text: missionText },
+    { ...MISSION_VISION_VALUES.vision,  title: visionTitle,  text: visionText  },
+    { ...MISSION_VISION_VALUES.values,  title: valuesTitle,  text: valuesText  },
+    { ...MISSION_VISION_VALUES.slogan,  title: sloganTitle,  text: sloganText  },
   ];
 
   // Localised version of the 4 numbered "Танилцуулга" cards. We borrow
