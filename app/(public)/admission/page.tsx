@@ -102,33 +102,67 @@ export default async function AdmissionPage() {
   ]);
 
   const c = ADMISSION_CONTENT[locale];
-  // The icon + online flag stay on the original ADMISSION_PROGRAMS
-  // array (those aren't translatable); we look up the canonical program
-  // by `id` and replace the title / intro / bullets / cta with the
-  // localised text.
+  const isMn = locale === 'MN';
+  // Helper: read from DB (MN only), fall back to bundle value.
+  const g = (key: string, fallback: string) =>
+    isMn ? (adm.get(key) || fallback) : fallback;
+
+  // Hero
+  const heroTitle    = g('admission.hero.title',    c.heroTitle);
+  const heroSubtitle = g('admission.hero.subtitle', c.heroSubtitle);
+
+  // Section titles
+  const sectionInfoTitle    = g('admission.section.info.title',         c.sectionInfoTitle);
+  const sectionInfoSubtitle = g('admission.section.info.subtitle',      c.sectionInfoSubtitle);
+  const stepsTitle          = g('admission.section.steps.title',        c.stepsTitle);
+  const stepsSubtitle       = g('admission.section.steps.subtitle',     c.stepsSubtitle);
+  const requirementsHeading = g('admission.section.requirements.heading', c.requirementsHeading);
+  const foreignTitle        = g('admission.section.foreign.title',      c.foreignTitle);
+  const paymentTitle        = g('admission.section.payment.title',      c.paymentTitle);
+  const paymentSubtitle     = g('admission.section.payment.subtitle',   c.paymentSubtitle);
+  const faqTitle            = g('admission.section.faq.title',          c.faqTitle);
+
+  // Programs — DB overrides per field; icons + online flag stay static.
   const programs = ADMISSION_PROGRAMS.map((p) => {
     const tr = c.programs.find((x) => x.id === p.id);
-    return tr
-      ? {
-          ...p,
-          title: tr.title,
-          intro: tr.intro,
-          bulletsLabel: tr.bulletsLabel,
-          bullets: tr.bullets,
-          bullets2Label: tr.bullets2Label,
-          bullets2: tr.bullets2,
-          cta: tr.cta,
-        }
-      : p;
+    const key = `admission.program.${p.id}`;
+    const bulletsRaw = g(`${key}.bullets`, tr?.bullets?.join('\n') ?? p.bullets.join('\n'));
+    const bullets2Raw = g(`${key}.bullets2`, tr?.bullets2?.join('\n') ?? p.bullets2?.join('\n') ?? '');
+    return {
+      ...p,
+      title:        g(`${key}.title`,        tr?.title        ?? p.title),
+      intro:        g(`${key}.intro`,        tr?.intro        ?? p.intro),
+      bulletsLabel: g(`${key}.bulletsLabel`, tr?.bulletsLabel ?? p.bulletsLabel ?? ''),
+      bullets:      bulletsRaw.split('\n').map(s => s.trim()).filter(Boolean),
+      bullets2Label: g(`${key}.bullets2Label`, tr?.bullets2Label ?? p.bullets2Label ?? ''),
+      bullets2:     bullets2Raw ? bullets2Raw.split('\n').map(s => s.trim()).filter(Boolean) : [],
+      cta:          g(`${key}.cta`,          tr?.cta          ?? p.cta),
+    };
   });
-  // Localised scholarships share the icon from the static list.
+
+  // Steps
+  const steps = c.steps.map((s, i) => ({
+    ...s,
+    title:       g(`admission.step.${i+1}.title`,       s.title),
+    description: g(`admission.step.${i+1}.description`, s.description),
+  }));
+
+  // Requirements
+  const reqRaw = g('admission.requirements', c.requirements.join('\n'));
+  const requirements = reqRaw.split('\n').map(s => s.trim()).filter(Boolean);
+
+  // Scholarships — icon stays static.
   const scholarships = SCHOLARSHIPS.map((s, idx) => ({
     icon: s.icon,
-    title: c.scholarships[idx]?.title ?? s.title,
-    description: c.scholarships[idx]?.description ?? s.description,
+    title:       g(`admission.scholarship.${idx+1}.title`,       c.scholarships[idx]?.title       ?? s.title),
+    description: g(`admission.scholarship.${idx+1}.description`, c.scholarships[idx]?.description ?? s.description),
   }));
-  // FAQ stays in the i18n bundle entirely.
-  const faqItems = c.faq;
+
+  // FAQ
+  const faqItems = c.faq.map((f, i) => ({
+    question: g(`admission.faq.${i+1}.question`, f.question),
+    answer:   g(`admission.faq.${i+1}.answer`,   f.answer),
+  }));
 
   const permits = [1, 2, 3]
     .map((i) => ({
@@ -148,9 +182,9 @@ export default async function AdmissionPage() {
   return (
     <>
       <PageHero
-        title={c.heroTitle}
-        subtitle={c.heroSubtitle}
-        breadcrumb={[{ label: HOME_CRUMB[locale], href: '/' }, { label: c.heroTitle }]}
+        title={heroTitle}
+        subtitle={heroSubtitle}
+        breadcrumb={[{ label: HOME_CRUMB[locale], href: '/' }, { label: heroTitle }]}
         backgroundImage={banners.get('page.admission.banner') || undefined}
       />
 
@@ -176,8 +210,8 @@ export default async function AdmissionPage() {
       {/* Section 1 — Мэргэжлээ сонгох (8 program boxes) */}
       <Section background="cream-soft" id="info">
         <SectionTitle
-          title={c.sectionInfoTitle}
-          subtitle={c.sectionInfoSubtitle}
+          title={sectionInfoTitle}
+          subtitle={sectionInfoSubtitle}
         />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {programs.map((p) => (
@@ -266,9 +300,9 @@ export default async function AdmissionPage() {
 
       {/* Steps */}
       <Section background="white">
-        <SectionTitle title={c.stepsTitle} subtitle={c.stepsSubtitle} />
+        <SectionTitle title={stepsTitle} subtitle={stepsSubtitle} />
         <div className="hidden items-start justify-between gap-2 lg:flex">
-          {c.steps.map((s, idx) => (
+          {steps.map((s, idx) => (
             <TimelineStep
               key={s.number}
               number={s.number}
@@ -280,7 +314,7 @@ export default async function AdmissionPage() {
           ))}
         </div>
         <div className="space-y-4 lg:hidden">
-          {c.steps.map((s) => (
+          {steps.map((s) => (
             <Card key={s.number} className="flex gap-4">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold-500 text-base font-bold text-navy-900">
                 {s.number}
@@ -298,11 +332,11 @@ export default async function AdmissionPage() {
       <Section background="cream-soft">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-h2 font-bold text-navy-900">
-            {c.requirementsHeading}
+            {requirementsHeading}
           </h2>
           <div className="mt-4 h-1 w-16 rounded-full bg-gold-500" />
           <ul className="mt-6 space-y-3">
-            {c.requirements.map((req) => (
+            {requirements.map((req) => (
               <li key={req} className="flex items-start gap-3 text-text-body">
                 <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
                   <Check className="h-3.5 w-3.5" />
@@ -316,7 +350,7 @@ export default async function AdmissionPage() {
 
       {/* Section 2 — Гадаад оюутан элсэх */}
       <Section background="white" id="foreign">
-        <SectionTitle title={c.foreignTitle} />
+        <SectionTitle title={foreignTitle} />
 
         {/* Intro band — full-width navy gradient hero with a decorative
             "plane + globe" cluster on the right. Reads as a section
@@ -447,7 +481,7 @@ export default async function AdmissionPage() {
 
       {/* Section 3 — Төлбөр, хөнгөлөлт */}
       <Section background="cream-soft" id="payment">
-        <SectionTitle title={c.paymentTitle} subtitle={c.paymentSubtitle} />
+        <SectionTitle title={paymentTitle} subtitle={paymentSubtitle} />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {scholarships.map((s) => {
             const Icon = s.icon;
@@ -474,7 +508,7 @@ export default async function AdmissionPage() {
 
       {/* FAQ */}
       <Section background="white" id="faq">
-        <SectionTitle title={c.faqTitle} />
+        <SectionTitle title={faqTitle} />
         <div className="mx-auto max-w-2xl">
           <Accordion items={faqItems} />
         </div>
