@@ -132,7 +132,6 @@ export function SiteContentForm({ items, groupLabel }: Props) {
                       onUploadingChange={onUploadingChange}
                     />
                   )
-                )
                 ) : (
                   <div className="space-y-3">
                     {/* Canonical Mongolian — always shown */}
