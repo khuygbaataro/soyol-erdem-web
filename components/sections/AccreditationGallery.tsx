@@ -14,36 +14,30 @@ interface Certificate {
   altKey: TranslationKey;
 }
 
-const CERTIFICATES: Certificate[] = [
-  {
-    year: 2003,
-    src: '/accreditation/cert-2003.jpg',
-    captionKey: 'accreditation.cap1',
-    altKey: 'accreditation.alt1',
-  },
-  {
-    year: 2010,
-    src: '/accreditation/cert-2010.jpg',
-    captionKey: 'accreditation.cap2',
-    altKey: 'accreditation.alt2',
-  },
-  {
-    year: 2020,
-    src: '/accreditation/cert-2020.jpg',
-    captionKey: 'accreditation.cap3',
-    altKey: 'accreditation.alt3',
-  },
+const STATIC_CERTIFICATES: Certificate[] = [
+  { year: 2003, src: '/accreditation/cert-2003.jpg', captionKey: 'accreditation.cap1', altKey: 'accreditation.alt1' },
+  { year: 2010, src: '/accreditation/cert-2010.jpg', captionKey: 'accreditation.cap2', altKey: 'accreditation.alt2' },
+  { year: 2020, src: '/accreditation/cert-2020.jpg', captionKey: 'accreditation.cap3', altKey: 'accreditation.alt3' },
 ];
+
+interface DbCert { year: number; src: string; caption: string; }
 
 /**
  * Accreditation certificates strip — three cards stacked below the timeline
  * on /about/history. Each card frames the certificate image like a printed
  * award and opens a lightbox modal on click for the full-size scan.
  */
-export function AccreditationGallery() {
+export function AccreditationGallery({ certs: dbCerts }: { certs?: DbCert[] | null }) {
   const t = useTranslation();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
+
+  // When DB certs are provided, convert to a unified display format.
+  const CERTIFICATES: (Certificate | { year: number; src: string; caption: string; captionKey?: never; altKey?: never })[] =
+    dbCerts ?? STATIC_CERTIFICATES;
+
   const active = activeIdx !== null ? CERTIFICATES[activeIdx] : null;
+  const getCaption = (c: typeof CERTIFICATES[number]) =>
+    'captionKey' in c && c.captionKey ? t(c.captionKey) : (c as DbCert).caption ?? '';
   // EN locale leaves the year suffix empty so the badge reads "2003"
   // rather than "2003 он"; MN keeps "он" and JP renders "年".
   const yearSuffix = t('accreditation.year');
@@ -81,7 +75,7 @@ export function AccreditationGallery() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={c.src}
-                  alt={t(c.altKey)}
+                  alt={'altKey' in c && c.altKey ? t(c.altKey) : getCaption(c)}
                   className="absolute inset-0 h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                 />
               </div>
@@ -99,7 +93,7 @@ export function AccreditationGallery() {
                 {formatYear(c.year)}
               </p>
               <p className="mt-1 text-sm font-bold leading-snug text-navy-900">
-                {t(c.captionKey)}
+                {getCaption(c)}
               </p>
             </div>
           </button>
@@ -116,7 +110,7 @@ export function AccreditationGallery() {
             transition={{ duration: 0.2 }}
             role="dialog"
             aria-modal="true"
-            aria-label={t(active.captionKey)}
+            aria-label={getCaption(active)}
             className="fixed inset-0 z-50 flex items-center justify-center bg-navy-900/85 px-4 py-8 backdrop-blur-sm"
             onClick={(e) => {
               if (e.target === e.currentTarget) setActiveIdx(null);
@@ -142,7 +136,7 @@ export function AccreditationGallery() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={active.src}
-                  alt={t(active.altKey)}
+                  alt={getCaption(active)}
                   className="mx-auto h-auto max-h-[75vh] w-auto rounded-sm bg-white object-contain shadow-card"
                 />
               </div>
@@ -152,7 +146,7 @@ export function AccreditationGallery() {
                   {formatYear(active.year)}
                 </p>
                 <p className="mt-1 font-serif text-lg font-bold text-navy-900">
-                  {t(active.captionKey)}
+                  {getCaption(active)}
                 </p>
               </div>
             </motion.div>

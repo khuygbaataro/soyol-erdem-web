@@ -431,3 +431,31 @@ model Partner {
 
   @@index([type, order])
 }
+
+/// Сургуулийн түүхийн цаг хугацааны шугам — /about/history
+model TimelineItem {
+  id          String   @id @default(cuid())
+  year        Int
+  title       String
+  description String
+  active      Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+/// Магадлан итгэмжлэлийн гэрчилгээ — /about/history
+model Accreditation {
+  id        String   @id @default(cuid())
+  year      Int
+  title     String
+  image     String
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}

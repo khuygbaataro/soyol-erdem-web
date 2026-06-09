@@ -8,6 +8,7 @@ import {
   BookOpen,
   Briefcase,
   Building2,
+  Clock,
   ChevronsLeft,
   FileText,
   GraduationCap,
@@ -59,6 +60,7 @@ const NAV: readonly NavGroup[] = [
       { label: 'Сургалт', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
       { label: 'Ажилтнууд', href: '/admin/staff', icon: Users, roles: ['ADMIN'] },
       { label: 'Хамтрагч байгуулл.', href: '/admin/partners', icon: Building2, roles: ['ADMIN'] },
+      { label: 'Сургуулийн түүх', href: '/admin/history', icon: Clock, roles: ['ADMIN'] },
     ],
   },
   {
