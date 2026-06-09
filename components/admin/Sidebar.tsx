@@ -7,6 +7,7 @@ import {
   BarChart3,
   BookOpen,
   Briefcase,
+  Building2,
   ChevronsLeft,
   FileText,
   GraduationCap,
@@ -57,6 +58,7 @@ const NAV: readonly NavGroup[] = [
       { label: 'Эрдэм шинжилгээ', href: '/admin/research', icon: Microscope, roles: ['ADMIN', 'RESEARCHER'] },
       { label: 'Сургалт', href: '/admin/programs', icon: GraduationCap, roles: ['ADMIN'] },
       { label: 'Ажилтнууд', href: '/admin/staff', icon: Users, roles: ['ADMIN'] },
+      { label: 'Хамтрагч байгуулл.', href: '/admin/partners', icon: Building2, roles: ['ADMIN'] },
     ],
   },
   {

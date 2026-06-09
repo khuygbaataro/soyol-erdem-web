@@ -399,3 +399,35 @@ model HighSchoolApplication {
 
   @@index([read, createdAt])
 }
+
+/// Хамтрагч байгуулл. — /international хуудсанд харагдах карт.
+/// type: "japan-university" | "japan-highschool" | "domestic"
+model Partner {
+  id           String   @id @default(cuid())
+  /// "japan-university" | "japan-highschool" | "domestic"
+  type         String
+  /// Монгол нэр
+  name         String
+  /// Японы нэр (кана/кандж)
+  nameJp       String?
+  /// Logo зургийн URL (Vercel Blob)
+  logo         String?
+  /// Badge текст: "50% хөнгөлөлт (их сургууль)"
+  headline     String?
+  /// "Япон, Токио"
+  location     String?
+  /// "2005 оны 9 сар"
+  partnerSince String?
+  /// Дэлгэрэнгүй тайлбар
+  detail       String?
+  /// Вэбийн хаяг (дотоод байгуулл.-д ашиглана)
+  url          String?
+  /// Дотоод байгуулл.-ын хамтарсан үйл ажиллагаа (мөр тус бүр = нэг зүйл)
+  activities   String?
+  active       Boolean  @default(true)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([type, order])
+}

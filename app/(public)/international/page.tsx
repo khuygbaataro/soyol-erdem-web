@@ -23,6 +23,7 @@ import {
   PARTNER_UNIVERSITIES,
   type PartnerDetailed,
 } from '@/lib/content';
+import { prisma } from '@/lib/prisma';
 import { getServerLocale } from '@/lib/i18n/server';
 import { INTERNATIONAL_CONTENT } from '@/lib/i18n/content';
 
@@ -38,10 +39,11 @@ const BLOCK_ICONS = [Users, Briefcase, Globe2, Leaf] as const;
 // the shared partner list.
 
 export default async function InternationalPage() {
-  const [banners, intlContent, locale] = await Promise.all([
+  const [banners, intlContent, locale, dbPartners] = await Promise.all([
     getSiteContentMap('banners'),
     getSiteContentMap('international'),
     getServerLocale(),
+    prisma.partner.findMany({ where: { active: true }, orderBy: [{ type: 'asc' }, { order: 'asc' }] }).catch(() => []),
   ]);
   const c = INTERNATIONAL_CONTENT[locale];
 
@@ -67,40 +69,31 @@ export default async function InternationalPage() {
   const domesticTitle         = get('international.domestic.title',         c.domesticTitle);
   const domesticSubtitle      = get('international.domestic.subtitle',      c.domesticSubtitle);
 
-  // Japan partners — DB overrides individual fields; falls back to
-  // INTERNATIONAL_CONTENT bundle, then to the raw Mongolian canonical.
-  const japanPartners: PartnerDetailed[] = JAPAN_PARTNERS_DETAILED.map(
-    (p, idx) => {
-      const i = idx + 1;
-      const tr = c.japanPartners[idx];
-      return {
-        ...p,
-        name:         get(`international.japan.${i}.name`,         tr?.name         ?? p.name),
-        nameJp:       locale === 'JP' ? undefined : p.nameJp,
-        location:     get(`international.japan.${i}.location`,     tr?.location     ?? p.location ?? ''),
-        partnerSince: get(`international.japan.${i}.partnerSince`, tr?.partnerSince ?? p.partnerSince ?? ''),
-        headline:     get(`international.japan.${i}.headline`,     tr?.headline     ?? p.headline ?? ''),
-        detail:       get(`international.japan.${i}.detail`,       tr?.detail       ?? p.detail ?? ''),
-      };
-    },
-  );
+  // Japan partners — DB takes priority over static fallback.
+  const dbJapanUniv = dbPartners.filter((p) => p.type === 'japan-university');
+  const japanPartners: PartnerDetailed[] = (dbJapanUniv.length > 0 ? dbJapanUniv : JAPAN_PARTNERS_DETAILED).map((p) => ({
+    name:         p.name,
+    nameJp:       locale === 'JP' ? undefined : (p.nameJp ?? undefined),
+    location:     p.location ?? '',
+    partnerSince: p.partnerSince ?? undefined,
+    headline:     p.headline ?? undefined,
+    detail:       p.detail ?? '',
+    logo:         p.logo ?? undefined,
+  }));
 
   // High-school partners
-  const highSchools: PartnerDetailed[] = JAPAN_HIGH_SCHOOLS.map((p, idx) => {
-    const i = idx + 1;
-    const tr = c.highSchools[idx];
-    return {
-      ...p,
-      name:         get(`international.hs.${i}.name`,         tr?.name         ?? p.name),
-      nameJp:       locale === 'JP' ? undefined : p.nameJp,
-      location:     get(`international.hs.${i}.location`,     tr?.location     ?? p.location ?? ''),
-      partnerSince: get(`international.hs.${i}.partnerSince`, tr?.partnerSince ?? p.partnerSince ?? ''),
-      headline:     get(`international.hs.${i}.headline`,     tr?.headline     ?? p.headline ?? ''),
-      detail:       get(`international.hs.${i}.detail`,       tr?.detail       ?? p.detail ?? ''),
-    };
-  });
+  const dbHS = dbPartners.filter((p) => p.type === 'japan-highschool');
+  const highSchools: PartnerDetailed[] = (dbHS.length > 0 ? dbHS : JAPAN_HIGH_SCHOOLS).map((p) => ({
+    name:         p.name,
+    nameJp:       locale === 'JP' ? undefined : (p.nameJp ?? undefined),
+    location:     p.location ?? '',
+    partnerSince: p.partnerSince ?? undefined,
+    headline:     p.headline ?? undefined,
+    detail:       p.detail ?? '',
+    logo:         p.logo ?? undefined,
+  }));
 
-  // Domestic partners
+  // Domestic partners — keep using SiteContent overrides + static fallback
   const domestic = DOMESTIC_PARTNERS.map((d, idx) => {
     const i = idx + 1;
     const tr = c.domestic[idx];
