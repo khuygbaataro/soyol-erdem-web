@@ -75,6 +75,10 @@ export type Language = (typeof LANGUAGES)[number];
  * Staff form.
  */
 export const STAFF_POSITION_KEYS = [
+  { key: 'board', label: 'Удирдах зөвлөл' },
+  { key: 'academic-council', label: 'Эрдмийн зөвлөл' },
+  { key: 'admin-council', label: 'Захиргааны зөвлөл' },
+  { key: 'quality-office', label: 'Чанарын үнэлгээний алба' },
   { key: 'rector', label: 'Захирал' },
   { key: 'academic-affairs', label: 'Сургалтын алба' },
   { key: 'scientific-secretary', label: 'Эрдэмтэн нарийн бичгийн дарга' },
