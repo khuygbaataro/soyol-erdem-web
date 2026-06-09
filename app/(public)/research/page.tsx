@@ -19,7 +19,7 @@ export const metadata = {
 };
 
 export default async function ResearchPage() {
-  const [banners, researchContent, researchItems, locale] = await Promise.all([
+  const [banners, researchContent, researchItems, dbJournals, locale] = await Promise.all([
     getSiteContentMap('banners'),
     getSiteContentMap('research'),
     prisma.research
@@ -29,6 +29,7 @@ export default async function ResearchPage() {
         take: 9,
       })
       .catch(() => []),
+    prisma.researchJournal.findMany({ where: { active: true }, orderBy: { order: 'asc' } }).catch(() => []),
     getServerLocale(),
   ]);
 
@@ -84,11 +85,18 @@ export default async function ResearchPage() {
   const feedTitle    = get('research.feed.title',    c.feedTitle);
   const feedSubtitle = get('research.feed.subtitle', c.feedSubtitle);
 
-  // Journal covers — language-agnostic image uploads.
+  // Use DB journals when available; fall back to static RESEARCH_JOURNALS.
+  const journals = dbJournals.length > 0
+    ? dbJournals.map(j => ({ id: j.slug, file: j.fileUrl, cover: j.cover ?? undefined, volume: j.volume, year: j.year, issue: j.issue, title: j.title, subtitle: j.subtitle }))
+    : RESEARCH_JOURNALS;
+
+  // Cover: DB cover → SiteContent override → static cover
   const journalCovers = new Map(
-    RESEARCH_JOURNALS.map((j) => [
+    journals.map((j) => [
       j.id,
-      researchContent.get(`research.journal.${j.id}.cover`) || j.cover || null,
+      (dbJournals.find(d => d.slug === j.id)?.cover) ||
+      researchContent.get(`research.journal.${j.id}.cover`) ||
+      j.cover || null,
     ]),
   );
 
@@ -256,7 +264,7 @@ export default async function ResearchPage() {
       {/* Journals */}
       <Section background="white">
         <SectionTitle title={journalsTitle} subtitle={journalsSubtitle} />
-        <ResearchJournalsList journals={RESEARCH_JOURNALS} covers={journalCovers} />
+        <ResearchJournalsList journals={journals} covers={journalCovers} />
       </Section>
     </>
   );

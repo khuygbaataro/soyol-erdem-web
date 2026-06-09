@@ -1,11 +1,12 @@
 import { notFound } from 'next/navigation';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import { Download, ExternalLink } from 'lucide-react';
 import { RESEARCH_JOURNALS } from '@/lib/research-journals';
+import { prisma } from '@/lib/prisma';
 
 // react-pdf + react-pageflip rely on browser-only APIs; load lazily and skip
 // SSR entirely so the heavy PDF.js bundle never reaches the server.
-const JournalFlipbook = dynamic(
+const JournalFlipbook = dynamicImport(
   () =>
     import('@/components/sections/JournalFlipbook').then(
       (m) => m.JournalFlipbook,
@@ -24,29 +25,25 @@ interface PageProps {
   params: { id: string };
 }
 
-export function generateStaticParams() {
-  return RESEARCH_JOURNALS.map((j) => ({ id: j.id }));
-}
+export const dynamicRoute = 'force-dynamic';
+export const revalidate = 0;
 
-export function generateMetadata({ params }: PageProps) {
-  const journal = RESEARCH_JOURNALS.find((j) => j.id === params.id);
+export async function generateMetadata({ params }: PageProps) {
+  const dbJ = await prisma.researchJournal.findUnique({ where: { slug: params.id } }).catch(() => null);
+  const journal = dbJ ?? RESEARCH_JOURNALS.find((j) => j.id === params.id);
   return journal
-    ? {
-        title: `${journal.title} · ${journal.subtitle}`,
-        description: `Соёл Эрдэм Дээд Сургуулийн эрдэм шинжилгээний сэтгүүл — ${journal.title}, ${journal.subtitle}.`,
-      }
+    ? { title: `${journal.title} · ${journal.subtitle}`, description: `Соёл Эрдэм Дээд Сургуулийн эрдэм шинжилгээний сэтгүүл — ${journal.title}, ${journal.subtitle}.` }
     : { title: 'Сэтгүүл' };
 }
 
-/**
- * Standalone reading page for one issue of the research journal. Mirrors the
- * pattern of citi.edu.mn/journal-reading-… — opens in a new tab, no site
- * header / footer / nav, just the flipbook and a slim action strip in the
- * top-right corner. Closing the tab is the intended way to return.
- */
-export default function JournalReadingPage({ params }: PageProps) {
-  const journal = RESEARCH_JOURNALS.find((j) => j.id === params.id);
-  if (!journal) notFound();
+export default async function JournalReadingPage({ params }: PageProps) {
+  const dbJ = await prisma.researchJournal.findUnique({ where: { slug: params.id } }).catch(() => null);
+  const staticJ = RESEARCH_JOURNALS.find((j) => j.id === params.id);
+  if (!dbJ && !staticJ) notFound();
+
+  const journal = dbJ
+    ? { title: dbJ.title, subtitle: dbJ.subtitle, file: dbJ.fileUrl, cover: dbJ.cover ?? undefined }
+    : { title: staticJ!.title, subtitle: staticJ!.subtitle, file: staticJ!.file, cover: staticJ!.cover };
 
   return (
     <div className="relative flex h-screen w-screen flex-col overflow-hidden">

@@ -61,6 +61,7 @@ const NAV: readonly NavGroup[] = [
       { label: 'Ажилтнууд', href: '/admin/staff', icon: Users, roles: ['ADMIN'] },
       { label: 'Хамтрагч байгуулл.', href: '/admin/partners', icon: Building2, roles: ['ADMIN'] },
       { label: 'Сургуулийн түүх', href: '/admin/history', icon: Clock, roles: ['ADMIN'] },
+      { label: 'Эрдэм шинж. сэтгүүл', href: '/admin/research-journals', icon: BookOpen, roles: ['ADMIN'] },
     ],
   },
   {

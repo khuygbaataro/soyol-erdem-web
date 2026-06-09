@@ -15,6 +15,7 @@ const ALLOWED_IMAGE = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'im
 const ALLOWED_FILE = [...ALLOWED_IMAGE, 'application/pdf'];
 /** Folder prefixes that may upload PDFs (everything else is image-only). */
 const PDF_FOLDERS = ['research/', 'newspapers/', 'journals/', 'regulations/', 'handbooks/', 'partners/'];
+// journals/ folder is already included above for PDF uploads
 
 /**
  * Vercel Blob client-direct upload endpoint.
