@@ -25,6 +25,8 @@ export default async function HighSchoolContactPage() {
   // Admin-editable section headings + message card (MN; EN/JP fallback).
   const g = (key: string, fallback: string) =>
     locale === 'MN' ? (site.get(key) || fallback) : fallback;
+  const heroTitle = g('ahlah-contact.hero.title', c.heroTitle);
+  const heroSubtitle = g('ahlah-contact.hero.subtitle', c.heroSubtitle);
   const contactsTitle = g('ahlah-contact.contacts.title', c.contactsTitle);
   const messageTitle = g('ahlah-contact.message.title', c.messageTitle);
   const messageCardTitle = g('ahlah-contact.message.card.title', c.messageCardTitle);
@@ -41,8 +43,8 @@ export default async function HighSchoolContactPage() {
   return (
     <>
       <PageHero
-        title={c.heroTitle}
-        subtitle={c.heroSubtitle}
+        title={heroTitle}
+        subtitle={heroSubtitle}
         breadcrumb={[
           { label: c.breadcrumbUniversity, href: '/' },
           { label: c.breadcrumbHs, href: '/high-school' },

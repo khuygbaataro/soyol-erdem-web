@@ -14,9 +14,13 @@ export default async function PublicLayout({ children }: { children: React.React
     address:         site.get('footer.address')           || undefined,
   };
 
+  // Top utility-bar (navbar) phone + short address — admin-editable.
+  const navbarPhone = site.get('footer.phone.primary') || undefined;
+  const navbarAddress = site.get('header.address') || undefined;
+
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
+      <Header phoneOverride={navbarPhone} addressOverride={navbarAddress} />
       <main className="flex-1">{children}</main>
       <Footer overrides={overrides} />
     </div>

@@ -51,6 +51,7 @@ export default async function HighSchoolCooperationPage() {
   ]);
   const c = INTERNATIONAL_CONTENT[locale];
   const heroImage = site.get('ahlah-cooperation.hero.image') || undefined;
+  const heroTitle = site.get('ahlah-cooperation.hero.title') || 'ХАМТЫН АЖИЛЛАГАА';
   const heroSubtitle =
     site.get('ahlah-cooperation.hero.subtitle') ||
     'Япон болон дотоодын түнш байгууллагууд, сурагч солилцооны хөтөлбөр.';
@@ -115,7 +116,7 @@ export default async function HighSchoolCooperationPage() {
   return (
     <>
       <PageHero
-        title="ХАМТЫН АЖИЛЛАГАА"
+        title={heroTitle}
         subtitle={heroSubtitle}
         breadcrumb={[
           { label: c.breadcrumbHome, href: '/' },

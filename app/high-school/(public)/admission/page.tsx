@@ -49,6 +49,8 @@ export default async function HighSchoolAdmissionPage() {
   // Admin-editable (MN; EN/JP fall back to bundle).
   const g = (key: string, fb: string) =>
     locale === 'MN' ? (site.get(key) || fb) : fb;
+  const heroTitle = g('ahlah-admission.hero.title', c.heroTitle);
+  const heroSubtitle = g('ahlah-admission.hero.subtitle', c.heroSubtitle);
   const posterImage = site.get('ahlah-admission.poster.image') || '/ahlah/admission-poster.jpg';
   // Requirements
   const requirementsTitle = g('ahlah-admission.requirements.title', c.requirementsTitle);
@@ -85,8 +87,8 @@ export default async function HighSchoolAdmissionPage() {
   return (
     <>
       <PageHero
-        title={c.heroTitle}
-        subtitle={c.heroSubtitle}
+        title={heroTitle}
+        subtitle={heroSubtitle}
         breadcrumb={[
           { label: c.breadcrumbUniversity, href: '/' },
           { label: c.breadcrumbHs, href: '/high-school' },

@@ -54,10 +54,20 @@ const NAV_KEYS: Record<string, TranslationKey> = {
  *
  * Below xl the primary nav collapses into a hamburger drawer.
  */
-export function Header() {
+export function Header({
+  phoneOverride,
+  addressOverride,
+}: {
+  /** Admin-editable navbar phone; falls back to SITE.contact.phone. */
+  phoneOverride?: string;
+  /** Admin-editable navbar short address; falls back to i18n. */
+  addressOverride?: string;
+} = {}) {
   const [open, setOpen] = useState(false);
   const { locale, setLocale, t } = useLocale();
   const pathname = usePathname();
+  const navPhone = phoneOverride || SITE.contact.phone;
+  const navAddress = addressOverride || t('header.address');
 
   return (
     <>
@@ -69,15 +79,15 @@ export function Header() {
           <Container className="flex min-h-[44px] flex-nowrap items-center justify-between gap-4 py-1">
             <div className="hidden items-center gap-6 md:flex">
               <a
-                href={`tel:${SITE.contact.phone.replace('-', '')}`}
+                href={`tel:${navPhone.replace(/\D/g, '')}`}
                 className="flex items-center gap-1.5 transition-colors hover:text-white"
               >
                 <Phone className="h-3.5 w-3.5" aria-hidden />
-                <span>{SITE.contact.phone}</span>
+                <span>{navPhone}</span>
               </a>
               <span className="hidden items-center gap-1.5 lg:flex">
                 <MapPin className="h-3.5 w-3.5" aria-hidden />
-                <span>{t('header.address')}</span>
+                <span>{navAddress}</span>
               </span>
             </div>
 

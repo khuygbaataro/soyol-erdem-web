@@ -121,6 +121,8 @@ export default async function HighSchoolProgramsPage() {
 
   // Admin-editable sections (ahlah-programs group), bundle fallback.
   const g = (key: string, fb: string) => site.get(key) || fb;
+  const heroTitle = g('ahlah-programs.hero.title', c.heroTitle);
+  const heroSubtitle = g('ahlah-programs.hero.subtitle', c.heroSubtitle);
   // СУРГАЛТЫН БҮТЭЦ
   const structureTitle = g('ahlah-programs.structure.title', c.structureTitle);
   const structureSubtitle = g('ahlah-programs.structure.subtitle', c.structureSubtitle);
@@ -208,8 +210,8 @@ export default async function HighSchoolProgramsPage() {
   return (
     <>
       <PageHero
-        title={c.heroTitle}
-        subtitle={c.heroSubtitle}
+        title={heroTitle}
+        subtitle={heroSubtitle}
         breadcrumb={[
           { label: c.breadcrumbUniversity, href: '/' },
           { label: c.breadcrumbHs, href: '/high-school' },

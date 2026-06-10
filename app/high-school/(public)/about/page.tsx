@@ -70,8 +70,10 @@ export default async function HighSchoolAboutPage() {
     body: ph(`ahlah-home.philosophy.${i + 1}.body`, p.body),
   }));
 
-  // Admin-editable: stats band, director's message, Japan partnerships.
+  // Admin-editable: hero, stats band, director's message, Japan partnerships.
   const s = (key: string, fallback: string) => site.get(key) || fallback;
+  const heroTitle = s('ahlah-about.hero.title', c.heroTitle);
+  const heroSubtitle = s('ahlah-about.hero.subtitle', c.heroSubtitle);
   const stats = c.stats.map((st, i) => ({
     value: s(`ahlah-about.stat.${i + 1}.value`, st.value),
     label: s(`ahlah-about.stat.${i + 1}.label`, st.label),
@@ -117,8 +119,8 @@ export default async function HighSchoolAboutPage() {
   return (
     <>
       <PageHero
-        title={c.heroTitle}
-        subtitle={c.heroSubtitle}
+        title={heroTitle}
+        subtitle={heroSubtitle}
         breadcrumb={[
           { label: c.breadcrumbUniversity, href: '/' },
           { label: c.breadcrumbHs, href: '/high-school' },
