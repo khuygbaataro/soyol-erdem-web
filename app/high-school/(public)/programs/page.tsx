@@ -119,6 +119,40 @@ export default async function HighSchoolProgramsPage() {
   const c = HS_PROGRAMS_CONTENT[locale];
   const heroImage = site.get('ahlah-programs.hero.image') || undefined;
 
+  // Admin-editable sections (ahlah-programs group), bundle fallback.
+  const g = (key: string, fb: string) => site.get(key) || fb;
+  // СУРГАЛТЫН БҮТЭЦ
+  const structureTitle = g('ahlah-programs.structure.title', c.structureTitle);
+  const structureSubtitle = g('ahlah-programs.structure.subtitle', c.structureSubtitle);
+  const structure = c.structure.map((x, i) => ({
+    title: g(`ahlah-programs.structure.${i + 1}.title`, x.title),
+    description: g(`ahlah-programs.structure.${i + 1}.description`, x.description),
+  }));
+  // Япон хэлний түвшинт хөтөлбөр
+  const jpBadge = g('ahlah-programs.jp.badge', c.jpBadge);
+  const jpTitle = g('ahlah-programs.jp.title', c.jpTitle);
+  const jpBody = g('ahlah-programs.jp.body', c.jpBody);
+  const jpLevels = c.jpLevels.map((l, i) => ({
+    tag: g(`ahlah-programs.jp.${i + 1}.tag`, l.tag),
+    title: g(`ahlah-programs.jp.${i + 1}.title`, l.title),
+    bullets: (site.get(`ahlah-programs.jp.${i + 1}.bullets`) || l.bullets.join('\n'))
+      .split('\n').map((b) => b.trim()).filter(Boolean),
+  }));
+  // Мэдээллийн технологийн төрөлжсөн анги
+  const itBadge = g('ahlah-programs.it.badge', c.itBadge);
+  const itTitle = g('ahlah-programs.it.title', c.itTitle);
+  const itBody = g('ahlah-programs.it.body', c.itBody);
+  const itTopics = c.itTopics.map((t, i) => ({
+    title: g(`ahlah-programs.it.${i + 1}.title`, t.title),
+    body: g(`ahlah-programs.it.${i + 1}.body`, t.body),
+  }));
+  // СУРГАЛТЫН ОРЧИН
+  const resourcesTitle = g('ahlah-programs.resources.title', c.resourcesTitle);
+  const resources = c.resources.map((r, i) => ({
+    title: g(`ahlah-programs.resources.${i + 1}.title`, r.title),
+    body: g(`ahlah-programs.resources.${i + 1}.body`, r.body),
+  }));
+
   // Build the level cards from SiteContent. Each level slot only
   // renders when its `.name` row is present, so partial data never
   // produces an empty card.
@@ -186,9 +220,9 @@ export default async function HighSchoolProgramsPage() {
 
       {/* Structure */}
       <Section background="white" spacing="md">
-        <SectionTitle title={c.structureTitle} subtitle={c.structureSubtitle} />
+        <SectionTitle title={structureTitle} subtitle={structureSubtitle} />
         <div className="grid gap-6 md:grid-cols-3">
-          {c.structure.map((s, idx) => {
+          {structure.map((s, idx) => {
             const Icon = STRUCTURE_ICONS[idx] ?? GraduationCap;
             return (
               <Card key={s.title} className="flex h-full flex-col">
@@ -360,19 +394,19 @@ export default async function HighSchoolProgramsPage() {
       <Section background="cream-soft" spacing="md" id="yapon-hel">
         <div className="mb-10">
           <Badge variant="gold" className="mb-3">
-            {c.jpBadge}
+            {jpBadge}
           </Badge>
           <h2 className="font-serif text-3xl font-bold text-navy-900 md:text-4xl">
-            {c.jpTitle}
+            {jpTitle}
           </h2>
           <div className="mt-3 h-1 w-16 rounded-full bg-gold-500" />
           <p className="mt-5 max-w-3xl text-base leading-relaxed text-text-body">
-            {c.jpBody}
+            {jpBody}
           </p>
         </div>
 
         <div className="grid gap-5 md:grid-cols-3">
-          {c.jpLevels.map((l) => (
+          {jpLevels.map((l) => (
             <Card key={l.title} className="flex h-full flex-col">
               <span className="text-[10px] font-bold uppercase tracking-widest text-gold-500">
                 {l.tag}
@@ -395,19 +429,19 @@ export default async function HighSchoolProgramsPage() {
       <Section background="white" spacing="md" id="it">
         <div className="mb-10">
           <Badge variant="gold" className="mb-3">
-            {c.itBadge}
+            {itBadge}
           </Badge>
           <h2 className="font-serif text-3xl font-bold text-navy-900 md:text-4xl">
-            {c.itTitle}
+            {itTitle}
           </h2>
           <div className="mt-3 h-1 w-16 rounded-full bg-gold-500" />
           <p className="mt-5 max-w-3xl text-base leading-relaxed text-text-body">
-            {c.itBody}
+            {itBody}
           </p>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {c.itTopics.map((t, idx) => {
+          {itTopics.map((t, idx) => {
             const Icon = IT_ICONS[idx] ?? Code2;
             return (
               <Card key={t.title} className="flex h-full flex-col">
@@ -538,9 +572,9 @@ export default async function HighSchoolProgramsPage() {
 
       {/* Resources / labs */}
       <Section background="white" spacing="md">
-        <SectionTitle title={c.resourcesTitle} align="left" />
+        <SectionTitle title={resourcesTitle} align="left" />
         <div className="grid gap-5 md:grid-cols-3">
-          {c.resources.map((x, idx) => {
+          {resources.map((x, idx) => {
             const Icon = RESOURCE_ICONS[idx] ?? Cpu;
             return (
               <Card key={x.title} className="flex h-full flex-col">
