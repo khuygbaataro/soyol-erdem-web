@@ -3,7 +3,7 @@ import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
-import { getSiteContentMap } from '@/lib/site-content';
+import { content, getSiteContentMap } from '@/lib/site-content';
 import { getServerLocale } from '@/lib/i18n/server';
 import { LIBRARY_CONTENT } from '@/lib/i18n/content';
 
@@ -14,18 +14,36 @@ export const metadata = {
 
 const HOLDING_ICONS = [Clock, MapPin, BookMarked] as const;
 
+/** Split a newline-separated admin value into trimmed items, falling
+ *  back to the static locale bundle when the override is empty. */
+function listOrFallback(raw: string | undefined, fallback: string[]): string[] {
+  const items = (raw ?? '')
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return items.length > 0 ? items : fallback;
+}
+
 export default async function LibraryPage() {
-  const [banners, locale] = await Promise.all([
+  const [banners, cms, locale] = await Promise.all([
     getSiteContentMap('banners'),
+    getSiteContentMap('library'),
     getServerLocale(),
   ]);
   const c = LIBRARY_CONTENT[locale];
 
+  const categories = listOrFallback(cms.get('library.categories.list'), c.categories);
+  const services = listOrFallback(cms.get('library.services.list'), c.services);
+  const holdings = c.holdings.map((h, idx) => ({
+    label: content(cms, `library.holding.${idx + 1}.label`, h.label),
+    value: content(cms, `library.holding.${idx + 1}.value`, h.value),
+  }));
+
   return (
     <>
       <PageHero
-        title={c.heroTitle}
-        subtitle={c.heroSubtitle}
+        title={content(cms, 'library.hero.title', c.heroTitle)}
+        subtitle={content(cms, 'library.hero.subtitle', c.heroSubtitle)}
         breadcrumb={[
           { label: c.breadcrumbHome, href: '/' },
           { label: c.breadcrumbThis },
@@ -35,16 +53,21 @@ export default async function LibraryPage() {
 
       <Section background="white" spacing="sm">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-base leading-relaxed text-text-body">{c.intro}</p>
+          <p className="text-base leading-relaxed text-text-body">
+            {content(cms, 'library.intro', c.intro)}
+          </p>
         </div>
       </Section>
 
       <Section background="cream-soft">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
-            <SectionTitle title={c.categoriesTitle} align="left" />
+            <SectionTitle
+              title={content(cms, 'library.categories.title', c.categoriesTitle)}
+              align="left"
+            />
             <ul className="grid gap-3 sm:grid-cols-2">
-              {c.categories.map((cat) => (
+              {categories.map((cat) => (
                 <li
                   key={cat}
                   className="flex items-center gap-3 rounded-button border border-border-light bg-white px-4 py-3 text-sm text-navy-900"
@@ -59,9 +82,12 @@ export default async function LibraryPage() {
           </div>
 
           <div>
-            <SectionTitle title={c.servicesTitle} align="left" />
+            <SectionTitle
+              title={content(cms, 'library.services.title', c.servicesTitle)}
+              align="left"
+            />
             <div className="space-y-3">
-              {c.services.map((s, idx) => (
+              {services.map((s, idx) => (
                 <Card key={s} className="flex items-start gap-4">
                   <span className="text-2xl font-bold text-gold-500">
                     {String(idx + 1).padStart(2, '0')}
@@ -76,7 +102,7 @@ export default async function LibraryPage() {
 
       <Section background="navy" spacing="md">
         <div className="grid gap-6 sm:grid-cols-3">
-          {c.holdings.map((h, idx) => {
+          {holdings.map((h, idx) => {
             const Icon = HOLDING_ICONS[idx] ?? Clock;
             return (
               <div

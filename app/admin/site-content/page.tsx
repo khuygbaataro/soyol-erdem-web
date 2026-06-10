@@ -12,6 +12,7 @@ const GROUP_LABELS: Record<string, string> = {
   home: 'Нүүр хуудас',
   about: 'Сургуулийн тухай',
   admission: 'Элсэлт',
+  library: 'Номын сан',
   banners: 'Banner зургууд',
   footer: 'Footer холбоо барих',
   research: 'Эрдэм шинжилгээ',

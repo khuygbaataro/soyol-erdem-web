@@ -551,6 +551,21 @@ async function main() {
     { key: 'page.library.banner', group: 'banners', type: 'IMAGE' as const, label: 'Номын сан хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 11 },
     { key: 'page.regulations.banner', group: 'banners', type: 'IMAGE' as const, label: 'Дүрэм журам хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 12 },
     { key: 'page.sonin-hewlel.banner', group: 'banners', type: 'IMAGE' as const, label: 'Сонин хэвлэл хуудасны banner', hint: 'Өргөн форматын зураг (12:3, ~1440×360px тохиромжтой).', value: '', order: 13 },
+
+    // Library (Номын сан)
+    { key: 'library.hero.title', group: 'library', type: 'TEXT' as const, label: 'Hero — гарчиг', value: 'НОМЫН САН', order: 1 },
+    { key: 'library.hero.subtitle', group: 'library', type: 'TEXT' as const, label: 'Hero — доод текст', value: 'Япон, Монгол, Англи хэл дээрх 5,000+ нэр төрлийн ном, эрдэм шинжилгээний нийтлэлтэй.', multiline: true, order: 2 },
+    { key: 'library.intro', group: 'library', type: 'TEXT' as const, label: 'Танилцуулга текст', hint: '2-3 өгүүлбэр.', value: 'Соёл Эрдэм дээд сургуулийн номын сан нь япон, монгол, англи хэлээр 5000+ нэр төрлийн ном, сурах бичиг, эрдэм шинжилгээний нийтлэлтэй. Япон улсын элчин сайдын яамны хандивласан ном, сэтгүүлийн тусгай танхимтай.', multiline: true, order: 3 },
+    { key: 'library.categories.title', group: 'library', type: 'TEXT' as const, label: 'Номын ангилал — гарчиг', value: 'НОМЫН АНГИЛАЛ', order: 4 },
+    { key: 'library.categories.list', group: 'library', type: 'TEXT' as const, label: 'Номын ангилал — жагсаалт', hint: 'Нэг ангилал = нэг мөр.', value: 'Япон хэл, соёл, түүх\nОрчуулга судлал\nОлон улсын харилцаа\nЭдийн засаг, бизнес\nАялал жуулчлал\nСурах бичиг (JLPT N5-N1)\nЭрдэм шинжилгээний сэтгүүл\nУран зохиол (япон, монгол)', multiline: true, order: 5 },
+    { key: 'library.services.title', group: 'library', type: 'TEXT' as const, label: 'Үйлчилгээ — гарчиг', value: 'ҮЙЛЧИЛГЭЭ', order: 6 },
+    { key: 'library.services.list', group: 'library', type: 'TEXT' as const, label: 'Үйлчилгээ — жагсаалт', hint: 'Нэг үйлчилгээ = нэг мөр. Дугаар автоматаар нэмэгдэнэ.', value: 'Ном зээлэх (1 хүн 3 ном, 14 хоног)\nУншлагын танхим (8:00-21:00)\nЦахим сан (онлайн ном, нийтлэл)\nХэвлэх, хувилах үйлчилгээ\nЯпон хэлний өөрөө суралцах булан', multiline: true, order: 7 },
+    { key: 'library.holding.1.label', group: 'library', type: 'TEXT' as const, label: 'Доод хэсэг — 1-р карт гарчиг', value: 'Цагийн хуваарь', order: 8 },
+    { key: 'library.holding.1.value', group: 'library', type: 'TEXT' as const, label: 'Доод хэсэг — 1-р карт утга', value: '08:00 — 21:00', order: 9 },
+    { key: 'library.holding.2.label', group: 'library', type: 'TEXT' as const, label: 'Доод хэсэг — 2-р карт гарчиг', value: 'Уншлагын танхим', order: 10 },
+    { key: 'library.holding.2.value', group: 'library', type: 'TEXT' as const, label: 'Доод хэсэг — 2-р карт утга', value: '120 суудалтай', order: 11 },
+    { key: 'library.holding.3.label', group: 'library', type: 'TEXT' as const, label: 'Доод хэсэг — 3-р карт гарчиг', value: 'Холдинг', order: 12 },
+    { key: 'library.holding.3.value', group: 'library', type: 'TEXT' as const, label: 'Доод хэсэг — 3-р карт утга', value: '5,000+ ном', order: 13 },
   ];
   for (const c of siteContent) {
     await prisma.siteContent.upsert({
