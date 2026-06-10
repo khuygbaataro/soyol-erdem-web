@@ -8,20 +8,26 @@ import { cn } from '@/lib/utils';
 /**
  * Соёл Эрдэм Сургуулийн (ахлах сургуулийн) бүтэц зохион байгуулалт.
  *
- * Layout (Munkhchimeg-ийн docx-аас):
+ * Layout:
  *
- *                  [Удирдах зөвлөл]
- *                         │
- *      [Гадаад харилцаа] ─ [Захирал]
- *                         │
- *   ┌───────────────┬────┴────┬──────────────────────┬───────────────┐
- * [Сургалтын    [Сургалтын  [Мэргэжлийн          [Захиргаа санхүү
- *  алба]         менежер]    багш нарын           аж ахуй]
- *   ├ I-V                    бүлэг]
- *   ├ VI-IX                  ├ Гоо зүй            ├ Архив, бичиг хэрэг
- *   ├ X-XII                  ├ Бага               └ Нийгмийн ажилтан
- *   └ Анги бүлэг             ├ НУ
- *                            └ БУ
+ *                       [Удирдах зөвлөл]
+ *                              │
+ *           [Гадаад харилцаа] ─ [Захирал]
+ *                              │
+ *        ┌──────────────┬──────┴───────────┐
+ * [Сургалтын      [Нийгмийн          [Захиргаа санхүү
+ *  менежер]        ажилтан]           аж ахуй]
+ *        └──────┬───────┘             └ Архив, бичиг хэрэг
+ *               │
+ *      [Мэргэжлийн багш нарын бүлэг]
+ *        ├ Сургалтын алба
+ *        │   ├ I–V анги
+ *        │   ├ VI–IX анги
+ *        │   └ X–XII анги
+ *        ├ Гоо зүй
+ *        ├ Бага
+ *        ├ НУ (Нийгмийн ухаан)
+ *        └ БУ (Байгалийн ухаан)
  *
  * Бүх node clickable, нэг node-д олон ажилтан хадгалагдах боломжтой.
  * Staff DB-аас positionKey-ээр уншина (та Staff model-ийг үндсэн
@@ -75,10 +81,6 @@ const FALLBACK: Record<string, Omit<HsStaff, 'positionKey'>> = {
   'hs-pro-teachers': {
     name: 'Мэргэжлийн багш нарын бүлэг',
     position: 'Бүлгийн ахлагч',
-  },
-  'hs-subjects': {
-    name: 'Хичээлийн чиглэлүүд',
-    position: 'Мэргэжлийн чиглэлийн ахлагч нар',
   },
   'hs-admin-finance': {
     name: 'Захиргаа санхүү аж ахуй',
@@ -178,31 +180,45 @@ function BranchConnector({ count }: { count: number }) {
  *
  * BranchConnector-тэй адил CSS-аар хийсэн, эсрэг чиглэлтэй.
  */
-function JoinConnector({ count }: { count: number }) {
-  // Маш бага зайтай (бараг хүрэлцэхүйц) холбогч — нийт 8px:
-  //   4px parent-side босоо → 1px horizontal merge bar → 4px child босоо.
+function JoinConnector({ count, height = 24 }: { count: number; height?: number }) {
+  // N parent → 1 child нэгтгэгч. Дээд талаас (parent хайрцгуудын ёроол)
+  //   half — N босоо мөр доош
+  //   нэгтгэх хэвтээ шугам
+  //   half — төв рүү нэг босоо доош (child рүү).
+  const half = height / 2;
   return (
-    <div aria-hidden className="relative mx-auto w-full" style={{ height: '8px' }}>
-      {/* Top — N parent-аас гарах ширхэг богино босоо */}
+    <div aria-hidden className="relative mx-auto w-full" style={{ height: `${height}px` }}>
+      {/* Top — N parent-аас гарах богино босоо */}
       {Array.from({ length: count }).map((_, i) => (
         <span
           key={i}
-          className="absolute top-0 h-1 w-px bg-navy-900"
-          style={{ left: `calc(${(100 / count) * (i + 0.5)}%)` }}
+          className="absolute top-0 w-px bg-navy-900"
+          style={{ height: `${half}px`, left: `calc(${(100 / count) * (i + 0.5)}%)` }}
         />
       ))}
       {/* Нэгтгэх хэвтээ шугам */}
       <span
-        className="absolute top-1 h-px bg-navy-900"
+        className="absolute h-px bg-navy-900"
         style={{
+          top: `${half}px`,
           left: `calc(${100 / (count * 2)}% )`,
           right: `calc(${100 / (count * 2)}% )`,
         }}
       />
-      {/* Доорх child-руу нэг л богино босоо */}
-      <span className="absolute left-1/2 top-1 h-1 w-px -translate-x-1/2 bg-navy-900" />
+      {/* Доорх child-руу нэг босоо */}
+      <span
+        className="absolute left-1/2 w-px -translate-x-1/2 bg-navy-900"
+        style={{ top: `${half}px`, height: `${half}px` }}
+      />
     </div>
   );
+}
+
+interface UnitItem {
+  id?: string;
+  label: string;
+  /** Optional nested units rendered as a further-indented sub-cascade. */
+  children?: UnitItem[];
 }
 
 function UnitTree({
@@ -210,13 +226,16 @@ function UnitTree({
   onSelect,
   staffByKey,
 }: {
-  units: { id?: string; label: string }[];
+  units: UnitItem[];
   onSelect: (id: string) => void;
   staffByKey: Map<string, HsStaff[]>;
 }) {
   if (units.length === 0) return null;
   return (
     <div className="relative mt-2 pl-6">
+      {/* Босоо холбогч шугам — эхний unit-ийн төвөөс сүүлийн unit-ийн
+          төв хүртэл. Сүүлийн нэгж дандаа хүүхэдгүй (childless) тул
+          calc(100% - 1.25rem) яг сүүлийн хайрцгийн төвд тулна. */}
       <span
         aria-hidden
         className="absolute left-3 top-0 w-[2px] bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.7)_0_3px,transparent_3px_7px)]"
@@ -225,9 +244,11 @@ function UnitTree({
       <ul className="space-y-3">
         {units.map((u) => (
           <li key={u.label} className="relative">
+            {/* Хэвтээ салаа — хайрцгийн босоо төв (≈1.25rem) дээр тогтсон
+                тул хүүхэдтэй nodes дээр ч зөв байрлана. */}
             <span
               aria-hidden
-              className="absolute -left-3 top-1/2 h-[2px] w-3 bg-[image:repeating-linear-gradient(to_right,rgba(30,58,95,0.7)_0_3px,transparent_3px_7px)]"
+              className="absolute -left-3 top-[1.25rem] h-[2px] w-3 -translate-y-1/2 bg-[image:repeating-linear-gradient(to_right,rgba(30,58,95,0.7)_0_3px,transparent_3px_7px)]"
             />
             <ChartNode
               id={u.id}
@@ -236,6 +257,13 @@ function UnitTree({
               onSelect={onSelect}
               hasStaff={u.id ? (staffByKey.get(u.id)?.length ?? 0) > 0 : false}
             />
+            {u.children && u.children.length > 0 && (
+              <UnitTree
+                units={u.children}
+                onSelect={onSelect}
+                staffByKey={staffByKey}
+              />
+            )}
           </li>
         ))}
       </ul>
@@ -243,55 +271,24 @@ function UnitTree({
   );
 }
 
-interface Pillar {
-  id: string;
-  title: string;
-  units: { id: string; label: string }[];
-}
-
-// Захиралын доорхи 3 шууд багана (Munkhchimeg-ийн зурганд: Сургалтын
-// менежер / Нийгмийн ажилтан / Захиргаа санхүү аж ахуй).
-const TOP_PILLARS: Pillar[] = [
-  {
-    id: 'hs-training-manager',
-    title: 'Сургалтын менежер',
-    units: [],
-  },
-  {
-    id: 'hs-social-worker',
-    title: 'Нийгмийн ажилтан',
-    units: [],
-  },
-  {
-    id: 'hs-admin-finance',
-    title: 'Захиргаа санхүү аж ахуй',
-    units: [{ id: 'hs-archive', label: 'Архив, бичиг хэрэг' }],
-  },
-];
-
-// "Мэргэжлийн багш нарын бүлэг"-ийн доор 2 sub-pillar:
-//   • Сургалтын алба (3 анги нэгж: I-V, VI-IX, X-XII)
-//   • Хичээлийн чиглэл (4 мэргэжил: Гоо зүй, Бага, НУ, БУ)
-const PRO_SUB_PILLARS: Pillar[] = [
+// "Мэргэжлийн багш нарын бүлэг"-ийн доор шууд цувраа нэгжүүд:
+//   • Сургалтын алба (доороо 3 анги: I-V, VI-IX, X-XII)
+//   • Гоо зүй, Бага, НУ, БУ — өмнө нь "Хичээлийн чиглэлүүд" нэрийн доор
+//     байсныг хасаж, МБНБ-ээс шууд доош цувруулсан.
+const PRO_CHILDREN: UnitItem[] = [
   {
     id: 'hs-training-office',
-    title: 'Сургалтын алба',
-    units: [
+    label: 'Сургалтын алба',
+    children: [
       { id: 'hs-grade-1-5', label: 'I–V анги' },
       { id: 'hs-grade-6-9', label: 'VI–IX анги' },
       { id: 'hs-grade-10-12', label: 'X–XII анги' },
     ],
   },
-  {
-    id: 'hs-subjects',
-    title: 'Хичээлийн чиглэлүүд',
-    units: [
-      { id: 'hs-subj-aesthetics', label: 'Гоо зүй' },
-      { id: 'hs-subj-primary', label: 'Бага' },
-      { id: 'hs-subj-social', label: 'НУ (Нийгмийн ухаан)' },
-      { id: 'hs-subj-natural', label: 'БУ (Байгалийн ухаан)' },
-    ],
-  },
+  { id: 'hs-subj-aesthetics', label: 'Гоо зүй' },
+  { id: 'hs-subj-primary', label: 'Бага' },
+  { id: 'hs-subj-social', label: 'НУ (Нийгмийн ухаан)' },
+  { id: 'hs-subj-natural', label: 'БУ (Байгалийн ухаан)' },
 ];
 
 interface HsOrgChartProps {
@@ -401,45 +398,37 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
         <BranchConnector count={3} />
 
         {/*
-          3-багана grid. Эхний 2 багана (Сургалтын менежер +
-          Нийгмийн ажилтан) доороо "Мэргэжлийн багш нарын бүлэг"-
-          ийг хуваалцана (col-span-2). Захиргаа санхүү аж ахуй
-          (3-р багана) бие даасан, доороо Архив unit-ыг л өвлөнө.
-          Энэ нь Munkhchimeg-ийн зурганд: МБНБ нь зөвхөн 2-ын
-          доор сууж, 3 дахь pillar-ийн доор биш гэсэн дүрсний дагуу.
-        */}
-        {/*
-          ХОЁР тусдаа grid — нэг row дотор pillar 3 (Архив бүхий)
-          урт болохдоо pillars 1+2-ын өндрийг сунгадаг грид-ийн
-          үндсэн алдаанаас сэргийлсэн. Хоёр грид нь grid-cols-3
-          ижил бүтэцтэй тул багана яг адил тэгшилгээтэй үлдэнэ;
-          хооронд нь ~4px л зай л үлдэнэ.
-        */}
+          3-багана. Зүүн 2 багана (Сургалтын менежер + Нийгмийн ажилтан)
+          нэг дэд-grid дотор сууж, доороо JoinConnector-оор "Мэргэжлийн
+          багш нарын бүлэг"-т нийлнэ. 3 дахь багана (Захиргаа санхүү аж
+          ахуй) бие даасан — доороо зөвхөн Архив unit-ыг өвлөнө.
 
-        {/* Row 1 — 3 шууд pillars */}
-        <div className="grid gap-x-6 lg:grid-cols-3">
-          {TOP_PILLARS.map((p) => (
-            <div key={p.id} className="flex flex-col">
+          `items-start` ашигласнаар 3 дахь баганын (Архивтай) өндөр зүүн
+          бүлгийг сунгахгүй; зүүн бүлэгт хайрцаг → JoinConnector нь шууд
+          залгаа сууж, өмнөх хувилбарын "холбогч хүрэхгүй хоосон зай"
+          алдааг арилгана.
+        */}
+        <div className="grid items-start gap-x-6 lg:grid-cols-3">
+          {/* Зүүн бүлэг — Сургалтын менежер + Нийгмийн ажилтан → МБНБ */}
+          <div className="lg:col-span-2">
+            <div className="grid gap-x-6 sm:grid-cols-2">
               <ChartNode
-                id={p.id}
-                label={p.title}
+                id="hs-training-manager"
+                label="Сургалтын менежер"
                 level="pillar"
                 onSelect={setSelectedId}
-                hasStaff={hasStaff(p.id)}
+                hasStaff={hasStaff('hs-training-manager')}
               />
-              <UnitTree
-                units={p.units}
+              <ChartNode
+                id="hs-social-worker"
+                label="Нийгмийн ажилтан"
+                level="pillar"
                 onSelect={setSelectedId}
-                staffByKey={staffByKey}
+                hasStaff={hasStaff('hs-social-worker')}
               />
             </div>
-          ))}
-        </div>
 
-        {/* Row 2 — МБНБ + sub-pillars зүүн 2 баганыг хүлээнэ */}
-        <div className="grid gap-x-6 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            {/* Сум — Сургалтын менежер + Нийгмийн ажилтан → МБНБ */}
+            {/* Сум — 2 parent → МБНБ */}
             <JoinConnector count={2} />
 
             <div className="mx-auto max-w-2xl">
@@ -450,28 +439,30 @@ export function HsOrgChart({ staff, labels }: HsOrgChartProps = {}) {
                 onSelect={setSelectedId}
                 hasStaff={hasStaff('hs-pro-teachers')}
               />
+              {/* Сургалтын алба + Гоо зүй / Бага / НУ / БУ нь МБНБ-ээс
+                  шууд доош цувраа холбогдоно. */}
+              <UnitTree
+                units={PRO_CHILDREN}
+                onSelect={setSelectedId}
+                staffByKey={staffByKey}
+              />
             </div>
+          </div>
 
-            <BranchConnector count={PRO_SUB_PILLARS.length} />
-
-            <div className="grid gap-6 md:grid-cols-2">
-              {PRO_SUB_PILLARS.map((p) => (
-                <div key={p.id} className="flex flex-col">
-                  <ChartNode
-                    id={p.id}
-                    label={p.title}
-                    level="pillar"
-                    onSelect={setSelectedId}
-                    hasStaff={hasStaff(p.id)}
-                  />
-                  <UnitTree
-                    units={p.units}
-                    onSelect={setSelectedId}
-                    staffByKey={staffByKey}
-                  />
-                </div>
-              ))}
-            </div>
+          {/* 3 дахь багана — Захиргаа санхүү аж ахуй + Архив */}
+          <div className="flex flex-col">
+            <ChartNode
+              id="hs-admin-finance"
+              label="Захиргаа санхүү аж ахуй"
+              level="pillar"
+              onSelect={setSelectedId}
+              hasStaff={hasStaff('hs-admin-finance')}
+            />
+            <UnitTree
+              units={[{ id: 'hs-archive', label: 'Архив, бичиг хэрэг' }]}
+              onSelect={setSelectedId}
+              staffByKey={staffByKey}
+            />
           </div>
         </div>
 

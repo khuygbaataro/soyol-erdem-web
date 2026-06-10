@@ -14,7 +14,11 @@ export const metadata = { title: 'Ажилтнууд' };
 type Row = Awaited<ReturnType<typeof load>>[number];
 
 async function load() {
+  // University staff only. High-school staff live in the same table but use
+  // `hs-`-prefixed positionKeys and are managed from /high-school/admin/
+  // structure — exclude them here so the two sides never mix.
   return prisma.staff.findMany({
+    where: { positionKey: { not: { startsWith: 'hs-' } } },
     orderBy: [{ order: 'asc' }, { position: 'asc' }],
   });
 }

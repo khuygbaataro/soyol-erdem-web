@@ -115,7 +115,6 @@ export const HS_STAFF_POSITION_KEYS = [
   { key: 'hs-grade-1-5', label: 'I–V анги' },
   { key: 'hs-grade-6-9', label: 'VI–IX анги' },
   { key: 'hs-grade-10-12', label: 'X–XII анги' },
-  { key: 'hs-subjects', label: 'Хичээлийн чиглэлүүд (бүлгийн ахлагч)' },
   { key: 'hs-subj-aesthetics', label: 'Гоо зүй' },
   { key: 'hs-subj-primary', label: 'Бага' },
   { key: 'hs-subj-social', label: 'НУ (Нийгмийн ухаан)' },

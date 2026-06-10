@@ -16,7 +16,9 @@ export default async function StructurePage() {
   const [staff, locale] = await Promise.all([
     prisma.staff
       .findMany({
-        where: { active: true },
+        // University chart only — high-school staff use `hs-`-prefixed
+        // positionKeys and render on the HS structure page instead.
+        where: { active: true, positionKey: { not: { startsWith: 'hs-' } } },
         orderBy: [{ order: 'asc' }, { position: 'asc' }],
       })
       .catch(() => []),
