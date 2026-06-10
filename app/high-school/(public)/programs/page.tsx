@@ -140,14 +140,21 @@ export default async function HighSchoolProgramsPage() {
     bullets: (site.get(`ahlah-programs.jp.${i + 1}.bullets`) || l.bullets.join('\n'))
       .split('\n').map((b) => b.trim()).filter(Boolean),
   }));
-  // Мэдээллийн технологийн төрөлжсөн анги
-  const itBadge = g('ahlah-programs.it.badge', c.itBadge);
-  const itTitle = g('ahlah-programs.it.title', c.itTitle);
-  const itBody = g('ahlah-programs.it.body', c.itBody);
-  const itTopics = c.itTopics.map((t, i) => ({
-    title: g(`ahlah-programs.it.${i + 1}.title`, t.title),
-    body: g(`ahlah-programs.it.${i + 1}.body`, t.body),
+  // Ногоон Жэйд боловсролын төв
+  const jadeBadge = g('ahlah-programs.jade.badge', c.jadeBadge);
+  const jadeTitle = g('ahlah-programs.jade.title', c.jadeTitle);
+  const jadeBody = g('ahlah-programs.jade.body', c.jadeBody);
+  const jadeStats = c.jadeStats.map((x, i) => ({
+    value: g(`ahlah-programs.jade.stat.${i + 1}.value`, x.value),
+    label: g(`ahlah-programs.jade.stat.${i + 1}.label`, x.label),
   }));
+  const jadeServicesTitle = g('ahlah-programs.jade.services.title', c.jadeServicesTitle);
+  const jadeServices = c.jadeServices.map((s, i) => ({
+    title: g(`ahlah-programs.jade.service.${i + 1}.title`, s.title),
+    body: g(`ahlah-programs.jade.service.${i + 1}.body`, s.body),
+  }));
+  const jadeCountriesTitle = g('ahlah-programs.jade.countries.title', c.jadeCountriesTitle);
+  const jadeCountries = g('ahlah-programs.jade.countries', c.jadeCountries);
   // СУРГАЛТЫН ОРЧИН
   const resourcesTitle = g('ahlah-programs.resources.title', c.resourcesTitle);
   const resources = c.resources.map((r, i) => ({
@@ -427,55 +434,24 @@ export default async function HighSchoolProgramsPage() {
         </div>
       </Section>
 
-      {/* IT detail */}
-      <Section background="white" spacing="md" id="it">
-        <div className="mb-10">
-          <Badge variant="gold" className="mb-3">
-            {itBadge}
-          </Badge>
-          <h2 className="font-serif text-3xl font-bold text-navy-900 md:text-4xl">
-            {itTitle}
-          </h2>
-          <div className="mt-3 h-1 w-16 rounded-full bg-gold-500" />
-          <p className="mt-5 max-w-3xl text-base leading-relaxed text-text-body">
-            {itBody}
-          </p>
-        </div>
-
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {itTopics.map((t, idx) => {
-            const Icon = IT_ICONS[idx] ?? Code2;
-            return (
-              <Card key={t.title} className="flex h-full flex-col">
-                <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-navy-900 text-gold-400">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <h3 className="text-sm font-bold text-navy-900">{t.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-body">{t.body}</p>
-              </Card>
-            );
-          })}
-        </div>
-      </Section>
-
       {/* Green Jade — international study pathway (partner programme) */}
       <Section background="white" spacing="md" id="green-jade">
         <div className="mb-10">
           <Badge variant="gold" className="mb-3">
-            {c.jadeBadge}
+            {jadeBadge}
           </Badge>
           <h2 className="font-serif text-3xl font-bold text-navy-900 md:text-4xl">
-            {c.jadeTitle}
+            {jadeTitle}
           </h2>
           <div className="mt-3 h-1 w-16 rounded-full bg-gold-500" />
           <p className="mt-5 max-w-3xl text-base leading-relaxed text-text-body">
-            {c.jadeBody}
+            {jadeBody}
           </p>
         </div>
 
-        {/* Stats strip — same navy panel pattern as the teachers block */}
+        {/* Stats strip */}
         <div className="mb-10 grid grid-cols-2 gap-6 rounded-card bg-navy-900 px-6 py-8 text-white md:grid-cols-4">
-          {c.jadeStats.map((x) => (
+          {jadeStats.map((x) => (
             <div key={x.label} className="text-center">
               <p className="font-serif text-3xl font-bold text-gold-400 md:text-4xl">
                 {x.value}
@@ -488,10 +464,10 @@ export default async function HighSchoolProgramsPage() {
         </div>
 
         <h3 className="mb-5 text-xs font-bold uppercase tracking-widest text-gold-500">
-          {c.jadeServicesTitle}
+          {jadeServicesTitle}
         </h3>
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {c.jadeServices.map((s, idx) => {
+          {jadeServices.map((s, idx) => {
             const Icon = JADE_ICONS[idx] ?? Globe2;
             return (
               <Card key={s.title} className="flex h-full flex-col">
@@ -514,61 +490,12 @@ export default async function HighSchoolProgramsPage() {
           </span>
           <div className="min-w-0 flex-1">
             <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">
-              {c.jadeCountriesTitle}
+              {jadeCountriesTitle}
             </p>
             <p className="mt-1 text-sm font-semibold leading-relaxed text-navy-900">
-              {c.jadeCountries}
+              {jadeCountries}
             </p>
           </div>
-        </div>
-      </Section>
-
-      {/* Teachers */}
-      <Section background="cream-soft" spacing="md" id="bagsh">
-        <div className="mb-10">
-          <Badge variant="gold" className="mb-3">
-            {c.teachersBadge}
-          </Badge>
-          <h2 className="font-serif text-3xl font-bold text-navy-900 md:text-4xl">
-            {c.teachersTitle}
-          </h2>
-          <div className="mt-3 h-1 w-16 rounded-full bg-gold-500" />
-          <p className="mt-5 max-w-3xl text-base leading-relaxed text-text-body">
-            {c.teachersBody}
-          </p>
-        </div>
-
-        <div className="grid gap-5 md:grid-cols-3">
-          {c.teachers.map((s) => (
-            <div
-              key={s.name}
-              className="flex items-start gap-4 rounded-card border border-border-light bg-white p-6 shadow-card"
-            >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
-                <Presentation className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-base font-bold text-navy-900">{s.name}</h3>
-                <p className="mt-0.5 text-xs uppercase tracking-widest text-gold-500">
-                  {s.role}
-                </p>
-                <p className="mt-2 text-sm text-text-body">{s.note}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-10 grid grid-cols-2 gap-6 rounded-card bg-navy-900 px-6 py-8 text-white md:grid-cols-4">
-          {c.teacherStats.map((x) => (
-            <div key={x.label} className="text-center">
-              <p className="font-serif text-3xl font-bold text-gold-400 md:text-4xl">
-                {x.value}
-              </p>
-              <p className="mt-1 text-xs uppercase tracking-widest text-white/75">
-                {x.label}
-              </p>
-            </div>
-          ))}
         </div>
       </Section>
 

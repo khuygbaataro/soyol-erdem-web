@@ -26,6 +26,11 @@ export default async function HighSchoolNewsPage() {
     getSiteContentMap('ahlah-news'),
   ]);
   const heroImage = site.get('ahlah-news.hero.image') || undefined;
+  // Hero title/subtitle — admin-editable (MN); EN/JP fall back to i18n.
+  const heroTitle =
+    (locale === 'MN' && site.get('ahlah-news.hero.title')) || t('hsNews.heroTitle');
+  const heroSubtitle =
+    (locale === 'MN' && site.get('ahlah-news.hero.subtitle')) || t('hsNews.heroSubtitle');
 
   const items = news.map((n) => ({
     id: n.slug,
@@ -41,8 +46,8 @@ export default async function HighSchoolNewsPage() {
   return (
     <>
       <PageHero
-        title={t('hsNews.heroTitle')}
-        subtitle={t('hsNews.heroSubtitle')}
+        title={heroTitle}
+        subtitle={heroSubtitle}
         breadcrumb={[
           { label: t('brand.short'), href: '/' },
           { label: t('hsNav.home'), href: '/high-school' },
