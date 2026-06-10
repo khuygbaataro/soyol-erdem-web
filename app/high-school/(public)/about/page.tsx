@@ -16,6 +16,7 @@ import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { CtaBanner } from '@/components/sections/CtaBanner';
+import { ValuesList } from '@/components/sections/ValuesList';
 import { HsOrgChart, type HsStaff } from '@/components/sections/HsOrgChart';
 import { prisma } from '@/lib/prisma';
 import { getServerLocale } from '@/lib/i18n/server';
@@ -35,9 +36,14 @@ const PHILOSOPHY_ICONS: LucideIcon[] = [Sparkles, GraduationCap, Award];
 const HIGHLIGHT_ICONS: LucideIcon[] = [Trophy, Award, Globe2, Users];
 
 export default async function HighSchoolAboutPage() {
-  const [locale, site, staffRows] = await Promise.all([
+  const [locale, site, homeSite, staffRows] = await Promise.all([
     getServerLocale(),
     getSiteContentMap('ahlah-about'),
+    // Philosophy (Vision / Mission / Values) нь нүүр хуудастай нэг эх
+    // сурвалжаас (ahlah-home.philosophy.*) уншигдана. Ингэснээр админ
+    // нэг газраас засахад нүүр болон танилцуулга хуудас хоёулаа адил
+    // шинэчлэгдэнэ.
+    getSiteContentMap('ahlah-home'),
     // Staff DB-аас HS-ийн positionKey-тэй мөрүүдийг л татна. HsOrgChart
     // мөн админ нэмсэн staff байхгүй positionKey-руу хатуу кодлогдсон
     // fallback ашиглах тул графикт хоосон node гарахгүй.
@@ -52,6 +58,17 @@ export default async function HighSchoolAboutPage() {
       .catch(() => []),
   ]);
   const c = HS_ABOUT_CONTENT[locale];
+
+  // Shared philosophy — read from ahlah-home.philosophy.* (same keys the
+  // home page uses) so a single admin edit updates both pages. Falls back
+  // to the localised bundle when a key is empty.
+  const ph = (key: string, fallback: string) => homeSite.get(key) || fallback;
+  const philosophyTitle = ph('ahlah-home.philosophy.title', c.philosophyTitle);
+  const philosophy = c.philosophy.map((p, i) => ({
+    label: ph(`ahlah-home.philosophy.${i + 1}.label`, p.label),
+    title: ph(`ahlah-home.philosophy.${i + 1}.title`, p.title),
+    body: ph(`ahlah-home.philosophy.${i + 1}.body`, p.body),
+  }));
 
   // Локалчилсан staff (position / degree / bio EN/JA-ийн дагуу резол)
   const localisedStaff: HsStaff[] = staffRows.map((s) => ({
@@ -160,10 +177,12 @@ export default async function HighSchoolAboutPage() {
 
       {/* Vision / Motto / Values */}
       <Section background="cream-soft" spacing="md">
-        <SectionTitle title={c.philosophyTitle} />
+        <SectionTitle title={philosophyTitle} />
         <div className="grid gap-6 md:grid-cols-3">
-          {c.philosophy.map((p, idx) => {
+          {philosophy.map((p, idx) => {
             const Icon = PHILOSOPHY_ICONS[idx] ?? Sparkles;
+            // Values card (3rd) — structured С-Э-А-С acronym list.
+            const isValues = idx === 2;
             return (
               <Card key={p.label} className="flex h-full flex-col">
                 <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-gold-400">
@@ -173,7 +192,11 @@ export default async function HighSchoolAboutPage() {
                   {p.label}
                 </p>
                 <h3 className="mt-2 text-lg font-bold text-navy-900">{p.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-text-body">{p.body}</p>
+                {isValues ? (
+                  <ValuesList text={p.body} />
+                ) : (
+                  <p className="mt-3 text-sm leading-relaxed text-text-body">{p.body}</p>
+                )}
               </Card>
             );
           })}

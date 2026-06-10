@@ -22,6 +22,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { CtaBanner } from '@/components/sections/CtaBanner';
+import { ValuesList } from '@/components/sections/ValuesList';
 import { NewsCard } from '@/components/ui/NewsCard';
 import { prisma } from '@/lib/prisma';
 import { localiseNewsCategory } from '@/lib/admin-helpers';
@@ -209,6 +210,9 @@ export default async function HighSchoolHomePage() {
         <div className="grid gap-6 md:grid-cols-3">
           {philosophy.map((p, idx) => {
             const Icon = PHILOSOPHY_ICONS[idx] ?? Sparkles;
+            // Values card (3rd) renders the С-Э-А-С acronym as a
+            // structured hanging-indent list, like the university page.
+            const isValues = idx === 2;
             return (
               <Card key={p.label} className="flex h-full flex-col">
                 <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-gold-400">
@@ -218,7 +222,11 @@ export default async function HighSchoolHomePage() {
                   {p.label}
                 </p>
                 <h3 className="mt-2 text-lg font-bold text-navy-900">{p.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-text-body">{p.body}</p>
+                {isValues ? (
+                  <ValuesList text={p.body} />
+                ) : (
+                  <p className="mt-3 text-sm leading-relaxed text-text-body">{p.body}</p>
+                )}
               </Card>
             );
           })}
