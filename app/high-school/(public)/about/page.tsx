@@ -70,6 +70,24 @@ export default async function HighSchoolAboutPage() {
     body: ph(`ahlah-home.philosophy.${i + 1}.body`, p.body),
   }));
 
+  // Admin-editable: stats band, director's message, Japan partnerships.
+  const s = (key: string, fallback: string) => site.get(key) || fallback;
+  const stats = c.stats.map((st, i) => ({
+    value: s(`ahlah-about.stat.${i + 1}.value`, st.value),
+    label: s(`ahlah-about.stat.${i + 1}.label`, st.label),
+  }));
+  const directorTitle = s('ahlah-about.director.title', c.directorTitle);
+  const directorName = s('ahlah-about.director.name', c.directorName);
+  const directorRole = s('ahlah-about.director.role', c.directorRole);
+  const directorBody = c.directorBody.map((p, i) => ({
+    body: s(`ahlah-about.director.body.${i + 1}`, p.body),
+  }));
+  const partnershipsTitle = s('ahlah-about.partnerships.title', c.partnershipsTitle);
+  const partnershipsSubtitle = s('ahlah-about.partnerships.subtitle', c.partnershipsSubtitle);
+  const partnerships = c.partnerships.map((p, i) =>
+    s(`ahlah-about.partnerships.item.${i + 1}`, p),
+  );
+
   // Локалчилсан staff (position / degree / bio EN/JA-ийн дагуу резол)
   const localisedStaff: HsStaff[] = staffRows.map((s) => ({
     positionKey: s.positionKey,
@@ -205,27 +223,27 @@ export default async function HighSchoolAboutPage() {
 
       {/* Director's Message */}
       <Section background="white" spacing="md">
-        <SectionTitle title={c.directorTitle} />
+        <SectionTitle title={directorTitle} />
         <div className="grid gap-8 lg:grid-cols-[1fr_2fr] lg:items-start">
           <div className="overflow-hidden rounded-card bg-navy-900 text-white shadow-card-hover">
             <div className="relative aspect-[4/5] w-full overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/highschool-director.jpg"
-                alt={`${c.directorName} — ${c.directorRole}`}
+                src={site.get('ahlah-about.director.image') || '/highschool-director.jpg'}
+                alt={`${directorName} — ${directorRole}`}
                 className="absolute inset-0 h-full w-full object-cover"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-900/95 via-navy-900/55 to-transparent px-6 pb-6 pt-12">
                 <Quote className="h-6 w-6 text-gold-400" />
                 <p className="mt-3 font-serif text-xl font-bold leading-tight text-white">
-                  {c.directorName}
+                  {directorName}
                 </p>
-                <p className="mt-1 text-sm text-white/85">{c.directorRole}</p>
+                <p className="mt-1 text-sm text-white/85">{directorRole}</p>
               </div>
             </div>
           </div>
           <div className="space-y-4 text-base leading-relaxed text-text-body">
-            {c.directorBody.map((p, idx) => (
+            {directorBody.map((p, idx) => (
               <p key={idx}>{p.body}</p>
             ))}
           </div>
@@ -235,7 +253,7 @@ export default async function HighSchoolAboutPage() {
       {/* Stats */}
       <Section background="navy" spacing="md">
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {c.stats.map((s) => (
+          {stats.map((s) => (
             <div key={s.label} className="text-center">
               <p className="font-serif text-4xl font-bold text-gold-400 md:text-5xl">
                 {s.value}
@@ -287,11 +305,11 @@ export default async function HighSchoolAboutPage() {
       {/* Japan partnerships */}
       <Section background="cream-soft" spacing="md">
         <SectionTitle
-          title={c.partnershipsTitle}
-          subtitle={c.partnershipsSubtitle}
+          title={partnershipsTitle}
+          subtitle={partnershipsSubtitle}
         />
         <div className="grid gap-3 md:grid-cols-2">
-          {c.partnerships.map((p) => (
+          {partnerships.map((p) => (
             <div
               key={p}
               className="flex items-start gap-3 rounded-card bg-white p-5 shadow-card"
