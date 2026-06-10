@@ -22,6 +22,14 @@ export default async function HighSchoolContactPage() {
   const c = HS_CONTACT_CONTENT[locale];
   const heroImage = site.get('ahlah-contact.hero.image') || undefined;
 
+  // Admin-editable section headings + message card (MN; EN/JP fallback).
+  const g = (key: string, fallback: string) =>
+    locale === 'MN' ? (site.get(key) || fallback) : fallback;
+  const contactsTitle = g('ahlah-contact.contacts.title', c.contactsTitle);
+  const messageTitle = g('ahlah-contact.message.title', c.messageTitle);
+  const messageCardTitle = g('ahlah-contact.message.card.title', c.messageCardTitle);
+  const messageCardBody = g('ahlah-contact.message.card.body', c.messageCardBody);
+
   return (
     <>
       <PageHero
@@ -39,7 +47,7 @@ export default async function HighSchoolContactPage() {
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Contact details */}
           <div className="space-y-6">
-            <SectionTitle title={c.contactsTitle} align="left" />
+            <SectionTitle title={contactsTitle} align="left" />
 
             <div className="space-y-4">
               <a
@@ -126,17 +134,17 @@ export default async function HighSchoolContactPage() {
 
           {/* Send-a-message info */}
           <div className="space-y-6">
-            <SectionTitle title={c.messageTitle} align="left" />
+            <SectionTitle title={messageTitle} align="left" />
 
             <div className="rounded-card border border-border-light bg-white p-7 shadow-card">
               <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
                 <Send className="h-6 w-6" />
               </span>
               <h3 className="mt-4 font-serif text-xl font-bold text-navy-900">
-                {c.messageCardTitle}
+                {messageCardTitle}
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-text-body">
-                {c.messageCardBody}
+                {messageCardBody}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button href="/contact" variant="accent" size="md">
