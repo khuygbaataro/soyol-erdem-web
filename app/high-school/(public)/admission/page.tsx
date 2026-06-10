@@ -46,6 +46,42 @@ export default async function HighSchoolAdmissionPage() {
   const c = HS_ADMISSION_CONTENT[locale];
   const heroImage = site.get('ahlah-admission.hero.image') || undefined;
 
+  // Admin-editable (MN; EN/JP fall back to bundle).
+  const g = (key: string, fb: string) =>
+    locale === 'MN' ? (site.get(key) || fb) : fb;
+  const posterImage = site.get('ahlah-admission.poster.image') || '/ahlah/admission-poster.jpg';
+  // Requirements
+  const requirementsTitle = g('ahlah-admission.requirements.title', c.requirementsTitle);
+  const requirements = c.requirements.map((r, i) => ({
+    title: g(`ahlah-admission.req.${i + 1}.title`, r.title),
+    body: g(`ahlah-admission.req.${i + 1}.body`, r.body),
+  }));
+  // Steps
+  const stepsTitle = g('ahlah-admission.steps.title', c.stepsTitle);
+  const stepsSubtitle = g('ahlah-admission.steps.subtitle', c.stepsSubtitle);
+  const steps = c.steps.map((s, i) => ({
+    title: g(`ahlah-admission.step.${i + 1}.title`, s.title),
+    body: g(`ahlah-admission.step.${i + 1}.body`, s.body),
+  }));
+  // Tuition
+  const tuitionTitle = g('ahlah-admission.tuition.title', c.tuitionTitle);
+  const tuitionBody = g('ahlah-admission.tuition.body', c.tuitionBody);
+  // Docs (one per line)
+  const docsRaw = site.get('ahlah-admission.docs.items');
+  const docsTitle = g('ahlah-admission.docs.title', c.docsTitle);
+  const docs = locale === 'MN' && docsRaw
+    ? docsRaw.split('\n').map((s) => s.trim()).filter(Boolean)
+    : c.docs;
+  // Timeline (one "огноо | үйл явдал" per line)
+  const timelineRaw = site.get('ahlah-admission.timeline.items');
+  const timelineTitle = g('ahlah-admission.timeline.title', c.timelineTitle);
+  const timeline = locale === 'MN' && timelineRaw
+    ? timelineRaw.split('\n').map((line) => {
+        const [date, ...rest] = line.split('|');
+        return { date: (date ?? '').trim(), event: rest.join('|').trim() };
+      }).filter((t) => t.date || t.event)
+    : c.timeline;
+
   return (
     <>
       <PageHero
@@ -86,7 +122,7 @@ export default async function HighSchoolAdmissionPage() {
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/ahlah/admission-poster.jpg"
+              src={posterImage}
               alt="Соёл Эрдэм сургуулийн элсэлт I–XII анги"
               loading="lazy"
               className="block h-auto w-full rounded-[8px]"
@@ -230,9 +266,9 @@ export default async function HighSchoolAdmissionPage() {
 
       {/* Requirements */}
       <Section background="cream-soft" spacing="md">
-        <SectionTitle title={c.requirementsTitle} />
+        <SectionTitle title={requirementsTitle} />
         <div className="grid gap-5 md:grid-cols-2">
-          {c.requirements.map((r) => (
+          {requirements.map((r) => (
             <Card key={r.title} className="flex h-full flex-col">
               <h3 className="text-base font-bold text-navy-900">{r.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-text-body">{r.body}</p>
@@ -243,9 +279,9 @@ export default async function HighSchoolAdmissionPage() {
 
       {/* Steps */}
       <Section background="white" spacing="md">
-        <SectionTitle title={c.stepsTitle} subtitle={c.stepsSubtitle} />
+        <SectionTitle title={stepsTitle} subtitle={stepsSubtitle} />
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {c.steps.map((s, idx) => {
+          {steps.map((s, idx) => {
             const Icon = STEP_ICONS[idx] ?? ClipboardList;
             return (
               <Card key={s.title} className="flex h-full flex-col">
@@ -264,9 +300,9 @@ export default async function HighSchoolAdmissionPage() {
       <Section background="cream-soft" spacing="md">
         <div className="grid gap-8 md:grid-cols-2">
           <div>
-            <SectionTitle title={c.docsTitle} align="left" />
+            <SectionTitle title={docsTitle} align="left" />
             <ul className="space-y-3">
-              {c.docs.map((d, i) => (
+              {docs.map((d, i) => (
                 <li
                   key={d}
                   className="flex items-start gap-3 rounded-card border border-border-light bg-white px-5 py-3 text-text-body shadow-card"
@@ -281,9 +317,9 @@ export default async function HighSchoolAdmissionPage() {
           </div>
 
           <div>
-            <SectionTitle title={c.timelineTitle} align="left" />
+            <SectionTitle title={timelineTitle} align="left" />
             <ol className="space-y-3">
-              {c.timeline.map((t) => (
+              {timeline.map((t) => (
                 <li
                   key={t.event}
                   className="flex items-center gap-4 rounded-card border border-border-light bg-white px-5 py-4 text-text-body shadow-card"
@@ -306,9 +342,9 @@ export default async function HighSchoolAdmissionPage() {
             <Wallet className="h-6 w-6" />
           </span>
           <h3 className="mt-5 font-serif text-xl font-bold text-navy-900">
-            {c.tuitionTitle}
+            {tuitionTitle}
           </h3>
-          <p className="mt-3 text-sm leading-relaxed text-text-body">{c.tuitionBody}</p>
+          <p className="mt-3 text-sm leading-relaxed text-text-body">{tuitionBody}</p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Button
               href={`tel:${HIGH_SCHOOL.contact.phonePrimary.replace('-', '')}`}
