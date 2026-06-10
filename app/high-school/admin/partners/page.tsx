@@ -4,7 +4,6 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
 import { prisma } from '@/lib/prisma';
-import { requireRole } from '@/lib/auth-helpers';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Хамтрагч байгуулл.' };
@@ -20,9 +19,8 @@ const TYPE_ICON: Record<string, typeof Building2> = {
   domestic: GraduationCap,
 };
 
-export default async function PartnersPage() {
-  await requireRole(['ADMIN']);
-  const items = await prisma.partner.findMany({ where: { site: 'UNIVERSITY' }, orderBy: [{ type: 'asc' }, { order: 'asc' }] });
+export default async function HsPartnersPage() {
+  const items = await prisma.partner.findMany({ where: { site: 'HIGH_SCHOOL' }, orderBy: [{ type: 'asc' }, { order: 'asc' }] });
 
   const groups: Record<string, typeof items> = {};
   for (const p of items) {
@@ -35,9 +33,9 @@ export default async function PartnersPage() {
       <PageHeader
         title="Хамтрагч байгуулл."
         subtitle={`Нийт ${items.length} байгуулл.`}
-        breadcrumb={[{ label: 'Хянах самбар', href: '/admin/dashboard' }, { label: 'Хамтрагч' }]}
+        breadcrumb={[{ label: 'Самбар', href: '/high-school/admin/dashboard' }, { label: 'Хамтрагч' }]}
         action={
-          <Link href="/admin/partners/new" className="inline-flex items-center gap-2 rounded-button bg-navy-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-gold-500 hover:text-navy-900 transition-colors">
+          <Link href="/high-school/admin/partners/new" className="inline-flex items-center gap-2 rounded-button bg-navy-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-gold-500 hover:text-navy-900 transition-colors">
             <Plus className="h-4 w-4" />
             Шинэ нэмэх
           </Link>
@@ -87,13 +85,11 @@ export default async function PartnersPage() {
                         </td>
                         <td className="px-4 py-3 text-text-muted">{p.location}</td>
                         <td className="px-4 py-3">
-                          {p.active
-                            ? <Badge variant="navy">Идэвхтэй</Badge>
-                            : <Badge variant="outline">Нуусан</Badge>}
+                          {p.active ? <Badge variant="navy">Идэвхтэй</Badge> : <Badge variant="outline">Нуусан</Badge>}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <Link href={`/admin/partners/${p.id}/edit`} className="rounded-button border border-border-light bg-white px-3 py-1.5 text-xs font-semibold text-navy-900 hover:bg-cream-soft">
+                            <Link href={`/high-school/admin/partners/${p.id}/edit`} className="rounded-button border border-border-light bg-white px-3 py-1.5 text-xs font-semibold text-navy-900 hover:bg-cream-soft">
                               Засах
                             </Link>
                             <DeleteButton endpoint={`/api/partners/${p.id}`} label="" />

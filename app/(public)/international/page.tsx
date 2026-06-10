@@ -43,7 +43,7 @@ export default async function InternationalPage() {
     getSiteContentMap('banners'),
     getSiteContentMap('international'),
     getServerLocale(),
-    prisma.partner.findMany({ where: { active: true }, orderBy: [{ type: 'asc' }, { order: 'asc' }] }).catch(() => []),
+    prisma.partner.findMany({ where: { active: true, site: 'UNIVERSITY' }, orderBy: [{ type: 'asc' }, { order: 'asc' }] }).catch(() => []),
   ]);
   const c = INTERNATIONAL_CONTENT[locale];
 
@@ -93,21 +93,31 @@ export default async function InternationalPage() {
     logo:         p.logo ?? undefined,
   }));
 
-  // Domestic partners — keep using SiteContent overrides + static fallback
-  const domestic = DOMESTIC_PARTNERS.map((d, idx) => {
-    const i = idx + 1;
-    const tr = c.domestic[idx];
-    const activitiesRaw = intlContent.get(`international.dom.${i}.activities`) || '';
-    const activities = activitiesRaw
-      ? activitiesRaw.split('\n').map((a) => a.trim()).filter(Boolean)
-      : tr?.activities ?? d.activities;
-    return {
-      ...d,
-      name:       get(`international.dom.${i}.name`,   tr?.name   ?? d.name),
-      detail:     get(`international.dom.${i}.detail`, tr?.detail ?? d.detail ?? ''),
-      activities,
-    };
-  });
+  // Domestic partners — DB first (type=domestic), fallback to static +
+  // SiteContent overrides so existing edits keep working.
+  const dbDomestic = dbPartners.filter((p) => p.type === 'domestic');
+  const domestic = dbDomestic.length > 0
+    ? dbDomestic.map((d) => ({
+        name: d.name,
+        logo: d.logo ?? undefined,
+        url: d.url ?? '#',
+        detail: d.detail ?? '',
+        activities: (d.activities ?? '').split('\n').map((a) => a.trim()).filter(Boolean),
+      }))
+    : DOMESTIC_PARTNERS.map((d, idx) => {
+        const i = idx + 1;
+        const tr = c.domestic[idx];
+        const activitiesRaw = intlContent.get(`international.dom.${i}.activities`) || '';
+        const activities = activitiesRaw
+          ? activitiesRaw.split('\n').map((a) => a.trim()).filter(Boolean)
+          : tr?.activities ?? d.activities;
+        return {
+          ...d,
+          name: get(`international.dom.${i}.name`, tr?.name ?? d.name),
+          detail: get(`international.dom.${i}.detail`, tr?.detail ?? d.detail ?? ''),
+          activities,
+        };
+      });
 
   const otherPartners = PARTNER_UNIVERSITIES.map((u, idx) => {
     const tr = c.otherPartners[idx];

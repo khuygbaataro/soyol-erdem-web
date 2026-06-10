@@ -10,6 +10,7 @@ import { PartnerProfileCard } from '@/components/sections/PartnerProfileCard';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { getSiteContentMap } from '@/lib/site-content';
+import { prisma } from '@/lib/prisma';
 import {
   DOMESTIC_PARTNERS,
   JAPAN_HIGH_SCHOOLS,
@@ -43,9 +44,10 @@ export const metadata = {
  * image are also admin-managed.
  */
 export default async function HighSchoolCooperationPage() {
-  const [locale, site] = await Promise.all([
+  const [locale, site, dbPartners] = await Promise.all([
     getServerLocale(),
     getSiteContentMap('ahlah-cooperation'),
+    prisma.partner.findMany({ where: { active: true, site: 'HIGH_SCHOOL' }, orderBy: [{ type: 'asc' }, { order: 'asc' }] }).catch(() => []),
   ]);
   const c = INTERNATIONAL_CONTENT[locale];
   const heroImage = site.get('ahlah-cooperation.hero.image') || undefined;
@@ -68,44 +70,47 @@ export default async function HighSchoolCooperationPage() {
     .map((s) => s.trim())
     .filter(Boolean);
 
-  // Locale-merged partner lists (logos + structural fields from
-  // lib/content.ts, locale strings from INTERNATIONAL_CONTENT).
-  const japanPartners: PartnerDetailed[] = JAPAN_PARTNERS_DETAILED.map(
-    (p, idx) => {
-      const tr = c.japanPartners[idx];
-      if (!tr) return p;
-      return {
-        ...p,
-        name: tr.name,
-        nameJp: locale === 'JP' ? undefined : p.nameJp,
-        location: tr.location,
-        partnerSince: tr.partnerSince,
-        detail: tr.detail,
-        headline: tr.headline,
-      };
-    },
-  );
-
-  const highSchools: PartnerDetailed[] = JAPAN_HIGH_SCHOOLS.map((p, idx) => {
-    const tr = c.highSchools[idx];
-    if (!tr) return p;
-    return {
-      ...p,
-      name: tr.name,
-      nameJp: locale === 'JP' ? undefined : p.nameJp,
-      location: tr.location,
-      partnerSince: tr.partnerSince,
-      detail: tr.detail,
-      headline: tr.headline,
-    };
+  // Partner lists — DB first (site=HIGH_SCHOOL), fallback to the shared
+  // static lists merged with INTERNATIONAL_CONTENT locale strings.
+  const dbJpUniv = dbPartners.filter((p) => p.type === 'japan-university');
+  const dbHs = dbPartners.filter((p) => p.type === 'japan-highschool');
+  const dbDom = dbPartners.filter((p) => p.type === 'domestic');
+  const mapDb = (p: (typeof dbPartners)[number]): PartnerDetailed => ({
+    name: p.name,
+    nameJp: locale === 'JP' ? undefined : (p.nameJp ?? undefined),
+    location: p.location ?? '',
+    partnerSince: p.partnerSince ?? undefined,
+    detail: p.detail ?? '',
+    headline: p.headline ?? undefined,
+    logo: p.logo ?? undefined,
   });
 
-  const domestic = DOMESTIC_PARTNERS.map((d, idx) => {
-    const tr = c.domestic[idx];
-    return tr
-      ? { ...d, name: tr.name, detail: tr.detail, activities: tr.activities }
-      : d;
-  });
+  const japanPartners: PartnerDetailed[] = dbJpUniv.length > 0
+    ? dbJpUniv.map(mapDb)
+    : JAPAN_PARTNERS_DETAILED.map((p, idx) => {
+        const tr = c.japanPartners[idx];
+        return tr ? { ...p, name: tr.name, nameJp: locale === 'JP' ? undefined : p.nameJp, location: tr.location, partnerSince: tr.partnerSince, detail: tr.detail, headline: tr.headline } : p;
+      });
+
+  const highSchools: PartnerDetailed[] = dbHs.length > 0
+    ? dbHs.map(mapDb)
+    : JAPAN_HIGH_SCHOOLS.map((p, idx) => {
+        const tr = c.highSchools[idx];
+        return tr ? { ...p, name: tr.name, nameJp: locale === 'JP' ? undefined : p.nameJp, location: tr.location, partnerSince: tr.partnerSince, detail: tr.detail, headline: tr.headline } : p;
+      });
+
+  const domestic = dbDom.length > 0
+    ? dbDom.map((d) => ({
+        name: d.name,
+        logo: d.logo ?? undefined,
+        url: d.url ?? '#',
+        detail: d.detail ?? '',
+        activities: (d.activities ?? '').split('\n').map((a) => a.trim()).filter(Boolean),
+      }))
+    : DOMESTIC_PARTNERS.map((d, idx) => {
+        const tr = c.domestic[idx];
+        return tr ? { ...d, name: tr.name, detail: tr.detail, activities: tr.activities } : d;
+      });
 
   return (
     <>

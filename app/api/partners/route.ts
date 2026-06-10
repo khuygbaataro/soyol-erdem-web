@@ -14,6 +14,7 @@ export async function POST(req: Request) {
   const data = await req.json();
   const item = await prisma.partner.create({
     data: {
+      site:         data.site === 'HIGH_SCHOOL' ? 'HIGH_SCHOOL' : 'UNIVERSITY',
       type:         data.type         ?? 'japan-university',
       name:         data.name         ?? '',
       nameJp:       data.nameJp       || null,

@@ -33,7 +33,19 @@ interface Initial {
   order?: number;
 }
 
-export function PartnerForm({ initial = {}, mode }: { initial?: Initial; mode: 'create' | 'edit' }) {
+export function PartnerForm({
+  initial = {},
+  mode,
+  site = 'UNIVERSITY',
+  listPath = '/admin/partners',
+}: {
+  initial?: Initial;
+  mode: 'create' | 'edit';
+  /** Which sub-site this partner belongs to. Sent on create. */
+  site?: 'UNIVERSITY' | 'HIGH_SCHOOL';
+  /** Redirect + cancel target. */
+  listPath?: string;
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const { isUploading, onUploadingChange } = useUploadGuard();
@@ -54,12 +66,12 @@ export function PartnerForm({ initial = {}, mode }: { initial?: Initial; mode: '
   function submit(e: React.FormEvent) {
     e.preventDefault();
     startTransition(async () => {
-      const payload = { type, name, nameJp: nameJp || undefined, logo: logo || undefined, headline: headline || undefined, location: location || undefined, partnerSince: partnerSince || undefined, detail: detail || undefined, url: url || undefined, activities: activities || undefined, active, order: Number(order) };
+      const payload = { site, type, name, nameJp: nameJp || undefined, logo: logo || undefined, headline: headline || undefined, location: location || undefined, partnerSince: partnerSince || undefined, detail: detail || undefined, url: url || undefined, activities: activities || undefined, active, order: Number(order) };
       const endpoint = mode === 'create' ? '/api/partners' : `/api/partners/${initial.id}`;
       const res = await fetch(endpoint, { method: mode === 'create' ? 'POST' : 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
       if (!res.ok) { toast.error('Хадгалахад алдаа гарлаа'); return; }
       toast.success(mode === 'create' ? 'Нэмэгдлээ' : 'Хадгалагдлаа');
-      router.push('/admin/partners');
+      router.push(listPath);
       router.refresh();
     });
   }
@@ -133,7 +145,7 @@ export function PartnerForm({ initial = {}, mode }: { initial?: Initial; mode: '
           <Button type="submit" variant="primary" size="md" icon={<Save className="h-4 w-4" />} iconPosition="left" loading={pending} disabled={isUploading} className="w-full">
             {isUploading ? 'Зураг ачаалж байна…' : 'Хадгалах'}
           </Button>
-          <Link href="/admin/partners" className="mt-3 block text-center text-sm font-semibold text-text-muted hover:text-navy-900">
+          <Link href={listPath} className="mt-3 block text-center text-sm font-semibold text-text-muted hover:text-navy-900">
             Цуцлах
           </Link>
         </Card>

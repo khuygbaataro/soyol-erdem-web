@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  Building2,
   ChevronsLeft,
   FileText,
   GraduationCap,
@@ -25,6 +26,7 @@ const NAV: { label: string; href: string; icon: typeof LayoutDashboard }[] = [
   { label: 'Элсэлтийн хүсэлт', href: '/high-school/admin/applications', icon: GraduationCap },
   { label: 'Мэдээ', href: '/high-school/admin/news', icon: FileText },
   { label: 'Бүтэц зохион байгуулалт', href: '/high-school/admin/structure', icon: Network },
+  { label: 'Хамтрагч байгуулл.', href: '/high-school/admin/partners', icon: Building2 },
   { label: 'Хуудасны агуулга', href: '/high-school/admin/site-content', icon: LayoutTemplate },
 ];
 
