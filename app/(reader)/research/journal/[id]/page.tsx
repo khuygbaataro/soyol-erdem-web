@@ -25,8 +25,7 @@ interface PageProps {
   params: { id: string };
 }
 
-export const dynamicRoute = 'force-dynamic';
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: PageProps) {
   const dbJ = await prisma.researchJournal.findUnique({ where: { slug: params.id } }).catch(() => null);
