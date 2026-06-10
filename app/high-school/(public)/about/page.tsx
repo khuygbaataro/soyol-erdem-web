@@ -3,10 +3,9 @@ import {
   Building2,
   Calendar,
   GraduationCap,
-  Globe2,
+  Medal,
   Sparkles,
   Trophy,
-  Users,
   Quote,
   type LucideIcon,
 } from 'lucide-react';
@@ -22,7 +21,7 @@ import { prisma } from '@/lib/prisma';
 import { getServerLocale } from '@/lib/i18n/server';
 import { getSiteContentMap } from '@/lib/site-content';
 import { localisedField, localisedFieldOptional } from '@/lib/i18n/db';
-import { HS_ABOUT_CONTENT } from '@/lib/i18n/content';
+import { HS_ABOUT_CONTENT, HS_HOME_CONTENT } from '@/lib/i18n/content';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -33,7 +32,9 @@ export const metadata = {
 
 // Icon orders kept code-side — joined by index with the localised arrays.
 const PHILOSOPHY_ICONS: LucideIcon[] = [Sparkles, GraduationCap, Award];
-const HIGHLIGHT_ICONS: LucideIcon[] = [Trophy, Award, Globe2, Users];
+// Same icon order as the home page so the shared highlights section
+// renders identically on both pages.
+const HIGHLIGHT_ICONS: LucideIcon[] = [Trophy, Medal, Trophy, Building2];
 
 export default async function HighSchoolAboutPage() {
   const [locale, site, homeSite, staffRows] = await Promise.all([
@@ -68,6 +69,17 @@ export default async function HighSchoolAboutPage() {
     label: ph(`ahlah-home.philosophy.${i + 1}.label`, p.label),
     title: ph(`ahlah-home.philosophy.${i + 1}.title`, p.title),
     body: ph(`ahlah-home.philosophy.${i + 1}.body`, p.body),
+  }));
+
+  // Shared highlights — read from the same ahlah-home.highlight.* keys the
+  // home page uses (and managed from the HS admin "Нүүр хуудас" group) so a
+  // single admin edit updates both pages. Falls back to the HOME bundle (not
+  // the about bundle) so the two pages stay identical even before any edit.
+  const homeC = HS_HOME_CONTENT[locale];
+  const highlightsTitle = ph('ahlah-home.highlights.title', homeC.highlightsTitle);
+  const highlights = homeC.highlights.map((h, i) => ({
+    title: ph(`ahlah-home.highlight.${i + 1}.title`, h.title),
+    body: ph(`ahlah-home.highlight.${i + 1}.body`, h.body),
   }));
 
   // Admin-editable: hero, stats band, director's message, Japan partnerships.
@@ -280,11 +292,11 @@ export default async function HighSchoolAboutPage() {
         <HsOrgChart staff={localisedStaff} />
       </Section>
 
-      {/* Highlights */}
+      {/* Highlights — shared with the home page (see resolution above) */}
       <Section background="white" spacing="md">
-        <SectionTitle title={c.highlightsTitle} align="left" />
+        <SectionTitle title={highlightsTitle} align="left" />
         <div className="grid gap-5 md:grid-cols-2">
-          {c.highlights.map((h, idx) => {
+          {highlights.map((h, idx) => {
             const Icon = HIGHLIGHT_ICONS[idx] ?? Trophy;
             return (
               <div
