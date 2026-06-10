@@ -62,38 +62,78 @@ export default async function HighSchoolHomePage() {
   ]);
 
   const c = HS_HOME_CONTENT[locale];
-  // SiteContent resolves locale-aware values (MN: `value`; EN:
-  // `valueEn` or empty; JP: `valueJa` or empty). Images stay language-
-  // agnostic. Empty translations fall through to the hand-written
-  // bundle, so admin EN / JP edits surface when filled in and the
-  // bundle covers everything else.
+  const g = (key: string, fallback: string) => site.get(key) || fallback;
 
-  const heroSubtitle = site.get('ahlah-home.hero.subtitle') || c.heroSubtitle;
-  const heroImage = site.get('ahlah-home.hero.image') || '';
+  // Hero
+  const heroTitle    = g('ahlah-home.hero.title',    c.heroTitle);
+  const heroSubtitle = g('ahlah-home.hero.subtitle', c.heroSubtitle);
+  const heroImage    = site.get('ahlah-home.hero.image') || '';
 
-  const introBadge = site.get('ahlah-home.intro.badge') || c.introBadge;
-  const introTitle = site.get('ahlah-home.intro.title') || c.introTitle;
-  const introBody = site.get('ahlah-home.intro.body') || c.introBody;
-  const introBody2 = site.get('ahlah-home.intro.body2') || c.introBody2;
-  const introImage = site.get('ahlah-home.intro.image') || '/НЕБ_Сургууль.png';
-  const overlayEyebrow =
-    site.get('ahlah-home.intro.overlay.eyebrow') || c.overlayEyebrow;
-  const overlayTitle =
-    site.get('ahlah-home.intro.overlay.title') || c.overlayTitle;
-  const overlaySubtitle =
-    site.get('ahlah-home.intro.overlay.subtitle') || c.overlaySubtitle;
+  // Intro
+  const introBadge      = g('ahlah-home.intro.badge',           c.introBadge);
+  const introTitle      = g('ahlah-home.intro.title',           c.introTitle);
+  const introBody       = g('ahlah-home.intro.body',            c.introBody);
+  const introBody2      = g('ahlah-home.intro.body2',           c.introBody2);
+  const introImage      = site.get('ahlah-home.intro.image') || '/НЕБ_Сургууль.png';
+  const overlayEyebrow  = g('ahlah-home.intro.overlay.eyebrow', c.overlayEyebrow);
+  const overlayTitle    = g('ahlah-home.intro.overlay.title',   c.overlayTitle);
+  const overlaySubtitle = g('ahlah-home.intro.overlay.subtitle',c.overlaySubtitle);
 
-  const philosophyTitle =
-    site.get('ahlah-home.philosophy.title') || c.philosophyTitle;
-  const programsTitle = site.get('ahlah-home.programs.title') || c.programsTitle;
-  const programsSubtitle =
-    site.get('ahlah-home.programs.subtitle') || c.programsSubtitle;
-  const newsTitle = site.get('ahlah-home.news.title') || c.newsTitle;
+  // Philosophy / зорилго
+  const philosophyTitle = g('ahlah-home.philosophy.title', c.philosophyTitle);
+  const philosophy = c.philosophy.map((p, i) => ({
+    label: g(`ahlah-home.philosophy.${i+1}.label`, p.label),
+    title: g(`ahlah-home.philosophy.${i+1}.title`, p.title),
+    body:  g(`ahlah-home.philosophy.${i+1}.body`,  p.body),
+  }));
+
+  // Stats
+  const stats = c.stats.map((s, i) => ({
+    value: g(`ahlah-home.stat.${i+1}.value`, s.value),
+    label: g(`ahlah-home.stat.${i+1}.label`, s.label),
+  }));
+
+  // Programs
+  const programsTitle    = g('ahlah-home.programs.title',    c.programsTitle);
+  const programsSubtitle = g('ahlah-home.programs.subtitle', c.programsSubtitle);
+  const programs = c.programs.map((p, i) => ({
+    title:       g(`ahlah-home.program.${i+1}.title`,       p.title),
+    description: g(`ahlah-home.program.${i+1}.description`, p.description),
+  }));
+
+  // Highlights
+  const highlightsTitle = g('ahlah-home.highlights.title', c.highlightsTitle);
+  const highlights = c.highlights.map((h, i) => ({
+    title: g(`ahlah-home.highlight.${i+1}.title`, h.title),
+    body:  g(`ahlah-home.highlight.${i+1}.body`,  h.body),
+  }));
+
+  // News
+  const newsTitle = g('ahlah-home.news.title', c.newsTitle);
+
+  // Contact
+  const contactEyebrow      = g('ahlah-home.contact.eyebrow',        c.contactEyebrow);
+  const contactTitle        = g('ahlah-home.contact.title',          c.contactTitle);
+  const phoneLabel          = g('ahlah-home.contact.phone.label',    c.phoneLabel);
+  const phonePrimary        = g('ahlah-home.contact.phone.primary',  '7011-8589');
+  const phoneSecondary      = g('ahlah-home.contact.phone.secondary','9953-3738');
+  const emailLabel          = g('ahlah-home.contact.email.label',    c.emailLabel);
+  const contactEmail        = g('ahlah-home.contact.email.value',    'info@soyolerdem.edu.mn');
+  const admissionOpenLabel  = g('ahlah-home.contact.admission.label',c.admissionOpenLabel);
+  const admissionOpenValue  = g('ahlah-home.contact.admission.value',c.admissionOpenValue);
+  const admissionInfoCta    = g('ahlah-home.contact.admission.cta',  c.admissionInfoCta);
+  const otherQuestionsCta   = g('ahlah-home.contact.other.cta',      c.otherQuestionsCta);
+
+  // Banner
+  const bannerTitle        = g('ahlah-home.banner.title',         c.bannerTitle);
+  const bannerSubtitle     = g('ahlah-home.banner.subtitle',      c.bannerSubtitle);
+  const bannerCta          = g('ahlah-home.banner.cta',           c.bannerCta);
+  const bannerSecondaryCta = g('ahlah-home.banner.secondary.cta', c.bannerSecondaryCta);
 
   return (
     <>
       <PageHero
-        title={c.heroTitle}
+        title={heroTitle}
         subtitle={heroSubtitle}
         breadcrumb={[
           { label: c.breadcrumbUniversity, href: '/' },
@@ -167,7 +207,7 @@ export default async function HighSchoolHomePage() {
       <Section background="cream-soft" spacing="md">
         <SectionTitle title={philosophyTitle} />
         <div className="grid gap-6 md:grid-cols-3">
-          {c.philosophy.map((p, idx) => {
+          {philosophy.map((p, idx) => {
             const Icon = PHILOSOPHY_ICONS[idx] ?? Sparkles;
             return (
               <Card key={p.label} className="flex h-full flex-col">
@@ -188,7 +228,7 @@ export default async function HighSchoolHomePage() {
       {/* Stats */}
       <Section background="navy" spacing="md">
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {c.stats.map((s) => (
+          {stats.map((s) => (
             <div key={s.label} className="text-center">
               <p className="font-serif text-4xl font-bold text-gold-400 md:text-5xl">
                 {s.value}
@@ -205,7 +245,7 @@ export default async function HighSchoolHomePage() {
       <Section background="white" spacing="md" id="programs">
         <SectionTitle title={programsTitle} subtitle={programsSubtitle} />
         <div className="grid gap-6 md:grid-cols-2">
-          {c.programs.map((p, idx) => {
+          {programs.map((p, idx) => {
             const Icon = PROGRAM_ICONS[idx] ?? GraduationCap;
             return (
               <Card key={p.title} className="flex h-full items-start gap-5">
@@ -226,9 +266,9 @@ export default async function HighSchoolHomePage() {
 
       {/* Highlights / Activities */}
       <Section background="cream-soft" spacing="md">
-        <SectionTitle title={c.highlightsTitle} align="left" />
+        <SectionTitle title={highlightsTitle} align="left" />
         <div className="grid gap-5 md:grid-cols-2">
-          {c.highlights.map((h, idx) => {
+          {highlights.map((h, idx) => {
             const Icon = HIGHLIGHT_ICONS[idx] ?? Trophy;
             return (
               <div
@@ -289,10 +329,10 @@ export default async function HighSchoolHomePage() {
         <div className="grid gap-8 md:grid-cols-3">
           <div className="md:col-span-1">
             <p className="text-xs font-semibold uppercase tracking-widest text-gold-500">
-              {c.contactEyebrow}
+              {contactEyebrow}
             </p>
             <h2 className="mt-2 font-serif text-2xl font-bold text-navy-900 md:text-3xl">
-              {c.contactTitle}
+              {contactTitle}
             </h2>
             <div className="mt-3 h-1 w-12 rounded-full bg-gold-500" />
           </div>
@@ -302,19 +342,13 @@ export default async function HighSchoolHomePage() {
                 <Phone className="h-5 w-5" />
               </span>
               <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-text-muted">
-                {c.phoneLabel}
+                {phoneLabel}
               </p>
-              <a
-                href="tel:+97670118589"
-                className="mt-1 block text-base font-bold text-navy-900 hover:text-gold-500"
-              >
-                7011-8589
+              <a href={`tel:${phonePrimary.replace(/\D/g,'')}`} className="mt-1 block text-base font-bold text-navy-900 hover:text-gold-500">
+                {phonePrimary}
               </a>
-              <a
-                href="tel:+97699533738"
-                className="mt-1 block text-sm text-text-body hover:text-gold-500"
-              >
-                9953-3738
+              <a href={`tel:${phoneSecondary.replace(/\D/g,'')}`} className="mt-1 block text-sm text-text-body hover:text-gold-500">
+                {phoneSecondary}
               </a>
             </div>
             <div className="rounded-card border border-border-light bg-white p-5">
@@ -322,13 +356,10 @@ export default async function HighSchoolHomePage() {
                 <Mail className="h-5 w-5" />
               </span>
               <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-text-muted">
-                {c.emailLabel}
+                {emailLabel}
               </p>
-              <a
-                href="mailto:info@soyolerdem.edu.mn"
-                className="mt-1 block break-all text-base font-bold text-navy-900 hover:text-gold-500"
-              >
-                info@soyolerdem.edu.mn
+              <a href={`mailto:${contactEmail}`} className="mt-1 block break-all text-base font-bold text-navy-900 hover:text-gold-500">
+                {contactEmail}
               </a>
             </div>
             <div className="rounded-card border border-border-light bg-white p-5 sm:col-span-2">
@@ -336,21 +367,17 @@ export default async function HighSchoolHomePage() {
                 <Calendar className="h-5 w-5" />
               </span>
               <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-text-muted">
-                {c.admissionOpenLabel}
+                {admissionOpenLabel}
               </p>
               <p className="mt-1 text-base font-bold text-navy-900">
-                {c.admissionOpenValue}
+                {admissionOpenValue}
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
-                <Button
-                  href="/high-school/admission"
-                  variant="primary"
-                  size="md"
-                >
-                  {c.admissionInfoCta}
+                <Button href="/high-school/admission" variant="primary" size="md">
+                  {admissionInfoCta}
                 </Button>
                 <Button href="/high-school/contact" variant="outline" size="md">
-                  {c.otherQuestionsCta}
+                  {otherQuestionsCta}
                 </Button>
               </div>
             </div>
@@ -359,11 +386,11 @@ export default async function HighSchoolHomePage() {
       </Section>
 
       <CtaBanner
-        title={c.bannerTitle}
-        subtitle={c.bannerSubtitle}
-        ctaLabel={c.bannerCta}
+        title={bannerTitle}
+        subtitle={bannerSubtitle}
+        ctaLabel={bannerCta}
         ctaHref="/high-school/admission"
-        secondary={{ label: c.bannerSecondaryCta, href: '/high-school/contact' }}
+        secondary={{ label: bannerSecondaryCta, href: '/high-school/contact' }}
       />
     </>
   );
