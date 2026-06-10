@@ -29,6 +29,14 @@ export default async function HighSchoolContactPage() {
   const messageTitle = g('ahlah-contact.message.title', c.messageTitle);
   const messageCardTitle = g('ahlah-contact.message.card.title', c.messageCardTitle);
   const messageCardBody = g('ahlah-contact.message.card.body', c.messageCardBody);
+  // Contact details — phone/email are language-agnostic; address/hours
+  // fall back to the localised bundle for EN/JP.
+  const phonePrimary = site.get('ahlah-contact.phone.primary') || HIGH_SCHOOL.contact.phonePrimary;
+  const phoneSecondary = site.get('ahlah-contact.phone.secondary') || HIGH_SCHOOL.contact.phoneSecondary;
+  const email = site.get('ahlah-contact.email') || HIGH_SCHOOL.contact.email;
+  const addressLine = g('ahlah-contact.address', c.addressLine);
+  const hoursValue = g('ahlah-contact.hours.value', c.hoursValue);
+  const hoursWeekend = g('ahlah-contact.hours.weekend', c.hoursWeekend);
 
   return (
     <>
@@ -51,7 +59,7 @@ export default async function HighSchoolContactPage() {
 
             <div className="space-y-4">
               <a
-                href={`tel:${HIGH_SCHOOL.contact.phonePrimary.replace('-', '')}`}
+                href={`tel:${phonePrimary.replace(/\D/g, '')}`}
                 className="group flex items-start gap-4 rounded-card border border-border-light bg-white p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-card-hover"
               >
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
@@ -62,13 +70,13 @@ export default async function HighSchoolContactPage() {
                     {c.phonePrimaryLabel}
                   </p>
                   <p className="mt-1 font-serif text-xl font-bold text-navy-900 group-hover:text-gold-500">
-                    {HIGH_SCHOOL.contact.phonePrimary}
+                    {phonePrimary}
                   </p>
                 </div>
               </a>
 
               <a
-                href={`tel:${HIGH_SCHOOL.contact.phoneSecondary.replace('-', '')}`}
+                href={`tel:${phoneSecondary.replace(/\D/g, '')}`}
                 className="group flex items-start gap-4 rounded-card border border-border-light bg-white p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-card-hover"
               >
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
@@ -79,13 +87,13 @@ export default async function HighSchoolContactPage() {
                     {c.phoneSecondaryLabel}
                   </p>
                   <p className="mt-1 font-serif text-xl font-bold text-navy-900 group-hover:text-gold-500">
-                    {HIGH_SCHOOL.contact.phoneSecondary}
+                    {phoneSecondary}
                   </p>
                 </div>
               </a>
 
               <a
-                href={`mailto:${HIGH_SCHOOL.contact.email}`}
+                href={`mailto:${email}`}
                 className="group flex items-start gap-4 rounded-card border border-border-light bg-white p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-card-hover"
               >
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-500">
@@ -96,7 +104,7 @@ export default async function HighSchoolContactPage() {
                     {c.emailLabel}
                   </p>
                   <p className="mt-1 break-all font-serif text-xl font-bold text-navy-900 group-hover:text-gold-500">
-                    {HIGH_SCHOOL.contact.email}
+                    {email}
                   </p>
                 </div>
               </a>
@@ -110,7 +118,7 @@ export default async function HighSchoolContactPage() {
                     {c.addressLabel}
                   </p>
                   <p className="mt-1 whitespace-pre-line text-base font-semibold text-navy-900">
-                    {c.addressLine}
+                    {addressLine}
                   </p>
                 </div>
               </div>
@@ -124,9 +132,9 @@ export default async function HighSchoolContactPage() {
                     {c.hoursLabel}
                   </p>
                   <p className="mt-1 text-base font-semibold text-navy-900">
-                    {c.hoursValue}
+                    {hoursValue}
                   </p>
-                  <p className="mt-0.5 text-xs text-text-muted">{c.hoursWeekend}</p>
+                  <p className="mt-0.5 text-xs text-text-muted">{hoursWeekend}</p>
                 </div>
               </div>
             </div>
@@ -151,7 +159,7 @@ export default async function HighSchoolContactPage() {
                   {c.messageFormCta}
                 </Button>
                 <Button
-                  href={`mailto:${HIGH_SCHOOL.contact.email}`}
+                  href={`mailto:${email}`}
                   variant="outline"
                   size="md"
                 >
