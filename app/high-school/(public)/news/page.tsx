@@ -58,15 +58,6 @@ export default async function HighSchoolNewsPage() {
 
       <HighSchoolNewsListClient items={items} />
 
-      <CtaBanner
-        title={t('hsNews.bannerTitle')}
-        ctaLabel={t('hsNews.bannerCta')}
-        ctaHref="/high-school/admission"
-        secondary={{
-          label: t('hsNews.bannerSecondary'),
-          href: '/high-school/contact',
-        }}
-      />
     </>
   );
 }

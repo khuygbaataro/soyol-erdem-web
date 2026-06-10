@@ -375,12 +375,6 @@ export default async function HighSchoolAdmissionPage() {
         </div>
       </Section>
 
-      <CtaBanner
-        title={c.bannerTitle}
-        ctaLabel={c.bannerCta}
-        ctaHref="/high-school/about"
-        secondary={{ label: c.bannerSecondary, href: '/high-school/programs' }}
-      />
     </>
   );
 }

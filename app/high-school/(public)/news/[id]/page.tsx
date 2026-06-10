@@ -169,12 +169,6 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
         </Section>
       )}
 
-      <CtaBanner
-        title="Соёл Эрдэм Ахлах Сургууль"
-        ctaLabel="Элсэлтийн мэдээлэл"
-        ctaHref="https://soyolerdem.edu.mn/high-school/elselt/"
-        secondary={{ label: 'Ахлах сургуулийн нүүр', href: '/high-school' }}
-      />
     </>
   );
 }

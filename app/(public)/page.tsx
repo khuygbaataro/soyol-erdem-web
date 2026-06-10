@@ -53,6 +53,15 @@ export default async function HomePage() {
   // Internship-highlight image lives under its own site-content key so
   // admin can swap it from /admin/site-content without a redeploy.
   const internshipImage = siteContent.get('home.internship.image') || '';
+  // Internship texts — admin-editable with bundle fallback.
+  const internshipBadge = content(siteContent, 'home.internship.badge', home.internship.badge);
+  const internshipTitle = content(siteContent, 'home.internship.title', home.internship.title);
+  const internshipBody = content(siteContent, 'home.internship.body', home.internship.body);
+  const internshipCta = content(siteContent, 'home.internship.cta', home.internship.cta);
+  const internshipBulletsRaw = siteContent.get('home.internship.bullets') || '';
+  const internshipBullets = internshipBulletsRaw
+    ? internshipBulletsRaw.split('\n').map((s) => s.trim()).filter(Boolean)
+    : home.internship.bullets;
 
   return (
     <>
@@ -137,14 +146,14 @@ export default async function HomePage() {
             </div>
             <div className="p-8 md:p-12">
               <Badge variant="gold" className="mb-4">
-                {home.internship.badge}
+                {internshipBadge}
               </Badge>
               <h2 className="text-h2 font-bold text-navy-900">
-                {home.internship.title}
+                {internshipTitle}
               </h2>
-              <p className="mt-4 text-text-body">{home.internship.body}</p>
+              <p className="mt-4 text-text-body">{internshipBody}</p>
               <ul className="mt-5 space-y-2 text-sm text-text-body">
-                {home.internship.bullets.map((item) => (
+                {internshipBullets.map((item) => (
                   <li key={item} className="flex items-start gap-2">
                     <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
                     {item}
@@ -158,7 +167,7 @@ export default async function HomePage() {
                   size="md"
                   icon={<ArrowRight className="h-4 w-4" />}
                 >
-                  {home.internship.cta}
+                  {internshipCta}
                 </Button>
               </div>
             </div>
