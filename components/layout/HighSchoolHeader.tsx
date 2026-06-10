@@ -36,10 +36,20 @@ const HS_NAV_KEYS: Record<string, TranslationKey> = {
  *    Хөтөлбөр, Мэдээ, Холбоо).
  *  • Below xl the nav collapses into a slide-in mobile drawer.
  */
-export function HighSchoolHeader() {
+export function HighSchoolHeader({
+  phone,
+  email,
+}: {
+  /** Admin-editable navbar phone; falls back to HIGH_SCHOOL constant. */
+  phone?: string;
+  /** Admin-editable navbar email; falls back to HIGH_SCHOOL constant. */
+  email?: string;
+} = {}) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const t = useTranslation();
+  const navPhone = phone || HIGH_SCHOOL.contact.phonePrimary;
+  const navEmail = email || HIGH_SCHOOL.contact.email;
 
   const isActive = (href: string) => {
     const path = href.split('#')[0];
@@ -69,18 +79,18 @@ export function HighSchoolHeader() {
 
             <div className="hidden items-center gap-5 md:flex">
               <a
-                href={`tel:${HIGH_SCHOOL.contact.phonePrimary.replace('-', '')}`}
+                href={`tel:${navPhone.replace(/\D/g, '')}`}
                 className="flex items-center gap-1.5 transition-colors hover:text-white"
               >
                 <Phone className="h-3.5 w-3.5" aria-hidden />
-                <span>{HIGH_SCHOOL.contact.phonePrimary}</span>
+                <span>{navPhone}</span>
               </a>
               <a
-                href={`mailto:${HIGH_SCHOOL.contact.email}`}
+                href={`mailto:${navEmail}`}
                 className="hidden items-center gap-1.5 transition-colors hover:text-white lg:flex"
               >
                 <Mail className="h-3.5 w-3.5" aria-hidden />
-                <span>{HIGH_SCHOOL.contact.email}</span>
+                <span>{navEmail}</span>
               </a>
             </div>
           </Container>

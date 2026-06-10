@@ -140,7 +140,16 @@ export async function Footer({
               {t('footer.importantLinks')}
             </h3>
             <ul className="space-y-3 text-sm">
-              {FOOTER_LINKS.important.map((link) =>
+              {FOOTER_LINKS.important
+                .filter(
+                  // High-school footer hides the teacher / student web
+                  // portals — those belong to the main university only.
+                  (link) =>
+                    !isHighSchool ||
+                    (link.labelKey !== 'footer.link.teacherWeb' &&
+                      link.labelKey !== 'footer.link.studentWeb'),
+                )
+                .map((link) =>
                 link.external ? (
                   <li key={link.href}>
                     <a
