@@ -156,9 +156,11 @@ async function main() {
     },
   ];
   for (const p of programs) {
+    // Create-only: never overwrite an existing program on re-seed, otherwise
+    // every `db:seed` would revert content edited from /admin/programs.
     await prisma.program.upsert({
       where: { slug: p.slug },
-      update: p,
+      update: {},
       create: p,
     });
   }
@@ -228,9 +230,10 @@ async function main() {
     },
   ];
   for (const n of news) {
+    // Create-only — preserve edits made from /admin/news on re-seed.
     await prisma.news.upsert({
       where: { slug: n.slug },
-      update: n,
+      update: {},
       create: { ...n, authorId: admin.id },
     });
   }
@@ -277,9 +280,10 @@ async function main() {
     },
   ];
   for (const r of research) {
+    // Create-only — preserve edits made from /admin/research on re-seed.
     await prisma.research.upsert({
       where: { slug: r.slug },
-      update: r,
+      update: {},
       create: { ...r, uploadedById: admin.id },
     });
   }
@@ -603,8 +607,8 @@ async function main() {
   for (const s of stats) {
     await prisma.stat.upsert({
       where: { key: s.key },
-      update: { icon: s.icon, label: s.label, order: s.order },
-      // Don't overwrite `number` on re-seed (admin-edited)
+      // Create-only — preserve admin-edited number/label/order on re-seed.
+      update: {},
       create: s,
     });
   }
@@ -645,12 +649,8 @@ async function main() {
   for (const r of regulations) {
     await prisma.regulation.upsert({
       where: { slug: r.slug },
-      update: {
-        title: r.title,
-        description: r.description,
-        order: r.order,
-      },
-      // Don't overwrite uploaded file/cover on re-seed.
+      // Create-only — preserve admin-edited title/description/file on re-seed.
+      update: {},
       create: {
         slug: r.slug,
         title: r.title,
