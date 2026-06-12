@@ -102,6 +102,22 @@ export default async function HighSchoolAboutPage() {
     s(`ahlah-about.partnerships.item.${i + 1}`, p),
   );
 
+  // Admin-editable intro block (badge, two-line title, two paragraphs, the
+  // bold inline date and the photo-overlay poster lines). All fall back to
+  // the localised bundle when the admin slot is empty.
+  const introBadge = s('ahlah-about.intro.badge', c.introBadge);
+  const introTitle1 = s('ahlah-about.intro.title1', c.introTitle1);
+  const introTitle2 = s('ahlah-about.intro.title2', c.introTitle2);
+  const introBody1 = s('ahlah-about.intro.body1', c.introBody1);
+  const introBody1Date = s('ahlah-about.intro.body1.date', c.introBody1Date);
+  const introBody2 = s('ahlah-about.intro.body2', c.introBody2);
+  const posterLine1 = s('ahlah-about.intro.poster.line1', c.posterLine1);
+  const posterLine2 = s('ahlah-about.intro.poster.line2', c.posterLine2);
+  const posterLine3 = s('ahlah-about.intro.poster.line3', c.posterLine3);
+  // Director portrait — admin upload (IMAGE row) with a bundled fallback.
+  const directorImage =
+    site.get('ahlah-about.director.image') || '/highschool-director.jpg';
+
   // Локалчилсан staff (position / degree / bio EN/JA-ийн дагуу резол)
   const localisedStaff: HsStaff[] = staffRows.map((s) => ({
     positionKey: s.positionKey,
@@ -126,7 +142,7 @@ export default async function HighSchoolAboutPage() {
   // The intro paragraph carries an inline date that should bold inside
   // the surrounding sentence. Split on the {date} placeholder so we can
   // keep the literal date `c.introBody1Date` wrapped in <strong>.
-  const introBody1Parts = c.introBody1.split('{date}');
+  const introBody1Parts = introBody1.split('{date}');
 
   return (
     <>
@@ -146,20 +162,20 @@ export default async function HighSchoolAboutPage() {
         <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start">
           <div>
             <Badge variant="gold" className="mb-5">
-              {c.introBadge}
+              {introBadge}
             </Badge>
             <h2 className="font-serif text-3xl font-bold leading-tight text-navy-900 md:text-4xl">
-              {c.introTitle1} <br className="hidden sm:block" />
-              {c.introTitle2}
+              {introTitle1} <br className="hidden sm:block" />
+              {introTitle2}
             </h2>
             <div className="mt-4 h-1 w-14 rounded-full bg-gold-500" />
             <p className="mt-6 text-base leading-relaxed text-text-body">
               {introBody1Parts[0]}
-              <strong className="text-navy-900">{c.introBody1Date}</strong>
+              <strong className="text-navy-900">{introBody1Date}</strong>
               {introBody1Parts[1] ?? ''}
             </p>
             <p className="mt-4 text-base leading-relaxed text-text-body">
-              {c.introBody2}
+              {introBody2}
             </p>
           </div>
 
@@ -172,19 +188,19 @@ export default async function HighSchoolAboutPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={introImage}
-                alt={`${c.posterLine2} — ${c.posterLine3}`}
+                alt={`${posterLine2} — ${posterLine3}`}
                 className="absolute inset-0 h-full w-full object-cover"
               />
               {/* Gold corner badge so the navy / gold brand cue is
                   preserved even on a busy photo. */}
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-900/85 via-navy-900/40 to-transparent p-6 text-white">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-400">
-                  {c.posterLine1}
+                  {posterLine1}
                 </p>
                 <p className="mt-1 font-serif text-2xl font-bold">
-                  {c.posterLine2}
+                  {posterLine2}
                 </p>
-                <p className="mt-1 text-sm text-white/85">{c.posterLine3}</p>
+                <p className="mt-1 text-sm text-white/85">{posterLine3}</p>
               </div>
             </div>
           ) : (
@@ -195,12 +211,12 @@ export default async function HighSchoolAboutPage() {
                   高
                 </span>
                 <p className="mt-2 text-sm font-semibold uppercase tracking-widest text-text-muted">
-                  {c.posterLine1}
+                  {posterLine1}
                 </p>
                 <p className="mt-1 font-serif text-2xl font-bold text-navy-900">
-                  {c.posterLine2}
+                  {posterLine2}
                 </p>
-                <p className="mt-1 text-sm text-text-body">{c.posterLine3}</p>
+                <p className="mt-1 text-sm text-text-body">{posterLine3}</p>
               </div>
             </div>
           )}
@@ -243,7 +259,7 @@ export default async function HighSchoolAboutPage() {
             <div className="relative aspect-[4/5] w-full overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={site.get('ahlah-about.director.image') || '/highschool-director.jpg'}
+                src={directorImage}
                 alt={`${directorName} — ${directorRole}`}
                 className="absolute inset-0 h-full w-full object-cover"
               />
