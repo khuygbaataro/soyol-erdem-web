@@ -5,6 +5,7 @@ import {
   GraduationCap,
   Medal,
   Sparkles,
+  Target,
   Trophy,
   Quote,
   type LucideIcon,
@@ -31,7 +32,7 @@ export const metadata = {
 };
 
 // Icon orders kept code-side — joined by index with the localised arrays.
-const PHILOSOPHY_ICONS: LucideIcon[] = [Sparkles, GraduationCap, Award];
+const PHILOSOPHY_ICONS: LucideIcon[] = [Sparkles, GraduationCap, Award, Target];
 // Same icon order as the home page so the shared highlights section
 // renders identically on both pages.
 const HIGHLIGHT_ICONS: LucideIcon[] = [Trophy, Medal, Trophy, Building2];
@@ -226,7 +227,7 @@ export default async function HighSchoolAboutPage() {
       {/* Vision / Motto / Values */}
       <Section background="cream-soft" spacing="md">
         <SectionTitle title={philosophyTitle} />
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {philosophy.map((p, idx) => {
             const Icon = PHILOSOPHY_ICONS[idx] ?? Sparkles;
             // Values card (3rd) — structured С-Э-А-С acronym list.

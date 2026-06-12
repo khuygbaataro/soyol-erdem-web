@@ -11,6 +11,7 @@ import {
   Medal,
   Phone,
   Sparkles,
+  Target,
   Trophy,
   Users,
   type LucideIcon,
@@ -39,9 +40,9 @@ export const metadata = {
     'Соёл Эрдэм Дээд Сургуулийн харьяа Соёл Эрдэм Ерөнхий боловсролын ахлах сургууль — Япон хэл, соёл, IT-ийн чиглэлээр төрөлжсөн.',
 };
 
-// Icon order for PHILOSOPHY (Vision / Mission / Values) — kept code-side
-// since icons aren't translatable.
-const PHILOSOPHY_ICONS: LucideIcon[] = [Sparkles, GraduationCap, Award];
+// Icon order for PHILOSOPHY (Vision / Mission / Values / Motto) — kept
+// code-side since icons aren't translatable.
+const PHILOSOPHY_ICONS: LucideIcon[] = [Sparkles, GraduationCap, Award, Target];
 
 // Icon order for PROGRAMS — Languages / Code2 / GraduationCap / Users.
 const PROGRAM_ICONS: LucideIcon[] = [Languages, Code2, GraduationCap, Users];
@@ -207,7 +208,7 @@ export default async function HighSchoolHomePage() {
       {/* Vision / Mission / Values */}
       <Section background="cream-soft" spacing="md">
         <SectionTitle title={philosophyTitle} />
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {philosophy.map((p, idx) => {
             const Icon = PHILOSOPHY_ICONS[idx] ?? Sparkles;
             // Values card (3rd) renders the С-Э-А-С acronym as a

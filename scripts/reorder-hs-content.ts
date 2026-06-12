@@ -107,6 +107,35 @@ const NEW_ABOUT_ROWS: NewRow[] = [
   },
 ];
 
+// New 4th "Уриа" card for the shared philosophy section (Үзэл бодол),
+// rendered on both the HS home and about pages. Lives in ahlah-home so a
+// single edit updates both pages.
+const NEW_HOME_ROWS: NewRow[] = [
+  {
+    key: 'ahlah-home.philosophy.4.label',
+    type: 'TEXT',
+    value: 'Уриа',
+    label: 'Зорилго 4 — label',
+    order: 30,
+  },
+  {
+    key: 'ahlah-home.philosophy.4.title',
+    type: 'TEXT',
+    value: 'Хичээнгүй суралцагч, чадварлаг багш',
+    label: 'Зорилго 4 — гарчиг',
+    order: 31,
+  },
+  {
+    key: 'ahlah-home.philosophy.4.body',
+    type: 'TEXT',
+    value:
+      'Япон хэл, соёлд тулгуурласан чанартай боловсролоор ирээдүйн манлайлагчдыг бэлтгэнэ.',
+    label: 'Зорилго 4 — текст',
+    multiline: true,
+    order: 32,
+  },
+];
+
 // ── 2) Canonical order maps (match the public page section flow) ──────────
 const HOME_ORDER: Record<string, number> = {
   'ahlah-home.hero.title': 1,
@@ -130,49 +159,52 @@ const HOME_ORDER: Record<string, number> = {
   'ahlah-home.philosophy.3.label': 27,
   'ahlah-home.philosophy.3.title': 28,
   'ahlah-home.philosophy.3.body': 29,
-  'ahlah-home.stat.1.value': 30,
-  'ahlah-home.stat.1.label': 31,
-  'ahlah-home.stat.2.value': 32,
-  'ahlah-home.stat.2.label': 33,
-  'ahlah-home.stat.3.value': 34,
-  'ahlah-home.stat.3.label': 35,
-  'ahlah-home.stat.4.value': 36,
-  'ahlah-home.stat.4.label': 37,
-  'ahlah-home.programs.title': 40,
-  'ahlah-home.programs.subtitle': 41,
-  'ahlah-home.program.1.title': 42,
-  'ahlah-home.program.1.description': 43,
-  'ahlah-home.program.2.title': 44,
-  'ahlah-home.program.2.description': 45,
-  'ahlah-home.program.3.title': 46,
-  'ahlah-home.program.3.description': 47,
-  'ahlah-home.program.4.title': 48,
-  'ahlah-home.program.4.description': 49,
-  'ahlah-home.highlights.title': 50,
-  'ahlah-home.highlight.1.title': 51,
-  'ahlah-home.highlight.1.body': 52,
-  'ahlah-home.highlight.2.title': 53,
-  'ahlah-home.highlight.2.body': 54,
-  'ahlah-home.highlight.3.title': 55,
-  'ahlah-home.highlight.3.body': 56,
-  'ahlah-home.highlight.4.title': 57,
-  'ahlah-home.highlight.4.body': 58,
-  'ahlah-home.news.title': 60,
-  'ahlah-home.contact.eyebrow': 70,
-  'ahlah-home.contact.title': 71,
-  'ahlah-home.contact.phone.label': 72,
-  'ahlah-home.contact.phone.primary': 73,
-  'ahlah-home.contact.phone.secondary': 74,
-  'ahlah-home.contact.email.label': 75,
-  'ahlah-home.contact.email.value': 76,
-  'ahlah-home.contact.admission.label': 77,
-  'ahlah-home.contact.admission.value': 78,
-  'ahlah-home.contact.admission.cta': 79,
-  'ahlah-home.contact.other.cta': 80,
-  'ahlah-home.banner.title': 90,
-  'ahlah-home.banner.subtitle': 91,
-  'ahlah-home.banner.cta': 92,
-  'ahlah-home.banner.secondary.cta': 93,
+  'ahlah-home.philosophy.4.label': 30,
+  'ahlah-home.philosophy.4.title': 31,
+  'ahlah-home.philosophy.4.body': 32,
+  'ahlah-home.stat.1.value': 40,
+  'ahlah-home.stat.1.label': 41,
+  'ahlah-home.stat.2.value': 42,
+  'ahlah-home.stat.2.label': 43,
+  'ahlah-home.stat.3.value': 44,
+  'ahlah-home.stat.3.label': 45,
+  'ahlah-home.stat.4.value': 46,
+  'ahlah-home.stat.4.label': 47,
+  'ahlah-home.programs.title': 50,
+  'ahlah-home.programs.subtitle': 51,
+  'ahlah-home.program.1.title': 52,
+  'ahlah-home.program.1.description': 53,
+  'ahlah-home.program.2.title': 54,
+  'ahlah-home.program.2.description': 55,
+  'ahlah-home.program.3.title': 56,
+  'ahlah-home.program.3.description': 57,
+  'ahlah-home.program.4.title': 58,
+  'ahlah-home.program.4.description': 59,
+  'ahlah-home.highlights.title': 60,
+  'ahlah-home.highlight.1.title': 61,
+  'ahlah-home.highlight.1.body': 62,
+  'ahlah-home.highlight.2.title': 63,
+  'ahlah-home.highlight.2.body': 64,
+  'ahlah-home.highlight.3.title': 65,
+  'ahlah-home.highlight.3.body': 66,
+  'ahlah-home.highlight.4.title': 67,
+  'ahlah-home.highlight.4.body': 68,
+  'ahlah-home.news.title': 70,
+  'ahlah-home.contact.eyebrow': 80,
+  'ahlah-home.contact.title': 81,
+  'ahlah-home.contact.phone.label': 82,
+  'ahlah-home.contact.phone.primary': 83,
+  'ahlah-home.contact.phone.secondary': 84,
+  'ahlah-home.contact.email.label': 85,
+  'ahlah-home.contact.email.value': 86,
+  'ahlah-home.contact.admission.label': 87,
+  'ahlah-home.contact.admission.value': 88,
+  'ahlah-home.contact.admission.cta': 89,
+  'ahlah-home.contact.other.cta': 90,
+  'ahlah-home.banner.title': 95,
+  'ahlah-home.banner.subtitle': 96,
+  'ahlah-home.banner.cta': 97,
+  'ahlah-home.banner.secondary.cta': 98,
 };
 
 const ABOUT_ORDER: Record<string, number> = {
@@ -336,6 +368,31 @@ async function main() {
     created++;
   }
   console.log(`New about rows: created ${created}, skipped ${skipped}`);
+
+  // 1b) New home rows (philosophy "Уриа" card) — create-if-missing.
+  let homeCreated = 0,
+    homeSkipped = 0;
+  for (const r of NEW_HOME_ROWS) {
+    const ex = await prisma.siteContent.findUnique({ where: { key: r.key } });
+    if (ex) {
+      homeSkipped++;
+      continue;
+    }
+    await prisma.siteContent.create({
+      data: {
+        key: r.key,
+        group: 'ahlah-home',
+        type: r.type,
+        value: r.value,
+        label: r.label,
+        hint: r.hint ?? null,
+        multiline: r.multiline ?? false,
+        order: r.order,
+      },
+    });
+    homeCreated++;
+  }
+  console.log(`New home rows: created ${homeCreated}, skipped ${homeSkipped}`);
 
   // 2) Re-sequence orders for both groups.
   let reordered = 0;

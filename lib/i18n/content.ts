@@ -2867,6 +2867,11 @@ export const HS_HOME_CONTENT: Record<Language, HsHomeBundle> = {
         title: 'С · Э · А · С',
         body: 'С – Соёл уламжлалаа дээдэлсэн · Э – Эрдэм мэдлэгийг эрхэмлэсэн · А – Амьдрах арга ухаанд суралцсан · С – Сурлагын хоцрогдолгүй суралцагч бэлтгэх.',
       },
+      {
+        label: 'Уриа',
+        title: 'Хичээнгүй суралцагч, чадварлаг багш',
+        body: 'Япон хэл, соёлд тулгуурласан чанартай боловсролоор ирээдүйн манлайлагчдыг бэлтгэнэ.',
+      },
     ],
     stats: [
       { value: '2023', label: 'Үүсгэн байгуулагдсан он' },
@@ -2966,6 +2971,11 @@ export const HS_HOME_CONTENT: Record<Language, HsHomeBundle> = {
         title: 'S · E · A · S',
         body: 'S — Honouring our cultural heritage · E — Esteeming knowledge and learning · A — Apprenticing life skills · S — Studying without falling behind.',
       },
+      {
+        label: 'Motto',
+        title: 'Diligent learners, skilled teachers',
+        body: 'Preparing future leaders through quality education rooted in Japanese language and culture.',
+      },
     ],
     stats: [
       { value: '2023', label: 'Year founded' },
@@ -3064,6 +3074,11 @@ export const HS_HOME_CONTENT: Record<Language, HsHomeBundle> = {
         label: '価値観',
         title: 'С・Э・А・С',
         body: 'С ― 文化的伝統を重んじる ・ Э ― 学問・知識を尊ぶ ・ А ― 生きる力を身につける ・ С ― 学業に遅れない学習者を育てる。',
+      },
+      {
+        label: 'スローガン',
+        title: '勤勉な学習者、熟練の教員',
+        body: '日本語と文化に根ざした質の高い教育で、未来のリーダーを育てます。',
       },
     ],
     stats: [
@@ -3208,6 +3223,11 @@ export const HS_ABOUT_CONTENT: Record<Language, HsAboutBundle> = {
         title: 'С · Э · А · С',
         body: 'С – Соёл уламжлалаа дээдэлсэн · Э – Эрдэм мэдлэгийг эрхэмлэсэн · А – Амьдрах арга ухаанд суралцсан · С – Сурлагын хоцрогдолгүй суралцагч бэлтгэх.',
       },
+      {
+        label: 'Уриа',
+        title: 'Хичээнгүй суралцагч, чадварлаг багш',
+        body: 'Япон хэл, соёлд тулгуурласан чанартай боловсролоор ирээдүйн манлайлагчдыг бэлтгэнэ.',
+      },
     ],
     directorTitle: 'ЗАХИРЛЫН МЭНДЧИЛГЭЭ',
     directorName: 'Д. Эрдэнэцэцэг',
@@ -3335,6 +3355,11 @@ export const HS_ABOUT_CONTENT: Record<Language, HsAboutBundle> = {
         title: 'S · E · A · S',
         body: 'S — Honouring our cultural heritage · E — Esteeming knowledge and learning · A — Apprenticing life skills · S — Studying without falling behind.',
       },
+      {
+        label: 'Motto',
+        title: 'Diligent learners, skilled teachers',
+        body: 'Preparing future leaders through quality education rooted in Japanese language and culture.',
+      },
     ],
     directorTitle: "DIRECTOR'S MESSAGE",
     directorName: 'D. Erdenetsetseg',
@@ -3461,6 +3486,11 @@ export const HS_ABOUT_CONTENT: Record<Language, HsAboutBundle> = {
         label: '価値観',
         title: 'С・Э・А・С',
         body: 'С ― 文化的伝統を重んじる ・ Э ― 学問・知識を尊ぶ ・ А ― 生きる力を身につける ・ С ― 学業に遅れない学習者を育てる。',
+      },
+      {
+        label: 'スローガン',
+        title: '勤勉な学習者、熟練の教員',
+        body: '日本語と文化に根ざした質の高い教育で、未来のリーダーを育てます。',
       },
     ],
     directorTitle: '校長挨拶',
