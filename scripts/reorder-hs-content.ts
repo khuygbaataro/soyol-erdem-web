@@ -216,6 +216,88 @@ const ABOUT_ORDER: Record<string, number> = {
   'ahlah-about.body': 99,
 };
 
+// Programs page (app/high-school/(public)/programs/page.tsx) section flow:
+//   Hero → Structure → Levels → Culture → Japanese (jp) → Green Jade (jade)
+//   → Resources. The rows had drifted (levels interleaved with jp, jade
+//   dumped after resources), so re-sequence the whole group.
+const PROGRAMS_ORDER: Record<string, number> = {
+  'ahlah-programs.hero.image': 1,
+  'ahlah-programs.hero.title': 2,
+  'ahlah-programs.hero.subtitle': 3,
+  'ahlah-programs.structure.title': 10,
+  'ahlah-programs.structure.subtitle': 11,
+  'ahlah-programs.structure.1.title': 12,
+  'ahlah-programs.structure.1.description': 13,
+  'ahlah-programs.structure.2.title': 14,
+  'ahlah-programs.structure.2.description': 15,
+  'ahlah-programs.structure.3.title': 16,
+  'ahlah-programs.structure.3.description': 17,
+  'ahlah-programs.levels.title': 20,
+  'ahlah-programs.levels.subtitle': 21,
+  'ahlah-programs.levels.elementary.name': 22,
+  'ahlah-programs.levels.elementary.education': 23,
+  'ahlah-programs.levels.elementary.curriculum': 24,
+  'ahlah-programs.levels.elementary.extracurricular': 25,
+  'ahlah-programs.levels.middle.name': 26,
+  'ahlah-programs.levels.middle.education': 27,
+  'ahlah-programs.levels.middle.curriculum': 28,
+  'ahlah-programs.levels.middle.extracurricular': 29,
+  'ahlah-programs.levels.high.name': 30,
+  'ahlah-programs.levels.high.education': 31,
+  'ahlah-programs.levels.high.curriculum': 32,
+  'ahlah-programs.levels.high.extracurricular': 33,
+  'ahlah-programs.culture.title': 40,
+  'ahlah-programs.culture.subtitle': 41,
+  'ahlah-programs.culture.items': 42,
+  'ahlah-programs.jp.badge': 50,
+  'ahlah-programs.jp.title': 51,
+  'ahlah-programs.jp.body': 52,
+  'ahlah-programs.jp.1.tag': 53,
+  'ahlah-programs.jp.1.title': 54,
+  'ahlah-programs.jp.1.bullets': 55,
+  'ahlah-programs.jp.2.tag': 56,
+  'ahlah-programs.jp.2.title': 57,
+  'ahlah-programs.jp.2.bullets': 58,
+  'ahlah-programs.jp.3.tag': 59,
+  'ahlah-programs.jp.3.title': 60,
+  'ahlah-programs.jp.3.bullets': 61,
+  'ahlah-programs.jade.badge': 70,
+  'ahlah-programs.jade.title': 71,
+  'ahlah-programs.jade.body': 72,
+  'ahlah-programs.jade.stat.1.value': 73,
+  'ahlah-programs.jade.stat.1.label': 74,
+  'ahlah-programs.jade.stat.2.value': 75,
+  'ahlah-programs.jade.stat.2.label': 76,
+  'ahlah-programs.jade.stat.3.value': 77,
+  'ahlah-programs.jade.stat.3.label': 78,
+  'ahlah-programs.jade.stat.4.value': 79,
+  'ahlah-programs.jade.stat.4.label': 80,
+  'ahlah-programs.jade.services.title': 81,
+  'ahlah-programs.jade.service.1.title': 82,
+  'ahlah-programs.jade.service.1.body': 83,
+  'ahlah-programs.jade.service.2.title': 84,
+  'ahlah-programs.jade.service.2.body': 85,
+  'ahlah-programs.jade.service.3.title': 86,
+  'ahlah-programs.jade.service.3.body': 87,
+  'ahlah-programs.jade.service.4.title': 88,
+  'ahlah-programs.jade.service.4.body': 89,
+  'ahlah-programs.jade.service.5.title': 90,
+  'ahlah-programs.jade.service.5.body': 91,
+  'ahlah-programs.jade.service.6.title': 92,
+  'ahlah-programs.jade.service.6.body': 93,
+  'ahlah-programs.jade.service.7.title': 94,
+  'ahlah-programs.jade.service.7.body': 95,
+  'ahlah-programs.jade.countries.title': 96,
+  'ahlah-programs.jade.countries': 97,
+  'ahlah-programs.resources.title': 100,
+  'ahlah-programs.resources.1.title': 101,
+  'ahlah-programs.resources.1.body': 102,
+  'ahlah-programs.resources.2.title': 103,
+  'ahlah-programs.resources.2.body': 104,
+  'ahlah-programs.resources.3.title': 105,
+  'ahlah-programs.resources.3.body': 106,
+};
+
 // The footer/navbar (app/high-school/(public)/layout.tsx) reads these from
 // the `ahlah-footer` group, but they were originally created in `ahlah-home`
 // — so footer edits had no effect AND they cluttered the home admin tab.
@@ -260,6 +342,7 @@ async function main() {
   for (const [key, order] of [
     ...Object.entries(HOME_ORDER),
     ...Object.entries(ABOUT_ORDER),
+    ...Object.entries(PROGRAMS_ORDER),
   ]) {
     const res = await prisma.siteContent.updateMany({
       where: { key },
@@ -267,7 +350,9 @@ async function main() {
     });
     reordered += res.count;
   }
-  console.log(`Re-ordered ${reordered} rows (ahlah-home + ahlah-about).`);
+  console.log(
+    `Re-ordered ${reordered} rows (ahlah-home + ahlah-about + ahlah-programs).`,
+  );
 
   // 3) Move mis-grouped footer rows out of ahlah-home into ahlah-footer.
   let moved = 0;
