@@ -156,18 +156,6 @@ export default async function HighSchoolContactPage() {
               <p className="mt-3 text-sm leading-relaxed text-text-body">
                 {messageCardBody}
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Button href="/contact" variant="accent" size="md">
-                  {c.messageFormCta}
-                </Button>
-                <Button
-                  href={`mailto:${email}`}
-                  variant="outline"
-                  size="md"
-                >
-                  {c.messageEmailCta}
-                </Button>
-              </div>
             </div>
 
             <div className="rounded-card border border-border-light bg-cream-soft p-6">
