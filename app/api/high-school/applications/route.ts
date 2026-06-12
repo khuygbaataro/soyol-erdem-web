@@ -48,6 +48,7 @@ export async function POST(req: Request) {
     `📞 Утас: ${d.phone}\n` +
     (d.email ? `✉️ И-мэйл: ${d.email}\n` : '') +
     (d.message ? `\n💬 ${d.message}` : ''),
+    'high-school',
   );
 
   return NextResponse.json({ ok: true }, { status: 201 });
