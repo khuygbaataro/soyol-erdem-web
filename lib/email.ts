@@ -1,23 +1,53 @@
 /**
- * Resend email helper.
+ * SMTP email helper (nodemailer).
+ *
+ * Sends through the school's own mail.mn mailbox so admission emails come
+ * from a real @soyolerdem.edu.mn address and replies land back in the
+ * normal webmail inbox — no third-party provider needed.
  *
  * Unlike lib/telegram.ts (fire-and-forget), the caller needs the send
- * result to log it in EmailMessage, so this returns a structured result
- * instead of swallowing errors.
+ * result to log it in EmailMessage, so this returns a structured result.
  *
  * Env:
- *   RESEND_API_KEY — Resend API key
- *   EMAIL_FROM     — "Соёл Эрдэм Элсэлт <elselt@soyolerdem.edu.mn>"
+ *   SMTP_HOST   — e.g. smtp.mail.mn
+ *   SMTP_PORT   — 465 (SSL) эсвэл 587 (STARTTLS). Default 465.
+ *   SMTP_SECURE — "true" | "false" (default: true when port 465)
+ *   SMTP_USER   — үндсэн имэйл хаяг (нэвтрэх нэр), ж: info@soyolerdem.edu.mn
+ *   SMTP_PASS   — тухайн хаягийн нууц үг
+ *   EMAIL_FROM  — "Соёл Эрдэм <info@soyolerdem.edu.mn>" (ихэвчлэн SMTP_USER-тэй ижил хаягтай)
  */
+import nodemailer, { type Transporter } from 'nodemailer';
 
 export { renderTemplate } from '@/lib/template';
-
-const RESEND_API = 'https://api.resend.com/emails';
 
 export interface SendEmailResult {
   ok: boolean;
   id?: string;
   error?: string;
+}
+
+let cached: Transporter | null = null;
+
+function getTransport(): Transporter | null {
+  const host = process.env.SMTP_HOST;
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  if (!host || !user || !pass) return null;
+  if (cached) return cached;
+
+  const port = Number(process.env.SMTP_PORT || 465);
+  const secure =
+    process.env.SMTP_SECURE !== undefined
+      ? process.env.SMTP_SECURE === 'true'
+      : port === 465;
+
+  cached = nodemailer.createTransport({
+    host,
+    port,
+    secure,
+    auth: { user, pass },
+  });
+  return cached;
 }
 
 export async function sendEmail(opts: {
@@ -28,43 +58,28 @@ export async function sendEmail(opts: {
   html?: string;
   replyTo?: string;
 }): Promise<SendEmailResult> {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM;
-  if (!apiKey || !from) {
+  const from = process.env.EMAIL_FROM || process.env.SMTP_USER;
+  const transport = getTransport();
+  if (!transport || !from) {
     return {
       ok: false,
       error:
-        'Имэйл үйлчилгээ тохируулаагүй байна. Vercel дээр RESEND_API_KEY болон EMAIL_FROM нэмнэ үү.',
+        'Имэйл үйлчилгээ тохируулаагүй байна. Vercel дээр SMTP_HOST, SMTP_USER, SMTP_PASS, EMAIL_FROM нэмнэ үү.',
     };
   }
 
-  // Resend accepts "Name <email>" in the `to` field.
-  const to = opts.toName ? `${opts.toName} <${opts.to}>` : opts.to;
+  const to = opts.toName ? `"${opts.toName}" <${opts.to}>` : opts.to;
 
   try {
-    const res = await fetch(RESEND_API, {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${apiKey}`,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        from,
-        to,
-        subject: opts.subject,
-        text: opts.text,
-        ...(opts.html ? { html: opts.html } : {}),
-        ...(opts.replyTo ? { reply_to: opts.replyTo } : {}),
-      }),
+    const info = await transport.sendMail({
+      from,
+      to,
+      subject: opts.subject,
+      text: opts.text,
+      ...(opts.html ? { html: opts.html } : {}),
+      ...(opts.replyTo ? { replyTo: opts.replyTo } : {}),
     });
-    const data = (await res.json().catch(() => null)) as
-      | { id?: string; message?: string; name?: string }
-      | null;
-    if (!res.ok) {
-      const msg = data?.message || data?.name || `Resend error ${res.status}`;
-      return { ok: false, error: String(msg) };
-    }
-    return { ok: true, id: data?.id };
+    return { ok: true, id: info.messageId };
   } catch (err) {
     return {
       ok: false,
