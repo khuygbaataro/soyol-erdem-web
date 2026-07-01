@@ -11,7 +11,7 @@ import { CtaBanner } from '@/components/sections/CtaBanner';
 import { AnnualEventSlideshow } from '@/components/sections/AnnualEventSlideshow';
 import { prisma } from '@/lib/prisma';
 import { localiseNewsCategory } from '@/lib/admin-helpers';
-import { parseGallery } from '@/lib/news-gallery';
+import { parseGallery } from '@/lib/gallery';
 import { getServerLocale } from '@/lib/i18n/server';
 import { localisedField } from '@/lib/i18n/db';
 

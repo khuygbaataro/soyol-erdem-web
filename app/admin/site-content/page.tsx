@@ -30,19 +30,72 @@ interface LoadResult {
   groups: { group: string; _count: number }[];
 }
 
-async function safeLoad(group: string): Promise<LoadResult> {
+const SHILIIN_BULAG_GALLERY_KEY = 'shiliin-bulag.gallery.images';
+const SHILIIN_BULAG_OLD_SLOT = /^shiliin-bulag\.gallery\.\d+\.image$/;
+
+/**
+ * One-time, self-healing migration: the old Шилийн булаг gallery used 6
+ * fixed SiteContent rows (one per slot, capped at 6 photos). Collapses
+ * them into a single JSON-array row so the admin can upload an unlimited
+ * (well, 20-cap) number of photos via MultiImageUpload — see
+ * SiteContentForm. Runs lazily the first time an admin opens this tab
+ * after deploy; no-ops on every visit after that since the new key then
+ * exists. Safe to call repeatedly — checks before writing.
+ */
+async function migrateShiliinBulagGallery(
+  items: SiteContentItem[],
+): Promise<SiteContentItem[]> {
+  if (items.some((i) => i.key === SHILIIN_BULAG_GALLERY_KEY)) return items;
+  const oldSlots = items
+    .filter((i) => SHILIIN_BULAG_OLD_SLOT.test(i.key))
+    .sort((a, b) => a.order - b.order);
+  if (oldSlots.length === 0) return items;
+
+  const urls = oldSlots.map((i) => i.value).filter((v) => v.trim().length > 0);
+  const order = Math.min(...oldSlots.map((i) => i.order));
+
   try {
-    const [items, groups] = await Promise.all([
-      prisma.siteContent.findMany({
-        where: { group },
-        orderBy: { order: 'asc' },
+    const [created] = await prisma.$transaction([
+      prisma.siteContent.create({
+        data: {
+          key: SHILIIN_BULAG_GALLERY_KEY,
+          type: 'IMAGE',
+          value: JSON.stringify(urls),
+          group: 'shiliin-bulag',
+          label: 'Зургийн цомог',
+          hint: 'Олон зураг нэмэх, дараалал өөрчлөх, устгах боломжтой.',
+          order,
+        },
       }),
-      prisma.siteContent.groupBy({
-        by: ['group'],
-        where: { group: { in: ALLOWED_GROUPS } },
-        _count: true,
+      prisma.siteContent.deleteMany({
+        where: { key: { in: oldSlots.map((i) => i.key) } },
       }),
     ]);
+    return [
+      ...items.filter((i) => !SHILIIN_BULAG_OLD_SLOT.test(i.key)),
+      created as SiteContentItem,
+    ].sort((a, b) => a.order - b.order);
+  } catch {
+    // Migration raced with another request or failed — fall back to the
+    // old fields rather than breaking the page.
+    return items;
+  }
+}
+
+async function safeLoad(group: string): Promise<LoadResult> {
+  try {
+    let items = await prisma.siteContent.findMany({
+      where: { group },
+      orderBy: { order: 'asc' },
+    });
+    if (group === 'shiliin-bulag') {
+      items = await migrateShiliinBulagGallery(items as SiteContentItem[]);
+    }
+    const groups = await prisma.siteContent.groupBy({
+      by: ['group'],
+      where: { group: { in: ALLOWED_GROUPS } },
+      _count: true,
+    });
     return {
       ok: true,
       items: items as SiteContentItem[],

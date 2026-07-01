@@ -8,7 +8,15 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
 import { FileUpload, ImageUpload } from '@/components/admin/ImageUpload';
+import { MultiImageUpload } from '@/components/admin/MultiImageUpload';
 import { useUploadGuard } from '@/lib/use-upload-guard';
+import { parseGallery } from '@/lib/gallery';
+
+/** Keys ending in `.gallery.images` store a JSON-encoded array of URLs
+ *  (unlimited photos, reorderable) instead of a single upload URL. */
+function isGalleryKey(key: string): boolean {
+  return key.endsWith('.gallery.images');
+}
 
 export interface SiteContentItem {
   id: string;
@@ -122,6 +130,14 @@ export function SiteContentForm({ items, groupLabel }: Props) {
                       onChange={(url) => update(item.key, 'value', url)}
                       folder="handbooks"
                       hint="PDF файл сонгох (Гарын авлага)"
+                      onUploadingChange={onUploadingChange}
+                    />
+                  ) : isGalleryKey(item.key) ? (
+                    <MultiImageUpload
+                      value={parseGallery(row.value)}
+                      onChange={(urls) => update(item.key, 'value', JSON.stringify(urls))}
+                      folder="misc"
+                      max={20}
                       onUploadingChange={onUploadingChange}
                     />
                   ) : (

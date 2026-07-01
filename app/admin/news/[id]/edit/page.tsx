@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { NewsForm } from '@/components/admin/NewsForm';
 import { prisma } from '@/lib/prisma';
-import { parseGallery } from '@/lib/news-gallery';
+import { parseGallery } from '@/lib/gallery';
 
 interface PageProps {
   params: { id: string };

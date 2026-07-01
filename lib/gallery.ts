@@ -1,8 +1,9 @@
 /**
- * Decode the `gallery` column on a News row. The DB stores a JSON-encoded
- * array of image URLs (or null for "no slideshow"). Returns a clean
- * `string[]` — empty when null/invalid so the public page can use a
- * single `images.length > 0` check.
+ * Decode a `gallery` column (News) or a `.gallery.images` SiteContent
+ * value (e.g. Шилийн булаг). Both store a JSON-encoded array of image
+ * URLs (or null/empty for "no gallery"). Returns a clean `string[]` —
+ * empty when null/invalid so callers can use a single
+ * `images.length > 0` check.
  */
 export function parseGallery(raw: string | null | undefined): string[] {
   if (!raw) return [];

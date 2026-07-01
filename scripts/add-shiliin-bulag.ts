@@ -159,48 +159,20 @@ const ROWS: Row[] = [
     order: 41,
   },
 
-  // ── Gallery (6 slots) ────────────────────────────────────────
+  // ── Gallery (unlimited, JSON array of URLs) ─────────────────
   {
-    key: 'shiliin-bulag.gallery.1.image',
+    key: 'shiliin-bulag.gallery.images',
     type: 'IMAGE',
-    label: 'Зургийн цомог — 1',
-    value: '/shiliin-bulag/01.jpg',
+    label: 'Зургийн цомог',
+    hint: 'Олон зураг нэмэх, дараалал өөрчлөх, устгах боломжтой.',
+    value: JSON.stringify([
+      '/shiliin-bulag/01.jpg',
+      '/shiliin-bulag/02.jpg',
+      '/shiliin-bulag/03.jpg',
+      '/shiliin-bulag/04.jpg',
+      '/shiliin-bulag/05.jpg',
+    ]),
     order: 50,
-  },
-  {
-    key: 'shiliin-bulag.gallery.2.image',
-    type: 'IMAGE',
-    label: 'Зургийн цомог — 2',
-    value: '/shiliin-bulag/02.jpg',
-    order: 51,
-  },
-  {
-    key: 'shiliin-bulag.gallery.3.image',
-    type: 'IMAGE',
-    label: 'Зургийн цомог — 3',
-    value: '/shiliin-bulag/03.jpg',
-    order: 52,
-  },
-  {
-    key: 'shiliin-bulag.gallery.4.image',
-    type: 'IMAGE',
-    label: 'Зургийн цомог — 4',
-    value: '/shiliin-bulag/04.jpg',
-    order: 53,
-  },
-  {
-    key: 'shiliin-bulag.gallery.5.image',
-    type: 'IMAGE',
-    label: 'Зургийн цомог — 5',
-    value: '/shiliin-bulag/05.jpg',
-    order: 54,
-  },
-  {
-    key: 'shiliin-bulag.gallery.6.image',
-    type: 'IMAGE',
-    label: 'Зургийн цомог — 6',
-    value: '',
-    order: 55,
   },
 
   // ── Contact / location ───────────────────────────────────────

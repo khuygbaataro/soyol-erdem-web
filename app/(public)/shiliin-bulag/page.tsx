@@ -14,6 +14,7 @@ import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Card } from '@/components/ui/Card';
 import { getSiteContentMap } from '@/lib/site-content';
+import { parseGallery } from '@/lib/gallery';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -33,7 +34,7 @@ export const metadata = {
  *   1. Hero (баннер + subtitle)
  *   2. Танилцуулга (intro paragraph)
  *   3. 4 онцлог карт (хүчин чадал / аюулгүй / тав тух / оюутны оролцоо)
- *   4. Зургийн цомог (6 slot)
+ *   4. Зургийн цомог (олон зураг, дараалалтай)
  *   5. Үйл ажиллагаа + Морь унах сургалт
  *   6. Холбоо барих хэсэг (утас, имэйл, байршил)
  */
@@ -69,10 +70,15 @@ export default async function ShiliinBulagPage() {
   const horsemanshipTitle = site.get('shiliin-bulag.horsemanship.title') || '';
   const horsemanshipBody = site.get('shiliin-bulag.horsemanship.body') || '';
 
-  // Цомог
-  const gallery = [1, 2, 3, 4, 5, 6]
-    .map((i) => site.get(`shiliin-bulag.gallery.${i}.image`) || '')
-    .filter((url) => url.trim().length > 0);
+  // Цомог — олон зурагтай JSON массив key. Админ шинэ "Олон зураг"
+  // widget-ээр хараахан хадгалаагүй бол хуучин 6 slot руу fallback хийнэ
+  // (self-healing migration хараахан ажиллаагүй үед ч зураг алдагдахгүй).
+  const galleryJson = site.get('shiliin-bulag.gallery.images');
+  const gallery = galleryJson
+    ? parseGallery(galleryJson)
+    : [1, 2, 3, 4, 5, 6]
+        .map((i) => site.get(`shiliin-bulag.gallery.${i}.image`) || '')
+        .filter((url) => url.trim().length > 0);
 
   // Холбоо барих
   const contactTitle = site.get('shiliin-bulag.contact.title') || 'Холбоо барих';
