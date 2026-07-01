@@ -84,12 +84,12 @@ async function migrateShiliinBulagGallery(
 
 async function safeLoad(group: string): Promise<LoadResult> {
   try {
-    let items = await prisma.siteContent.findMany({
+    let items = (await prisma.siteContent.findMany({
       where: { group },
       orderBy: { order: 'asc' },
-    });
+    })) as SiteContentItem[];
     if (group === 'shiliin-bulag') {
-      items = await migrateShiliinBulagGallery(items as SiteContentItem[]);
+      items = await migrateShiliinBulagGallery(items);
     }
     const groups = await prisma.siteContent.groupBy({
       by: ['group'],
