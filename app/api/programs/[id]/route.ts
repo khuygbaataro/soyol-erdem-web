@@ -38,6 +38,7 @@ export async function PUT(req: Request, { params }: Ctx) {
       careerOutlookJa: parsed.data.careerOutlookJa || null,
       language: parsed.data.language,
       admissionScore: parsed.data.admissionScore,
+      department: parsed.data.department || null,
       active: parsed.data.active ?? true,
       icon: parsed.data.icon,
       order: parsed.data.order,

@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Calendar, Mail, MailOpen, Phone, Reply, User } from 'lucide-react';
+import { ArrowLeft, Calendar, Mail, MailOpen, Phone, User } from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
+import { ComposeEmail, type SentEmail } from '@/components/admin/ComposeEmail';
 import { MarkReadToggle } from './MarkReadToggle';
 import { prisma } from '@/lib/prisma';
 import { formatMNDate } from '@/lib/utils';
@@ -31,6 +31,35 @@ export default async function MessageDetailPage({
   }
 
   const date = new Date(item.createdAt);
+
+  // Admission ankets embed "Хөтөлбөр: <name>" in the body. Parse it to
+  // pre-fill {{programName}} and auto-suggest the matching email template
+  // (via the program's department). General contact messages skip this.
+  const programName = item.message.match(/Хөтөлбөр:\s*(.+)/)?.[1]?.trim() ?? '';
+  let suggestedCategory: string | null = null;
+  if (programName) {
+    const prog = await prisma.program
+      .findFirst({ where: { name: programName }, select: { department: true } })
+      .catch(() => null);
+    suggestedCategory = prog?.department ?? null;
+  }
+
+  const sentRows = await prisma.emailMessage
+    .findMany({
+      where: { contactSubmissionId: item.id },
+      orderBy: { createdAt: 'desc' },
+      take: 100,
+    })
+    .catch(() => []);
+  const sent: SentEmail[] = sentRows.map((m) => ({
+    id: m.id,
+    toEmail: m.toEmail,
+    subject: m.subject,
+    status: m.status,
+    errorText: m.errorText,
+    aiAssisted: m.aiAssisted,
+    createdAt: m.createdAt.toISOString(),
+  }));
 
   return (
     <>
@@ -94,15 +123,6 @@ export default async function MessageDetailPage({
           </div>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Button
-              href={`mailto:${item.email}?subject=Re: ${encodeURIComponent(item.subject)}`}
-              variant="primary"
-              size="md"
-              icon={<Reply className="h-4 w-4" />}
-              iconPosition="left"
-            >
-              И-мэйлээр хариулах
-            </Button>
             <MarkReadToggle id={item.id} initialRead={true /* now read after view */} />
             <DeleteButton
               endpoint={`/api/contact/${item.id}`}
@@ -191,6 +211,19 @@ export default async function MessageDetailPage({
             </div>
           </dl>
         </Card>
+      </div>
+
+      <div className="mt-6">
+        <ComposeEmail
+          submissionId={item.id}
+          toEmail={item.email}
+          toName={item.name}
+          defaultSubject={`Re: ${item.subject}`}
+          submissionText={item.message}
+          programName={programName}
+          suggestedCategory={suggestedCategory}
+          initialSent={sent}
+        />
       </div>
     </>
   );

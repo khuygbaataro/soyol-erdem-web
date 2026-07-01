@@ -47,6 +47,7 @@ export function ProgramForm({ initial = {}, mode }: Props) {
   const [careerOutlookJa, setCareerOutlookJa] = useState(initial.careerOutlookJa ?? '');
   const [language, setLanguage] = useState(initial.language ?? 'Япон, Монгол');
   const [admissionScore, setAdmissionScore] = useState<string>(initial.admissionScore?.toString() ?? '');
+  const [department, setDepartment] = useState(initial.department ?? '');
   const [active, setActive] = useState(initial.active ?? true);
   const [icon, setIcon] = useState(initial.icon ?? 'Languages');
   const [order, setOrder] = useState<string>(initial.order?.toString() ?? '0');
@@ -74,6 +75,7 @@ export function ProgramForm({ initial = {}, mode }: Props) {
         careerOutlookEn: careerOutlookEn || undefined,
         careerOutlookJa: careerOutlookJa || undefined,
         language, admissionScore: admissionScore ? Number(admissionScore) : undefined,
+        department: department || undefined,
         active, icon, order: Number(order),
       };
       const url = mode === 'create' ? '/api/programs' : `/api/programs/${initial.id}`;
@@ -180,6 +182,13 @@ export function ProgramForm({ initial = {}, mode }: Props) {
           </FormField>
           <FormField label="Элсэлтийн оноо" className="mt-4" hint="ЭЕШ-ийн доод оноо.">
             <input type="number" min={0} max={900} value={admissionScore} onChange={(e) => setAdmissionScore(e.target.value)} className={inputClasses} placeholder="600" />
+          </FormField>
+          <FormField
+            label="Имэйл ангилал (department)"
+            className="mt-4"
+            hint="Элсэлтийн имэйл загвартай тааруулна. Ж: aylal-juulchlal, programm-hangamj."
+          >
+            <input value={department} onChange={(e) => setDepartment(e.target.value)} className={inputClasses} placeholder="programm-hangamj" />
           </FormField>
           <FormField label="Дүрс (Lucide icon)" className="mt-4">
             <select value={icon} onChange={(e) => setIcon(e.target.value)} className={inputClasses}>

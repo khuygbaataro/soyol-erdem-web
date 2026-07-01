@@ -16,6 +16,7 @@ import {
   LayoutDashboard,
   LayoutTemplate,
   LogOut,
+  Mail,
   Microscope,
   Newspaper,
   Scroll,
@@ -75,6 +76,7 @@ const NAV: readonly NavGroup[] = [
     label: 'Холбоо',
     items: [
       { label: 'Зурвас', href: '/admin/messages', icon: Inbox, roles: ['ADMIN', 'EDITOR'] },
+      { label: 'Имэйл загвар', href: '/admin/email-templates', icon: Mail, roles: ['ADMIN', 'EDITOR'] },
     ],
   },
   {

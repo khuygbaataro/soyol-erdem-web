@@ -163,6 +163,10 @@ model Program {
   careerOutlookJa      String?
   language         String
   admissionScore   Int?
+  /// Optional grouping key used to auto-suggest the matching admission
+  /// email template (e.g. "aylal-juulchlal", "programm-hangamj"). Free
+  /// text; empty means "no category" and templates are picked manually.
+  department       String?
   active           Boolean  @default(true)
   icon             String
   order            Int      @default(0)
@@ -191,6 +195,52 @@ model ContactSubmission {
   message   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+/// Reusable admission email template. Admin edits these from
+/// /admin/email-templates. `body` may contain {{firstName}}, {{lastName}},
+/// {{fullName}}, {{programName}} placeholders that the compose UI fills in.
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  /// Grouping key matched against Program.department so the compose UI can
+  /// auto-suggest the right template (e.g. "aylal-juulchlal", "erunhii").
+  category  String   @default("erunhii")
+  subject   String
+  body      String
+  locale    String   @default("MN")
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, order])
+}
+
+/// Log of every admission email sent from the admin panel. Not a hard FK
+/// to ContactSubmission — the log survives even if the source submission is
+/// deleted. Phase 2 (inbound replies) will add a `direction` column here.
+model EmailMessage {
+  id                  String   @id @default(cuid())
+  /// Which inbox submission this reply belongs to (nullable — a first-
+  /// contact email may be composed without an originating submission).
+  contactSubmissionId String?
+  toEmail             String
+  toName              String?
+  subject             String
+  body                String
+  /// SENT | FAILED
+  status              String   @default("SENT")
+  /// Resend message id (for delivery lookups).
+  providerId          String?
+  errorText           String?
+  templateId          String?
+  aiAssisted          Boolean  @default(false)
+  /// User.id of the staff member who sent it.
+  sentByUserId        String?
+  createdAt           DateTime @default(now())
+
+  @@index([contactSubmissionId, createdAt])
 }
 
 /// Editable single text/image fields keyed by stable identifier (e.g. "home.hero.title.line1").

@@ -79,6 +79,8 @@ export const programSchema = z.object({
   careerOutlookJa: z.string().max(5000).optional().or(z.literal('')),
   language: z.string().min(2),
   admissionScore: z.coerce.number().int().min(0).max(900).optional(),
+  /** Grouping key for auto-suggesting the matching admission email template. */
+  department: z.string().max(60).optional().or(z.literal('')),
   active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
   icon: z.string().min(2),
   order: z.coerce.number().int().min(0).max(999),
@@ -302,6 +304,44 @@ export const staffSchema = z.object({
   order: z.coerce.number().int().min(0).max(999).optional(),
 });
 export type StaffInput = z.infer<typeof staffSchema>;
+
+/* Email template — reusable admission emails, admin CRUD.
+ * `body` / `subject` may contain {{firstName}} {{lastName}} {{fullName}}
+ * {{programName}} placeholders filled in by the compose UI. */
+export const emailTemplateSchema = z.object({
+  name: z.string().min(2).max(160),
+  category: z.string().min(1).max(60),
+  subject: z.string().min(2).max(300),
+  body: z.string().min(5).max(20000),
+  locale: z.enum(['MN', 'EN', 'JP']).optional(),
+  active: z.coerce.boolean().or(z.literal('on').transform(() => true)).optional(),
+  order: z.coerce.number().int().min(0).max(999).optional(),
+});
+export type EmailTemplateInput = z.infer<typeof emailTemplateSchema>;
+
+/* Outbound admission email — posted by the compose UI on the message
+ * detail page. The row is logged in EmailMessage regardless of outcome. */
+export const emailSendSchema = z.object({
+  contactSubmissionId: z.string().optional().or(z.literal('')),
+  to: z.string().email('И-мэйл хаяг хүчин төгөлдөр биш'),
+  toName: z.string().max(160).optional().or(z.literal('')),
+  subject: z.string().min(2).max(300),
+  body: z.string().min(2).max(20000),
+  templateId: z.string().optional().or(z.literal('')),
+  aiAssisted: z.boolean().optional(),
+});
+export type EmailSendInput = z.infer<typeof emailSendSchema>;
+
+/* AI draft/refine/translate request for the compose UI. */
+export const aiDraftSchema = z.object({
+  mode: z.enum(['draft', 'refine', 'translate']),
+  submissionText: z.string().max(8000).optional().or(z.literal('')),
+  templateBody: z.string().max(20000).optional().or(z.literal('')),
+  currentText: z.string().max(20000).optional().or(z.literal('')),
+  instruction: z.string().max(2000).optional().or(z.literal('')),
+  locale: z.enum(['MN', 'EN', 'JP']).optional(),
+});
+export type AiDraftInput = z.infer<typeof aiDraftSchema>;
 
 /* Stat */
 export const statSchema = z.object({
