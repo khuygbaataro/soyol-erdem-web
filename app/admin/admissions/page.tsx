@@ -4,6 +4,7 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { DataTable, type Column } from '@/components/admin/DataTable';
 import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
+import { AdmissionSendButton } from '@/components/admin/AdmissionSendButton';
 import { prisma } from '@/lib/prisma';
 import { formatMNDate } from '@/lib/utils';
 
@@ -30,16 +31,28 @@ type Anket = {
   createdAt: Date;
   program: string;
   degree: string;
+  sent: boolean;
 };
 
 async function load(): Promise<Anket[]> {
   const rows = await prisma.contactSubmission
     .findMany({
       where: { subject: { startsWith: SUBJECT_PREFIX } },
-      orderBy: [{ read: 'asc' }, { createdAt: 'desc' }],
+      orderBy: { createdAt: 'desc' },
     })
     .catch(() => [] as never[]);
-  return rows.map((r) => ({
+
+  // Which ankets already had an email sent (from the list quick-send OR the
+  // compose page) — used for the status badge and unsent-first sorting.
+  const sentMsgs = await prisma.emailMessage
+    .findMany({
+      where: { contactSubmissionId: { in: rows.map((r) => r.id) }, status: 'SENT' },
+      select: { contactSubmissionId: true },
+    })
+    .catch(() => [] as { contactSubmissionId: string | null }[]);
+  const sentSet = new Set(sentMsgs.map((m) => m.contactSubmissionId));
+
+  const ankets: Anket[] = rows.map((r) => ({
     id: r.id,
     name: r.name,
     email: r.email,
@@ -48,7 +61,17 @@ async function load(): Promise<Anket[]> {
     createdAt: r.createdAt,
     program: parseField(r.message, 'Хөтөлбөр') || NO_PROGRAM,
     degree: parseField(r.message, 'Зэрэг'),
+    sent: sentSet.has(r.id),
   }));
+
+  // Илгээгээгүй нь дээр, илгээгдсэн нь доор; дотор нь шинэ → огноогоор.
+  ankets.sort(
+    (a, b) =>
+      Number(a.sent) - Number(b.sent) ||
+      Number(a.read) - Number(b.read) ||
+      b.createdAt.getTime() - a.createdAt.getTime(),
+  );
+  return ankets;
 }
 
 export default async function AdminAdmissionsPage({
@@ -123,6 +146,12 @@ export default async function AdminAdmissionsPage({
         ) : (
           <Badge variant="gold">Шинэ</Badge>
         ),
+    },
+    {
+      header: 'Имэйл',
+      cell: (a) => (
+        <AdmissionSendButton submissionId={a.id} initialSent={a.sent} />
+      ),
     },
     {
       header: 'Огноо',

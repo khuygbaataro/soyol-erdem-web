@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { DataTable, type Column } from '@/components/admin/DataTable';
 import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
+import { GenerateProgramTemplatesButton } from '@/components/admin/GenerateProgramTemplatesButton';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -88,15 +89,18 @@ export default async function AdminEmailTemplatesPage() {
           { label: 'Имэйл загвар' },
         ]}
         action={
-          <Button
-            href="/admin/email-templates/new"
-            variant="primary"
-            size="md"
-            icon={<Plus className="h-4 w-4" />}
-            iconPosition="left"
-          >
-            Шинэ загвар
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <GenerateProgramTemplatesButton />
+            <Button
+              href="/admin/email-templates/new"
+              variant="primary"
+              size="md"
+              icon={<Plus className="h-4 w-4" />}
+              iconPosition="left"
+            >
+              Шинэ загвар
+            </Button>
+          </div>
         }
       />
 

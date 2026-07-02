@@ -8,6 +8,7 @@ import { DeleteButton } from '@/components/admin/DeleteButton';
 import { ComposeEmail, type SentEmail } from '@/components/admin/ComposeEmail';
 import { MarkReadToggle } from './MarkReadToggle';
 import { prisma } from '@/lib/prisma';
+import { categoryForProgram } from '@/lib/program-email';
 import { formatMNDate } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
@@ -39,9 +40,9 @@ export default async function MessageDetailPage({
   let suggestedCategory: string | null = null;
   if (programName) {
     const prog = await prisma.program
-      .findFirst({ where: { name: programName }, select: { department: true } })
+      .findFirst({ where: { name: programName }, select: { department: true, slug: true } })
       .catch(() => null);
-    suggestedCategory = prog?.department ?? null;
+    suggestedCategory = prog ? categoryForProgram(prog) : null;
   }
 
   const sentRows = await prisma.emailMessage
