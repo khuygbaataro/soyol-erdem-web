@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Save } from 'lucide-react';
+import { Loader2, Save, Sparkles, Undo2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -48,6 +48,51 @@ export function EmailTemplateForm({ initial = {}, mode }: EmailTemplateFormProps
   const [locale, setLocale] = useState(initial.locale ?? 'MN');
   const [active, setActive] = useState(initial.active ?? true);
   const [order, setOrder] = useState<number>(initial.order ?? 0);
+
+  // AI сайжруулалт — сайжруулахын өмнөх хувилбарыг хадгалж, таалагдахгүй бол
+  // "Буцаах" дарж сэргээх боломжтой.
+  const [aiBusy, setAiBusy] = useState(false);
+  const [prevBody, setPrevBody] = useState<string | null>(null);
+
+  async function improveWithAi() {
+    if (!body.trim()) {
+      toast.error('Эхлээд агуулга бичнэ үү');
+      return;
+    }
+    setAiBusy(true);
+    try {
+      const res = await fetch('/api/ai/draft', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          mode: 'refine',
+          currentText: body,
+          instruction:
+            'Энэ бол имэйл ЗАГВАР. {{firstName}}, {{lastName}}, {{fullName}}, ' +
+            '{{programName}} мэтийн {{...}} хэлбэрийн хувьсагчдыг ЗААВАЛ хэвээр нь ' +
+            'үлдээ — бүү устга, бүү орчуул, бүү өөрчил.',
+          locale,
+        }),
+      });
+      const json = await res.json().catch(() => null);
+      if (!res.ok) {
+        toast.error(json?.error ?? 'AI боловсруулахад алдаа гарлаа');
+        return;
+      }
+      setPrevBody(body);
+      setBody(json.text ?? '');
+      toast.success('AI сайжруулав — таалагдахгүй бол "Буцаах" дарна уу');
+    } finally {
+      setAiBusy(false);
+    }
+  }
+
+  function undoAi() {
+    if (prevBody === null) return;
+    setBody(prevBody);
+    setPrevBody(null);
+    toast.success('Өмнөх хувилбар руу буцаалаа');
+  }
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -129,6 +174,32 @@ export function EmailTemplateForm({ initial = {}, mode }: EmailTemplateFormProps
                   {p}
                 </button>
               ))}
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={improveWithAi}
+                disabled={aiBusy}
+                className="inline-flex items-center gap-1.5 rounded-button border border-border-light bg-white px-3 py-2 text-xs font-semibold text-navy-900 transition-colors hover:bg-cream-soft disabled:opacity-50"
+              >
+                {aiBusy ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Sparkles className="h-3.5 w-3.5 text-gold-500" />
+                )}
+                AI-аар сайжруулах
+              </button>
+              {prevBody !== null && (
+                <button
+                  type="button"
+                  onClick={undoAi}
+                  className="inline-flex items-center gap-1.5 rounded-button border border-border-light bg-white px-3 py-2 text-xs font-semibold text-text-muted transition-colors hover:bg-cream-soft hover:text-navy-900"
+                >
+                  <Undo2 className="h-3.5 w-3.5" />
+                  Буцаах
+                </button>
+              )}
             </div>
           </FormField>
         </Card>
