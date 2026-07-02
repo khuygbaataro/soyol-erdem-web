@@ -332,6 +332,14 @@ export const emailSendSchema = z.object({
 });
 export type EmailSendInput = z.infer<typeof emailSendSchema>;
 
+/* Admission follow-up status — phoned flag + enrollment-likelihood. */
+export const admissionStatusSchema = z.object({
+  submissionId: z.string().min(1),
+  called: z.boolean().optional(),
+  enrollLikelihood: z.enum(['HIGH', 'MID', 'LOW', '']).optional(),
+});
+export type AdmissionStatusInput = z.infer<typeof admissionStatusSchema>;
+
 /* AI draft/refine/translate request for the compose UI. */
 export const aiDraftSchema = z.object({
   mode: z.enum(['draft', 'refine', 'translate']),

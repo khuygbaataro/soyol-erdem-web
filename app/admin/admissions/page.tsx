@@ -5,8 +5,11 @@ import { DataTable, type Column } from '@/components/admin/DataTable';
 import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
 import { AdmissionSendButton } from '@/components/admin/AdmissionSendButton';
+import { AdmissionNoteControls } from '@/components/admin/AdmissionNoteControls';
 import { prisma } from '@/lib/prisma';
 import { formatMNDate } from '@/lib/utils';
+
+type Likelihood = '' | 'HIGH' | 'MID' | 'LOW';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Элсэлтийн анкет' };
@@ -32,6 +35,8 @@ type Anket = {
   program: string;
   degree: string;
   sent: boolean;
+  called: boolean;
+  likelihood: Likelihood;
 };
 
 async function load(): Promise<Anket[]> {
@@ -62,6 +67,8 @@ async function load(): Promise<Anket[]> {
     program: parseField(r.message, 'Хөтөлбөр') || NO_PROGRAM,
     degree: parseField(r.message, 'Зэрэг'),
     sent: sentSet.has(r.id),
+    called: r.called,
+    likelihood: (r.enrollLikelihood ?? '') as Likelihood,
   }));
 
   // Илгээгээгүй нь дээр, илгээгдсэн нь доор; дотор нь шинэ → огноогоор.
@@ -137,6 +144,16 @@ export default async function AdminAdmissionsPage({
         ) : (
           <span className="text-xs text-text-muted">—</span>
         ),
+    },
+    {
+      header: 'Утсаар / Элсэх магадлал',
+      cell: (a) => (
+        <AdmissionNoteControls
+          submissionId={a.id}
+          initialCalled={a.called}
+          initialLikelihood={a.likelihood}
+        />
+      ),
     },
     {
       header: 'Статус',

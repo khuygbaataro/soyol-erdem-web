@@ -195,6 +195,13 @@ model ContactSubmission {
   message   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+
+  /// Admission follow-up tracking (only used by the /admin/admissions view).
+  /// Whether staff has phoned this applicant.
+  called           Boolean   @default(false)
+  calledAt         DateTime?
+  /// Enrollment-likelihood assessment: "HIGH" | "MID" | "LOW" (null = not set).
+  enrollLikelihood String?
 }
 
 /// Reusable admission email template. Admin edits these from
