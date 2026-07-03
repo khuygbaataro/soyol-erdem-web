@@ -58,13 +58,22 @@ export async function sendEmail(opts: {
   html?: string;
   replyTo?: string;
 }): Promise<SendEmailResult> {
+  // Яг аль env дутуу байгааг нэрлэж алдаанд буцаана — Vercel дээр юу
+  // нэмээгүйг таамаглалгүйгээр харна.
+  const missing: string[] = [];
+  if (!process.env.SMTP_HOST) missing.push('SMTP_HOST');
+  if (!process.env.SMTP_USER) missing.push('SMTP_USER');
+  if (!process.env.SMTP_PASS) missing.push('SMTP_PASS');
+
   const from = process.env.EMAIL_FROM || process.env.SMTP_USER;
   const transport = getTransport();
-  if (!transport || !from) {
+  if (!transport || !from || missing.length > 0) {
     return {
       ok: false,
       error:
-        'Имэйл үйлчилгээ тохируулаагүй байна. Vercel дээр SMTP_HOST, SMTP_USER, SMTP_PASS, EMAIL_FROM нэмнэ үү.',
+        missing.length > 0
+          ? `Имэйл тохиргоо дутуу: ${missing.join(', ')} байхгүй. Vercel → Settings → Environment Variables дээр Production-д нэмээд дахин Redeploy хийнэ үү.`
+          : 'Имэйл үйлчилгээ тохируулаагүй байна.',
     };
   }
 
