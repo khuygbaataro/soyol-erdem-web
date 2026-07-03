@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireApiUser } from '@/lib/auth-helpers';
 import { sendEmail, renderTemplate } from '@/lib/email';
-import { categoryForProgram } from '@/lib/program-email';
+import { categoryForProgram, matchProgram } from '@/lib/program-email';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,10 +31,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Энэ бүртгэлд хөтөлбөр алга' }, { status: 400 });
   }
 
-  const prog = await prisma.program.findFirst({
-    where: { name: programName },
-    select: { slug: true, department: true },
+  const programs = await prisma.program.findMany({
+    select: { name: true, slug: true, department: true },
   });
+  const prog = matchProgram(programName, programs);
   const category = prog ? categoryForProgram(prog) : null;
   const template = category
     ? await prisma.emailTemplate.findFirst({

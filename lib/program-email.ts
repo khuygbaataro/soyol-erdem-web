@@ -26,6 +26,36 @@ export function categoryForProgram(p: {
   return dep && dep.length > 0 ? dep : p.slug;
 }
 
+/**
+ * Match an anket's free-text program name to a Program row. Exact match
+ * first, then substring either way (e.g. anket "Аялал жуулчлалын менежмент"
+ * → program "Аялал жуулчлал"), so small wording differences on the
+ * application form still resolve to the right template.
+ */
+export function matchProgram<T extends { name: string }>(
+  programName: string,
+  programs: T[],
+): T | null {
+  const target = programName.trim().toLowerCase();
+  if (!target) return null;
+
+  const exact = programs.find((p) => p.name.trim().toLowerCase() === target);
+  if (exact) return exact;
+
+  // Anket name contains a program name — prefer the longest (most specific).
+  const contained = programs
+    .filter((p) => {
+      const n = p.name.trim().toLowerCase();
+      return n.length > 0 && target.includes(n);
+    })
+    .sort((a, b) => b.name.length - a.name.length);
+  if (contained[0]) return contained[0];
+
+  // A program name contains the anket name.
+  const wider = programs.find((p) => p.name.trim().toLowerCase().includes(target));
+  return wider ?? null;
+}
+
 /** Default content generated for a program that has no template yet. */
 export function defaultProgramTemplate(p: ProgramLite): {
   name: string;
