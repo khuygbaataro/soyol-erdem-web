@@ -5,6 +5,9 @@ import { requireApiUser } from '@/lib/auth-helpers';
 import { sendEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
+// SMTP удаашрахад Vercel-ийн үндсэн 10 сек хугацаа хүрэлцэхгүй timeout
+// өгдөг тул функцын дээд хугацааг сунгав.
+export const maxDuration = 30;
 
 /** List sent emails for one submission (compose UI history panel). */
 export async function GET(req: Request) {

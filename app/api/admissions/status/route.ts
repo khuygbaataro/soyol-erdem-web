@@ -23,11 +23,14 @@ export async function PATCH(req: Request) {
     );
   }
 
-  const { submissionId, called, enrollLikelihood } = parsed.data;
+  const { submissionId, called, enrollLikelihood, noAnswer, resetNoAnswer, callNote } =
+    parsed.data;
   const data: {
     called?: boolean;
     calledAt?: Date | null;
     enrollLikelihood?: string | null;
+    noAnswerCount?: number | { increment: number };
+    callNote?: string | null;
   } = {};
   if (called !== undefined) {
     data.called = called;
@@ -36,12 +39,26 @@ export async function PATCH(req: Request) {
   if (enrollLikelihood !== undefined) {
     data.enrollLikelihood = enrollLikelihood === '' ? null : enrollLikelihood;
   }
+  if (resetNoAnswer) {
+    data.noAnswerCount = 0;
+  } else if (noAnswer) {
+    data.noAnswerCount = { increment: 1 };
+  }
+  if (callNote !== undefined) {
+    data.callNote = callNote.trim().length > 0 ? callNote : null;
+  }
 
   try {
     const updated = await prisma.contactSubmission.update({
       where: { id: submissionId },
       data,
-      select: { id: true, called: true, enrollLikelihood: true },
+      select: {
+        id: true,
+        called: true,
+        enrollLikelihood: true,
+        noAnswerCount: true,
+        callNote: true,
+      },
     });
     return NextResponse.json({ data: updated });
   } catch {

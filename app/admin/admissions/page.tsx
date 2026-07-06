@@ -37,6 +37,8 @@ type Anket = {
   sent: boolean;
   called: boolean;
   likelihood: Likelihood;
+  noAnswerCount: number;
+  note: string;
 };
 
 async function load(): Promise<Anket[]> {
@@ -69,6 +71,8 @@ async function load(): Promise<Anket[]> {
     sent: sentSet.has(r.id),
     called: r.called,
     likelihood: (r.enrollLikelihood ?? '') as Likelihood,
+    noAnswerCount: r.noAnswerCount,
+    note: r.callNote ?? '',
   }));
 
   // Илгээгээгүй нь дээр, илгээгдсэн нь доор; дотор нь шинэ → огноогоор.
@@ -146,12 +150,14 @@ export default async function AdminAdmissionsPage({
         ),
     },
     {
-      header: 'Утсаар / Элсэх магадлал',
+      header: 'Утсаар / Элсэх магадлал / Тэмдэглэл',
       cell: (a) => (
         <AdmissionNoteControls
           submissionId={a.id}
           initialCalled={a.called}
           initialLikelihood={a.likelihood}
+          initialNoAnswerCount={a.noAnswerCount}
+          initialNote={a.note}
         />
       ),
     },

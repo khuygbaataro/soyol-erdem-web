@@ -46,6 +46,12 @@ function getTransport(): Transporter | null {
     port,
     secure,
     auth: { user, pass },
+    // Serverless-д удаан хариу өгдөг mail.mn сервер тодорхойгүй хугацаагаар
+    // өлгөгдөхөөс сэргийлж тодорхой timeout тавина — алдаа гарвал хурдан,
+    // ойлгомжтой болно.
+    connectionTimeout: 20000,
+    greetingTimeout: 15000,
+    socketTimeout: 25000,
   });
   return cached;
 }

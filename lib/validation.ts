@@ -332,11 +332,16 @@ export const emailSendSchema = z.object({
 });
 export type EmailSendInput = z.infer<typeof emailSendSchema>;
 
-/* Admission follow-up status — phoned flag + enrollment-likelihood. */
+/* Admission follow-up status — phoned flag, likelihood, no-answer count, note. */
 export const admissionStatusSchema = z.object({
   submissionId: z.string().min(1),
   called: z.boolean().optional(),
   enrollLikelihood: z.enum(['HIGH', 'MID', 'LOW', '']).optional(),
+  /** true → increment the no-answer counter by one. */
+  noAnswer: z.boolean().optional(),
+  /** true → reset the no-answer counter to zero. */
+  resetNoAnswer: z.boolean().optional(),
+  callNote: z.string().max(2000).optional(),
 });
 export type AdmissionStatusInput = z.infer<typeof admissionStatusSchema>;
 

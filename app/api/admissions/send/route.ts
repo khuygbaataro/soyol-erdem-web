@@ -5,6 +5,8 @@ import { sendEmail, renderTemplate } from '@/lib/email';
 import { categoryForProgram, matchProgram } from '@/lib/program-email';
 
 export const dynamic = 'force-dynamic';
+// SMTP удаашрахад Vercel timeout өгдгийг сэргийлж хугацааг сунгав.
+export const maxDuration = 30;
 
 /**
  * Quick-send the program's info template to an admission anket, straight

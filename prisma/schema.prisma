@@ -197,11 +197,15 @@ model ContactSubmission {
   createdAt DateTime @default(now())
 
   /// Admission follow-up tracking (only used by the /admin/admissions view).
-  /// Whether staff has phoned this applicant.
+  /// Whether staff has successfully talked to this applicant by phone.
   called           Boolean   @default(false)
   calledAt         DateTime?
   /// Enrollment-likelihood assessment: "HIGH" | "MID" | "LOW" (null = not set).
   enrollLikelihood String?
+  /// How many times staff phoned but got no answer.
+  noAnswerCount    Int       @default(0)
+  /// Free-text follow-up note (e.g. "маргааш дахин залгах").
+  callNote         String?
 }
 
 /// Reusable admission email template. Admin edits these from
