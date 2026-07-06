@@ -23,8 +23,15 @@ export async function PATCH(req: Request) {
     );
   }
 
-  const { submissionId, called, enrollLikelihood, noAnswer, resetNoAnswer, callNote } =
-    parsed.data;
+  const {
+    submissionId,
+    called,
+    enrollLikelihood,
+    noAnswer,
+    decrementNoAnswer,
+    resetNoAnswer,
+    callNote,
+  } = parsed.data;
   const data: {
     called?: boolean;
     calledAt?: Date | null;
@@ -41,6 +48,14 @@ export async function PATCH(req: Request) {
   }
   if (resetNoAnswer) {
     data.noAnswerCount = 0;
+  } else if (decrementNoAnswer) {
+    // Андуурч дарсныг буцаана — 0-оос доош болгохгүй тул одоогийн утгыг
+    // уншиж, нэгээр хасаад тохируулна.
+    const cur = await prisma.contactSubmission
+      .findUnique({ where: { id: submissionId }, select: { noAnswerCount: true } })
+      .catch(() => null);
+    if (!cur) return NextResponse.json({ error: 'Бүртгэл олдсонгүй' }, { status: 404 });
+    data.noAnswerCount = Math.max(0, cur.noAnswerCount - 1);
   } else if (noAnswer) {
     data.noAnswerCount = { increment: 1 };
   }

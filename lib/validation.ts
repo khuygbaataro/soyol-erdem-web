@@ -339,6 +339,8 @@ export const admissionStatusSchema = z.object({
   enrollLikelihood: z.enum(['HIGH', 'MID', 'LOW', '']).optional(),
   /** true → increment the no-answer counter by one. */
   noAnswer: z.boolean().optional(),
+  /** true → decrement the no-answer counter by one (floored at 0). */
+  decrementNoAnswer: z.boolean().optional(),
   /** true → reset the no-answer counter to zero. */
   resetNoAnswer: z.boolean().optional(),
   callNote: z.string().max(2000).optional(),

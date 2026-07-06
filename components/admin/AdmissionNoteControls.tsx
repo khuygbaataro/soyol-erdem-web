@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { Loader2, PhoneCall, PhoneMissed } from 'lucide-react';
+import { Loader2, Minus, PhoneCall, PhoneMissed } from 'lucide-react';
 import { toast } from 'sonner';
 
 type Likelihood = '' | 'HIGH' | 'MID' | 'LOW';
@@ -81,6 +81,13 @@ export function AdmissionNoteControls({
     save({ noAnswer: true }, () => setNoAnswer(prev));
   }
 
+  function removeNoAnswer() {
+    if (noAnswer <= 0) return;
+    const prev = noAnswer;
+    setNoAnswer((n) => Math.max(0, n - 1));
+    save({ decrementNoAnswer: true }, () => setNoAnswer(prev));
+  }
+
   function changeLikelihood(v: Likelihood) {
     const prev = likelihood;
     setLikelihood(v);
@@ -114,16 +121,33 @@ export function AdmissionNoteControls({
           {called ? 'Ярьсан' : 'Ярьсан?'}
         </button>
 
-        <button
-          type="button"
-          onClick={addNoAnswer}
-          disabled={pending}
-          title="Залгасан ч утсаа аваагүй — тоог нэмнэ"
-          className="inline-flex items-center gap-1.5 rounded-button border border-border-light bg-white px-2.5 py-1.5 text-xs font-semibold text-text-muted transition-colors hover:bg-cream-soft hover:text-navy-900 disabled:opacity-50"
-        >
-          <PhoneMissed className="h-3.5 w-3.5" />
-          Аваагүй{noAnswer > 0 ? ` (${noAnswer})` : ''}
-        </button>
+        <div className="inline-flex items-center">
+          <button
+            type="button"
+            onClick={addNoAnswer}
+            disabled={pending}
+            title="Залгасан ч утсаа аваагүй — тоог нэмнэ"
+            className={
+              'inline-flex items-center gap-1.5 border border-border-light bg-white px-2.5 py-1.5 text-xs font-semibold text-text-muted transition-colors hover:bg-cream-soft hover:text-navy-900 disabled:opacity-50 ' +
+              (noAnswer > 0 ? 'rounded-l-button border-r-0' : 'rounded-button')
+            }
+          >
+            <PhoneMissed className="h-3.5 w-3.5" />
+            Аваагүй{noAnswer > 0 ? ` (${noAnswer})` : ''}
+          </button>
+          {noAnswer > 0 && (
+            <button
+              type="button"
+              onClick={removeNoAnswer}
+              disabled={pending}
+              title="Андуурч дарсан бол нэгээр хас"
+              aria-label="Аваагүй тоог хасах"
+              className="inline-flex items-center rounded-r-button border border-border-light bg-white px-1.5 py-1.5 text-text-muted transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+            >
+              <Minus className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
 
         <select
           value={likelihood}
