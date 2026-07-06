@@ -102,7 +102,7 @@ export function AdmissionNoteControls({
   }
 
   return (
-    <div className="flex min-w-[240px] flex-col gap-1.5">
+    <div className="flex min-w-[280px] flex-col gap-1.5">
       <div className="flex flex-wrap items-center gap-1.5">
         <button
           type="button"
@@ -175,14 +175,14 @@ export function AdmissionNoteControls({
         </span>
       )}
 
-      <input
-        type="text"
+      <textarea
         value={note}
         onChange={(e) => setNote(e.target.value)}
         onBlur={saveNoteIfChanged}
-        placeholder="Тэмдэглэл…"
+        placeholder="Тэмдэглэл… (ж: маргааш 10 цагт дахин залгах)"
         maxLength={2000}
-        className="w-full rounded-button border border-border-light bg-white px-2 py-1 text-xs text-text-heading placeholder-text-muted focus:border-navy-900 focus:outline-none"
+        rows={3}
+        className="w-full resize-y rounded-button border border-border-light bg-white px-2.5 py-2 text-xs leading-relaxed text-text-heading placeholder-text-muted focus:border-navy-900 focus:outline-none"
       />
     </div>
   );
