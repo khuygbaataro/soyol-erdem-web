@@ -46,6 +46,8 @@ export function ContractSignClient({ contract }: { contract: SignableContract })
     phone: contract.phone,
     email: contract.email,
   });
+  const [schoolRep, setSchoolRep] = useState(contract.schoolRep);
+  const [schoolSignature, setSchoolSignature] = useState<string | null>(null);
   const [signedName, setSignedName] = useState(
     `${contract.lastName} ${contract.firstName}`.trim(),
   );
@@ -58,6 +60,14 @@ export function ContractSignClient({ contract }: { contract: SignableContract })
   }
 
   async function submit() {
+    if (!schoolRep.trim()) {
+      toast.error('Элсэлтийн албаны ажилтны нэрийг бичнэ үү');
+      return;
+    }
+    if (!schoolSignature) {
+      toast.error('Ажилтны гарын үсгийг зурна уу');
+      return;
+    }
     if (!f.lastName.trim() || !f.firstName.trim()) {
       toast.error('Овог, нэрээ бөглөнө үү');
       return;
@@ -75,7 +85,7 @@ export function ContractSignClient({ contract }: { contract: SignableContract })
       return;
     }
     if (!signature) {
-      toast.error('Гарын үсгээ зурна уу');
+      toast.error('Оюутны гарын үсгээ зурна уу');
       return;
     }
 
@@ -84,7 +94,7 @@ export function ContractSignClient({ contract }: { contract: SignableContract })
       const res = await fetch(`/api/geree/${contract.token}/sign`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ ...f, signedName, agreed, signature }),
+        body: JSON.stringify({ ...f, schoolRep, schoolSignature, signedName, agreed, signature }),
       });
       const json = await res.json().catch(() => null);
       if (!res.ok) {
@@ -151,8 +161,9 @@ export function ContractSignClient({ contract }: { contract: SignableContract })
               programName: f.programName,
               classYear: f.classYear,
               phone: f.phone,
-              schoolRep: contract.schoolRep,
-              signatureUrl: null,
+              schoolRep,
+              schoolSignatureUrl: schoolSignature,
+              signatureUrl: signature,
               signedAt: null,
             }}
           />
@@ -168,11 +179,41 @@ export function ContractSignClient({ contract }: { contract: SignableContract })
           Гарын үсэг зурж баталгаажуулах
         </h2>
 
-        <div className="mt-4">
-          <span className="mb-1 block text-sm font-medium text-text-body">
-            Гарын үсэг
-          </span>
-          <SignaturePad onChange={setSignature} disabled={submitting} />
+        {/* Сургуулийн тал — Элсэлтийн албаны ажилтан */}
+        <div className="mt-4 rounded-lg border border-border-light bg-cream-soft/60 p-4">
+          <p className="text-sm font-semibold text-navy-900">
+            Сургуулийн тал — Элсэлтийн албаны ажилтан
+          </p>
+          <label className="mt-3 block">
+            <span className="mb-1 block text-sm font-medium text-text-body">
+              Ажилтны овог нэр
+            </span>
+            <input
+              type="text"
+              value={schoolRep}
+              onChange={(e) => setSchoolRep(e.target.value)}
+              disabled={submitting}
+              placeholder="Жишээ: Хуягбаатар"
+              className="w-full rounded-button border border-border-light bg-white px-3 py-2 text-sm text-navy-900 outline-none focus:border-gold-500 disabled:opacity-60 sm:max-w-md"
+            />
+          </label>
+          <div className="mt-3">
+            <span className="mb-1 block text-sm font-medium text-text-body">
+              Ажилтны гарын үсэг
+            </span>
+            <SignaturePad onChange={setSchoolSignature} disabled={submitting} />
+          </div>
+        </div>
+
+        {/* Оюутны тал */}
+        <div className="mt-4 rounded-lg border border-border-light bg-cream-soft/60 p-4">
+          <p className="text-sm font-semibold text-navy-900">Оюутны тал</p>
+          <div className="mt-3">
+            <span className="mb-1 block text-sm font-medium text-text-body">
+              Оюутны гарын үсэг
+            </span>
+            <SignaturePad onChange={setSignature} disabled={submitting} />
+          </div>
         </div>
 
         <label className="mt-4 block">

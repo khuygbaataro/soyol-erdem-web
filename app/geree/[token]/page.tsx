@@ -58,6 +58,7 @@ export default async function GereePage({
               classYear: contract.classYear,
               phone: contract.phone,
               schoolRep: contract.schoolRep,
+              schoolSignatureUrl: contract.schoolSignatureUrl,
               signatureUrl: contract.signatureUrl,
               signedAt: contract.signedAt,
             }}

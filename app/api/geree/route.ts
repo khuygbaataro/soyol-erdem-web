@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { contractCreateSchema } from '@/lib/validation';
 import { requireApiUser } from '@/lib/auth-helpers';
 import { generateContractToken, parseAnketFields } from '@/lib/contract-helpers';
-import { DEFAULT_ACADEMIC_YEAR, DEFAULT_SCHOOL_REP } from '@/lib/contract';
+import { DEFAULT_ACADEMIC_YEAR } from '@/lib/contract';
 
 /**
  * Оюутны гэрээ үүсгэх (админ). Элсэлтийн анкетаас
@@ -12,7 +12,7 @@ import { DEFAULT_ACADEMIC_YEAR, DEFAULT_SCHOOL_REP } from '@/lib/contract';
  * үүссэн бол түүнийг буцаана.
  */
 export async function POST(req: Request) {
-  const { user, error } = await requireApiUser(['ADMIN', 'EDITOR']);
+  const { error } = await requireApiUser(['ADMIN', 'EDITOR']);
   if (error) return error;
 
   const json = await req.json().catch(() => null);
@@ -75,7 +75,9 @@ export async function POST(req: Request) {
       classYear: b.classYear || '1',
       phone: prefill.phone,
       email: prefill.email,
-      schoolRep: b.schoolRep || user.name || DEFAULT_SCHOOL_REP,
+      // Ажилтны нэр нь гэрээ баталгаажуулах үед гараар бичигдэнэ (админы
+      // нэрийг автоматаар оноохгүй).
+      schoolRep: b.schoolRep || '',
       contactSubmissionId: b.contactSubmissionId ?? null,
     },
   });

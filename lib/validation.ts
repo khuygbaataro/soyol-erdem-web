@@ -198,6 +198,13 @@ export type ContractCreateInput = z.infer<typeof contractCreateSchema>;
  * PNG data-URL. Хэт том дүрсээс сэргийлж уртыг хязгаарлав (~2.5 MB).
  */
 export const contractSignSchema = z.object({
+  // Сургуулийн тал — Элсэлтийн албаны ажилтан
+  schoolRep: z.string().min(1, 'Ажилтны нэр оруулна уу').max(80),
+  schoolSignature: z
+    .string()
+    .startsWith('data:image/png;base64,', 'Ажилтны гарын үсэг буруу форматтай байна')
+    .max(2_500_000, 'Гарын үсгийн зураг хэт том байна'),
+  // Оюутны тал
   lastName: z.string().min(1, 'Овог оруулна уу').max(80),
   firstName: z.string().min(1, 'Нэр оруулна уу').max(80),
   regNumber: z.string().min(1, 'Регистрийн дугаар оруулна уу').max(40),

@@ -16,6 +16,7 @@ export interface ContractDocumentFields {
   classYear: string;
   phone: string;
   schoolRep: string;
+  schoolSignatureUrl?: string | null;
   signatureUrl?: string | null;
   signedAt?: Date | string | null;
 }
@@ -97,7 +98,19 @@ export function ContractDocument({ fields }: { fields: ContractDocumentFields })
             <p>
               Овог, нэр: <DashOr value={fields.schoolRep} />
             </p>
-            <div className="pt-6">
+            <div className="pt-2">
+              {fields.schoolSignatureUrl ? (
+                <div className="border-b border-neutral-400 pb-1">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={fields.schoolSignatureUrl}
+                    alt="Ажилтны гарын үсэг"
+                    className="h-16 w-auto max-w-[220px] object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="h-16" />
+              )}
               <p className="border-t border-neutral-400 pt-1 text-[12px] text-neutral-600">
                 Гарын үсэг
               </p>

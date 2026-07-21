@@ -569,8 +569,11 @@ model StudentContract {
   phone       String @default("")
   email       String @default("")
 
-  /// Сургуулийг төлөөлж буй ажилтны нэр (Элсэлтийн албаны ажилтан).
+  /// Сургуулийг төлөөлж буй ажилтны нэр (Элсэлтийн албаны ажилтан) —
+  /// гэрээ баталгаажуулах үед гараар бичигдэнэ.
   schoolRep String @default("")
+  /// Элсэлтийн албаны ажилтны зурсан гарын үсгийн зургийн Blob URL (PNG).
+  schoolSignatureUrl String?
 
   // — Гарын үсэг зурах —
   status       ContractStatus @default(PENDING)
