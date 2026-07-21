@@ -100,6 +100,7 @@ export default async function GereePage({
           phone: contract.phone,
           email: contract.email,
           schoolRep: contract.schoolRep,
+          schoolSignatureUrl: contract.schoolSignatureUrl,
         }}
       />
     </div>

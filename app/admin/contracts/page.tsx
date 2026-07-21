@@ -17,6 +17,7 @@ type Row = {
   program: string;
   classYear: string;
   status: 'PENDING' | 'SIGNED';
+  officerSigned: boolean;
   createdAt: Date;
   signedAt: Date | null;
 };
@@ -33,6 +34,7 @@ async function load(): Promise<Row[]> {
     program: r.programName || '—',
     classYear: r.classYear,
     status: r.status,
+    officerSigned: Boolean(r.schoolSignatureUrl),
     createdAt: r.createdAt,
     signedAt: r.signedAt,
   }));
@@ -48,8 +50,7 @@ export default async function AdminContractsPage() {
       header: 'Оюутан',
       cell: (r) => (
         <Link
-          href={`/geree/${r.token}`}
-          target="_blank"
+          href={`/admin/contracts/${r.token}`}
           className="block max-w-xs truncate font-semibold text-navy-900 hover:text-gold-500"
         >
           {r.name}
@@ -76,9 +77,13 @@ export default async function AdminContractsPage() {
           <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
             Баталгаажсан
           </span>
+        ) : r.officerSigned ? (
+          <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
+            Элсэгч хүлээгдэж буй
+          </span>
         ) : (
           <span className="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 ring-1 ring-amber-200">
-            Хүлээгдэж буй
+            Ажилтан хүлээгдэж буй
           </span>
         ),
     },

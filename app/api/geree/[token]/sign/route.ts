@@ -27,6 +27,12 @@ export async function POST(
       { status: 409 },
     );
   }
+  if (!contract.schoolSignatureUrl) {
+    return NextResponse.json(
+      { error: 'Гэрээ бэлэн болоогүй байна. Элсэлтийн албатай холбогдоно уу.' },
+      { status: 409 },
+    );
+  }
 
   const json = await req.json().catch(() => null);
   const parsed = contractSignSchema.safeParse(json);
@@ -47,32 +53,20 @@ export async function POST(
   }
 
   // data:image/png;base64,XXXX → Buffer
-  const toBuffer = (dataUrl: string) => Buffer.from(dataUrl.split(',')[1] ?? '', 'base64');
-  const studentBuf = toBuffer(d.signature);
-  const schoolBuf = toBuffer(d.schoolSignature);
-  if (studentBuf.length === 0 || schoolBuf.length === 0) {
+  const studentBuf = Buffer.from(d.signature.split(',')[1] ?? '', 'base64');
+  if (studentBuf.length === 0) {
     return NextResponse.json({ error: 'Гарын үсэг хоосон байна' }, { status: 400 });
   }
 
   let signatureUrl: string;
-  let schoolSignatureUrl: string;
   try {
-    const [studentBlob, schoolBlob] = await Promise.all([
-      put(`contracts/${contract.token}-student.png`, studentBuf, {
-        access: 'public',
-        contentType: 'image/png',
-        addRandomSuffix: true,
-        token: process.env.BLOB_READ_WRITE_TOKEN,
-      }),
-      put(`contracts/${contract.token}-officer.png`, schoolBuf, {
-        access: 'public',
-        contentType: 'image/png',
-        addRandomSuffix: true,
-        token: process.env.BLOB_READ_WRITE_TOKEN,
-      }),
-    ]);
+    const studentBlob = await put(`contracts/${contract.token}-student.png`, studentBuf, {
+      access: 'public',
+      contentType: 'image/png',
+      addRandomSuffix: true,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
     signatureUrl = studentBlob.url;
-    schoolSignatureUrl = schoolBlob.url;
   } catch (err) {
     console.error('[geree/sign] blob upload failed', err);
     return NextResponse.json(
@@ -91,8 +85,6 @@ export async function POST(
   const result = await prisma.studentContract.updateMany({
     where: { token: contract.token, status: 'PENDING' },
     data: {
-      schoolRep: d.schoolRep,
-      schoolSignatureUrl,
       lastName: d.lastName,
       firstName: d.firstName,
       regNumber: d.regNumber,

@@ -197,14 +197,21 @@ export type ContractCreateInput = z.infer<typeof contractCreateSchema>;
  * Оюутны гарын үсэг зурах (нийтийн). `signature` нь canvas-аас гарсан
  * PNG data-URL. Хэт том дүрсээс сэргийлж уртыг хязгаарлав (~2.5 MB).
  */
-export const contractSignSchema = z.object({
-  // Сургуулийн тал — Элсэлтийн албаны ажилтан
+/**
+ * Элсэлтийн албаны ажилтан гарын үсгээ зурах (админ). Оюутанд холбоос
+ * илгээхээс өмнө ажилтан эхлээд нэрээ бичиж, гарын үсгээ зурна.
+ */
+export const contractOfficerSchema = z.object({
   schoolRep: z.string().min(1, 'Ажилтны нэр оруулна уу').max(80),
   schoolSignature: z
     .string()
     .startsWith('data:image/png;base64,', 'Ажилтны гарын үсэг буруу форматтай байна')
     .max(2_500_000, 'Гарын үсгийн зураг хэт том байна'),
-  // Оюутны тал
+});
+export type ContractOfficerInput = z.infer<typeof contractOfficerSchema>;
+
+/** Оюутан гарын үсэг зурах (нийтийн). Ажилтны гарын үсэг аль хэдийн зурагдсан. */
+export const contractSignSchema = z.object({
   lastName: z.string().min(1, 'Овог оруулна уу').max(80),
   firstName: z.string().min(1, 'Нэр оруулна уу').max(80),
   regNumber: z.string().min(1, 'Регистрийн дугаар оруулна уу').max(40),
