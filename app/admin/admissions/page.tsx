@@ -5,6 +5,7 @@ import { DataTable, type Column } from '@/components/admin/DataTable';
 import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
 import { AdmissionSendButton } from '@/components/admin/AdmissionSendButton';
+import { AdmissionContractButton } from '@/components/admin/AdmissionContractButton';
 import { AdmissionNoteControls } from '@/components/admin/AdmissionNoteControls';
 import { prisma } from '@/lib/prisma';
 import { formatMNDate } from '@/lib/utils';
@@ -188,6 +189,10 @@ export default async function AdminAdmissionsPage({
           })}
         </span>
       ),
+    },
+    {
+      header: 'Гэрээ',
+      cell: (a) => <AdmissionContractButton submissionId={a.id} />,
     },
     {
       header: '',

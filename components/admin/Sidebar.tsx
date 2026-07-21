@@ -10,6 +10,7 @@ import {
   Building2,
   Clock,
   ChevronsLeft,
+  FileSignature,
   FileText,
   GraduationCap,
   Inbox,
@@ -76,6 +77,7 @@ const NAV: readonly NavGroup[] = [
     label: 'Холбоо',
     items: [
       { label: 'Элсэлтийн анкет', href: '/admin/admissions', icon: GraduationCap, roles: ['ADMIN', 'EDITOR'] },
+      { label: 'Оюутны гэрээ', href: '/admin/contracts', icon: FileSignature, roles: ['ADMIN', 'EDITOR'] },
       { label: 'Зурвас', href: '/admin/messages', icon: Inbox, roles: ['ADMIN', 'EDITOR'] },
       { label: 'Имэйл загвар', href: '/admin/email-templates', icon: Mail, roles: ['ADMIN', 'EDITOR'] },
     ],

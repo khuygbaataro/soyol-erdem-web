@@ -169,6 +169,51 @@ export const admissionApplicationSchema = z.object({
 });
 export type AdmissionApplicationInput = z.infer<typeof admissionApplicationSchema>;
 
+/**
+ * Оюутны гэрээ үүсгэх (админ) — элсэлтийн анкетаас
+ * (`contactSubmissionId`) эсвэл гараар (`lastName`+`firstName`).
+ */
+export const contractCreateSchema = z
+  .object({
+    contactSubmissionId: z.string().min(1).optional(),
+    lastName: z.string().max(80).optional(),
+    firstName: z.string().max(80).optional(),
+    regNumber: z.string().max(40).optional(),
+    programName: z.string().max(120).optional(),
+    classYear: z.string().max(10).optional(),
+    phone: z.string().max(20).optional(),
+    email: z.string().max(120).optional(),
+    contractNo: z.string().max(40).optional(),
+    academicYear: z.string().max(20).optional(),
+    schoolRep: z.string().max(80).optional(),
+  })
+  .refine(
+    (v) => Boolean(v.contactSubmissionId) || Boolean(v.lastName && v.firstName),
+    { message: 'Анкет эсвэл Овог/Нэр шаардлагатай' },
+  );
+export type ContractCreateInput = z.infer<typeof contractCreateSchema>;
+
+/**
+ * Оюутны гарын үсэг зурах (нийтийн). `signature` нь canvas-аас гарсан
+ * PNG data-URL. Хэт том дүрсээс сэргийлж уртыг хязгаарлав (~2.5 MB).
+ */
+export const contractSignSchema = z.object({
+  lastName: z.string().min(1, 'Овог оруулна уу').max(80),
+  firstName: z.string().min(1, 'Нэр оруулна уу').max(80),
+  regNumber: z.string().min(1, 'Регистрийн дугаар оруулна уу').max(40),
+  programName: z.string().min(1, 'Мэргэжил оруулна уу').max(120),
+  classYear: z.string().min(1, 'Анги оруулна уу').max(10),
+  phone: z.string().min(6, 'Утасны дугаар оруулна уу').max(20),
+  email: z.union([z.string().email('И-мэйл хаяг буруу байна').max(120), z.literal('')]),
+  signedName: z.string().min(2, 'Нэрээ бүтнээр бичнэ үү').max(120),
+  agreed: z.literal(true, { message: 'Гэрээг зөвшөөрнө үү' }),
+  signature: z
+    .string()
+    .startsWith('data:image/png;base64,', 'Гарын үсэг буруу форматтай байна')
+    .max(2_500_000, 'Гарын үсгийн зураг хэт том байна'),
+});
+export type ContractSignInput = z.infer<typeof contractSignSchema>;
+
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),

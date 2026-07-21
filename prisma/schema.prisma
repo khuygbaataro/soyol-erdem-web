@@ -543,3 +543,55 @@ model Accreditation {
 
   @@index([order])
 }
+
+/// Оюутны суралцах гэрээ — онлайнаар гарын үсэг зурдаг.
+/// Админ элсэлтийн анкетаас (ContactSubmission) гэрээ үүсгэж, оюутанд
+/// нийтийн `/geree/<token>` холбоос илгээнэ. Оюутан талбаруудаа шалгаж,
+/// гарын үсгээ зураад баталгаажуулна. Гарын үсгийн PNG-г Vercel Blob-д
+/// хадгална; гэрээний бичвэрийг хадгалсан талбаруудаас нь дахин
+/// рендерлэдэг тул тусдаа PDF файл хадгалах шаардлагагүй (хэвлэх/PDF
+/// татахыг хөтчийн print-ээр гүйцэтгэнэ).
+model StudentContract {
+  id           String   @id @default(cuid())
+  /// Нийтийн холбоосын нууц slug (`/geree/<token>`).
+  token        String   @unique
+  /// Хичээлийн жил, гэрчилгээн дээр гарна (жиш. "2026-2027").
+  academicYear String   @default("2026-2027")
+  /// Гэрээний дугаар (№) — заавал биш.
+  contractNo   String?
+
+  // — Оюутны талбарууд (анкетаас урьдчилан бөглөгдөж, оюутан засаж болно) —
+  lastName    String // Овог
+  firstName   String // Нэр
+  regNumber   String @default("") // РД (регистрийн дугаар)
+  programName String @default("") // Мэргэжил
+  classYear   String @default("1") // Анги
+  phone       String @default("")
+  email       String @default("")
+
+  /// Сургуулийг төлөөлж буй ажилтны нэр (Элсэлтийн албаны ажилтан).
+  schoolRep String @default("")
+
+  // — Гарын үсэг зурах —
+  status       ContractStatus @default(PENDING)
+  /// Оюутны зурсан гарын үсгийн зургийн Blob URL (PNG).
+  signatureUrl String?
+  /// Гарын үсэг зурахдаа бичсэн батламж нэр.
+  signedName   String?
+  signedAt     DateTime?
+  signerIp     String?
+
+  /// Үүсгэсэн элсэлтийн анкет (ContactSubmission.id) — заавал биш.
+  contactSubmissionId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([contactSubmissionId])
+}
+
+enum ContractStatus {
+  PENDING
+  SIGNED
+}
