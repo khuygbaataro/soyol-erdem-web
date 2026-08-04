@@ -13,6 +13,8 @@ interface DataTableProps<T> {
   columns: Column<T>[];
   empty?: ReactNode;
   className?: string;
+  /** Мөр тус бүрд нэмэх class — тодотгол (жиш. анхаарал шаардсан мөр). */
+  rowClassName?: (row: T) => string | undefined;
 }
 
 export function DataTable<T extends { id: string }>({
@@ -20,6 +22,7 @@ export function DataTable<T extends { id: string }>({
   columns,
   empty = 'Бичлэг байхгүй байна.',
   className,
+  rowClassName,
 }: DataTableProps<T>) {
   if (data.length === 0) {
     return (
@@ -44,7 +47,13 @@ export function DataTable<T extends { id: string }>({
           </thead>
           <tbody className="divide-y divide-border-light">
             {data.map((row) => (
-              <tr key={row.id} className="bg-white transition-colors hover:bg-cream-soft/40">
+              <tr
+                key={row.id}
+                className={cn(
+                  'bg-white transition-colors hover:bg-cream-soft/40',
+                  rowClassName?.(row),
+                )}
+              >
                 {columns.map((c, idx) => (
                   <td key={idx} className={cn('px-4 py-3 align-middle text-text-body', c.className)}>
                     {c.cell(row)}
