@@ -76,13 +76,9 @@ async function load(): Promise<Anket[]> {
     note: r.callNote ?? '',
   }));
 
-  // Илгээгээгүй нь дээр, илгээгдсэн нь доор; дотор нь шинэ → огноогоор.
-  ankets.sort(
-    (a, b) =>
-      Number(a.sent) - Number(b.sent) ||
-      Number(a.read) - Number(b.read) ||
-      b.createdAt.getTime() - a.createdAt.getTime(),
-  );
+  // Зөвхөн огноогоор эрэмбэлнэ — хамгийн сүүлийн (шинэ) огноо хамгийн
+  // дээрээ. Илгээсэн/уншсан төлөвийг эрэмбэд тооцохгүй.
+  ankets.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   return ankets;
 }
 
