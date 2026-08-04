@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { AlertTriangle, Eye, GraduationCap, Inbox, Phone } from 'lucide-react';
+import { AlertTriangle, Award, Eye, GraduationCap, Inbox, Phone } from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { DataTable, type Column } from '@/components/admin/DataTable';
 import { Badge } from '@/components/ui/Badge';
@@ -30,8 +30,30 @@ const NO_PROGRAM = 'Бусад';
 const ATTENTION_DAYS = 3;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * Элсэлтийн босго: ЭЕШ-ийн оноо `PASS_SCORE`-оос дээш хичээл
+ * `PASS_SUBJECTS`-аас олон байвал босго давсанд тооцно. Босгыг хангаагүй
+ * ч дараа нь ЭЕШ дахин өгч болох тул сөрөг тэмдэглэгээ хийхгүй — зөвхөн
+ * давсныг нь ялган тодотгоно.
+ */
+const PASS_SCORE = 490;
+const PASS_SUBJECTS = 2;
+
 function parseField(message: string, label: string): string {
   return message.match(new RegExp(`${label}:\\s*(.+)`))?.[1]?.trim() ?? '';
+}
+
+/**
+ * Анкетын биетээс ЭЕШ-ийн оноог задална. Мөрүүд нь
+ * `  • Математик: 427` хэлбэртэй (app/api/admission-applications/route.ts).
+ */
+function parseExamScores(message: string): { subject: string; score: number }[] {
+  const out: { subject: string; score: number }[] = [];
+  for (const m of message.matchAll(/^\s*•\s*(.+?):\s*([\d]+(?:[.,]\d+)?)\s*$/gm)) {
+    const score = Number(m[2].replace(',', '.'));
+    if (!Number.isNaN(score)) out.push({ subject: m[1].trim(), score });
+  }
+  return out;
 }
 
 type Anket = {
@@ -52,6 +74,12 @@ type Anket = {
   daysOld: number;
   /** ATTENTION_DAYS хоног өнгөрсөн ч үр дүн бичигдээгүй. */
   needsAttention: boolean;
+  /** PASS_SCORE-оос дээш оноотой хичээлийн тоо. */
+  highScoreCount: number;
+  /** Босго давсан эсэх (PASS_SUBJECTS-аас олон хичээл). */
+  passedThreshold: boolean;
+  /** Hover-т харуулах бүх оноо — "Математик: 427 · Физик: 485". */
+  examSummary: string;
 };
 
 async function load(): Promise<Anket[]> {
@@ -81,6 +109,8 @@ async function load(): Promise<Anket[]> {
     // бичсэн. Зөвхөн "Ярьсан" дарсан ч юу ярьсан нь тодорхойгүй бол
     // тохиролцоонд хүрээгүйд тооцно.
     const hasOutcome = likelihood !== '' || note.trim() !== '';
+    const scores = parseExamScores(r.message);
+    const highScoreCount = scores.filter((s) => s.score >= PASS_SCORE).length;
     return {
       id: r.id,
       name: r.name,
@@ -97,6 +127,9 @@ async function load(): Promise<Anket[]> {
       note,
       daysOld,
       needsAttention: daysOld >= ATTENTION_DAYS && !hasOutcome,
+      highScoreCount,
+      passedThreshold: highScoreCount >= PASS_SUBJECTS,
+      examSummary: scores.map((s) => `${s.subject}: ${s.score}`).join(' · '),
     };
   });
 
@@ -163,6 +196,22 @@ export default async function AdminAdmissionsPage({
             {a.name}
           </Link>
           <p className="text-xs text-text-muted">{a.email}</p>
+          {a.examSummary && (
+            <span
+              title={`ЭЕШ — ${a.examSummary}`}
+              className={
+                'mt-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ' +
+                (a.passedThreshold
+                  ? 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-300'
+                  : 'bg-cream text-text-muted ring-1 ring-border-light')
+              }
+            >
+              <Award className="h-3 w-3" />
+              {a.passedThreshold
+                ? `Босго давсан (${a.highScoreCount})`
+                : 'Босго хүрээгүй'}
+            </span>
+          )}
         </div>
       ),
     },
