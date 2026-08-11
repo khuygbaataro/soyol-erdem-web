@@ -125,6 +125,8 @@ export const highSchoolApplicationSchema = z.object({
   studentBirth: z.string().max(60).optional().or(z.literal('')),
   currentSchool: z.string().max(200).optional().or(z.literal('')),
   currentGpa: z.string().max(20).optional().or(z.literal('')),
+  /** Аль ангид орох гэж байгаа — богиносгосон формын үндсэн талбар. */
+  enteringGrade: z.string().max(20).optional().or(z.literal('')),
   track: z.enum(['japan', 'it', 'other']).optional(),
   guardianName: z.string().min(2).max(120),
   guardianRel: z.string().max(60).optional().or(z.literal('')),

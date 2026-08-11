@@ -107,6 +107,11 @@ export default async function HighSchoolApplicationDetailPage({
 
           <dl className="grid gap-4 sm:grid-cols-2">
             <DetailField
+              icon={GraduationCap}
+              label="Орох анги"
+              value={item.enteringGrade ? `${item.enteringGrade}-р анги` : null}
+            />
+            <DetailField
               icon={Calendar}
               label="Төрсөн он, сар, өдөр"
               value={item.studentBirth}

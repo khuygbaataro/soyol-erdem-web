@@ -20,6 +20,7 @@ export async function POST(req: Request) {
         studentBirth: d.studentBirth || null,
         currentSchool: d.currentSchool || null,
         currentGpa: d.currentGpa || null,
+        enteringGrade: d.enteringGrade || null,
         track: d.track || null,
         guardianName: d.guardianName,
         guardianRel: d.guardianRel || null,
@@ -42,8 +43,9 @@ export async function POST(req: Request) {
   await sendTelegram(
     `🎓 Шинэ элсэлтийн хүсэлт\n` +
     `👤 Сурагч: ${d.studentName}\n` +
-    `🏫 Сургууль: ${d.currentSchool || '—'}\n` +
-    `📚 Чиглэл: ${d.track ? (trackLabel[d.track] ?? d.track) : '—'}\n` +
+    (d.enteringGrade ? `📖 Орох анги: ${d.enteringGrade}-р анги\n` : '') +
+    (d.currentSchool ? `🏫 Сургууль: ${d.currentSchool}\n` : '') +
+    (d.track ? `📚 Чиглэл: ${trackLabel[d.track] ?? d.track}\n` : '') +
     `👨‍👩‍👧 Эцэг эх: ${d.guardianName}\n` +
     `📞 Утас: ${d.phone}\n` +
     (d.email ? `✉️ И-мэйл: ${d.email}\n` : '') +

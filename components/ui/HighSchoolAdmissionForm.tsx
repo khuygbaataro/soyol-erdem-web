@@ -14,28 +14,16 @@ export interface HighSchoolAdmissionFormLabels {
   studentSection: string;
   studentNameLabel: string;
   studentNamePh: string;
-  studentBirthLabel: string;
-  studentBirthPh: string;
-  currentSchoolLabel: string;
-  currentSchoolPh: string;
-  currentGpaLabel: string;
-  currentGpaPh: string;
-  trackLabel: string;
-  trackUndecided: string;
-  trackJapan: string;
-  trackIt: string;
-  trackOther: string;
+  /** Аль ангид орох — богиносгосон формын үндсэн талбар. */
+  gradeLabel?: string;
+  gradePh?: string;
   guardianSection: string;
   guardianNameLabel: string;
   guardianNamePh: string;
-  guardianRelLabel: string;
-  guardianRelPh: string;
   phoneLabel: string;
   phonePh: string;
   emailLabel: string;
   emailPh: string;
-  messageLabel: string;
-  messagePh: string;
   submitCta: string;
   errorSubmit: string;
   errorNetwork: string;
@@ -43,34 +31,38 @@ export interface HighSchoolAdmissionFormLabels {
   successBody: string;
   successAgain: string;
   requiredNote: string;
+  /* — Богиносгосон формд ашиглагдахаа больсон талбарууд. Орчуулгын
+     файлд хэвээр байгаа тул optional болгож үлдээв. — */
+  studentBirthLabel?: string;
+  studentBirthPh?: string;
+  currentSchoolLabel?: string;
+  currentSchoolPh?: string;
+  currentGpaLabel?: string;
+  currentGpaPh?: string;
+  trackLabel?: string;
+  trackUndecided?: string;
+  trackJapan?: string;
+  trackIt?: string;
+  trackOther?: string;
+  guardianRelLabel?: string;
+  guardianRelPh?: string;
+  messageLabel?: string;
+  messagePh?: string;
 }
 
 const DEFAULT_LABELS: HighSchoolAdmissionFormLabels = {
   studentSection: 'Сурагчийн мэдээлэл',
   studentNameLabel: 'Сурагчийн овог нэр *',
   studentNamePh: 'С. Сурагчийн нэр',
-  studentBirthLabel: 'Төрсөн он, сар, өдөр',
-  studentBirthPh: '2010-05-15',
-  currentSchoolLabel: 'Одоо суралцаж буй сургууль (9-р анги)',
-  currentSchoolPh: 'Жишээ: 5-р сургууль',
-  currentGpaLabel: '9-р ангийн дундаж голч',
-  currentGpaPh: '80%',
-  trackLabel: 'Сонирхож буй чиглэл',
-  trackUndecided: 'Сонгоогүй / Шийдээгүй',
-  trackJapan: 'Япон хэл, соёл',
-  trackIt: 'Мэдээллийн технологи (IT)',
-  trackOther: 'Бусад / Хосолсон',
+  gradeLabel: 'Хэддүгээр ангид орох вэ? *',
+  gradePh: 'Анги сонгоно уу',
   guardianSection: 'Эцэг эх / Асран хамгаалагчийн мэдээлэл',
   guardianNameLabel: 'Овог нэр *',
   guardianNamePh: 'Б. Эцэг эх',
-  guardianRelLabel: 'Сурагчтай ямар хамааралтай вэ?',
-  guardianRelPh: 'Эх / Эцэг / Асран хамгаалагч',
   phoneLabel: 'Утас *',
   phonePh: '9999-9999',
   emailLabel: 'И-мэйл',
   emailPh: 'email@example.com',
-  messageLabel: 'Нэмэлт асуулт / тайлбар',
-  messagePh: 'Тэтгэлэг, дотуур байр, элсэлтийн талаар асуултаа бичнэ үү...',
   submitCta: 'Хүсэлт илгээх',
   errorSubmit: 'Илгээхэд алдаа гарлаа. Дахин оролдоно уу.',
   errorNetwork: 'Сүлжээний алдаа. Холболтоо шалгана уу.',
@@ -81,6 +73,9 @@ const DEFAULT_LABELS: HighSchoolAdmissionFormLabels = {
   requiredNote:
     '* тэмдэгтэй талбарууд заавал бөглөгдөнө. Таны мэдээлэл зөвхөн элсэлтийн зориулалтаар ашиглагдана.',
 };
+
+/** 1–12-р анги. */
+const GRADES = Array.from({ length: 12 }, (_, i) => String(i + 1));
 
 /**
  * Public-facing admission inquiry form for the high-school's 10th-grade
@@ -104,15 +99,10 @@ export function HighSchoolAdmissionForm({
     const fd = new FormData(e.currentTarget);
     const payload = {
       studentName: String(fd.get('studentName') || '').trim(),
-      studentBirth: String(fd.get('studentBirth') || '').trim(),
-      currentSchool: String(fd.get('currentSchool') || '').trim(),
-      currentGpa: String(fd.get('currentGpa') || '').trim(),
-      track: String(fd.get('track') || '').trim() || undefined,
+      enteringGrade: String(fd.get('enteringGrade') || '').trim(),
       guardianName: String(fd.get('guardianName') || '').trim(),
-      guardianRel: String(fd.get('guardianRel') || '').trim(),
       phone: String(fd.get('phone') || '').trim(),
       email: String(fd.get('email') || '').trim(),
-      message: String(fd.get('message') || '').trim(),
     };
 
     try {
@@ -170,63 +160,32 @@ export function HighSchoolAdmissionForm({
               name="studentName"
               type="text"
               required
+              autoComplete="name"
               className={inputClasses}
               placeholder={labels.studentNamePh}
             />
           </div>
           <div>
-            <label htmlFor="hs-studentBirth" className={labelClasses}>
-              {labels.studentBirthLabel}
+            <label htmlFor="hs-enteringGrade" className={labelClasses}>
+              {labels.gradeLabel ?? DEFAULT_LABELS.gradeLabel}
             </label>
-            <input
-              id="hs-studentBirth"
-              name="studentBirth"
-              type="text"
+            <select
+              id="hs-enteringGrade"
+              name="enteringGrade"
+              required
+              defaultValue=""
               className={inputClasses}
-              placeholder={labels.studentBirthPh}
-            />
+            >
+              <option value="" disabled>
+                {labels.gradePh ?? DEFAULT_LABELS.gradePh}
+              </option>
+              {GRADES.map((g) => (
+                <option key={g} value={g}>
+                  {g}-р анги
+                </option>
+              ))}
+            </select>
           </div>
-          <div>
-            <label htmlFor="hs-currentSchool" className={labelClasses}>
-              {labels.currentSchoolLabel}
-            </label>
-            <input
-              id="hs-currentSchool"
-              name="currentSchool"
-              type="text"
-              className={inputClasses}
-              placeholder={labels.currentSchoolPh}
-            />
-          </div>
-          <div>
-            <label htmlFor="hs-currentGpa" className={labelClasses}>
-              {labels.currentGpaLabel}
-            </label>
-            <input
-              id="hs-currentGpa"
-              name="currentGpa"
-              type="text"
-              className={inputClasses}
-              placeholder={labels.currentGpaPh}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="hs-track" className={labelClasses}>
-            {labels.trackLabel}
-          </label>
-          <select
-            id="hs-track"
-            name="track"
-            defaultValue=""
-            className={inputClasses}
-          >
-            <option value="">{labels.trackUndecided}</option>
-            <option value="japan">{labels.trackJapan}</option>
-            <option value="it">{labels.trackIt}</option>
-            <option value="other">{labels.trackOther}</option>
-          </select>
         </div>
       </fieldset>
 
@@ -250,18 +209,6 @@ export function HighSchoolAdmissionForm({
             />
           </div>
           <div>
-            <label htmlFor="hs-guardianRel" className={labelClasses}>
-              {labels.guardianRelLabel}
-            </label>
-            <input
-              id="hs-guardianRel"
-              name="guardianRel"
-              type="text"
-              className={inputClasses}
-              placeholder={labels.guardianRelPh}
-            />
-          </div>
-          <div>
             <label htmlFor="hs-phone" className={labelClasses}>
               {labels.phoneLabel}
             </label>
@@ -270,11 +217,12 @@ export function HighSchoolAdmissionForm({
               name="phone"
               type="tel"
               required
+              autoComplete="tel"
               className={inputClasses}
               placeholder={labels.phonePh}
             />
           </div>
-          <div>
+          <div className="md:col-span-2">
             <label htmlFor="hs-email" className={labelClasses}>
               {labels.emailLabel}
             </label>
@@ -282,26 +230,13 @@ export function HighSchoolAdmissionForm({
               id="hs-email"
               name="email"
               type="email"
+              autoComplete="email"
               className={inputClasses}
               placeholder={labels.emailPh}
             />
           </div>
         </div>
       </fieldset>
-
-      {/* Section 3 — Notes */}
-      <div className="border-t border-border-light pt-5">
-        <label htmlFor="hs-message" className={labelClasses}>
-          {labels.messageLabel}
-        </label>
-        <textarea
-          id="hs-message"
-          name="message"
-          rows={4}
-          className={`${inputClasses} resize-y`}
-          placeholder={labels.messagePh}
-        />
-      </div>
 
       {error && (
         <p className="rounded-button border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">

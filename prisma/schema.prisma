@@ -441,8 +441,12 @@ model HighSchoolApplication {
   studentBirth    String?
   /// School the student currently attends (9th grade).
   currentSchool   String?
-  /// 9th-grade GPA / average grade if known.
+  /// 9th-grade GPA / average grade if known. Одоогийн богиносгосон
+  /// бүртгэлийн форм үүнийг асуухаа больсон — хуучин бичлэгүүдэд үлдсэн.
   currentGpa      String?
+  /// Аль ангид орох гэж байгаа нь ("1"…"12"). Богиносгосон бүртгэлийн
+  /// формын үндсэн талбар.
+  enteringGrade   String?
   /// Preferred track: "japan" | "it" | "other".
   track           String?
   /// Parent / guardian name.

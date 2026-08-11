@@ -69,9 +69,14 @@ export default async function HighSchoolAdminApplicationsPage() {
       ),
     },
     {
-      header: 'Чиглэл',
+      header: 'Орох анги',
       cell: (m) =>
-        m.track ? (
+        m.enteringGrade ? (
+          <span className="inline-flex items-center gap-1.5 rounded-button bg-gold-500/10 px-2.5 py-1 text-xs font-semibold text-navy-900">
+            <GraduationCap className="h-3.5 w-3.5 text-gold-500" />
+            {m.enteringGrade}-р анги
+          </span>
+        ) : m.track ? (
           <span className="inline-flex items-center gap-1 text-xs text-text-body">
             <GraduationCap className="h-3 w-3 text-gold-500" />
             {TRACK_LABEL[m.track] ?? m.track}
