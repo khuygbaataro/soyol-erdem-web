@@ -4142,7 +4142,7 @@ interface HsAdmissionBundle {
 export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
   MN: {
     heroTitle: 'ЭЛСЭЛТ',
-    heroSubtitle: 'Соёл Эрдэм Ерөнхий боловсролын ахлах сургуулийн 10-р ангид элсэх журам, шаардлага.',
+    heroSubtitle: 'Соёл Эрдэм Ерөнхий боловсролын сургуулийн 1–12-р ангид элсэх журам, шаардлага.',
     breadcrumbUniversity: 'Дээд сургууль',
     breadcrumbHs: 'Ахлах сургууль',
     breadcrumbThis: 'Элсэлт',
@@ -4152,7 +4152,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
       'Соёл Эрдэм Ахлах Сургууль нь 10–11–12 ангид Япон хэл, соёл болон мэдээллийн технологид төрөлжсөн чанартай ерөнхий боловсрол олгодог. Эх сургууль СЭДС-ийн 30 жилийн япон судлалын баялаг туршлагаар суурилсан, япон 30+ их сургуультай хамтын ажиллагаатай сүлжээтэй.',
     infoBox: {
       enrolLabel: 'Элсэлт хүлээж авах',
-      enrolValue: '10-р анги',
+      enrolValue: '1–12-р анги',
       yearLabel: 'Хичээлийн жил',
       yearValue: '2026-2027',
       formatLabel: 'Сургалтын хэлбэр',
@@ -4162,7 +4162,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
     },
     applyCardTitle: 'Цахимаар бүртгүүлэх',
     applyCardBody:
-      '10-р ангид элсэх хүсэлтээ онлайн формоор илгээнэ үү. Хариуцсан ажилтан тантай 1-2 өдрийн дотор холбогдоно.',
+      '1–12-р ангид элсэх хүсэлтээ онлайн формоор илгээнэ үү. Хариуцсан ажилтан тантай 1–2 өдрийн дотор холбогдоно.',
     applyCardCta: 'Цахим маягтыг бөглөх',
     directContactEyebrow: 'Лавлах / шууд холбоо барих',
     phoneLabel: 'Утас',
@@ -4219,7 +4219,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
     tuitionContactCta: 'Холбоо барих',
     formSectionTitle: 'ЦАХИМААР БҮРТГҮҮЛЭХ',
     formSectionSubtitle:
-      '10-р ангид элсэх сурагчдад зориулсан урьдчилсан бүртгэлийн форм. Хариуцсан ажилтан тантай 1-2 өдрийн дотор холбогдоно.',
+      '1–12-р ангид элсэх сурагчдад зориулсан урьдчилсан бүртгэлийн форм. Хариуцсан ажилтан тантай 1–2 өдрийн дотор холбогдоно.',
     bannerTitle: 'Соёл Эрдэм Ахлах Сургуульд тавтай морил',
     bannerCta: 'Танилцуулга үзэх',
     bannerSecondary: 'Сургалт',
@@ -4260,7 +4260,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
   },
   EN: {
     heroTitle: 'ADMISSIONS',
-    heroSubtitle: 'How to apply for grade 10 at Soyol Erdem Senior High School — requirements and process.',
+    heroSubtitle: 'How to apply for grades 1–12 at Soyol Erdem School — requirements and process.',
     breadcrumbUniversity: 'University',
     breadcrumbHs: 'High school',
     breadcrumbThis: 'Admissions',
@@ -4270,7 +4270,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
       'Soyol Erdem Senior High School delivers quality secondary education specialised in Japanese language, culture and information technology across grades 10, 11 and 12. We are built on our parent institution\'s 30-year Japanese-studies tradition and on its network of cooperation with 30+ Japanese universities.',
     infoBox: {
       enrolLabel: 'Intake',
-      enrolValue: 'Grade 10',
+      enrolValue: 'Grades 1–12',
       yearLabel: 'Academic year',
       yearValue: '2026–2027',
       formatLabel: 'Format',
@@ -4280,7 +4280,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
     },
     applyCardTitle: 'Apply online',
     applyCardBody:
-      'Submit your grade 10 application through the online form. Our admissions officer will be in touch within 1–2 working days.',
+      'Submit your grades 1–12 application through the online form. Our admissions officer will be in touch within 1–2 working days.',
     applyCardCta: 'Fill in the online form',
     directContactEyebrow: 'Direct contact / enquiries',
     phoneLabel: 'Phone',
@@ -4337,7 +4337,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
     tuitionContactCta: 'Contact us',
     formSectionTitle: 'APPLY ONLINE',
     formSectionSubtitle:
-      'Pre-registration form for prospective grade 10 students. Our admissions officer will be in touch within 1–2 working days.',
+      'Pre-registration form for prospective grades 1–12 students. Our admissions officer will be in touch within 1–2 working days.',
     bannerTitle: 'Welcome to Soyol Erdem Senior High School',
     bannerCta: 'About us',
     bannerSecondary: 'Programmes',
@@ -4378,7 +4378,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
   },
   JP: {
     heroTitle: '入学案内',
-    heroSubtitle: 'ソヨル・エルデム高等学校10年生（高校1年生相当）への出願手順と条件。',
+    heroSubtitle: 'ソヨル・エルデム学校1〜12年生への出願手順と条件。',
     breadcrumbUniversity: '大学',
     breadcrumbHs: '高等学校',
     breadcrumbThis: '入学案内',
@@ -4388,7 +4388,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
       'ソヨル・エルデム高等学校は、10〜11〜12年生において日本語・日本文化・情報技術に特化した質の高い中等教育を提供しています。母体ソヨル・エルデム大学の30年にわたる日本研究の蓄積と、日本の30以上の大学との連携ネットワークに支えられています。',
     infoBox: {
       enrolLabel: '募集学年',
-      enrolValue: '10年生',
+      enrolValue: '1〜12年生',
       yearLabel: '学年度',
       yearValue: '2026〜2027',
       formatLabel: '形態',
@@ -4398,7 +4398,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
     },
     applyCardTitle: 'オンライン出願',
     applyCardBody:
-      '10年生への出願はオンラインフォームからお願いします。担当者より1〜2営業日以内にご連絡いたします。',
+      '1〜12年生への出願はオンラインフォームからお願いします。担当者より1〜2営業日以内にご連絡いたします。',
     applyCardCta: 'オンラインフォームを開く',
     directContactEyebrow: 'お問い合わせ / 直接連絡',
     phoneLabel: '電話',
@@ -4455,7 +4455,7 @@ export const HS_ADMISSION_CONTENT: Record<Language, HsAdmissionBundle> = {
     tuitionContactCta: 'お問い合わせ',
     formSectionTitle: 'オンライン出願',
     formSectionSubtitle:
-      '10年生志望者のための仮登録フォーム。担当者より1〜2営業日以内にご連絡いたします。',
+      '1〜12年生志望者のための仮登録フォーム。担当者より1〜2営業日以内にご連絡いたします。',
     bannerTitle: 'ソヨル・エルデム高等学校へようこそ',
     bannerCta: '学校紹介',
     bannerSecondary: 'プログラム',

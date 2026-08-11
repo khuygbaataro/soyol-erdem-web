@@ -1,14 +1,30 @@
 'use client';
 
 import { useState } from 'react';
-import { Send } from 'lucide-react';
+import { CheckCircle2, Send } from 'lucide-react';
 import { Button } from './Button';
 
 const inputClasses =
-  'w-full rounded-button border border-border-light bg-white px-4 py-3 text-sm text-text-heading placeholder-text-muted transition-colors focus:border-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-900/10';
+  'w-full rounded-lg border border-border-medium bg-white px-4 py-3.5 text-base text-text-heading transition-colors focus:border-navy-900 focus:outline-none focus:ring-4 focus:ring-navy-900/10 sm:text-sm';
 
-const labelClasses =
-  'mb-1.5 block text-xs font-semibold uppercase tracking-wider text-text-muted';
+const labelClasses = 'mb-2 block text-sm font-semibold text-navy-900';
+
+/** Шаардлагатай талбарын од. Орчуулгын мөр дэх ' *'-ыг тусад нь рендерлэнэ. */
+function FieldLabel({
+  htmlFor,
+  text,
+}: {
+  htmlFor: string;
+  text: string;
+}) {
+  const required = /\s*\*$/.test(text);
+  return (
+    <label htmlFor={htmlFor} className={labelClasses}>
+      {text.replace(/\s*\*$/, '')}
+      {required && <span className="ml-0.5 text-gold-500">*</span>}
+    </label>
+  );
+}
 
 export interface HighSchoolAdmissionFormLabels {
   studentSection: string;
@@ -52,26 +68,26 @@ export interface HighSchoolAdmissionFormLabels {
 
 const DEFAULT_LABELS: HighSchoolAdmissionFormLabels = {
   studentSection: 'Сурагчийн мэдээлэл',
-  studentNameLabel: 'Сурагчийн овог нэр *',
-  studentNamePh: 'С. Сурагчийн нэр',
-  gradeLabel: 'Хэддүгээр ангид орох вэ? *',
-  gradePh: 'Анги сонгоно уу',
-  guardianSection: 'Эцэг эх / Асран хамгаалагчийн мэдээлэл',
-  guardianNameLabel: 'Овог нэр *',
-  guardianNamePh: 'Б. Эцэг эх',
-  phoneLabel: 'Утас *',
-  phonePh: '9999-9999',
-  emailLabel: 'И-мэйл',
-  emailPh: 'email@example.com',
-  submitCta: 'Хүсэлт илгээх',
+  studentNameLabel: 'Сурагчийн овог, нэр *',
+  studentNamePh: '',
+  gradeLabel: 'Хэддүгээр ангид элсэх вэ? *',
+  gradePh: 'Анги сонгох',
+  guardianSection: 'Эцэг эх / Асран хамгаалагч',
+  guardianNameLabel: 'Эцэг эхийн овог, нэр *',
+  guardianNamePh: '',
+  phoneLabel: 'Холбоо барих утас *',
+  phonePh: '',
+  emailLabel: 'И-мэйл хаяг',
+  emailPh: '',
+  submitCta: 'Бүртгүүлэх',
   errorSubmit: 'Илгээхэд алдаа гарлаа. Дахин оролдоно уу.',
   errorNetwork: 'Сүлжээний алдаа. Холболтоо шалгана уу.',
-  successTitle: 'Таны бүртгэлийн хүсэлт амжилттай илгээгдлээ.',
+  successTitle: 'Бүртгэл амжилттай илгээгдлээ',
   successBody:
-    'Хариуцсан ажилтан ажлын 1-2 өдрийн дотор танд утсаар эсвэл и-мэйлээр хариу өгнө.',
-  successAgain: 'Дахин бүртгэх',
+    'Элсэлт хариуцсан ажилтан ажлын 1–2 өдрийн дотор тантай утсаар холбогдоно. Баярлалаа!',
+  successAgain: 'Дахин бүртгүүлэх',
   requiredNote:
-    '* тэмдэгтэй талбарууд заавал бөглөгдөнө. Таны мэдээлэл зөвхөн элсэлтийн зориулалтаар ашиглагдана.',
+    'Таны мэдээлэл зөвхөн элсэлтийн зориулалтаар ашиглагдана.',
 };
 
 /** 1–12-р анги. */
@@ -127,15 +143,20 @@ export function HighSchoolAdmissionForm({
 
   if (submitted) {
     return (
-      <div className="rounded-card border border-gold-500/40 bg-gold-500/5 p-8 text-center">
-        <p className="text-base font-semibold text-navy-900">
+      <div className="rounded-card border border-emerald-200 bg-emerald-50 p-6 text-center sm:p-8">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+          <CheckCircle2 className="h-8 w-8 text-emerald-600" />
+        </span>
+        <p className="mt-4 text-lg font-bold text-navy-900">
           {labels.successTitle}
         </p>
-        <p className="mt-2 text-sm text-text-body">{labels.successBody}</p>
+        <p className="mt-2 text-sm leading-relaxed text-text-body">
+          {labels.successBody}
+        </p>
         <button
           type="button"
           onClick={() => setSubmitted(false)}
-          className="mt-4 text-sm font-semibold text-navy-900 underline"
+          className="mt-5 text-sm font-semibold text-navy-900 underline underline-offset-4 hover:text-gold-500"
         >
           {labels.successAgain}
         </button>
@@ -144,17 +165,18 @@ export function HighSchoolAdmissionForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-6">
       {/* Section 1 — Student */}
-      <fieldset className="space-y-4">
-        <legend className="text-[11px] font-bold uppercase tracking-widest text-gold-500">
+      <fieldset>
+        <legend className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold-500">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gold-500/15 text-[11px] font-bold text-gold-500">
+            1
+          </span>
           {labels.studentSection}
         </legend>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2">
           <div>
-            <label htmlFor="hs-studentName" className={labelClasses}>
-              {labels.studentNameLabel}
-            </label>
+            <FieldLabel htmlFor="hs-studentName" text={labels.studentNameLabel} />
             <input
               id="hs-studentName"
               name="studentName"
@@ -162,13 +184,13 @@ export function HighSchoolAdmissionForm({
               required
               autoComplete="name"
               className={inputClasses}
-              placeholder={labels.studentNamePh}
             />
           </div>
           <div>
-            <label htmlFor="hs-enteringGrade" className={labelClasses}>
-              {labels.gradeLabel ?? DEFAULT_LABELS.gradeLabel}
-            </label>
+            <FieldLabel
+              htmlFor="hs-enteringGrade"
+              text={labels.gradeLabel ?? DEFAULT_LABELS.gradeLabel!}
+            />
             <select
               id="hs-enteringGrade"
               name="enteringGrade"
@@ -190,56 +212,52 @@ export function HighSchoolAdmissionForm({
       </fieldset>
 
       {/* Section 2 — Parent / guardian */}
-      <fieldset className="space-y-4 border-t border-border-light pt-5">
-        <legend className="text-[11px] font-bold uppercase tracking-widest text-gold-500">
+      <fieldset className="border-t border-border-light pt-6">
+        <legend className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold-500">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gold-500/15 text-[11px] font-bold text-gold-500">
+            2
+          </span>
           {labels.guardianSection}
         </legend>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2">
           <div>
-            <label htmlFor="hs-guardianName" className={labelClasses}>
-              {labels.guardianNameLabel}
-            </label>
+            <FieldLabel htmlFor="hs-guardianName" text={labels.guardianNameLabel} />
             <input
               id="hs-guardianName"
               name="guardianName"
               type="text"
               required
               className={inputClasses}
-              placeholder={labels.guardianNamePh}
             />
           </div>
           <div>
-            <label htmlFor="hs-phone" className={labelClasses}>
-              {labels.phoneLabel}
-            </label>
+            <FieldLabel htmlFor="hs-phone" text={labels.phoneLabel} />
             <input
               id="hs-phone"
               name="phone"
               type="tel"
+              inputMode="tel"
               required
               autoComplete="tel"
               className={inputClasses}
-              placeholder={labels.phonePh}
             />
           </div>
-          <div className="md:col-span-2">
-            <label htmlFor="hs-email" className={labelClasses}>
-              {labels.emailLabel}
-            </label>
+          <div className="sm:col-span-2">
+            <FieldLabel htmlFor="hs-email" text={labels.emailLabel} />
             <input
               id="hs-email"
               name="email"
               type="email"
+              inputMode="email"
               autoComplete="email"
               className={inputClasses}
-              placeholder={labels.emailPh}
             />
           </div>
         </div>
       </fieldset>
 
       {error && (
-        <p className="rounded-button border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           {error}
         </p>
       )}
@@ -255,7 +273,9 @@ export function HighSchoolAdmissionForm({
         {labels.submitCta}
       </Button>
 
-      <p className="text-center text-xs text-text-muted">{labels.requiredNote}</p>
+      <p className="text-center text-xs leading-relaxed text-text-muted">
+        {labels.requiredNote}
+      </p>
     </form>
   );
 }

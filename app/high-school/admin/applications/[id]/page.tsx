@@ -92,7 +92,7 @@ export default async function HighSchoolApplicationDetailPage({
             )}
             <div className="min-w-0 flex-1">
               <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
-                10-р ангид элсэх хүсэлт
+                Элсэлтийн хүсэлт
               </p>
               <h2 className="mt-0.5 text-lg font-bold leading-tight text-navy-900">
                 {item.studentName}
