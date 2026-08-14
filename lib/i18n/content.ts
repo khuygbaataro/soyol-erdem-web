@@ -4959,6 +4959,13 @@ interface RegisterBundle {
   examSubjectPh: string;
   examScorePh: string;
   addSubject: string;
+  /** "ЭЕШ өгөөгүй" сонголт — идэвхжвэл оноо, хавсралт хоёул нуугдана. */
+  noExamToggle?: string;
+  noExamNote?: string;
+  examUploadLabel?: string;
+  examUploadHint?: string;
+  examUploadCta?: string;
+  examUploadRemove?: string;
   phonesIntro: string;
   phonePh: string;
   addPhone: string;
@@ -5034,6 +5041,13 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     examSubjectPh: 'Хичээл (Монгол хэл, Математик, …)',
     examScorePh: 'Оноо',
     addSubject: 'Хичээл нэмэх',
+    noExamToggle: 'ЭЕШ өгөөгүй',
+    noExamNote:
+      'ЭЕШ-ийн оноо шаардахгүй. Та бүртгэлээ үргэлжлүүлж болно — элсэлтийн ажилтан тантай холбогдож зөвлөнө.',
+    examUploadLabel: 'ЭЕШ-ийн үнэлгээний хуудас (заавал биш)',
+    examUploadHint: 'Зураг эсвэл PDF · PDF бол 3 MB хүртэл',
+    examUploadCta: 'Файл сонгох',
+    examUploadRemove: 'Файл устгах',
     phonesIntro: 'Дээд тал нь 3 утасны дугаар оруулна уу.',
     phonePh: '9911-2233',
     addPhone: 'Утас нэмэх',
@@ -5104,6 +5118,13 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     firstNamePh: 'e.g. Temuulen',
     educationLevelLabel: 'Education level',
     examScoresIntro: 'Enter up to 3 subjects with their scores.',
+    noExamToggle: 'I have not taken the entrance exam',
+    noExamNote:
+      'No exam scores required. You can continue — our admissions officer will contact you with guidance.',
+    examUploadLabel: 'Exam result sheet (optional)',
+    examUploadHint: 'Image or PDF · PDF up to 3 MB',
+    examUploadCta: 'Choose file',
+    examUploadRemove: 'Remove file',
     examSubjectPh: 'Subject (Mongolian, Mathematics, …)',
     examScorePh: 'Score',
     addSubject: 'Add subject',
@@ -5177,6 +5198,13 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     firstNamePh: '例：テムレン',
     educationLevelLabel: '学歴レベル',
     examScoresIntro: '最大3科目まで成績をご入力ください。',
+    noExamToggle: '入学試験を受けていません',
+    noExamNote:
+      '試験成績は不要です。そのままお進みください。担当者よりご連絡いたします。',
+    examUploadLabel: '成績証明書（任意）',
+    examUploadHint: '画像またはPDF・PDFは3MBまで',
+    examUploadCta: 'ファイルを選択',
+    examUploadRemove: 'ファイルを削除',
     examSubjectPh: '科目（モンゴル語、数学、…）',
     examScorePh: '点数',
     addSubject: '科目を追加',

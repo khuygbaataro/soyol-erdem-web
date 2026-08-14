@@ -1,5 +1,13 @@
 import Link from 'next/link';
-import { AlertTriangle, Award, Eye, GraduationCap, Inbox, Phone } from 'lucide-react';
+import {
+  AlertTriangle,
+  Award,
+  Eye,
+  GraduationCap,
+  Inbox,
+  Paperclip,
+  Phone,
+} from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { DataTable, type Column } from '@/components/admin/DataTable';
 import { Badge } from '@/components/ui/Badge';
@@ -80,6 +88,10 @@ type Anket = {
   passedThreshold: boolean;
   /** Hover-т харуулах бүх оноо — "Математик: 427 · Физик: 485". */
   examSummary: string;
+  /** Элсэгч "ЭЕШ өгөөгүй" гэж сонгосон. */
+  noExam: boolean;
+  /** Хавсаргасан ЭЕШ-ийн үнэлгээний хуудасны холбоос. */
+  examFileUrl: string | null;
 };
 
 async function load(): Promise<Anket[]> {
@@ -130,6 +142,9 @@ async function load(): Promise<Anket[]> {
       highScoreCount,
       passedThreshold: highScoreCount >= PASS_SUBJECTS,
       examSummary: scores.map((s) => `${s.subject}: ${s.score}`).join(' · '),
+      noExam: /ЭЕШ өгөөгүй/.test(r.message),
+      examFileUrl:
+        r.message.match(/Үнэлгээний хуудас:\s*(\S+)/)?.[1]?.trim() ?? null,
     };
   });
 
@@ -196,22 +211,43 @@ export default async function AdminAdmissionsPage({
             {a.name}
           </Link>
           <p className="text-xs text-text-muted">{a.email}</p>
-          {a.examSummary && (
-            <span
-              title={`ЭЕШ — ${a.examSummary}`}
-              className={
-                'mt-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ' +
-                (a.passedThreshold
-                  ? 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-300'
-                  : 'bg-cream text-text-muted ring-1 ring-border-light')
-              }
-            >
-              <Award className="h-3 w-3" />
-              {a.passedThreshold
-                ? `Босго давсан (${a.highScoreCount})`
-                : 'Босго хүрээгүй'}
-            </span>
-          )}
+          <div className="mt-1 flex flex-wrap items-center gap-1">
+            {a.noExam ? (
+              <span className="inline-flex items-center gap-1 rounded-full bg-cream px-2 py-0.5 text-[10px] font-bold text-text-muted ring-1 ring-border-light">
+                <Award className="h-3 w-3" />
+                ЭЕШ өгөөгүй
+              </span>
+            ) : (
+              a.examSummary && (
+                <span
+                  title={`ЭЕШ — ${a.examSummary}`}
+                  className={
+                    'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ' +
+                    (a.passedThreshold
+                      ? 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-300'
+                      : 'bg-cream text-text-muted ring-1 ring-border-light')
+                  }
+                >
+                  <Award className="h-3 w-3" />
+                  {a.passedThreshold
+                    ? `Босго давсан (${a.highScoreCount})`
+                    : 'Босго хүрээгүй'}
+                </span>
+              )
+            )}
+            {a.examFileUrl && (
+              <a
+                href={a.examFileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="ЭЕШ-ийн үнэлгээний хуудсыг нээх"
+                className="inline-flex items-center gap-1 rounded-full bg-navy-900/5 px-2 py-0.5 text-[10px] font-bold text-navy-900 ring-1 ring-navy-900/20 hover:bg-navy-900/10"
+              >
+                <Paperclip className="h-3 w-3" />
+                Үнэлгээ
+              </a>
+            )}
+          </div>
         </div>
       ),
     },

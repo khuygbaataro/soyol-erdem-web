@@ -150,6 +150,11 @@ export const admissionApplicationSchema = z.object({
   lastName: z.string().min(1, 'Овог оруулна уу').max(80),
   firstName: z.string().min(1, 'Нэр оруулна уу').max(80),
   education: z.string().min(1, 'Боловсролын түвшин сонгоно уу'),
+  /**
+   * ЭЕШ өгөөгүй гэж сонгосон эсэх. `true` үед оноо, үнэлгээний хуудас
+   * хоёулаа шаардагдахгүй (хоосон массив зөвшөөрөгдөнө).
+   */
+  noExam: z.boolean().optional(),
   examScores: z
     .array(
       z.object({
@@ -161,14 +166,32 @@ export const admissionApplicationSchema = z.object({
           .max(10),
       }),
     )
-    .min(1, 'Дор хаяж нэг хичээл оруулна уу')
     .max(3),
+  /** ЭЕШ-ийн үнэлгээний хуудас — зураг/PDF-ийг base64 data-URL хэлбэрээр. */
+  examFile: z
+    .object({
+      name: z.string().max(200),
+      dataUrl: z
+        .string()
+        .regex(
+          /^data:(image\/(png|jpeg|webp)|application\/pdf);base64,/,
+          'Зөвхөн зураг эсвэл PDF хавсаргана уу',
+        )
+        .max(7_000_000, 'Файл хэт том байна'),
+    })
+    .optional(),
   phones: z
     .array(z.string().min(6, 'Утасны дугаар хүчин төгөлдөр биш').max(20))
     .min(1, 'Утасны дугаар оруулна уу')
     .max(3),
   email: z.string().email('И-мэйл хаяг хүчин төгөлдөр биш'),
-});
+})
+  // ЭЕШ өгсөн гэж үзэж байгаа бол дор хаяж нэг хичээлийн оноо шаардана.
+  // "ЭЕШ өгөөгүй" сонгосон үед энэ шалгалт алгасагдана.
+  .refine((v) => v.noExam === true || v.examScores.length >= 1, {
+    path: ['examScores'],
+    message: 'Дор хаяж нэг хичээлийн оноо оруулна уу',
+  });
 export type AdmissionApplicationInput = z.infer<typeof admissionApplicationSchema>;
 
 /**

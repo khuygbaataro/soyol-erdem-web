@@ -1,13 +1,15 @@
 'use client';
 
-import { useMemo, useState, useTransition } from 'react';
+import { useMemo, useRef, useState, useTransition } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
   Check,
+  FileText,
   Plus,
   Send,
   Trash2,
+  Upload,
 } from 'lucide-react';
 import { toast, Toaster } from 'sonner';
 import { Button } from '@/components/ui/Button';
@@ -45,6 +47,12 @@ interface RegisterFormLabels {
   examSubjectPh: string;
   examScorePh: string;
   addSubject: string;
+  noExamToggle?: string;
+  noExamNote?: string;
+  examUploadLabel?: string;
+  examUploadHint?: string;
+  examUploadCta?: string;
+  examUploadRemove?: string;
   phonesIntro: string;
   phonePh: string;
   addPhone: string;
@@ -85,6 +93,13 @@ interface Props {
 type Citizenship = 'MN' | 'FOREIGN';
 type Degree = 'BACHELOR' | 'MASTER';
 
+interface ExamFile {
+  name: string;
+  dataUrl: string;
+  /** Зураг бол урьдчилан харуулахад ашиглана. */
+  isImage: boolean;
+}
+
 interface FormState {
   citizenship: Citizenship | '';
   degree: Degree | '';
@@ -92,13 +107,63 @@ interface FormState {
   lastName: string;
   firstName: string;
   education: string;
+  /** ЭЕШ өгөөгүй — оноо, хавсралт хоёулаа шаардагдахгүй болно. */
+  noExam: boolean;
   examScores: { subject: string; score: string }[];
+  examFile: ExamFile | null;
   phones: string[];
   email: string;
 }
 
 const inputClasses =
   'w-full rounded-button border border-border-light bg-white px-4 py-3 text-sm text-text-heading placeholder-text-muted transition-colors focus:border-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-900/10';
+
+const ACCEPTED_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'application/pdf'];
+/** PDF-ийн хязгаар — base64 болгоход хүсэлтийн биеийн хязгаарт багтах ёстой. */
+const MAX_PDF_BYTES = 3 * 1024 * 1024;
+const MAX_IMAGE_BYTES = 12 * 1024 * 1024;
+/** Зургийг илгээхийн өмнө багасгах хамгийн урт тал. */
+const IMAGE_MAX_EDGE = 1600;
+
+function readAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(String(fr.result));
+    fr.onerror = () => reject(new Error('read failed'));
+    fr.readAsDataURL(file);
+  });
+}
+
+/**
+ * Утаснаас авсан зураг ихэвчлэн 3–8 MB байдаг тул сервер рүү илгээхийн
+ * өмнө canvas дээр багасган JPEG болгож шахна. PDF-ийг хэвээр нь үлдээнэ.
+ */
+async function prepareFile(file: File): Promise<ExamFile> {
+  const raw = await readAsDataUrl(file);
+  if (file.type === 'application/pdf') {
+    return { name: file.name, dataUrl: raw, isImage: false };
+  }
+
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const i = new window.Image();
+    i.onload = () => resolve(i);
+    i.onerror = () => reject(new Error('image decode failed'));
+    i.src = raw;
+  });
+
+  const scale = Math.min(1, IMAGE_MAX_EDGE / Math.max(img.width, img.height));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(img.width * scale);
+  canvas.height = Math.round(img.height * scale);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return { name: file.name, dataUrl: raw, isImage: true };
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  return {
+    name: file.name,
+    dataUrl: canvas.toDataURL('image/jpeg', 0.85),
+    isImage: true,
+  };
+}
 
 /**
  * Eight-step wizard. Each step renders one chunk of the form; "Next"
@@ -112,6 +177,8 @@ export function RegisterFormClient({ programs, labels }: Props) {
   const totalSteps = labels.steps.length;
   const [pending, startTransition] = useTransition();
   const [submitted, setSubmitted] = useState(false);
+  const [fileBusy, setFileBusy] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [data, setData] = useState<FormState>({
     citizenship: '',
     degree: '',
@@ -119,7 +186,9 @@ export function RegisterFormClient({ programs, labels }: Props) {
     lastName: '',
     firstName: '',
     education: '',
+    noExam: false,
     examScores: [{ subject: '', score: '' }],
+    examFile: null,
     phones: [''],
     email: '',
   });
@@ -142,6 +211,32 @@ export function RegisterFormClient({ programs, labels }: Props) {
     setData((d) => ({ ...d, [key]: value }));
   }
 
+  /** Сонгосон файлыг шалгаж, шахаад төлөвт хадгална. */
+  async function pickFile(file: File) {
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      toast.error('Зөвхөн зураг (JPG, PNG) эсвэл PDF хавсаргана уу.');
+      return;
+    }
+    const isPdf = file.type === 'application/pdf';
+    const limit = isPdf ? MAX_PDF_BYTES : MAX_IMAGE_BYTES;
+    if (file.size > limit) {
+      toast.error(
+        isPdf
+          ? 'PDF файл 3 MB-аас бага байх шаардлагатай.'
+          : 'Зураг хэт том байна. Өөр зураг сонгоно уу.',
+      );
+      return;
+    }
+    setFileBusy(true);
+    try {
+      set('examFile', await prepareFile(file));
+    } catch {
+      toast.error('Файлыг уншиж чадсангүй. Дахин оролдоно уу.');
+    } finally {
+      setFileBusy(false);
+    }
+  }
+
   function validateStep(n: number): string | null {
     switch (n) {
       case 1:
@@ -157,6 +252,8 @@ export function RegisterFormClient({ programs, labels }: Props) {
       case 5:
         return data.education ? null : labels.validation.education;
       case 6: {
+        // "ЭЕШ өгөөгүй" сонгосон бол энэ алхмын шаардлага бүхэлдээ хасагдана.
+        if (data.noExam) return null;
         const valid = data.examScores.filter(
           (s) => s.subject.trim() && s.score.trim(),
         );
@@ -209,12 +306,20 @@ export function RegisterFormClient({ programs, labels }: Props) {
         lastName: data.lastName.trim(),
         firstName: data.firstName.trim(),
         education: data.education,
-        examScores: data.examScores
-          .filter((s) => s.subject.trim() && s.score.trim())
-          .map((s) => ({
-            subject: s.subject.trim(),
-            score: s.score.trim(),
-          })),
+        noExam: data.noExam,
+        // ЭЕШ өгөөгүй бол оноо, хавсралт хоёуланг нь илгээхгүй.
+        examScores: data.noExam
+          ? []
+          : data.examScores
+              .filter((s) => s.subject.trim() && s.score.trim())
+              .map((s) => ({
+                subject: s.subject.trim(),
+                score: s.score.trim(),
+              })),
+        examFile:
+          !data.noExam && data.examFile
+            ? { name: data.examFile.name, dataUrl: data.examFile.dataUrl }
+            : undefined,
         phones: data.phones.map((p) => p.trim()).filter(Boolean),
         email: data.email.trim(),
       };
@@ -441,6 +546,35 @@ export function RegisterFormClient({ programs, labels }: Props) {
 
           {step === 6 && (
             <div>
+              {/* ЭЕШ өгөөгүй сонголт — идэвхжвэл доорх шаардлагууд бүгд хасагдана */}
+              <label
+                className={cn(
+                  'mb-5 flex cursor-pointer items-start gap-3 rounded-card border-2 p-4 transition-colors',
+                  data.noExam
+                    ? 'border-navy-900 bg-navy-900/5'
+                    : 'border-border-light bg-white hover:border-navy-900/40',
+                )}
+              >
+                <input
+                  type="checkbox"
+                  checked={data.noExam}
+                  onChange={(e) => set('noExam', e.target.checked)}
+                  className="mt-0.5 h-5 w-5 shrink-0 rounded border-border-medium text-navy-900 focus:ring-navy-900"
+                />
+                <span className="min-w-0">
+                  <span className="block text-sm font-semibold text-navy-900">
+                    {labels.noExamToggle ?? 'ЭЕШ өгөөгүй'}
+                  </span>
+                  {data.noExam && labels.noExamNote && (
+                    <span className="mt-1 block text-xs leading-relaxed text-text-body">
+                      {labels.noExamNote}
+                    </span>
+                  )}
+                </span>
+              </label>
+
+              {!data.noExam && (
+                <>
               <p className="mb-3 text-sm text-text-body">
                 {labels.examScoresIntro}
               </p>
@@ -503,6 +637,70 @@ export function RegisterFormClient({ programs, labels }: Props) {
                   </button>
                 )}
               </div>
+
+              {/* ЭЕШ-ийн үнэлгээний хуудас — зураг эсвэл PDF */}
+              <div className="mt-6 border-t border-border-light pt-5">
+                <p className="text-sm font-semibold text-navy-900">
+                  {labels.examUploadLabel ?? 'ЭЕШ-ийн үнэлгээний хуудас (заавал биш)'}
+                </p>
+                <p className="mt-0.5 text-xs text-text-muted">
+                  {labels.examUploadHint ?? 'Зураг эсвэл PDF · 3 MB хүртэл'}
+                </p>
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,application/pdf"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    e.target.value = '';
+                    if (f) void pickFile(f);
+                  }}
+                  className="hidden"
+                />
+
+                {data.examFile ? (
+                  <div className="mt-3 flex items-center gap-3 rounded-button border border-border-light bg-cream-soft p-3">
+                    {data.examFile.isImage ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={data.examFile.dataUrl}
+                        alt=""
+                        className="h-14 w-14 shrink-0 rounded object-cover"
+                      />
+                    ) : (
+                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded bg-white text-navy-900">
+                        <FileText className="h-6 w-6" />
+                      </span>
+                    )}
+                    <span className="min-w-0 flex-1 truncate text-sm text-text-body">
+                      {data.examFile.name}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => set('examFile', null)}
+                      className="shrink-0 rounded-button p-2 text-text-muted hover:bg-white hover:text-red-600"
+                      aria-label={labels.examUploadRemove ?? 'Файл устгах'}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={fileBusy}
+                    className="mt-3 inline-flex items-center gap-2 rounded-button border border-border-medium bg-white px-4 py-2.5 text-sm font-semibold text-navy-900 transition-colors hover:border-navy-900 disabled:opacity-50"
+                  >
+                    <Upload className="h-4 w-4" />
+                    {fileBusy
+                      ? '…'
+                      : (labels.examUploadCta ?? 'Файл сонгох')}
+                  </button>
+                )}
+              </div>
+                </>
+              )}
             </div>
           )}
 
