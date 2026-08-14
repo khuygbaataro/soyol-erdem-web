@@ -191,6 +191,11 @@ export const admissionApplicationSchema = z.object({
   .refine((v) => v.noExam === true || v.examScores.length >= 1, {
     path: ['examScores'],
     message: 'Дор хаяж нэг хичээлийн оноо оруулна уу',
+  })
+  // Мөн үнэлгээний хуудсыг заавал хавсаргана.
+  .refine((v) => v.noExam === true || Boolean(v.examFile), {
+    path: ['examFile'],
+    message: 'ЭЕШ-ийн үнэлгээний хуудсаа хавсаргана уу',
   });
 export type AdmissionApplicationInput = z.infer<typeof admissionApplicationSchema>;
 

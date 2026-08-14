@@ -4983,6 +4983,8 @@ interface RegisterBundle {
     firstName: string;
     education: string;
     examNone: string;
+    /** ЭЕШ өгсөн гэсэн үед үнэлгээний хуудас заавал хавсаргана. */
+    examFile?: string;
     /** Template with {subject} placeholder. */
     examNumber: string;
     phone: string;
@@ -5044,7 +5046,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     noExamToggle: 'ЭЕШ өгөөгүй',
     noExamNote:
       'ЭЕШ-ийн оноо шаардахгүй. Та бүртгэлээ үргэлжлүүлж болно — элсэлтийн ажилтан тантай холбогдож зөвлөнө.',
-    examUploadLabel: 'ЭЕШ-ийн үнэлгээний хуудас (заавал биш)',
+    examUploadLabel: 'ЭЕШ-ийн үнэлгээний хуудас (заавал)',
     examUploadHint: 'Зураг эсвэл PDF · PDF бол 3 MB хүртэл',
     examUploadCta: 'Файл сонгох',
     examUploadRemove: 'Файл устгах',
@@ -5065,6 +5067,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       firstName: 'Нэр оруулна уу.',
       education: 'Боловсролын түвшин сонгоно уу.',
       examNone: 'Дор хаяж нэг хичээлийн оноо оруулна уу.',
+      examFile: 'ЭЕШ-ийн үнэлгээний хуудсаа хавсаргана уу.',
       examNumber: '"{subject}" — оноо тоогоор бичигдсэн байх ёстой.',
       phone: 'Дор хаяж нэг утасны дугаар оруулна уу.',
       email: 'И-мэйл хаяг хүчин төгөлдөр биш байна.',
@@ -5121,7 +5124,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     noExamToggle: 'I have not taken the entrance exam',
     noExamNote:
       'No exam scores required. You can continue — our admissions officer will contact you with guidance.',
-    examUploadLabel: 'Exam result sheet (optional)',
+    examUploadLabel: 'Exam result sheet (required)',
     examUploadHint: 'Image or PDF · PDF up to 3 MB',
     examUploadCta: 'Choose file',
     examUploadRemove: 'Remove file',
@@ -5145,6 +5148,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       firstName: 'Please enter your first name.',
       education: 'Please select your education level.',
       examNone: 'Please enter at least one subject and score.',
+      examFile: 'Please attach your exam result sheet.',
       examNumber: '"{subject}" — the score must be a number.',
       phone: 'Please enter at least one phone number.',
       email: 'The email address is not valid.',
@@ -5201,7 +5205,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     noExamToggle: '入学試験を受けていません',
     noExamNote:
       '試験成績は不要です。そのままお進みください。担当者よりご連絡いたします。',
-    examUploadLabel: '成績証明書（任意）',
+    examUploadLabel: '成績証明書（必須）',
     examUploadHint: '画像またはPDF・PDFは3MBまで',
     examUploadCta: 'ファイルを選択',
     examUploadRemove: 'ファイルを削除',
@@ -5225,6 +5229,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       firstName: '名をご入力ください。',
       education: '学歴レベルを選択してください。',
       examNone: '少なくとも1科目とその点数を入力してください。',
+      examFile: '成績証明書を添付してください。',
       examNumber: '「{subject}」 ― 点数は数値でご入力ください。',
       phone: '少なくとも1件の電話番号をご入力ください。',
       email: 'メールアドレスの形式が正しくありません。',

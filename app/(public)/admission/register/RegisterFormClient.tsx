@@ -70,6 +70,7 @@ interface RegisterFormLabels {
     firstName: string;
     education: string;
     examNone: string;
+    examFile?: string;
     /** Template with `{subject}` placeholder — same string-not-function
      *  pattern as `stepLabel` above. */
     examNumber: string;
@@ -262,6 +263,12 @@ export function RegisterFormClient({ programs, labels }: Props) {
           if (!/^\d{1,4}([.,]\d{1,2})?$/.test(s.score.trim()))
             return labels.validation.examNumber.replace('{subject}', s.subject);
         }
+        // ЭЕШ өгсөн бол үнэлгээний хуудсыг заавал хавсаргана.
+        if (!data.examFile)
+          return (
+            labels.validation.examFile ??
+            'ЭЕШ-ийн үнэлгээний хуудсаа хавсаргана уу.'
+          );
         return null;
       }
       case 7: {
