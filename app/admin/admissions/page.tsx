@@ -73,6 +73,8 @@ type Anket = {
   createdAt: Date;
   program: string;
   degree: string;
+  /** Элсэгчийн нас (анкетаас задалсан). Хуучин анкетад байхгүй. */
+  age: string;
   sent: boolean;
   called: boolean;
   likelihood: Likelihood;
@@ -132,6 +134,7 @@ async function load(): Promise<Anket[]> {
       createdAt: r.createdAt,
       program: parseField(r.message, 'Хөтөлбөр') || NO_PROGRAM,
       degree: parseField(r.message, 'Зэрэг'),
+      age: parseField(r.message, 'Нас'),
       sent: sentSet.has(r.id),
       called: r.called,
       likelihood,
@@ -261,8 +264,17 @@ export default async function AdminAdmissionsPage({
       ),
     },
     {
-      header: 'Зэрэг',
-      cell: (a) => <span className="text-xs text-text-body">{a.degree || '—'}</span>,
+      header: 'Зэрэг / Нас',
+      cell: (a) => (
+        <div className="flex flex-col gap-0.5">
+          <span className="text-xs text-text-body">{a.degree || '—'}</span>
+          {a.age && (
+            <span className="whitespace-nowrap text-[11px] font-semibold text-navy-900">
+              {a.age} нас
+            </span>
+          )}
+        </div>
+      ),
     },
     {
       header: 'Утас',

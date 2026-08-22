@@ -79,6 +79,7 @@ export async function POST(req: Request) {
     `Хөтөлбөр: ${a.programName}`,
     `Овог: ${a.lastName}`,
     `Нэр: ${a.firstName}`,
+    ...(a.age ? [`Нас: ${a.age}`] : []),
     `Боловсрол: ${a.education}`,
     '',
     'ЭЕШ-ын оноо:',
@@ -103,7 +104,7 @@ export async function POST(req: Request) {
 
   await sendTelegram(
     `📋 Шинэ элсэлтийн анкет\n` +
-    `👤 ${fullName}\n` +
+    `👤 ${fullName}${a.age ? ` · ${a.age} нас` : ""}\n` +
     `🎓 ${DEGREE_LABEL[a.degree] ?? a.degree} — ${a.programName}\n` +
     `🌐 ${CITIZENSHIP_LABEL[a.citizenship] ?? a.citizenship}\n` +
     (a.noExam ? `📝 ${NO_EXAM_TEXT}\n` : '') +

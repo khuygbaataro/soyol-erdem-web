@@ -4954,6 +4954,8 @@ interface RegisterBundle {
   lastNamePh: string;
   firstNameLabel: string;
   firstNamePh: string;
+  ageLabel?: string;
+  agePh?: string;
   educationLevelLabel: string;
   examScoresIntro: string;
   examSubjectPh: string;
@@ -4981,6 +4983,8 @@ interface RegisterBundle {
     program: string;
     lastName: string;
     firstName: string;
+    /** Нас 14–99 хооронд байх шалгалт. */
+    age?: string;
     education: string;
     examNone: string;
     /** ЭЕШ өгсөн гэсэн үед үнэлгээний хуудас заавал хавсаргана. */
@@ -5038,6 +5042,8 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     lastNamePh: 'Жишээ: Доржийн',
     firstNameLabel: 'Нэр',
     firstNamePh: 'Жишээ: Тэмүүлэн',
+    ageLabel: 'Нас',
+    agePh: 'Жишээ: 18',
     educationLevelLabel: 'Боловсролын түвшин',
     examScoresIntro: 'Дээд тал нь 3 хичээлийн оноог оруулна уу.',
     examSubjectPh: 'Хичээл (Монгол хэл, Математик, …)',
@@ -5065,6 +5071,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       program: 'Хөтөлбөр сонгоно уу.',
       lastName: 'Овог оруулна уу.',
       firstName: 'Нэр оруулна уу.',
+      age: 'Насаа зөв оруулна уу (14–99).',
       education: 'Боловсролын түвшин сонгоно уу.',
       examNone: 'Дор хаяж нэг хичээлийн оноо оруулна уу.',
       examFile: 'ЭЕШ-ийн үнэлгээний хуудсаа хавсаргана уу.',
@@ -5119,6 +5126,8 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     lastNamePh: 'e.g. Dorjiin',
     firstNameLabel: 'First name',
     firstNamePh: 'e.g. Temuulen',
+    ageLabel: 'Age',
+    agePh: 'e.g. 18',
     educationLevelLabel: 'Education level',
     examScoresIntro: 'Enter up to 3 subjects with their scores.',
     noExamToggle: 'I have not taken the entrance exam',
@@ -5146,6 +5155,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       program: 'Please choose a programme.',
       lastName: 'Please enter your last name.',
       firstName: 'Please enter your first name.',
+      age: 'Please enter a valid age (14–99).',
       education: 'Please select your education level.',
       examNone: 'Please enter at least one subject and score.',
       examFile: 'Please attach your exam result sheet.',
@@ -5200,6 +5210,8 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     lastNamePh: '例：ドルジ',
     firstNameLabel: '名',
     firstNamePh: '例：テムレン',
+    ageLabel: '年齢',
+    agePh: '例：18',
     educationLevelLabel: '学歴レベル',
     examScoresIntro: '最大3科目まで成績をご入力ください。',
     noExamToggle: '入学試験を受けていません',
@@ -5227,6 +5239,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
       program: 'プログラムを選択してください。',
       lastName: '姓をご入力ください。',
       firstName: '名をご入力ください。',
+      age: '年齢を正しくご入力ください（14〜99）。',
       education: '学歴レベルを選択してください。',
       examNone: '少なくとも1科目とその点数を入力してください。',
       examFile: '成績証明書を添付してください。',

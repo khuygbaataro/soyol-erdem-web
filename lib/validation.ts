@@ -150,6 +150,12 @@ export const admissionApplicationSchema = z.object({
   lastName: z.string().min(1, 'Овог оруулна уу').max(80),
   firstName: z.string().min(1, 'Нэр оруулна уу').max(80),
   education: z.string().min(1, 'Боловсролын түвшин сонгоно уу'),
+  /** Элсэгчийн нас. Хуучин клиент илгээхгүй байж болох тул optional. */
+  age: z
+    .string()
+    .regex(/^\d{1,3}$/, 'Насаа тоогоор бичнэ үү')
+    .optional()
+    .or(z.literal('')),
   /**
    * ЭЕШ өгөөгүй гэж сонгосон эсэх. `true` үед оноо, үнэлгээний хуудас
    * хоёулаа шаардагдахгүй (хоосон массив зөвшөөрөгдөнө).

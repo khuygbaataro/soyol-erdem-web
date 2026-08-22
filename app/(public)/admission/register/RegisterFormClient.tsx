@@ -42,6 +42,8 @@ interface RegisterFormLabels {
   lastNamePh: string;
   firstNameLabel: string;
   firstNamePh: string;
+  ageLabel?: string;
+  agePh?: string;
   educationLevelLabel: string;
   examScoresIntro: string;
   examSubjectPh: string;
@@ -68,6 +70,7 @@ interface RegisterFormLabels {
     program: string;
     lastName: string;
     firstName: string;
+    age?: string;
     education: string;
     examNone: string;
     examFile?: string;
@@ -107,6 +110,8 @@ interface FormState {
   programId: string;
   lastName: string;
   firstName: string;
+  /** Элсэгчийн нас — зөвхөн тоо (жиш. "18"). */
+  age: string;
   education: string;
   /** ЭЕШ өгөөгүй — оноо, хавсралт хоёулаа шаардагдахгүй болно. */
   noExam: boolean;
@@ -186,6 +191,7 @@ export function RegisterFormClient({ programs, labels }: Props) {
     programId: '',
     lastName: '',
     firstName: '',
+    age: '',
     education: '',
     noExam: false,
     examScores: [{ subject: '', score: '' }],
@@ -249,6 +255,11 @@ export function RegisterFormClient({ programs, labels }: Props) {
       case 4:
         if (!data.lastName.trim()) return labels.validation.lastName;
         if (!data.firstName.trim()) return labels.validation.firstName;
+        {
+          const n = Number(data.age.trim());
+          if (!/^\d{1,3}$/.test(data.age.trim()) || n < 14 || n > 99)
+            return labels.validation.age ?? 'Насаа зөв оруулна уу (14–99).';
+        }
         return null;
       case 5:
         return data.education ? null : labels.validation.education;
@@ -312,6 +323,7 @@ export function RegisterFormClient({ programs, labels }: Props) {
         programName: program?.name ?? data.programId,
         lastName: data.lastName.trim(),
         firstName: data.firstName.trim(),
+        age: data.age.trim(),
         education: data.education,
         noExam: data.noExam,
         // ЭЕШ өгөөгүй бол оноо, хавсралт хоёуланг нь илгээхгүй.
@@ -523,6 +535,14 @@ export function RegisterFormClient({ programs, labels }: Props) {
                 value={data.firstName}
                 onChange={(v) => set('firstName', v)}
                 placeholder={labels.firstNamePh}
+              />
+              <Field
+                id="age"
+                label={labels.ageLabel ?? 'Нас'}
+                value={data.age}
+                onChange={(v) => set('age', v.replace(/\D/g, '').slice(0, 3))}
+                placeholder={labels.agePh ?? '18'}
+                inputMode="numeric"
               />
             </div>
           )}
@@ -823,6 +843,7 @@ function Field({
   onChange,
   placeholder,
   type = 'text',
+  inputMode,
 }: {
   id: string;
   label: string;
@@ -830,6 +851,7 @@ function Field({
   onChange: (v: string) => void;
   placeholder?: string;
   type?: string;
+  inputMode?: 'numeric' | 'tel' | 'email' | 'text';
 }) {
   return (
     <div>
@@ -845,6 +867,7 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        inputMode={inputMode}
         className={inputClasses}
       />
     </div>
