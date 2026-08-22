@@ -1,7 +1,6 @@
-import { PageHero } from '@/components/sections/PageHero';
+import { RegisterHero } from './RegisterHero';
 import { Section } from '@/components/layout/Section';
 import { prisma } from '@/lib/prisma';
-import { getSiteContentMap } from '@/lib/site-content';
 import { getServerLocale } from '@/lib/i18n/server';
 import { REGISTER_CONTENT } from '@/lib/i18n/content';
 import { localisedField } from '@/lib/i18n/db';
@@ -25,7 +24,7 @@ export default async function AdmissionRegisterPage() {
   // belongs on /admission. We learned the hard way that piling extra
   // server-side fetches and large inline JSX blocks onto a hot landing
   // page is a great way to surface obscure 500s when one of them fails.
-  const [programs, banners, locale] = await Promise.all([
+  const [programs, locale] = await Promise.all([
     prisma.program
       .findMany({
         where: { active: true },
@@ -39,7 +38,6 @@ export default async function AdmissionRegisterPage() {
         },
       })
       .catch(() => []),
-    getSiteContentMap('banners'),
     getServerLocale(),
   ]);
 
@@ -52,15 +50,12 @@ export default async function AdmissionRegisterPage() {
 
   return (
     <>
-      <PageHero
+      <RegisterHero
         title={c.heroTitle}
         subtitle={c.heroSubtitle}
-        breadcrumb={[
-          { label: c.breadcrumbHome, href: '/' },
-          { label: c.breadcrumbAdmission, href: '/admission' },
-          { label: c.breadcrumbThis },
-        ]}
-        backgroundImage={banners.get('page.admission-register.banner') || undefined}
+        breadcrumbHome={c.breadcrumbHome}
+        breadcrumbAdmission={c.breadcrumbAdmission}
+        breadcrumbThis={c.breadcrumbThis}
       />
 
       <Section background="cream-soft">

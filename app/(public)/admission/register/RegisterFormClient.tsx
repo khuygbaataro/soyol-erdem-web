@@ -219,6 +219,15 @@ export function RegisterFormClient({ programs, labels }: Props) {
     setData((d) => ({ ...d, [key]: value }));
   }
 
+  /** ЭЕШ-ийн алхмын дугаар. */
+  const EXAM_STEP = 6;
+  /**
+   * Аль хэдийн бакалаврын зэрэгтэй элсэгчээс ЭЕШ асуух шаардлагагүй тул
+   * 6-р алхмыг бүхэлд нь алгасна. educationOptions-ийн 2-р индекс нь бүх
+   * хэл дээр "Бакалавр" тул энэ шалгалт хэлнээс хамаарахгүй.
+   */
+  const skipExam = data.education === labels.educationOptions[2];
+
   /** Сонгосон файлыг шалгаж, шахаад төлөвт хадгална. */
   async function pickFile(file: File) {
     if (!ACCEPTED_TYPES.includes(file.type)) {
@@ -265,8 +274,9 @@ export function RegisterFormClient({ programs, labels }: Props) {
       case 5:
         return data.education ? null : labels.validation.education;
       case 6: {
-        // "ЭЕШ өгөөгүй" сонгосон бол энэ алхмын шаардлага бүхэлдээ хасагдана.
-        if (data.noExam) return null;
+        // Бакалаврын зэрэгтэй эсвэл "ЭЕШ өгөөгүй" сонгосон бол энэ
+        // алхмын шаардлага бүхэлдээ хасагдана.
+        if (skipExam || data.noExam) return null;
         const valid = data.examScores.filter(
           (s) => s.subject.trim() && s.score.trim(),
         );
@@ -303,10 +313,19 @@ export function RegisterFormClient({ programs, labels }: Props) {
       toast.error(err);
       return;
     }
-    setStep((s) => Math.min(totalSteps, s + 1));
+    setStep((s) => {
+      const target = s + 1;
+      // Бакалаврын зэрэгтэй бол ЭЕШ-ийн алхмыг үсэрч өнгөрнө
+      const skipped = skipExam && target === EXAM_STEP ? target + 1 : target;
+      return Math.min(totalSteps, skipped);
+    });
   }
   function prev() {
-    setStep((s) => Math.max(1, s - 1));
+    setStep((s) => {
+      const target = s - 1;
+      const skipped = skipExam && target === EXAM_STEP ? target - 1 : target;
+      return Math.max(1, skipped);
+    });
   }
 
   async function submit() {
@@ -326,9 +345,9 @@ export function RegisterFormClient({ programs, labels }: Props) {
         firstName: data.firstName.trim(),
         age: data.age.trim(),
         education: data.education,
-        noExam: data.noExam,
+        noExam: data.noExam || skipExam,
         // ЭЕШ өгөөгүй бол оноо, хавсралт хоёуланг нь илгээхгүй.
-        examScores: data.noExam
+        examScores: data.noExam || skipExam
           ? []
           : data.examScores
               .filter((s) => s.subject.trim() && s.score.trim())
@@ -337,7 +356,7 @@ export function RegisterFormClient({ programs, labels }: Props) {
                 score: s.score.trim(),
               })),
         examFile:
-          !data.noExam && data.examFile
+          !data.noExam && !skipExam && data.examFile
             ? { name: data.examFile.name, dataUrl: data.examFile.dataUrl }
             : undefined,
         phones: data.phones.map((p) => p.trim()).filter(Boolean),
@@ -406,16 +425,16 @@ export function RegisterFormClient({ programs, labels }: Props) {
               <button
                 key={n}
                 type="button"
+                disabled={skipExam && n === EXAM_STEP}
                 onClick={() => {
-                  // Allow jumping back to completed steps; jumping
-                  // forward requires using "Next" so validation runs.
-                  if (n < step) setStep(n);
+                  if (n < step && !(skipExam && n === EXAM_STEP)) setStep(n);
                 }}
                 className={cn(
                   'flex shrink-0 flex-col items-center gap-1 rounded-md px-2 py-1 text-[11px] transition-colors',
                   isActive && 'text-navy-900',
                   !isActive && !isDone && 'text-text-muted',
                   isDone && 'text-emerald-600 hover:text-navy-900',
+                  skipExam && n === EXAM_STEP && 'opacity-40',
                 )}
                 aria-current={isActive ? 'step' : undefined}
               >
@@ -560,7 +579,18 @@ export function RegisterFormClient({ programs, labels }: Props) {
                   <OptionCard
                     key={opt}
                     selected={data.education === opt}
-                    onSelect={() => set('education', opt)}
+                    onSelect={() => {
+                      const isBachelor = opt === labels.educationOptions[2];
+                      setData((d) => ({
+                        ...d,
+                        education: opt,
+                        noExam: isBachelor ? true : d.noExam,
+                        examScores: isBachelor
+                          ? [{ subject: '', score: '' }]
+                          : d.examScores,
+                        examFile: isBachelor ? null : d.examFile,
+                      }));
+                    }}
                     title={opt}
                   />
                 ))}
