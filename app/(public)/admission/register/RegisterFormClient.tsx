@@ -14,6 +14,7 @@ import {
 import { toast, Toaster } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
+import { SuccessPanel } from './SuccessPanel';
 
 interface ProgramOption {
   id: string;
@@ -363,24 +364,15 @@ export function RegisterFormClient({ programs, labels }: Props) {
 
   if (submitted) {
     return (
-      <div className="rounded-card border border-emerald-200 bg-white p-10 text-center shadow-card">
+      <>
         <Toaster richColors position="top-right" />
-        <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-          <Check className="h-7 w-7" />
-        </span>
-        <h2 className="mt-5 text-h3 font-bold text-navy-900">
-          {labels.successTitle}
-        </h2>
-        <p className="mt-3 text-sm text-text-body">{labels.successBody}</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Button href="/admission" variant="outline" size="md">
-            {labels.successAdmissionCta}
-          </Button>
-          <Button href="/" variant="primary" size="md">
-            {labels.successHomeCta}
-          </Button>
-        </div>
-      </div>
+        <SuccessPanel
+          title={labels.successTitle}
+          body={labels.successBody}
+          admissionCta={labels.successAdmissionCta}
+          homeCta={labels.successHomeCta}
+        />
+      </>
     );
   }
 
@@ -394,8 +386,18 @@ export function RegisterFormClient({ programs, labels }: Props) {
       <Toaster richColors position="top-right" />
 
       {/* Stepper */}
-      <div className="border-b border-border-light px-6 py-5">
-        <div className="flex items-center justify-between gap-2 overflow-x-auto">
+      <div className="border-b border-border-light px-4 py-4 sm:px-6 sm:py-5">
+        {/* Гар утсан дээр 8 дугуй багтахгүй тул зөвхөн одоогийн алхмыг харуулна */}
+        <div className="mb-3 flex items-center justify-between gap-3 sm:hidden">
+          <span className="min-w-0 truncate text-sm font-bold text-navy-900">
+            {labels.steps[step - 1]}
+          </span>
+          <span className="shrink-0 rounded-full bg-cream px-2.5 py-1 text-[11px] font-bold text-text-muted">
+            {step} / {totalSteps}
+          </span>
+        </div>
+
+        <div className="hidden items-center justify-between gap-2 overflow-x-auto sm:flex">
           {labels.steps.map((label, idx) => {
             const n = idx + 1;
             const isActive = n === step;
@@ -445,7 +447,7 @@ export function RegisterFormClient({ programs, labels }: Props) {
       </div>
 
       {/* Body */}
-      <div className="px-6 py-7 sm:px-10 sm:py-10">
+      <div className="px-4 py-6 sm:px-10 sm:py-10">
         <p className="text-[11px] font-semibold uppercase tracking-widest text-gold-500">
           {labels.stepLabel
             .replace('{current}', String(step))
@@ -503,19 +505,17 @@ export function RegisterFormClient({ programs, labels }: Props) {
                   {programEmptyParts[1] ?? ''}
                 </p>
               ) : (
-                <select
-                  id="programId"
-                  value={data.programId}
-                  onChange={(e) => set('programId', e.target.value)}
-                  className={inputClasses}
-                >
-                  <option value="">{labels.selectPlaceholder}</option>
+                <div className="grid gap-2.5 sm:grid-cols-2">
                   {visiblePrograms.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name} ({p.degree})
-                    </option>
+                    <OptionCard
+                      key={p.id}
+                      selected={data.programId === p.id}
+                      onSelect={() => set('programId', p.id)}
+                      title={p.name}
+                      subtitle={p.degree}
+                    />
                   ))}
-                </select>
+                </div>
               )}
             </div>
           )}
@@ -555,19 +555,16 @@ export function RegisterFormClient({ programs, labels }: Props) {
               >
                 {labels.educationLevelLabel}
               </label>
-              <select
-                id="education"
-                value={data.education}
-                onChange={(e) => set('education', e.target.value)}
-                className={inputClasses}
-              >
-                <option value="">{labels.selectPlaceholder}</option>
+              <div className="grid gap-2.5 sm:grid-cols-2">
                 {labels.educationOptions.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
+                  <OptionCard
+                    key={opt}
+                    selected={data.education === opt}
+                    onSelect={() => set('education', opt)}
+                    title={opt}
+                  />
                 ))}
-              </select>
+              </div>
             </div>
           )}
 
@@ -607,7 +604,10 @@ export function RegisterFormClient({ programs, labels }: Props) {
               </p>
               <div className="space-y-3">
                 {data.examScores.map((s, idx) => (
-                  <div key={idx} className="grid grid-cols-[1fr_120px_auto] gap-3">
+                  <div
+                    key={idx}
+                    className="grid grid-cols-[1fr_84px_auto] gap-2 sm:grid-cols-[1fr_120px_auto] sm:gap-3"
+                  >
                     <input
                       type="text"
                       value={s.subject}
@@ -792,7 +792,7 @@ export function RegisterFormClient({ programs, labels }: Props) {
         </div>
 
         {/* Nav */}
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-border-light pt-6">
+        <div className="mt-8 grid grid-cols-2 items-center gap-3 border-t border-border-light pt-6 sm:flex sm:flex-wrap sm:justify-between">
           <Button
             type="button"
             onClick={prev}
@@ -801,6 +801,7 @@ export function RegisterFormClient({ programs, labels }: Props) {
             icon={<ArrowLeft className="h-4 w-4" />}
             iconPosition="left"
             disabled={step === 1}
+            className="w-full sm:w-auto"
           >
             {labels.prevBtn}
           </Button>
@@ -812,6 +813,7 @@ export function RegisterFormClient({ programs, labels }: Props) {
               variant="primary"
               size="md"
               icon={<ArrowRight className="h-4 w-4" />}
+              className="w-full sm:w-auto"
             >
               {labels.nextBtn}
             </Button>
@@ -824,6 +826,7 @@ export function RegisterFormClient({ programs, labels }: Props) {
               loading={pending}
               icon={<Send className="h-4 w-4" />}
               iconPosition="left"
+              className="w-full sm:w-auto"
             >
               {labels.submitBtn}
             </Button>
@@ -835,6 +838,58 @@ export function RegisterFormClient({ programs, labels }: Props) {
 }
 
 /* ─── Small reusable bits ────────────────────────────────────────── */
+
+/**
+ * Сонголтын карт — dropdown-ы оронд шууд харагдах, хуруугаар дарахад
+ * тохиромжтой том товч. Хөтөлбөр болон боловсролын түвшинд ашиглана.
+ */
+function OptionCard({
+  selected,
+  onSelect,
+  title,
+  subtitle,
+}: {
+  selected: boolean;
+  onSelect: () => void;
+  title: string;
+  subtitle?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={selected}
+      className={cn(
+        'group flex w-full items-center gap-3 rounded-card border-2 px-4 py-3.5 text-left transition-all',
+        selected
+          ? 'border-navy-900 bg-navy-900 text-white shadow-card'
+          : 'border-border-light bg-white text-navy-900 hover:border-navy-900/50 hover:bg-cream-soft',
+      )}
+    >
+      <span
+        className={cn(
+          'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
+          selected ? 'border-white bg-white' : 'border-border-medium bg-white',
+        )}
+      >
+        {selected && <Check className="h-3 w-3 text-navy-900" strokeWidth={3} />}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-semibold leading-snug">{title}</span>
+        {subtitle && (
+          <span
+            className={cn(
+              'mt-0.5 block text-xs',
+              selected ? 'text-white/70' : 'text-text-muted',
+            )}
+          >
+            {subtitle}
+          </span>
+        )}
+      </span>
+    </button>
+  );
+}
 
 function Field({
   id,

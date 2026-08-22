@@ -5084,7 +5084,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     successToast: 'Анкет амжилттай илгээгдлээ!',
     successTitle: 'Анкет амжилттай илгээгдлээ',
     successBody:
-      'Манай элсэлтийн алба тантай удахгүй холбогдоно. И-мэйл хаягтайгаа танилцаж, спам хавтсыг шалгахаа бүү мартаарай.',
+      'Таны анкет бидэнд хүрлээ. Одоо суудлаа баталгаажуулах хэдхэн алхам үлдлээ.',
     successAdmissionCta: 'Элсэлтийн хуудас руу буцах',
     successHomeCta: 'Нүүр хуудас',
   },
@@ -5168,7 +5168,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     successToast: 'Application submitted successfully!',
     successTitle: 'Application submitted',
     successBody:
-      "Our admissions office will be in touch shortly. Please keep an eye on your inbox and don't forget to check your spam folder.",
+      'We have received your application. Just one short step left to confirm your seat.',
     successAdmissionCta: 'Back to admissions',
     successHomeCta: 'Home',
   },
@@ -5252,7 +5252,7 @@ export const REGISTER_CONTENT: Record<Language, RegisterBundle> = {
     successToast: '出願を送信しました！',
     successTitle: '出願を受け付けました',
     successBody:
-      '入学事務局より追ってご連絡いたします。受信トレイをご確認いただき、迷惑メールフォルダもお忘れなくご確認ください。',
+      '出願を受け付けました。あとは座席確定のお手続きのみです。',
     successAdmissionCta: '入学案内に戻る',
     successHomeCta: 'ホーム',
   },
