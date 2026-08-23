@@ -1,8 +1,18 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { CheckCircle2, Loader2, Send } from 'lucide-react';
+import { CheckCircle2, Loader2, Lock, Send } from 'lucide-react';
 import { toast } from 'sonner';
+
+/**
+ * Имэйл илгээх боломжийг түр хаасан эсэх.
+ *
+ * Илгээх урсгал одоогоор бүрэн ажиллахгүй байгаа тул админ санамсаргүй
+ * дарж, оюутанд буруу/дутуу имэйл очихоос сэргийлж хаав. Засагдсаны
+ * дараа энэ утгыг `true` болгоход товч шууд эргэж ажиллана — өөр хаана
+ * ч засах шаардлагагүй.
+ */
+const SEND_ENABLED = false;
 
 /**
  * Per-row quick-send on /admin/admissions: sends the program's info
@@ -19,6 +29,7 @@ export function AdmissionSendButton({
   const [pending, start] = useTransition();
 
   function send() {
+    if (!SEND_ENABLED) return;
     if (!confirm('Энэ хүнд хөтөлбөрийн мэдээллийн имэйл илгээх үү?')) return;
     start(async () => {
       const res = await fetch('/api/admissions/send', {
@@ -36,11 +47,24 @@ export function AdmissionSendButton({
     });
   }
 
+  // Өмнө нь илгээгдсэн анкетууд түүхээрээ хэвээр харагдана.
   if (sent) {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
         <CheckCircle2 className="h-3.5 w-3.5" />
         Илгээгдсэн
+      </span>
+    );
+  }
+
+  if (!SEND_ENABLED) {
+    return (
+      <span
+        title="Мэдээлэл илгээх боломжийг түр хугацаанд хаасан байна. Засагдсаны дараа дахин нээгдэнэ."
+        className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-button border border-border-light bg-cream-soft px-2.5 py-1.5 text-xs font-semibold text-text-muted"
+      >
+        <Lock className="h-3.5 w-3.5" />
+        Түр хаасан
       </span>
     );
   }
