@@ -17,6 +17,7 @@ import { AdmissionSendButton } from '@/components/admin/AdmissionSendButton';
 import { AdmissionContractButton } from '@/components/admin/AdmissionContractButton';
 import { AdmissionNoteControls } from '@/components/admin/AdmissionNoteControls';
 import { prisma } from '@/lib/prisma';
+import { evaluateAnket, parseAnketField } from '@/lib/admission-eval';
 import { formatMNDate } from '@/lib/utils';
 
 type Likelihood = '' | 'HIGH' | 'MID' | 'LOW';
@@ -39,31 +40,9 @@ const NO_PROGRAM = 'Бусад';
 const ATTENTION_DAYS = 3;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/**
- * Элсэлтийн босго: ЭЕШ-ийн оноо `PASS_SCORE`-оос дээш хичээл
- * `PASS_SUBJECTS`-аас олон байвал босго давсанд тооцно. Босгыг хангаагүй
- * ч дараа нь ЭЕШ дахин өгч болох тул сөрөг тэмдэглэгээ хийхгүй — зөвхөн
- * давсныг нь ялган тодотгоно.
- */
-const PASS_SCORE = 490;
-const PASS_SUBJECTS = 2;
-
-function parseField(message: string, label: string): string {
-  return message.match(new RegExp(`${label}:\\s*(.+)`))?.[1]?.trim() ?? '';
-}
-
-/**
- * Анкетын биетээс ЭЕШ-ийн оноог задална. Мөрүүд нь
- * `  • Математик: 427` хэлбэртэй (app/api/admission-applications/route.ts).
- */
-function parseExamScores(message: string): { subject: string; score: number }[] {
-  const out: { subject: string; score: number }[] = [];
-  for (const m of message.matchAll(/^\s*•\s*(.+?):\s*([\d]+(?:[.,]\d+)?)\s*$/gm)) {
-    const score = Number(m[2].replace(',', '.'));
-    if (!Number.isNaN(score)) out.push({ subject: m[1].trim(), score });
-  }
-  return out;
-}
+// Босго давсан эсэхийг lib/admission-eval.ts тооцно (бакалавр ЭСВЭЛ ЭЕШ-ийн
+// 3 хичээл + Монгол хэл). Дэлгэц ба Word тайлан ижил дүрэмтэй.
+const parseField = parseAnketField;
 
 type Anket = {
   id: string;
@@ -85,11 +64,11 @@ type Anket = {
   daysOld: number;
   /** ATTENTION_DAYS хоног өнгөрсөн ч үр дүн бичигдээгүй. */
   needsAttention: boolean;
-  /** PASS_SCORE-оос дээш оноотой хичээлийн тоо. */
-  highScoreCount: number;
-  /** Босго давсан эсэх (PASS_SUBJECTS-аас олон хичээл). */
+  /** Боловсрол = "бакалавр" (аль хэдийн зэрэгтэй тул шууд босго давсан). */
+  isBachelor: boolean;
+  /** Босго давсан эсэх (бакалавр ЭСВЭЛ ЭЕШ 3 хичээл + Монгол хэл). */
   passedThreshold: boolean;
-  /** Hover-т харуулах бүх оноо — "Математик: 427 · Физик: 485". */
+  /** Hover-т харуулах бүх оноо — "Монгол хэл: 620 · Математик: 540". */
   examSummary: string;
   /** Элсэгч "ЭЕШ өгөөгүй" гэж сонгосон. */
   noExam: boolean;
@@ -124,8 +103,7 @@ async function load(): Promise<Anket[]> {
     // бичсэн. Зөвхөн "Ярьсан" дарсан ч юу ярьсан нь тодорхойгүй бол
     // тохиролцоонд хүрээгүйд тооцно.
     const hasOutcome = likelihood !== '' || note.trim() !== '';
-    const scores = parseExamScores(r.message);
-    const highScoreCount = scores.filter((s) => s.score >= PASS_SCORE).length;
+    const evald = evaluateAnket(r.message);
     return {
       id: r.id,
       name: r.name,
@@ -143,10 +121,10 @@ async function load(): Promise<Anket[]> {
       note,
       daysOld,
       needsAttention: daysOld >= ATTENTION_DAYS && !hasOutcome,
-      highScoreCount,
-      passedThreshold: highScoreCount >= PASS_SUBJECTS,
-      examSummary: scores.map((s) => `${s.subject}: ${s.score}`).join(' · '),
-      noExam: /ЭЕШ өгөөгүй/.test(r.message),
+      isBachelor: evald.isBachelor,
+      passedThreshold: evald.passedThreshold,
+      examSummary: evald.examSummary,
+      noExam: evald.noExam,
       examFileUrl:
         r.message.match(/Үнэлгээний хуудас:\s*(\S+)/)?.[1]?.trim() ?? null,
     };
@@ -216,7 +194,12 @@ export default async function AdminAdmissionsPage({
           </Link>
           <p className="text-xs text-text-muted">{a.email}</p>
           <div className="mt-1 flex flex-wrap items-center gap-1">
-            {a.noExam ? (
+            {a.isBachelor ? (
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 ring-1 ring-emerald-300">
+                <Award className="h-3 w-3" />
+                Босго давсан (бакалавр)
+              </span>
+            ) : a.noExam ? (
               <span className="inline-flex items-center gap-1 rounded-full bg-cream px-2 py-0.5 text-[10px] font-bold text-text-muted ring-1 ring-border-light">
                 <Award className="h-3 w-3" />
                 ЭЕШ өгөөгүй
@@ -233,9 +216,7 @@ export default async function AdminAdmissionsPage({
                   }
                 >
                   <Award className="h-3 w-3" />
-                  {a.passedThreshold
-                    ? `Босго давсан (${a.highScoreCount})`
-                    : 'Босго хүрээгүй'}
+                  {a.passedThreshold ? 'Босго давсан' : 'Босго хүрээгүй'}
                 </span>
               )
             )}

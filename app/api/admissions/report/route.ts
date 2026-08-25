@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { requireApiUser } from '@/lib/auth-helpers';
+import { evaluateAnket, parseAnketField, MIN_EXAM_SUBJECTS } from '@/lib/admission-eval';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,26 +10,11 @@ export const dynamic = 'force-dynamic';
  * босго давсан эсэхийг харуулна + нэгдсэн статистик. Word-д нээгдэж,
  * шууд хэвлэгддэг HTML-based .doc.
  *
- * Босгын шалгуур нь /admin/admissions хуудастай ижил: ЭЕШ-ийн оноо 490-с
- * дээш хичээл 2-оос олон бол "босго давсан" гэж үзнэ.
+ * Босгын шалгуур нь /admin/admissions хуудастай ижил (lib/admission-eval.ts):
+ * боловсрол = бакалавр ЭСВЭЛ ЭЕШ-ийг 3+ хичээлээр (нэг нь Монгол хэл) өгсөн.
  */
 const SUBJECT_PREFIX = 'Элсэлтийн анкет';
 const NO_PROGRAM = 'Бусад';
-const PASS_SCORE = 490;
-const PASS_SUBJECTS = 2;
-
-function field(message: string, label: string): string {
-  return message.match(new RegExp(`${label}:\\s*(.+)`))?.[1]?.trim() ?? '';
-}
-
-function parseExamScores(message: string): { subject: string; score: number }[] {
-  const out: { subject: string; score: number }[] = [];
-  for (const m of message.matchAll(/^\s*•\s*(.+?):\s*([\d]+(?:[.,]\d+)?)\s*$/gm)) {
-    const score = Number(m[2].replace(',', '.'));
-    if (!Number.isNaN(score)) out.push({ subject: m[1].trim(), score });
-  }
-  return out;
-}
 
 function esc(s: unknown): string {
   return String(s ?? '')
@@ -57,22 +43,23 @@ export async function GET(req: Request) {
     age: string;
     examSummary: string;
     passed: boolean;
+    isBachelor: boolean;
     noExam: boolean;
   };
 
   const ankets: Row[] = rows.map((r) => {
-    const scores = parseExamScores(r.message);
-    const highScoreCount = scores.filter((s) => s.score >= PASS_SCORE).length;
+    const ev = evaluateAnket(r.message);
     return {
       name: r.name,
       email: r.email,
       phone: r.phone ?? '',
-      program: field(r.message, 'Хөтөлбөр') || NO_PROGRAM,
-      degree: field(r.message, 'Зэрэг'),
-      age: field(r.message, 'Нас'),
-      examSummary: scores.map((s) => `${s.subject}: ${s.score}`).join(', '),
-      passed: highScoreCount >= PASS_SUBJECTS,
-      noExam: /ЭЕШ өгөөгүй/.test(r.message),
+      program: parseAnketField(r.message, 'Хөтөлбөр') || NO_PROGRAM,
+      degree: parseAnketField(r.message, 'Зэрэг'),
+      age: parseAnketField(r.message, 'Нас'),
+      examSummary: ev.examSummary,
+      passed: ev.passedThreshold,
+      isBachelor: ev.isBachelor,
+      noExam: ev.noExam,
     };
   });
 
@@ -131,18 +118,21 @@ export async function GET(req: Request) {
     .map(([program, list]) => {
       const body = list
         .map((a, i) => {
-          const status = a.passed
-            ? '<span class="pass">Тэнцсэн ✓</span>'
-            : a.noExam
-              ? 'ЭЕШ өгөөгүй'
-              : '—';
+          const status = a.isBachelor
+            ? '<span class="pass">Тэнцсэн (бакалавр) ✓</span>'
+            : a.passed
+              ? '<span class="pass">Тэнцсэн ✓</span>'
+              : a.noExam
+                ? 'ЭЕШ өгөөгүй'
+                : '—';
+          const exams = a.examSummary || (a.isBachelor ? 'Бакалавр зэрэгтэй' : '—');
           return `<tr${a.passed ? ' class="passrow"' : ''}>
             <td class="c">${i + 1}</td>
             <td>${esc(a.name)}</td>
             <td class="c">${esc(a.age)}</td>
             <td>${esc(a.phone)}</td>
             <td>${esc(a.email)}</td>
-            <td>${esc(a.examSummary)}</td>
+            <td>${esc(exams)}</td>
             <td class="c">${status}</td>
           </tr>`;
         })
@@ -195,7 +185,7 @@ h2 { font-size: 12.5pt; margin: 16pt 0 4pt; border-bottom: 1px solid #999; paddi
 
   ${sections}
 
-  <p class="note">Тайлбар: ЭЕШ-ийн оноо ${PASS_SCORE}-с дээш хичээл ${PASS_SUBJECTS}-оос олон байвал "босго давсан" гэж тооцов. Босго хараахан хангаагүй ч дараа нь ЭЕШ дахин өгч болзошгүй.</p>
+  <p class="note">Тайлбар: "Босго давсан" гэж боловсрол нь бакалавр (аль хэдийн зэрэгтэй) ЭСВЭЛ ЭЕШ-ийг ${MIN_EXAM_SUBJECTS}+ хичээлээр өгсөн бөгөөд нэг нь Монгол хэл байхыг хэлнэ. Босго хараахан хангаагүй ч дараа нь ЭЕШ дахин өгч болзошгүй.</p>
 </div></body>
 </html>`;
 
