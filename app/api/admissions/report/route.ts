@@ -1,6 +1,11 @@
 import { prisma } from '@/lib/prisma';
 import { requireApiUser } from '@/lib/auth-helpers';
-import { evaluateAnket, parseAnketField, MIN_EXAM_SUBJECTS } from '@/lib/admission-eval';
+import {
+  evaluateAnket,
+  parseAnketField,
+  MIN_EXAM_SUBJECTS,
+  PASS_SCORE,
+} from '@/lib/admission-eval';
 
 export const dynamic = 'force-dynamic';
 
@@ -196,7 +201,7 @@ h2 { font-size: 12pt; margin: 14pt 0 4pt; border-bottom: 1px solid #999; padding
 
   ${sections}
 
-  <p class="note">Тайлбар: "Босго давсан" гэж боловсрол нь бакалавр (аль хэдийн зэрэгтэй) ЭСВЭЛ ЭЕШ-ийг ${MIN_EXAM_SUBJECTS}+ хичээлээр өгсөн бөгөөд нэг нь Монгол хэл байхыг хэлнэ. Босго хараахан хангаагүй ч дараа нь ЭЕШ дахин өгч болзошгүй.</p>
+  <p class="note">Тайлбар: "Босго давсан" гэж боловсрол нь бакалавр (аль хэдийн зэрэгтэй) ЭСВЭЛ ЭЕШ-ийн ${MIN_EXAM_SUBJECTS} хичээл (нэг нь Монгол хэл) БҮГД ${PASS_SCORE}-с дээш оноотой байхыг хэлнэ. Босго хараахан хангаагүй ч дараа нь ЭЕШ дахин өгч болзошгүй.</p>
 </div></body>
 </html>`;
 
