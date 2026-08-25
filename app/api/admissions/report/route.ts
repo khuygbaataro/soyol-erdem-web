@@ -1,3 +1,18 @@
+import {
+  AlignmentType,
+  BorderStyle,
+  Document,
+  HeadingLevel,
+  Packer,
+  PageOrientation,
+  Paragraph,
+  ShadingType,
+  Table,
+  TableCell,
+  TableRow,
+  TextRun,
+  WidthType,
+} from 'docx';
 import { prisma } from '@/lib/prisma';
 import { requireApiUser } from '@/lib/auth-helpers';
 import {
@@ -10,22 +25,58 @@ import {
 export const dynamic = 'force-dynamic';
 
 /**
- * Захиралд зориулсан элсэлтийн анкетын тайланг Word (.doc) файлаар татах.
- * Хөтөлбөрөөр бүлэглэж, оюутан бүрийн нэр / утас / и-мэйл / ЭЕШ оноо /
- * босго давсан эсэхийг харуулна + нэгдсэн статистик. Word-д нээгдэж,
- * шууд хэвлэгддэг HTML-based .doc.
+ * Захиралд зориулсан элсэлтийн анкетын тайланг жинхэнэ Word (.docx) файлаар
+ * татах. Хөтөлбөрөөр бүлэглэж, оюутан бүрийн нэр / нас / утас / и-мэйл /
+ * ЭЕШ оноо / босго давсан эсэхийг харуулна + нэгдсэн статистик.
  *
- * Босгын шалгуур нь /admin/admissions хуудастай ижил (lib/admission-eval.ts):
- * боловсрол = бакалавр ЭСВЭЛ ЭЕШ-ийг 3+ хичээлээр (нэг нь Монгол хэл) өгсөн.
+ * ?layout=portrait → босоо A4, бусад тохиолдолд хэвтээ A4.
+ * Босгын шалгуур lib/admission-eval.ts-тэй ижил.
  */
 const SUBJECT_PREFIX = 'Элсэлтийн анкет';
 const NO_PROGRAM = 'Бусад';
 
-function esc(s: unknown): string {
-  return String(s ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+const HDR_FILL = '1E2A44';
+const PASS_FILL = 'EAF7EE';
+const TOTAL_FILL = 'F0EFE9';
+const GREEN = '1A7A3C';
+const FONT = 18; // half-points → 9pt
+
+const BORDER = { style: BorderStyle.SINGLE, size: 4, color: '999999' };
+const CELL_BORDERS = { top: BORDER, bottom: BORDER, left: BORDER, right: BORDER };
+
+function headerCell(text: string, widthPct: number): TableCell {
+  return new TableCell({
+    width: { size: widthPct, type: WidthType.PERCENTAGE },
+    shading: { type: ShadingType.CLEAR, color: 'auto', fill: HDR_FILL },
+    borders: CELL_BORDERS,
+    children: [
+      new Paragraph({
+        children: [new TextRun({ text, bold: true, color: 'FFFFFF', size: FONT })],
+      }),
+    ],
+  });
+}
+
+function textCell(
+  text: string,
+  widthPct: number,
+  opts?: { center?: boolean; fill?: string; bold?: boolean; color?: string },
+): TableCell {
+  return new TableCell({
+    width: { size: widthPct, type: WidthType.PERCENTAGE },
+    borders: CELL_BORDERS,
+    shading: opts?.fill
+      ? { type: ShadingType.CLEAR, color: 'auto', fill: opts.fill }
+      : undefined,
+    children: [
+      new Paragraph({
+        alignment: opts?.center ? AlignmentType.CENTER : AlignmentType.LEFT,
+        children: [
+          new TextRun({ text: text || '—', size: FONT, bold: opts?.bold, color: opts?.color }),
+        ],
+      }),
+    ],
+  });
 }
 
 export async function GET(req: Request) {
@@ -46,7 +97,6 @@ export async function GET(req: Request) {
     email: string;
     phone: string;
     program: string;
-    degree: string;
     age: string;
     examSummary: string;
     passed: boolean;
@@ -61,7 +111,6 @@ export async function GET(req: Request) {
       email: r.email,
       phone: r.phone ?? '',
       program: parseAnketField(r.message, 'Хөтөлбөр') || NO_PROGRAM,
-      degree: parseAnketField(r.message, 'Зэрэг'),
       age: parseAnketField(r.message, 'Нас'),
       examSummary: ev.examSummary,
       passed: ev.passedThreshold,
@@ -91,124 +140,176 @@ export async function GET(req: Request) {
     month: 'long',
     day: 'numeric',
   });
-
-  // ── Summary statistics table ──────────────────────────────────
-  const summaryRows = groupList
-    .map(([program, list]) => {
-      const passed = list.filter((a) => a.passed).length;
-      const noExam = list.filter((a) => a.noExam).length;
-      return `<tr>
-        <td>${esc(program)}</td>
-        <td class="c">${list.length}</td>
-        <td class="c pass">${passed}</td>
-        <td class="c">${noExam}</td>
-      </tr>`;
-    })
-    .join('');
-
-  const summaryTable = `
-    <table class="tbl">
-      <tr class="head">
-        <th>Хөтөлбөр</th><th>Нийт анкет</th><th>Босго давсан</th><th>ЭЕШ өгөөгүй</th>
-      </tr>
-      ${summaryRows}
-      <tr class="total">
-        <td>Нийт</td>
-        <td class="c">${filtered.length}</td>
-        <td class="c pass">${totalPassed}</td>
-        <td class="c">${totalNoExam}</td>
-      </tr>
-    </table>`;
-
-  // ── Per-program student tables ────────────────────────────────
-  const sections = groupList
-    .map(([program, list]) => {
-      const body = list
-        .map((a, i) => {
-          const status = a.isBachelor
-            ? '<span class="pass">Тэнцсэн (бакалавр) ✓</span>'
-            : a.passed
-              ? '<span class="pass">Тэнцсэн ✓</span>'
-              : a.noExam
-                ? 'ЭЕШ өгөөгүй'
-                : '—';
-          const exams = a.examSummary || (a.isBachelor ? 'Бакалавр зэрэгтэй' : '—');
-          return `<tr${a.passed ? ' class="passrow"' : ''}>
-            <td class="c">${i + 1}</td>
-            <td>${esc(a.name)}</td>
-            <td class="c">${esc(a.age)}</td>
-            <td>${esc(a.phone)}</td>
-            <td>${esc(a.email)}</td>
-            <td>${esc(exams)}</td>
-            <td class="c">${status}</td>
-          </tr>`;
-        })
-        .join('');
-      const passed = list.filter((a) => a.passed).length;
-      return `
-        <h2>${esc(program)} <span class="muted">(нийт ${list.length}, босго давсан ${passed})</span></h2>
-        <table class="tbl">
-          <tr class="head">
-            <th style="width:34px">№</th><th>Овог нэр</th><th style="width:40px">Нас</th>
-            <th style="width:90px">Утас</th><th>И-мэйл</th><th>ЭЕШ оноо</th><th style="width:90px">Босго</th>
-          </tr>
-          ${body}
-        </table>`;
-    })
-    .join('');
-
   const heading = activeProgram
-    ? `Элсэлтийн анкетын тайлан — ${esc(activeProgram)}`
+    ? `Элсэлтийн анкетын тайлан — ${activeProgram}`
     : 'Элсэлтийн анкетын тайлан';
 
-  // Босоо (A4 portrait) эсвэл хэвтээ (landscape) хэмжээ. Word найдвартай
-  // танихын тулд mso @page ба стандарт @page хоёуланг өгнө.
-  const pageSize = isPortrait ? '595.3pt 841.9pt' : '841.9pt 595.3pt';
-  const orient = isPortrait ? 'portrait' : 'landscape';
-  const stdSize = isPortrait ? 'A4 portrait' : 'A4 landscape';
-  const bodyFont = isPortrait ? '9pt' : '10.5pt';
-  const tblFont = isPortrait ? '8pt' : '9.5pt';
+  const children: (Paragraph | Table)[] = [];
 
-  const html = `﻿<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
-<head>
-<meta charset="utf-8">
-<title>${esc(heading)}</title>
-<style>
-@page Section1 { size: ${pageSize}; mso-page-orientation: ${orient}; margin: 1.2cm; }
-@page { size: ${stdSize}; margin: 1.2cm; }
-div.Section1 { page: Section1; }
-body { font-family: Arial, sans-serif; font-size: ${bodyFont}; color: #111; }
-h1 { font-size: 15pt; margin: 0 0 2pt; }
-h2 { font-size: 12pt; margin: 14pt 0 4pt; border-bottom: 1px solid #999; padding-bottom: 2pt; }
-.sub { color: #555; font-size: 9.5pt; margin: 0 0 10pt; }
-.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
-.tbl th, .tbl td { border: 0.5pt solid #999; padding: 3pt 4pt; vertical-align: top; word-break: break-word; font-size: ${tblFont}; }
-.tbl .head th { background: #1e2a44; color: #fff; text-align: left; }
-.tbl .c { text-align: center; }
-.tbl .total td { font-weight: bold; background: #f0efe9; }
-.pass { color: #1a7a3c; font-weight: bold; }
-.passrow td { background: #eaf7ee; }
-.muted { color: #777; font-weight: normal; font-size: 9.5pt; }
-.note { color: #666; font-size: 8.5pt; margin-top: 14pt; }
-</style>
-</head>
-<body><div class="Section1">
-  <h1>${esc(heading)}</h1>
-  <p class="sub">Соёл Эрдэм Дээд Сургууль · ${esc(today)} · Нийт ${filtered.length} анкет</p>
+  children.push(
+    new Paragraph({
+      heading: HeadingLevel.HEADING_1,
+      children: [new TextRun({ text: heading, bold: true, size: 30 })],
+    }),
+    new Paragraph({
+      spacing: { after: 160 },
+      children: [
+        new TextRun({
+          text: `Соёл Эрдэм Дээд Сургууль · ${today} · Нийт ${filtered.length} анкет`,
+          size: FONT,
+          color: '555555',
+        }),
+      ],
+    }),
+  );
 
-  <h2>Нэгдсэн статистик</h2>
-  ${summaryTable}
+  // ── Summary statistics ────────────────────────────────────────
+  children.push(
+    new Paragraph({
+      spacing: { before: 120, after: 80 },
+      children: [new TextRun({ text: 'Нэгдсэн статистик', bold: true, size: 24 })],
+    }),
+  );
 
-  ${sections}
+  const summaryHeader = new TableRow({
+    tableHeader: true,
+    children: [
+      headerCell('Хөтөлбөр', 46),
+      headerCell('Нийт анкет', 18),
+      headerCell('Босго давсан', 18),
+      headerCell('ЭЕШ өгөөгүй', 18),
+    ],
+  });
+  const summaryBody = groupList.map(([program, list]) => {
+    const passed = list.filter((a) => a.passed).length;
+    const noExam = list.filter((a) => a.noExam).length;
+    return new TableRow({
+      children: [
+        textCell(program, 46),
+        textCell(String(list.length), 18, { center: true }),
+        textCell(String(passed), 18, { center: true, color: GREEN, bold: true }),
+        textCell(String(noExam), 18, { center: true }),
+      ],
+    });
+  });
+  const summaryTotal = new TableRow({
+    children: [
+      textCell('Нийт', 46, { bold: true, fill: TOTAL_FILL }),
+      textCell(String(filtered.length), 18, { center: true, bold: true, fill: TOTAL_FILL }),
+      textCell(String(totalPassed), 18, { center: true, bold: true, color: GREEN, fill: TOTAL_FILL }),
+      textCell(String(totalNoExam), 18, { center: true, bold: true, fill: TOTAL_FILL }),
+    ],
+  });
+  children.push(
+    new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: [summaryHeader, ...summaryBody, summaryTotal],
+    }),
+  );
 
-  <p class="note">Тайлбар: "Босго давсан" гэж боловсрол нь бакалавр (аль хэдийн зэрэгтэй) ЭСВЭЛ ЭЕШ-ийн ${MIN_EXAM_SUBJECTS} хичээл (нэг нь Монгол хэл) БҮГД ${PASS_SCORE}-с дээш оноотой байхыг хэлнэ. Босго хараахан хангаагүй ч дараа нь ЭЕШ дахин өгч болзошгүй.</p>
-</div></body>
-</html>`;
+  // ── Per-program student tables ────────────────────────────────
+  for (const [program, list] of groupList) {
+    const passed = list.filter((a) => a.passed).length;
+    children.push(
+      new Paragraph({
+        spacing: { before: 260, after: 80 },
+        children: [
+          new TextRun({ text: program, bold: true, size: 24 }),
+          new TextRun({
+            text: `   (нийт ${list.length}, босго давсан ${passed})`,
+            size: FONT,
+            color: '777777',
+          }),
+        ],
+      }),
+    );
 
-  const filename = `elselt-tailan${isPortrait ? '-a4' : ''}-${new Date().toISOString().slice(0, 10)}.doc`;
-  return new Response(html, {
+    const header = new TableRow({
+      tableHeader: true,
+      children: [
+        headerCell('№', 4),
+        headerCell('Овог нэр', 20),
+        headerCell('Нас', 6),
+        headerCell('Утас', 12),
+        headerCell('И-мэйл', 22),
+        headerCell('ЭЕШ оноо', 24),
+        headerCell('Босго', 12),
+      ],
+    });
+    const body = list.map((a, i) => {
+      const fill = a.passed ? PASS_FILL : undefined;
+      const statusText = a.isBachelor
+        ? 'Тэнцсэн (бакалавр)'
+        : a.passed
+          ? 'Тэнцсэн ✓'
+          : a.noExam
+            ? 'ЭЕШ өгөөгүй'
+            : '—';
+      const exams = a.examSummary || (a.isBachelor ? 'Бакалавр зэрэгтэй' : '—');
+      return new TableRow({
+        children: [
+          textCell(String(i + 1), 4, { center: true, fill }),
+          textCell(a.name, 20, { fill }),
+          textCell(a.age, 6, { center: true, fill }),
+          textCell(a.phone, 12, { fill }),
+          textCell(a.email, 22, { fill }),
+          textCell(exams, 24, { fill }),
+          textCell(statusText, 12, {
+            center: true,
+            fill,
+            bold: a.passed,
+            color: a.passed ? GREEN : undefined,
+          }),
+        ],
+      });
+    });
+    children.push(
+      new Table({
+        width: { size: 100, type: WidthType.PERCENTAGE },
+        rows: [header, ...body],
+      }),
+    );
+  }
+
+  children.push(
+    new Paragraph({
+      spacing: { before: 240 },
+      children: [
+        new TextRun({
+          text: `Тайлбар: "Босго давсан" гэж боловсрол нь бакалавр (аль хэдийн зэрэгтэй) ЭСВЭЛ ЭЕШ-ийн ${MIN_EXAM_SUBJECTS} хичээл (нэг нь Монгол хэл) БҮГД ${PASS_SCORE}-с дээш оноотой байхыг хэлнэ.`,
+          size: 16,
+          color: '666666',
+          italics: true,
+        }),
+      ],
+    }),
+  );
+
+  const doc = new Document({
+    sections: [
+      {
+        properties: {
+          page: {
+            size: isPortrait
+              ? { width: 11906, height: 16838, orientation: PageOrientation.PORTRAIT }
+              : { width: 16838, height: 11906, orientation: PageOrientation.LANDSCAPE },
+            margin: { top: 680, bottom: 680, left: 680, right: 680 },
+          },
+        },
+        children,
+      },
+    ],
+  });
+
+  const buffer = await Packer.toBuffer(doc);
+  const filename = `elselt-tailan${isPortrait ? '-a4' : ''}-${new Date()
+    .toISOString()
+    .slice(0, 10)}.docx`;
+
+  return new Response(new Uint8Array(buffer), {
     headers: {
-      'Content-Type': 'application/msword; charset=utf-8',
+      'Content-Type':
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'Content-Disposition': `attachment; filename="${filename}"`,
     },
   });
