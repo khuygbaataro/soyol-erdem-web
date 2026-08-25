@@ -27,7 +27,9 @@ export async function GET(req: Request) {
   const { error } = await requireApiUser(['ADMIN', 'EDITOR']);
   if (error) return error;
 
-  const activeProgram = new URL(req.url).searchParams.get('program') || '';
+  const sp = new URL(req.url).searchParams;
+  const activeProgram = sp.get('program') || '';
+  const isPortrait = sp.get('layout') === 'portrait';
 
   const rows = await prisma.contactSubmission.findMany({
     where: { subject: { startsWith: SUBJECT_PREFIX } },
@@ -154,26 +156,35 @@ export async function GET(req: Request) {
     ? `Элсэлтийн анкетын тайлан — ${esc(activeProgram)}`
     : 'Элсэлтийн анкетын тайлан';
 
+  // Босоо (A4 portrait) эсвэл хэвтээ (landscape) хэмжээ. Word найдвартай
+  // танихын тулд mso @page ба стандарт @page хоёуланг өгнө.
+  const pageSize = isPortrait ? '595.3pt 841.9pt' : '841.9pt 595.3pt';
+  const orient = isPortrait ? 'portrait' : 'landscape';
+  const stdSize = isPortrait ? 'A4 portrait' : 'A4 landscape';
+  const bodyFont = isPortrait ? '9pt' : '10.5pt';
+  const tblFont = isPortrait ? '8pt' : '9.5pt';
+
   const html = `﻿<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
 <head>
 <meta charset="utf-8">
 <title>${esc(heading)}</title>
 <style>
-@page Section1 { size: 841.9pt 595.3pt; mso-page-orientation: landscape; margin: 1.2cm; }
+@page Section1 { size: ${pageSize}; mso-page-orientation: ${orient}; margin: 1.2cm; }
+@page { size: ${stdSize}; margin: 1.2cm; }
 div.Section1 { page: Section1; }
-body { font-family: Arial, sans-serif; font-size: 10.5pt; color: #111; }
-h1 { font-size: 16pt; margin: 0 0 2pt; }
-h2 { font-size: 12.5pt; margin: 16pt 0 4pt; border-bottom: 1px solid #999; padding-bottom: 2pt; }
-.sub { color: #555; font-size: 10pt; margin: 0 0 10pt; }
-.tbl { border-collapse: collapse; width: 100%; }
-.tbl th, .tbl td { border: 0.5pt solid #999; padding: 3pt 5pt; vertical-align: top; }
-.tbl .head th { background: #1e2a44; color: #fff; text-align: left; font-size: 9.5pt; }
+body { font-family: Arial, sans-serif; font-size: ${bodyFont}; color: #111; }
+h1 { font-size: 15pt; margin: 0 0 2pt; }
+h2 { font-size: 12pt; margin: 14pt 0 4pt; border-bottom: 1px solid #999; padding-bottom: 2pt; }
+.sub { color: #555; font-size: 9.5pt; margin: 0 0 10pt; }
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td { border: 0.5pt solid #999; padding: 3pt 4pt; vertical-align: top; word-break: break-word; font-size: ${tblFont}; }
+.tbl .head th { background: #1e2a44; color: #fff; text-align: left; }
 .tbl .c { text-align: center; }
 .tbl .total td { font-weight: bold; background: #f0efe9; }
 .pass { color: #1a7a3c; font-weight: bold; }
 .passrow td { background: #eaf7ee; }
-.muted { color: #777; font-weight: normal; font-size: 10pt; }
-.note { color: #666; font-size: 9pt; margin-top: 14pt; }
+.muted { color: #777; font-weight: normal; font-size: 9.5pt; }
+.note { color: #666; font-size: 8.5pt; margin-top: 14pt; }
 </style>
 </head>
 <body><div class="Section1">
@@ -189,7 +200,7 @@ h2 { font-size: 12.5pt; margin: 16pt 0 4pt; border-bottom: 1px solid #999; paddi
 </div></body>
 </html>`;
 
-  const filename = `elselt-tailan-${new Date().toISOString().slice(0, 10)}.doc`;
+  const filename = `elselt-tailan${isPortrait ? '-a4' : ''}-${new Date().toISOString().slice(0, 10)}.doc`;
   return new Response(html, {
     headers: {
       'Content-Type': 'application/msword; charset=utf-8',

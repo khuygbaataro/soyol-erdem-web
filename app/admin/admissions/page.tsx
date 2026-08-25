@@ -369,16 +369,24 @@ export default async function AdminAdmissionsPage({
         action={
           <div className="flex flex-wrap items-center gap-2">
             <a
+              href={`/api/admissions/report?layout=portrait${active ? `&program=${encodeURIComponent(active)}` : ''}`}
+              className="inline-flex items-center gap-2 rounded-button border border-border-light bg-white px-4 py-2 text-sm font-semibold text-navy-900 transition-colors hover:bg-cream-soft"
+              title="Босоо A4 хэмжээтэй Word тайлан татах (хэвлэхэд бэлэн)"
+            >
+              <FileText className="h-4 w-4 text-gold-500" />
+              A4 (босоо)
+            </a>
+            <a
               href={
                 active
                   ? `/api/admissions/report?program=${encodeURIComponent(active)}`
                   : '/api/admissions/report'
               }
               className="inline-flex items-center gap-2 rounded-button border border-border-light bg-white px-4 py-2 text-sm font-semibold text-navy-900 transition-colors hover:bg-cream-soft"
-              title="Захиралд зориулсан тайланг Word файлаар татах"
+              title="Хэвтээ (өргөн) Word тайлан татах"
             >
               <FileText className="h-4 w-4 text-gold-500" />
-              Word татах
+              Word (хэвтээ)
             </a>
             <span className="inline-flex items-center gap-2 rounded-button border border-border-light bg-cream-soft px-4 py-2 text-sm font-semibold text-text-body">
               <Inbox className="h-4 w-4 text-gold-500" />
