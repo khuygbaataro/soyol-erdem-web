@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   Award,
   Eye,
+  FileText,
   GraduationCap,
   Inbox,
   Paperclip,
@@ -385,10 +386,24 @@ export default async function AdminAdmissionsPage({
           { label: 'Элсэлтийн анкет' },
         ]}
         action={
-          <span className="inline-flex items-center gap-2 rounded-button border border-border-light bg-cream-soft px-4 py-2 text-sm font-semibold text-text-body">
-            <Inbox className="h-4 w-4 text-gold-500" />
-            {unread} шинэ
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <a
+              href={
+                active
+                  ? `/api/admissions/report?program=${encodeURIComponent(active)}`
+                  : '/api/admissions/report'
+              }
+              className="inline-flex items-center gap-2 rounded-button border border-border-light bg-white px-4 py-2 text-sm font-semibold text-navy-900 transition-colors hover:bg-cream-soft"
+              title="Захиралд зориулсан тайланг Word файлаар татах"
+            >
+              <FileText className="h-4 w-4 text-gold-500" />
+              Word татах
+            </a>
+            <span className="inline-flex items-center gap-2 rounded-button border border-border-light bg-cream-soft px-4 py-2 text-sm font-semibold text-text-body">
+              <Inbox className="h-4 w-4 text-gold-500" />
+              {unread} шинэ
+            </span>
+          </div>
         }
       />
 
