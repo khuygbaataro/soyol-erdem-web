@@ -13,14 +13,9 @@ import {
   TextRun,
   WidthType,
 } from 'docx';
-import { prisma } from '@/lib/prisma';
 import { requireApiUser } from '@/lib/auth-helpers';
-import {
-  evaluateAnket,
-  parseAnketField,
-  MIN_EXAM_SUBJECTS,
-  PASS_SCORE,
-} from '@/lib/admission-eval';
+import { MIN_EXAM_SUBJECTS, PASS_SCORE } from '@/lib/admission-eval';
+import { loadAdmissionReport, NO_PROGRAM } from '@/lib/admission-report-data';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,9 +27,6 @@ export const dynamic = 'force-dynamic';
  * ?layout=portrait → босоо A4, бусад тохиолдолд хэвтээ A4.
  * Босгын шалгуур lib/admission-eval.ts-тэй ижил.
  */
-const SUBJECT_PREFIX = 'Элсэлтийн анкет';
-const NO_PROGRAM = 'Бусад';
-
 const HDR_FILL = '1E2A44';
 const PASS_FILL = 'EAF7EE';
 const TOTAL_FILL = 'F0EFE9';
@@ -87,51 +79,7 @@ export async function GET(req: Request) {
   const activeProgram = sp.get('program') || '';
   const isPortrait = sp.get('layout') === 'portrait';
 
-  const rows = await prisma.contactSubmission.findMany({
-    where: { subject: { startsWith: SUBJECT_PREFIX } },
-    orderBy: { createdAt: 'desc' },
-  });
-
-  type Row = {
-    name: string;
-    email: string;
-    phone: string;
-    program: string;
-    age: string;
-    examSummary: string;
-    passed: boolean;
-    isBachelor: boolean;
-    noExam: boolean;
-  };
-
-  const ankets: Row[] = rows.map((r) => {
-    const ev = evaluateAnket(r.message);
-    return {
-      name: r.name,
-      email: r.email,
-      phone: r.phone ?? '',
-      program: parseAnketField(r.message, 'Хөтөлбөр') || NO_PROGRAM,
-      age: parseAnketField(r.message, 'Нас'),
-      examSummary: ev.examSummary,
-      passed: ev.passedThreshold,
-      isBachelor: ev.isBachelor,
-      noExam: ev.noExam,
-    };
-  });
-
-  const filtered = activeProgram
-    ? ankets.filter((a) => a.program === activeProgram)
-    : ankets;
-
-  const groups = new Map<string, Row[]>();
-  for (const a of filtered) {
-    const arr = groups.get(a.program) ?? [];
-    arr.push(a);
-    groups.set(a.program, arr);
-  }
-  const groupList = Array.from(groups.entries()).sort((a, b) =>
-    a[0] === NO_PROGRAM ? 1 : b[0] === NO_PROGRAM ? -1 : b[1].length - a[1].length,
-  );
+  const { filtered, groupList } = await loadAdmissionReport(activeProgram);
 
   const totalPassed = filtered.filter((a) => a.passed).length;
   const totalNoExam = filtered.filter((a) => a.noExam).length;

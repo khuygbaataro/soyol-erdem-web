@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   Award,
   Eye,
+  FileSpreadsheet,
   FileText,
   GraduationCap,
   Inbox,
@@ -387,6 +388,18 @@ export default async function AdminAdmissionsPage({
             >
               <FileText className="h-4 w-4 text-gold-500" />
               Word (хэвтээ)
+            </a>
+            <a
+              href={
+                active
+                  ? `/api/admissions/export?program=${encodeURIComponent(active)}`
+                  : '/api/admissions/export'
+              }
+              className="inline-flex items-center gap-2 rounded-button border border-border-light bg-white px-4 py-2 text-sm font-semibold text-navy-900 transition-colors hover:bg-cream-soft"
+              title="Анкетуудыг Excel (.xlsx) файлаар татах"
+            >
+              <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
+              Excel
             </a>
             <span className="inline-flex items-center gap-2 rounded-button border border-border-light bg-cream-soft px-4 py-2 text-sm font-semibold text-text-body">
               <Inbox className="h-4 w-4 text-gold-500" />
