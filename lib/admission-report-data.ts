@@ -11,10 +11,13 @@ export const NO_PROGRAM = 'Бусад';
 
 export interface ReportRow {
   name: string;
+  lastName: string;
+  firstName: string;
   email: string;
   phone: string;
   program: string;
   degree: string;
+  education: string;
   age: string;
   examSummary: string;
   passed: boolean;
@@ -33,12 +36,18 @@ export async function loadAdmissionReport(activeProgram: string): Promise<{
 
   const ankets: ReportRow[] = rows.map((r) => {
     const ev = evaluateAnket(r.message);
+    const parts = r.name.trim().split(/\s+/).filter(Boolean);
     return {
       name: r.name,
+      lastName: parseAnketField(r.message, 'Овог') || (parts[0] ?? ''),
+      firstName:
+        parseAnketField(r.message, 'Нэр') ||
+        (parts.length > 1 ? parts.slice(1).join(' ') : ''),
       email: r.email,
       phone: r.phone ?? '',
       program: parseAnketField(r.message, 'Хөтөлбөр') || NO_PROGRAM,
       degree: parseAnketField(r.message, 'Зэрэг'),
+      education: ev.education,
       age: parseAnketField(r.message, 'Нас'),
       examSummary: ev.examSummary,
       passed: ev.passedThreshold,
