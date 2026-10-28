@@ -10,8 +10,15 @@ import { Card } from '@/components/ui/Card';
 import { FormField, inputClasses, textareaClasses } from '@/components/admin/FormField';
 import { ImageUpload } from '@/components/admin/ImageUpload';
 import { MultiImageUpload } from '@/components/admin/MultiImageUpload';
+import { NewsContentEditor } from '@/components/admin/NewsContentEditor';
 import { TranslationFields } from '@/components/admin/TranslationFields';
 import { slugify } from '@/lib/admin-helpers';
+import {
+  newsBlocksHaveContent,
+  newsBodyToBlocks,
+  serializeNewsBlocks,
+  type NewsBlock,
+} from '@/lib/news-content';
 import { useUploadGuard } from '@/lib/use-upload-guard';
 
 interface NewsFormProps {
@@ -83,7 +90,12 @@ export function NewsForm({
   const [title, setTitle] = useState(initial.title ?? '');
   const [slug, setSlug] = useState(initial.slug ?? '');
   const [excerpt, setExcerpt] = useState(initial.excerpt ?? '');
-  const [body, setBody] = useState(initial.body ?? '');
+  // Body is edited as ordered blocks (text + sized images) and serialised
+  // to the `body` string on save. Legacy plain-text bodies seed a single
+  // text block so existing articles stay editable.
+  const [bodyBlocks, setBodyBlocks] = useState<NewsBlock[]>(() =>
+    newsBodyToBlocks(initial.body),
+  );
   const [coverImage, setCoverImage] = useState(initial.coverImage ?? '');
   const [gallery, setGallery] = useState<string[]>(initial.gallery ?? []);
   const [titleEn, setTitleEn] = useState(initial.titleEn ?? '');
@@ -107,6 +119,11 @@ export function NewsForm({
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (!newsBlocksHaveContent(bodyBlocks)) {
+      toast.error('Бүтэн агуулга хоосон байна');
+      return;
+    }
+    const body = serializeNewsBlocks(bodyBlocks);
     startTransition(async () => {
       const payload = {
         title,
@@ -180,14 +197,17 @@ export function NewsForm({
               placeholder="Мэдээний 2-3 өгүүлбэр товч тайлбар (max 500 тэмдэгт)"
             />
           </FormField>
-          <FormField label="Бүтэн агуулга" required className="mt-4" hint="Энгийн текст эсвэл Markdown.">
-            <textarea
-              required
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              className={textareaClasses}
-              rows={14}
-              placeholder="Мэдээний бүтэн агуулга..."
+          <FormField
+            label="Бүтэн агуулга"
+            required
+            className="mt-4"
+            hint="Текст болон зураг блокоор бүрдүүлнэ. Зураг бүрийн өргөн, байршлыг тусад нь тохируулна."
+          >
+            <NewsContentEditor
+              value={bodyBlocks}
+              onChange={setBodyBlocks}
+              folder="news"
+              onUploadingChange={onUploadingChange}
             />
           </FormField>
           <FormField label="Cover image" className="mt-4" hint="Зураг сонгож upload хийнэ үү.">

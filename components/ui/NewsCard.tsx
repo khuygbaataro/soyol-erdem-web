@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { newsBodyToPlainText } from '@/lib/news-content';
 import { useTranslation } from '@/components/system/LocaleProvider';
 
 interface NewsCardProps {
@@ -34,7 +35,9 @@ function buildTeaser(
 ): string {
   const lead = excerpt?.trim();
   if (lead) return lead;
-  const source = body?.trim();
+  // Body may be a blocks document — flatten to plain text so the teaser
+  // never shows raw JSON when no excerpt is present.
+  const source = newsBodyToPlainText(body).trim();
   if (!source) return '';
   const firstPara = source.split(/\n\s*\n+/)[0].trim();
   if (firstPara.length <= TEASER_MAX) return firstPara;

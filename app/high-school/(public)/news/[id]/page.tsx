@@ -6,6 +6,7 @@ import { PageHero } from '@/components/sections/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Container } from '@/components/layout/Container';
 import { NewsCard } from '@/components/ui/NewsCard';
+import { NewsBody } from '@/components/ui/NewsBody';
 import { Badge } from '@/components/ui/Badge';
 import { CtaBanner } from '@/components/sections/CtaBanner';
 import { AnnualEventSlideshow } from '@/components/sections/AnnualEventSlideshow';
@@ -130,9 +131,7 @@ export default async function HighSchoolNewsDetailPage({ params }: PageProps) {
 
           <article className="mt-10 space-y-5 text-base leading-relaxed text-text-body">
             <p className="text-lg font-semibold text-navy-900">{excerpt}</p>
-            {body.split('\n\n').map((p, idx) => (
-              <p key={idx}>{p}</p>
-            ))}
+            <NewsBody body={body} />
           </article>
 
           <div className="mt-8 border-t border-border-light pt-6 text-sm text-text-muted">
