@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GraduationCap, Mail, Phone, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { montserrat } from '@/lib/fonts';
 import { useTranslation } from '@/components/system/LocaleProvider';
 import type { TranslationKey } from '@/lib/i18n/messages';
 
@@ -178,9 +179,9 @@ const TRAINING_COLS = [0, 1, 2, 3, 4];
 const RESEARCH_COLS = [5, 6, 7, 8];
 const STANDALONE_COLS = [9, 10, 11, 12];
 
-const BOX_H = 44;
-const HEAD_H = 56;
-const VERT_H = 210;
+const BOX_H = 48;
+const HEAD_H = 60;
+const VERT_H = 230;
 
 const ROW_BOARD = 0;
 const ROW_RECTOR = 84;
@@ -198,8 +199,8 @@ const TRAINING_X = spanCenter(0, 4);
 const BOARD = { x: SPINE_X - 120, w: 240 };
 const RECTOR = { x: SPINE_X - 100, w: 200 };
 const ACADEMIC_COUNCIL = { x: RECTOR.x - 56 - 220, w: 220 };
-const QUALITY = { x: SPINE_X - 48 - 250, w: 250 };
-const ADMIN_COUNCIL = { x: SPINE_X + 48, w: 250 };
+const QUALITY = { x: SPINE_X - 48 - 280, w: 280 };
+const ADMIN_COUNCIL = { x: SPINE_X + 48, w: 280 };
 
 type Variant = 'top' | 'director' | 'mid' | 'head' | 'unit';
 
@@ -327,12 +328,15 @@ const LINES: Array<[number, number, number, number]> = [
   ),
 ];
 
+// Labels use the site's heading face (Montserrat, `font-serif`). Only the
+// two top boxes stay in capitals; everything else reads in sentence case
+// at a size that holds up on the canvas.
 const VARIANT_STYLES: Record<Variant, string> = {
-  top: 'bg-navy-900 text-white px-6 text-sm font-bold uppercase tracking-wider',
-  director: 'bg-gold-500 text-navy-900 px-6 text-sm font-bold uppercase tracking-wider ring-2 ring-gold-500/40',
-  mid: 'bg-navy-900 text-white px-5 text-xs font-semibold uppercase tracking-wide',
-  head: 'bg-white text-navy-900 border border-navy-900/30 px-4 text-xs font-bold uppercase tracking-wide',
-  unit: 'bg-white text-navy-900 border border-border-light px-1.5 py-2 text-[13px] leading-tight',
+  top: 'bg-navy-900 text-white px-6 text-[15px] font-bold uppercase tracking-[0.06em]',
+  director: 'bg-gold-500 text-navy-900 px-6 text-[15px] font-bold uppercase tracking-[0.06em] ring-2 ring-gold-500/40',
+  mid: 'bg-navy-900 text-white px-5 text-[15px] font-semibold',
+  head: 'bg-white text-navy-900 border border-navy-900/30 px-4 text-base font-bold leading-snug',
+  unit: 'bg-white text-navy-900 border border-border-light px-1.5 py-3 text-sm font-medium leading-snug',
 };
 
 function ChartNode({
@@ -353,7 +357,7 @@ function ChartNode({
       aria-label={label.replace(/\n/g, ' ')}
       style={{ left: box.x, top: box.y, width: box.w, height: box.h }}
       className={cn(
-        'absolute flex cursor-pointer items-center justify-center rounded-md text-center shadow-card transition-all duration-200',
+        'absolute flex cursor-pointer items-center justify-center rounded-md text-center font-serif shadow-card transition-all duration-200',
         'hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-2 hover:ring-gold-500/60',
         VARIANT_STYLES[box.variant],
         // Faint visual cue when the node has no staff assigned yet —
@@ -435,7 +439,13 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
     <>
       <div className="space-y-6">
         <div ref={scrollRef} className="-mx-4 overflow-x-auto px-4 pb-4 pt-1 md:mx-0 md:px-0">
-          <div className="relative mx-auto" style={{ width: CANVAS_W, height: CANVAS_H }}>
+          {/* Re-declares --font-serif here: the `:root` fallback in
+              globals.css overrides next/font's value on <html>, so without
+              this the labels fall back to the system sans. */}
+          <div
+            className={cn('relative mx-auto', montserrat.variable)}
+            style={{ width: CANVAS_W, height: CANVAS_H }}
+          >
             <svg
               aria-hidden
               className="absolute inset-0 text-navy-900/70"
