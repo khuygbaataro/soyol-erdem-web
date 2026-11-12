@@ -114,20 +114,22 @@ export const MESSAGES: Record<Language, Messages> = {
 
     // ─── OrgChart (structure page) ────────────────────────────────
     'orgchart.tooltip': 'Ажилтны мэдээллийг үзэхийн тулд карт дээр дарна уу.',
+    'orgchart.scrollHint': 'Бүтцийг бүтнээр нь харахын тулд хажуу тийш гүйлгэнэ үү.',
     'orgchart.board': 'УДИРДАХ ЗӨВЛӨЛ',
     'orgchart.affiliatedLine1': 'Нийслэлийн Ерөнхий Боловсролын',
     'orgchart.affiliatedLine2': 'Соёл Эрдэм сургууль (ЕБС)',
-    'orgchart.academicCouncil': 'Эрдмийн зөвлөл',
+    'orgchart.academicCouncil': 'Эрдмийн Зөвлөл',
     'orgchart.rector': 'ЗАХИРАЛ',
-    'orgchart.adminCouncil': 'Захиргааны зөвлөл',
+    'orgchart.adminCouncil': 'Захиргааны Зөвлөл',
     'orgchart.qualityOffice': 'Чанарын үнэлгээний алба',
     'orgchart.pillar.academic': 'Сургалтын алба',
+    'orgchart.pillar.research': 'Эрдэм шинжилгээ\nхамтын ажиллагаа',
     'orgchart.pillar.scientific': 'Эрдэмтэн нарийн бичгийн дарга',
-    'orgchart.pillar.admin': 'Захиргаа, санхүү, аж ахуй',
+    'orgchart.pillar.admin': 'Захиргаа, Санхүү, аж ахуй',
     'orgchart.pillar.facultyDev': 'Багшийн хөгжлийн төв',
     'orgchart.unit.japaneseDept': 'Япон судлалын тэнхим',
     'orgchart.unit.itDept': 'Мэдээллийн технологийн тэнхим',
-    'orgchart.unit.library': '"Хажимэ" номын сан',
+    'orgchart.unit.library': 'Хажимэ номын сан',
     'orgchart.unit.practice': 'Дадлагын бааз',
     'orgchart.unit.graduateStudies': 'Ахисан түвшний сургалтын алба',
     'orgchart.unit.researchCenter': 'Судалгааны төв',
@@ -275,6 +277,7 @@ export const MESSAGES: Record<Language, Messages> = {
 
     // ─── OrgChart (structure page) ────────────────────────────────
     'orgchart.tooltip': 'Tap a card to view the staff member details.',
+    'orgchart.scrollHint': 'Swipe sideways to see the full chart.',
     'orgchart.board': 'BOARD OF GOVERNORS',
     'orgchart.affiliatedLine1': 'Soyol Erdem Secondary School',
     'orgchart.affiliatedLine2': '(affiliated)',
@@ -283,6 +286,7 @@ export const MESSAGES: Record<Language, Messages> = {
     'orgchart.adminCouncil': 'Administrative Council',
     'orgchart.qualityOffice': 'Quality assurance office',
     'orgchart.pillar.academic': 'Academic affairs',
+    'orgchart.pillar.research': 'Research &\ncooperation',
     'orgchart.pillar.scientific': 'Scientific secretary',
     'orgchart.pillar.admin': 'Administration, finance & operations',
     'orgchart.pillar.facultyDev': 'Faculty development centre',
@@ -436,6 +440,7 @@ export const MESSAGES: Record<Language, Messages> = {
 
     // ─── OrgChart (structure page) ────────────────────────────────
     'orgchart.tooltip': 'カードをタップすると教職員の情報が表示されます。',
+    'orgchart.scrollHint': '横にスワイプすると全体が表示されます。',
     'orgchart.board': '理事会',
     'orgchart.affiliatedLine1': '附属ソヨル・エルデム',
     'orgchart.affiliatedLine2': '中等学校',
@@ -444,6 +449,7 @@ export const MESSAGES: Record<Language, Messages> = {
     'orgchart.adminCouncil': '運営評議会',
     'orgchart.qualityOffice': '質保証室',
     'orgchart.pillar.academic': '教務課',
+    'orgchart.pillar.research': '研究・協力',
     'orgchart.pillar.scientific': '学術書記官',
     'orgchart.pillar.admin': '総務・財務部',
     'orgchart.pillar.facultyDev': '教員研修センター',

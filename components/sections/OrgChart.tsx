@@ -1,29 +1,28 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { GraduationCap, Mail, Phone, School as SchoolIcon, X } from 'lucide-react';
+import { GraduationCap, Mail, Phone, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/components/system/LocaleProvider';
 import type { TranslationKey } from '@/lib/i18n/messages';
 
 /**
- * Соёл Эрдэм Дээд Сургуулийн бүтэц, зохион байгуулалт.
+ * Соёл Эрдэм Дээд Сургуулийн бүтэц, зохион байгуулалт ("Бүтэц 2026").
  *
  * Layout (reference):
  *
- *                       [Удирдах зөвлөл]
- *                              │
- *   [Эрдмийн зөвлөл] ────── [Захирал] ────── [Захиргааны зөвлөл]
- *                              │
- *                  [Чанарын үнэлгээний алба]
- *                              │
- *      ┌──────────────┬────────┴────────┬──────────────┐
- *   [Сургалт]  [Эрдэмтэн нар.б.]   [Захиргаа,       [Багшийн хөгжил]
- *      ├ Япон судлал    ├ Ахисан түвш.   санхүү аж ахуй]  ├ Гадаад харилц.
- *      ├ МТ танхим      └ Судалгааны төв ├ Архив           └ Оюутны зөвлөл
- *      ├ "Хажимэ" ном.                   └ Маркетинг
- *      └ Дадлагын бааз
+ *                              [Удирдах Зөвлөл]
+ *                                     │
+ *              [Эрдмийн Зөвлөл] ── [Захирал]
+ *                                     │
+ *       [Чанарын үнэлгээний алба] ────┼──── [Захиргааны Зөвлөл]
+ *                                     │
+ *        ┌────────────────────────────┼──────────┬────────┬────────┬───────┐
+ *  [Сургалтын алба]        [Эрдэм шинжилгээ    [Захиргаа, [Багшийн [Марке- [Архив]
+ *   │  │  │  │  │           хамтын ажиллагаа]   Санхүү,    хөгжлийн тингийн
+ *  Япон МТ Хажимэ Дадлага Оюутны  │  │  │  │    аж ахуй]   төв]     алба]
+ *                          Ахисан ЭНБД Судалгаа Гадаад
  *
  * Every node is clickable — including the councils and headers — and
  * opens a modal that lists ALL staff assigned to that node (multiple
@@ -158,211 +157,218 @@ const FALLBACK_STAFF: Record<string, Omit<Staff, 'positionKey'>> = {
   },
 };
 
-interface NodeProps {
-  id?: string;
-  label: React.ReactNode;
-  level: 'top' | 'director' | 'mid' | 'pillar' | 'unit';
-  centered?: boolean;
-  onSelect?: (id: string) => void;
-  /** Has at least one staff member assigned (for clickable styling). */
-  hasStaff?: boolean;
+/* ─── Chart geometry ──────────────────────────────────────────────
+ * Mirrors the "Бүтэц 2026" slide. The bottom tier is a 13-column grid:
+ * 5 Сургалтын алба units, 4 Эрдэм шинжилгээ units, then 4 stand-alone
+ * units hung straight off the bus. Everything above hangs off one
+ * spine running from Удирдах Зөвлөл down into Эрдэм шинжилгээ, хамтын
+ * ажиллагаа. Values are px on a fixed canvas; narrow screens scroll it.
+ */
+
+const COL_W = 56;
+const COL_GAP = 18;
+const COLS = 13;
+
+const colLeft = (i: number) => i * (COL_W + COL_GAP);
+const colCenter = (i: number) => colLeft(i) + COL_W / 2;
+const spanWidth = (first: number, last: number) => colLeft(last) + COL_W - colLeft(first);
+const spanCenter = (first: number, last: number) => colLeft(first) + spanWidth(first, last) / 2;
+
+const TRAINING_COLS = [0, 1, 2, 3, 4];
+const RESEARCH_COLS = [5, 6, 7, 8];
+const STANDALONE_COLS = [9, 10, 11, 12];
+
+const BOX_H = 44;
+const HEAD_H = 56;
+const VERT_H = 210;
+
+const ROW_BOARD = 0;
+const ROW_RECTOR = 84;
+const ROW_STAFF = 168;
+const BUS_Y = 244;
+const ROW_HEAD = 268;
+const ROW_CHILD = ROW_HEAD + HEAD_H + 24;
+
+const CANVAS_W = spanWidth(0, COLS - 1);
+const CANVAS_H = ROW_CHILD + VERT_H;
+
+const SPINE_X = spanCenter(5, 8);
+const TRAINING_X = spanCenter(0, 4);
+
+const BOARD = { x: SPINE_X - 120, w: 240 };
+const RECTOR = { x: SPINE_X - 100, w: 200 };
+const ACADEMIC_COUNCIL = { x: RECTOR.x - 56 - 220, w: 220 };
+const QUALITY = { x: SPINE_X - 48 - 250, w: 250 };
+const ADMIN_COUNCIL = { x: SPINE_X + 48, w: 250 };
+
+type Variant = 'top' | 'director' | 'mid' | 'head' | 'unit';
+
+interface ChartBox {
+  id: string;
+  labelKey: TranslationKey;
+  variant: Variant;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  /** Tall, narrow box with bottom-to-top text (rotated units on the slide). */
+  vertical?: boolean;
 }
 
-function ChartNode({ id, label, level, centered, onSelect, hasStaff }: NodeProps) {
-  // Every node with an id is clickable now — admin or fallback staff
-  // attach to the node, and the modal handles empty-list gracefully.
-  const clickable = !!id && !!onSelect;
+const TRAINING_UNITS: { id: string; labelKey: TranslationKey }[] = [
+  { id: 'japanese-dept', labelKey: 'orgchart.unit.japaneseDept' },
+  { id: 'it-dept', labelKey: 'orgchart.unit.itDept' },
+  { id: 'library', labelKey: 'orgchart.unit.library' },
+  { id: 'practice', labelKey: 'orgchart.unit.practice' },
+  { id: 'student-council', labelKey: 'orgchart.unit.studentCouncil' },
+];
 
-  const baseStyles = {
-    top: 'bg-navy-900 text-white px-6 py-3 text-sm font-bold uppercase tracking-wider',
-    director:
-      'bg-gold-500 text-navy-900 px-6 py-3 text-sm font-bold uppercase tracking-wider ring-2 ring-gold-500/40',
-    mid: 'bg-navy-900 text-white px-5 py-2.5 text-xs font-semibold uppercase tracking-wide',
-    pillar:
-      'bg-white text-navy-900 border border-navy-900/30 px-4 py-3 text-xs font-bold uppercase tracking-wide text-center min-h-[3.5rem]',
-    unit: 'bg-white text-navy-900 border border-border-light px-4 py-2.5 text-sm',
-  } as const;
+const RESEARCH_UNITS: { id: string; labelKey: TranslationKey }[] = [
+  { id: 'graduate-studies', labelKey: 'orgchart.unit.graduateStudies' },
+  { id: 'scientific-secretary', labelKey: 'orgchart.pillar.scientific' },
+  { id: 'research-center', labelKey: 'orgchart.unit.researchCenter' },
+  { id: 'foreign-relations', labelKey: 'orgchart.unit.foreignRelations' },
+];
 
-  const className = cn(
-    'items-center justify-center rounded-md text-center shadow-card transition-all duration-200',
-    level === 'pillar' ? 'flex w-full' : 'inline-flex',
-    centered && 'mx-auto',
-    baseStyles[level],
-    clickable && 'cursor-pointer hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-2 hover:ring-gold-500/60',
-    // Faint visual cue when the node has no staff assigned yet —
-    // still clickable but the modal will show an empty-state.
-    clickable && !hasStaff && 'opacity-90',
-  );
+const STANDALONE_UNITS: { id: string; labelKey: TranslationKey }[] = [
+  { id: 'admin-finance', labelKey: 'orgchart.pillar.admin' },
+  { id: 'faculty-development', labelKey: 'orgchart.pillar.facultyDev' },
+  { id: 'marketing', labelKey: 'orgchart.unit.marketing' },
+  { id: 'archive', labelKey: 'orgchart.unit.archive' },
+];
 
-  if (clickable) {
-    return (
-      <button
-        type="button"
-        onClick={() => onSelect!(id!)}
-        className={className}
-        aria-label={String(label)}
-      >
-        {label}
-      </button>
-    );
-  }
-  return <div className={className}>{label}</div>;
-}
+const BOXES: ChartBox[] = [
+  { id: 'board', labelKey: 'orgchart.board', variant: 'top', x: BOARD.x, y: ROW_BOARD, w: BOARD.w, h: BOX_H },
+  {
+    id: 'academic-council',
+    labelKey: 'orgchart.academicCouncil',
+    variant: 'mid',
+    x: ACADEMIC_COUNCIL.x,
+    y: ROW_RECTOR,
+    w: ACADEMIC_COUNCIL.w,
+    h: BOX_H,
+  },
+  { id: 'rector', labelKey: 'orgchart.rector', variant: 'director', x: RECTOR.x, y: ROW_RECTOR, w: RECTOR.w, h: BOX_H },
+  { id: 'quality-office', labelKey: 'orgchart.qualityOffice', variant: 'mid', x: QUALITY.x, y: ROW_STAFF, w: QUALITY.w, h: BOX_H },
+  {
+    id: 'admin-council',
+    labelKey: 'orgchart.adminCouncil',
+    variant: 'mid',
+    x: ADMIN_COUNCIL.x,
+    y: ROW_STAFF,
+    w: ADMIN_COUNCIL.w,
+    h: BOX_H,
+  },
+  {
+    id: 'academic-affairs',
+    labelKey: 'orgchart.pillar.academic',
+    variant: 'head',
+    x: colLeft(0),
+    y: ROW_HEAD,
+    w: spanWidth(0, 4),
+    h: HEAD_H,
+  },
+  {
+    id: 'research-cooperation',
+    labelKey: 'orgchart.pillar.research',
+    variant: 'head',
+    x: colLeft(5),
+    y: ROW_HEAD,
+    w: spanWidth(5, 8),
+    h: HEAD_H,
+  },
+  ...TRAINING_UNITS.map((u, i) => ({
+    ...u,
+    variant: 'unit' as const,
+    vertical: true,
+    x: colLeft(TRAINING_COLS[i]),
+    y: ROW_CHILD,
+    w: COL_W,
+    h: VERT_H,
+  })),
+  ...RESEARCH_UNITS.map((u, i) => ({
+    ...u,
+    variant: 'unit' as const,
+    vertical: true,
+    x: colLeft(RESEARCH_COLS[i]),
+    y: ROW_CHILD,
+    w: COL_W,
+    h: VERT_H,
+  })),
+  ...STANDALONE_UNITS.map((u, i) => ({
+    ...u,
+    variant: 'unit' as const,
+    vertical: true,
+    x: colLeft(STANDALONE_COLS[i]),
+    y: ROW_HEAD,
+    w: COL_W,
+    h: VERT_H,
+  })),
+];
 
-function UnitNode({
-  id,
-  children,
+/** Connector segments as [x1, y1, x2, y2]. */
+const LINES: Array<[number, number, number, number]> = [
+  // Spine: Удирдах Зөвлөл → Захирал → Эрдэм шинжилгээ, хамтын ажиллагаа
+  [SPINE_X, ROW_BOARD + BOX_H, SPINE_X, ROW_RECTOR],
+  [SPINE_X, ROW_RECTOR + BOX_H, SPINE_X, ROW_HEAD],
+  // Эрдмийн Зөвлөл ── Захирал
+  [ACADEMIC_COUNCIL.x + ACADEMIC_COUNCIL.w, ROW_RECTOR + BOX_H / 2, RECTOR.x, ROW_RECTOR + BOX_H / 2],
+  // Чанарын үнэлгээний алба ──┼── Захиргааны Зөвлөл
+  [QUALITY.x + QUALITY.w, ROW_STAFF + BOX_H / 2, ADMIN_COUNCIL.x, ROW_STAFF + BOX_H / 2],
+  // Bus across the second tier
+  [TRAINING_X, BUS_Y, colCenter(STANDALONE_COLS[STANDALONE_COLS.length - 1]), BUS_Y],
+  [TRAINING_X, BUS_Y, TRAINING_X, ROW_HEAD],
+  ...STANDALONE_COLS.map(
+    (c) => [colCenter(c), BUS_Y, colCenter(c), ROW_HEAD] as [number, number, number, number],
+  ),
+  // Stubs from each division head down to its units
+  ...[...TRAINING_COLS, ...RESEARCH_COLS].map(
+    (c) => [colCenter(c), ROW_HEAD + HEAD_H, colCenter(c), ROW_CHILD] as [number, number, number, number],
+  ),
+];
+
+const VARIANT_STYLES: Record<Variant, string> = {
+  top: 'bg-navy-900 text-white px-6 text-sm font-bold uppercase tracking-wider',
+  director: 'bg-gold-500 text-navy-900 px-6 text-sm font-bold uppercase tracking-wider ring-2 ring-gold-500/40',
+  mid: 'bg-navy-900 text-white px-5 text-xs font-semibold uppercase tracking-wide',
+  head: 'bg-white text-navy-900 border border-navy-900/30 px-4 text-xs font-bold uppercase tracking-wide',
+  unit: 'bg-white text-navy-900 border border-border-light px-1.5 py-2 text-[13px] leading-tight',
+};
+
+function ChartNode({
+  box,
+  label,
   onSelect,
   hasStaff,
 }: {
-  id?: string;
-  children: React.ReactNode;
-  onSelect?: (id: string) => void;
-  hasStaff?: boolean;
-}) {
-  return (
-    <ChartNode
-      id={id}
-      label={children}
-      level="unit"
-      onSelect={onSelect}
-      hasStaff={hasStaff}
-    />
-  );
-}
-
-function SiblingNode({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="inline-flex items-start gap-2 rounded-md border border-gold-500/40 bg-gold-500/10 px-4 py-2 text-xs font-semibold leading-snug text-navy-900 shadow-card">
-      <SchoolIcon className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
-      <span>{children}</span>
-    </div>
-  );
-}
-
-function Connector({ dashed = true, height = 6 }: { dashed?: boolean; height?: number }) {
-  return (
-    <span
-      aria-hidden
-      className={cn(
-        'mx-auto block',
-        dashed
-          ? 'w-[1.5px] bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.7)_0_4px,transparent_4px_8px)]'
-          : 'w-[1.5px] bg-navy-900/70',
-      )}
-      style={{ height: `${height * 4}px` }}
-    />
-  );
-}
-
-function SiblingConnector() {
-  return <span aria-hidden className="block h-[1.5px] flex-1 bg-navy-900/70" />;
-}
-
-function BranchConnector({ count }: { count: number }) {
-  return (
-    <div aria-hidden className="relative mx-auto mb-2 w-full" style={{ height: '32px' }}>
-      <span className="absolute left-1/2 top-0 h-3 w-[1.5px] -translate-x-1/2 bg-navy-900/70" />
-      <span
-        className="absolute top-3 h-[1.5px] bg-navy-900/70"
-        style={{
-          left: `calc(${100 / (count * 2)}% )`,
-          right: `calc(${100 / (count * 2)}% )`,
-        }}
-      />
-      {Array.from({ length: count }).map((_, i) => (
-        <span
-          key={i}
-          className="absolute top-3 h-5 w-[1.5px] bg-navy-900/70"
-          style={{ left: `calc(${(100 / count) * (i + 0.5)}%)` }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function UnitTree({
-  units,
-  onSelect,
-  staffByKey,
-}: {
-  units: { id?: string; label: string }[];
+  box: ChartBox;
+  label: string;
   onSelect: (id: string) => void;
-  staffByKey: Map<string, Staff[]>;
+  hasStaff: boolean;
 }) {
-  if (units.length === 0) return null;
   return (
-    <div className="relative mt-2 pl-6">
-      <span
-        aria-hidden
-        className="absolute left-3 top-0 w-[2px] bg-[image:repeating-linear-gradient(to_bottom,rgba(30,58,95,0.7)_0_3px,transparent_3px_7px)]"
-        style={{ height: `calc(100% - 1.25rem)` }}
-      />
-      <ul className="space-y-3">
-        {units.map((u) => (
-          <li key={u.label} className="relative">
-            <span
-              aria-hidden
-              className="absolute -left-3 top-1/2 h-[2px] w-3 bg-[image:repeating-linear-gradient(to_right,rgba(30,58,95,0.7)_0_3px,transparent_3px_7px)]"
-            />
-            <UnitNode
-              id={u.id}
-              onSelect={onSelect}
-              hasStaff={u.id ? (staffByKey.get(u.id)?.length ?? 0) > 0 : false}
-            >
-              {u.label}
-            </UnitNode>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <button
+      type="button"
+      onClick={() => onSelect(box.id)}
+      aria-label={label.replace(/\n/g, ' ')}
+      style={{ left: box.x, top: box.y, width: box.w, height: box.h }}
+      className={cn(
+        'absolute flex cursor-pointer items-center justify-center rounded-md text-center shadow-card transition-all duration-200',
+        'hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-2 hover:ring-gold-500/60',
+        VARIANT_STYLES[box.variant],
+        // Faint visual cue when the node has no staff assigned yet —
+        // still clickable but the modal will show an empty-state.
+        !hasStaff && 'opacity-90',
+      )}
+    >
+      {box.vertical ? (
+        <span className="max-h-full rotate-180 [writing-mode:vertical-rl]">{label}</span>
+      ) : (
+        <span className="whitespace-pre-line">{label}</span>
+      )}
+    </button>
   );
 }
-
-/* ─── Pillar data ─────────────────────────────────────────────── */
-
-interface Pillar {
-  id: string;
-  titleKey: TranslationKey;
-  units: { id?: string; labelKey: TranslationKey }[];
-}
-
-const PILLARS: Pillar[] = [
-  {
-    id: 'academic-affairs',
-    titleKey: 'orgchart.pillar.academic',
-    units: [
-      { id: 'japanese-dept', labelKey: 'orgchart.unit.japaneseDept' },
-      { id: 'it-dept', labelKey: 'orgchart.unit.itDept' },
-      { id: 'library', labelKey: 'orgchart.unit.library' },
-      { id: 'practice', labelKey: 'orgchart.unit.practice' },
-    ],
-  },
-  {
-    id: 'scientific-secretary',
-    titleKey: 'orgchart.pillar.scientific',
-    units: [
-      { id: 'graduate-studies', labelKey: 'orgchart.unit.graduateStudies' },
-      { id: 'research-center', labelKey: 'orgchart.unit.researchCenter' },
-    ],
-  },
-  {
-    id: 'admin-finance',
-    titleKey: 'orgchart.pillar.admin',
-    units: [
-      { id: 'archive', labelKey: 'orgchart.unit.archive' },
-      { id: 'marketing', labelKey: 'orgchart.unit.marketing' },
-    ],
-  },
-  {
-    id: 'faculty-development',
-    titleKey: 'orgchart.pillar.facultyDev',
-    units: [
-      { id: 'foreign-relations', labelKey: 'orgchart.unit.foreignRelations' },
-      { id: 'student-council', labelKey: 'orgchart.unit.studentCouncil' },
-    ],
-  },
-];
 
 /* ─── Component ───────────────────────────────────────────────── */
 
@@ -373,6 +379,7 @@ interface OrgChartProps {
 export function OrgChart({ staff }: OrgChartProps = {}) {
   const t = useTranslation();
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Build `Map<positionKey, Staff[]>` — multiple staff per key so a
   // single node can host 2-3 people. Admin rows take priority over
@@ -398,6 +405,15 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
 
   const selectedList = selectedId ? staffByKey.get(selectedId) ?? [] : [];
 
+  // On narrow screens the canvas scrolls sideways — start it centred on
+  // the spine so Удирдах Зөвлөл / Захирал are in view first.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el && el.scrollWidth > el.clientWidth) {
+      el.scrollLeft = SPINE_X - el.clientWidth / 2;
+    }
+  }, []);
+
   // Lock body scroll while modal open + ESC key handler
   useEffect(() => {
     if (!selectedId) return;
@@ -418,124 +434,32 @@ export function OrgChart({ staff }: OrgChartProps = {}) {
   return (
     <>
       <div className="space-y-6">
-        {/* Row 1 — Удирдах зөвлөл (centre) + НЕБ-ын Соёл Эрдэм сургууль (right peer) */}
-        <div className="flex flex-col items-center">
-          <div className="flex w-full items-center justify-center gap-0 sm:gap-3">
-            <div className="hidden flex-1 sm:block" />
-            <ChartNode
-              id="board"
-              label={t('orgchart.board')}
-              level="top"
-              onSelect={setSelectedId}
-              hasStaff={hasStaff('board')}
-            />
-            <div className="hidden flex-1 items-center sm:flex">
-              <SiblingConnector />
-              <SiblingNode>
-                {t('orgchart.affiliatedLine1')}
-                <br />
-                {t('orgchart.affiliatedLine2')}
-              </SiblingNode>
-            </div>
-          </div>
-
-          <div className="mt-4 flex justify-center sm:hidden">
-            <SiblingNode>
-              {t('orgchart.affiliatedLine1')}
-              <br />
-              {t('orgchart.affiliatedLine2')}
-            </SiblingNode>
-          </div>
-
-          <Connector height={6} />
-
-          {/* Row 2 — Эрдмийн зөвлөл ← ЗАХИРАЛ → Захиргааны зөвлөл */}
-          <div className="flex w-full max-w-4xl items-center justify-center gap-0 sm:gap-3">
-            <div className="hidden flex-1 items-center justify-end sm:flex">
+        <div ref={scrollRef} className="-mx-4 overflow-x-auto px-4 pb-4 pt-1 md:mx-0 md:px-0">
+          <div className="relative mx-auto" style={{ width: CANVAS_W, height: CANVAS_H }}>
+            <svg
+              aria-hidden
+              className="absolute inset-0 text-navy-900/70"
+              width={CANVAS_W}
+              height={CANVAS_H}
+            >
+              {LINES.map(([x1, y1, x2, y2], i) => (
+                <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth={1.5} />
+              ))}
+            </svg>
+            {BOXES.map((box) => (
               <ChartNode
-                id="academic-council"
-                label={t('orgchart.academicCouncil')}
-                level="mid"
+                key={box.id}
+                box={box}
+                label={t(box.labelKey)}
                 onSelect={setSelectedId}
-                hasStaff={hasStaff('academic-council')}
+                hasStaff={hasStaff(box.id)}
               />
-              <SiblingConnector />
-            </div>
-            <ChartNode
-              id="rector"
-              label={t('orgchart.rector')}
-              level="director"
-              onSelect={setSelectedId}
-              hasStaff={hasStaff('rector')}
-            />
-            <div className="hidden flex-1 items-center sm:flex">
-              <SiblingConnector />
-              <ChartNode
-                id="admin-council"
-                label={t('orgchart.adminCouncil')}
-                level="mid"
-                onSelect={setSelectedId}
-                hasStaff={hasStaff('admin-council')}
-              />
-            </div>
+            ))}
           </div>
-
-          {/* mobile-only sibling stack */}
-          <div className="mt-4 flex flex-col items-center gap-2 sm:hidden">
-            <ChartNode
-              id="academic-council"
-              label={t('orgchart.academicCouncil')}
-              level="mid"
-              onSelect={setSelectedId}
-              hasStaff={hasStaff('academic-council')}
-            />
-            <ChartNode
-              id="admin-council"
-              label={t('orgchart.adminCouncil')}
-              level="mid"
-              onSelect={setSelectedId}
-              hasStaff={hasStaff('admin-council')}
-            />
-          </div>
-
-          <Connector height={6} />
-
-          {/* Row 3 — Чанарын үнэлгээний алба (centered, directly under rector) */}
-          <ChartNode
-            id="quality-office"
-            label={t('orgchart.qualityOffice')}
-            level="mid"
-            onSelect={setSelectedId}
-            hasStaff={hasStaff('quality-office')}
-          />
         </div>
 
-        {/* Branching connector — 3-row → 4 pillars */}
-        <BranchConnector count={4} />
-
-        {/* Row 4 — 4 pillar columns, each with its tree of units */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {PILLARS.map((p) => (
-            <div key={p.id} className="flex flex-col">
-              <ChartNode
-                id={p.id}
-                label={t(p.titleKey)}
-                level="pillar"
-                onSelect={setSelectedId}
-                hasStaff={hasStaff(p.id)}
-              />
-              <UnitTree
-                units={p.units.map((u) => ({ id: u.id, label: t(u.labelKey) }))}
-                onSelect={setSelectedId}
-                staffByKey={staffByKey}
-              />
-            </div>
-          ))}
-        </div>
-
-        <p className="pt-6 text-center text-sm text-text-muted md:text-base">
-          {t('orgchart.tooltip')}
-        </p>
+        <p className="text-center text-xs text-text-muted lg:hidden">{t('orgchart.scrollHint')}</p>
+        <p className="text-center text-sm text-text-muted md:text-base">{t('orgchart.tooltip')}</p>
       </div>
 
       {/* Staff modal — lists ALL staff assigned to the selected node */}
